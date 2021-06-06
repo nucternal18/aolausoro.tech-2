@@ -15,9 +15,9 @@ type Props = {
 
 type NavLinkProps = {
   children: any;
-  left: any;
-  right: any;
-  center: any;
+  left?: any;
+  right?: any;
+  center?: any;
 };
 
 const Navbar = () => {
@@ -149,7 +149,7 @@ Nav.Toggler = ({ toggle, isOpen }) => (
   </div>
 );
 Nav.SideNav = ({ isOpen, toggle, children }) => {
-  const ref = useRef();
+  const ref = useRef(null);
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (!ref.current?.contains(event.target)) {
