@@ -15,9 +15,9 @@ type Props = {
 
 type NavLinkProps = {
   children: any;
-  left: any;
-  right: any;
-  center: any;
+  left?: any;
+  right?: any;
+  center?: any;
 };
 
 const Navbar = () => {
