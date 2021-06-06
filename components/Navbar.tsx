@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, FC } from 'react';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
-import { FiLogOut } from 'react-icons/fI';
+import { FiLogOut } from 'react-icons/fi';
 import { firebaseClient } from '../firebase/firebaseClient';
 import { useRouter } from 'next/router';
 import { links, social } from '../data';
