@@ -35,6 +35,7 @@ jobs:
            echo CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }} >> .env.local
            echo CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }} >> .env.local
            echo CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }} >> .env.local
+           echo NEXT_TELEMETRY_DISABLED: ${{ secrets.NEXT_TELEMETRY_DISABLED }} >> .env.local
            cat .env.local
     - run: yarn install
     - run: yarn build
