@@ -18,7 +18,7 @@ export const Layout = ({ children, title }: LayoutProps) => {
       </Head>
       <Navbar />
 
-      <main className='container z-0 flex w-full px-1 pt-1 mx-auto md:px-0 md:max-w-4xl dark:bg-black dark:text-white'>
+      <main className='container z-0 flex w-full px-1 pt-1 mx-auto md:px-0 md:max-w-4xl'>
         {children}
       </main>
       <Footer />

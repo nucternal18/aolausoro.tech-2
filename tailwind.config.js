@@ -3,7 +3,7 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
-  darkMode: 'class',
+  darkMode: false,
   purge: {
     layers: ['utilities'],
     content: [

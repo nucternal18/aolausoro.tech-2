@@ -28,7 +28,7 @@ export default function Post({ postData }) {
         <title>{postData.title}</title>
       </Head>
       <div className='flex flex-col h-screen'>
-        <h1 className='my-4 text-4xl font-extrabold tracking-tighter'>
+        <h1 className='my-4 text-4xl font-extrabold tracking-tighter text-black'>
           {postData.title}
         </h1>
         <br />
@@ -37,7 +37,7 @@ export default function Post({ postData }) {
         </div>
         <br />
         <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-        <h2 className='my-4 text-2xl font-bold'>
+        <h2 className='my-4 text-2xl font-bold text-black'>
           <Link href='/blog'>
             <a>Back</a>
           </Link>

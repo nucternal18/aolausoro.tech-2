@@ -11,7 +11,7 @@ const Blog = ({ allPostsData }) => {
         <title>aolausoro.tech - blog</title>
       </Head>
 
-      <section className='w-screen -mt-64 dark:bg-black dark:text-white'>
+      <section className='w-screen -mt-64 '>
         <h1 className='text-3xl font-bold'>My Blog</h1>
 
         <div className='flex flex-col'>
@@ -19,8 +19,8 @@ const Blog = ({ allPostsData }) => {
             {allPostsData.map(({ id, date, title }) => (
               <li className='py-2 text-2xl' key={id}>
                 <div className='relative flex flex-col px-4 py-2 mb-2 bg-white rounded-b shadow'>
-                  <h2>{title}</h2>
-                  <h3 className='my-1 font-bold'>
+                  <h2 className='text-black'>{title}</h2>
+                  <h3 className='my-1 font-bold text-black'>
                     <Link href={`/blog/${id}`}>
                       <a>{id}</a>
                     </Link>

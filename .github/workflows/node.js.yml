@@ -37,8 +37,13 @@ jobs:
            echo CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} >> .env.local
            echo NEXT_TELEMETRY_DISABLED=${{ secrets.NEXT_TELEMETRY_DISABLED }} >> .env.local
            cat .env.local
+    - name: Cache multiple paths
+      uses: actions/cache@v2
+      with:
+        path: ${{ github.workspace }}/.next/cache
+        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}
     - run: yarn install
     - run: yarn build
-    - run: pm2 reload next-js
+    - run: pm2 reload aolausoro.tech
     env:
         CI: true

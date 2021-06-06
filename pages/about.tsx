@@ -12,7 +12,7 @@ const about = () => {
       <Head>
         <title>aolausoro.tech - about</title>
       </Head>
-      <section className='flex w-screen dark:bg-black dark:text-white'>
+      <section className='flex w-screen text-black'>
         <div className='-mt-1 rounded shadow-md '>
           <div className='flex flex-col '>
             <div className=''>
