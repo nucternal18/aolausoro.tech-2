@@ -23,18 +23,18 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Create .env file
+    - name: Create .env.local file
       run: |
-           touch .env
-           echo NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.env.NEXT_PUBLIC_FIREBASE_API_KEY }} >> .env
-           echo NEXT_PUBLIC_APP_ID: ${{ secrets.env.NEXT_PUBLIC_APP_ID }} >> .env
-           echo NEXT_PUBLIC_MESSAGING_SENDER_ID: ${{ secrets.env.NEXT_PUBLIC_MESSAGING_SENDER_ID }} >> .env
-           echo NEXT_PUBLIC_SITE_KEY: ${{ secrets.env.NEXT_PUBLIC_SITE_KEY }} >> .env
-           echo USER_EMAIL: ${{ secrets.env.USER_EMAIL }} >> .env
-           echo USER_PASS: ${{ secrets.env.USER_PASS }} >> .env
-           echo CLOUDINARY_NAME: ${{ secrets.env.CLOUDINARY_NAME }} >> .env
-           echo CLOUDINARY_API_KEY: ${{ secrets.env.CLOUDINARY_API_KEY }} >> .env
-           echo CLOUDINARY_API_SECRET: ${{ secrets.env.CLOUDINARY_API_SECRET }} >> .env
+           touch .env.local
+           echo NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }} >> .env
+           echo NEXT_PUBLIC_APP_ID: ${{ secrets.NEXT_PUBLIC_APP_ID }} >> .env
+           echo NEXT_PUBLIC_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_MESSAGING_SENDER_ID }} >> .env
+           echo NEXT_PUBLIC_SITE_KEY: ${{ secrets.NEXT_PUBLIC_SITE_KEY }} >> .env
+           echo USER_EMAIL: ${{ secrets.USER_EMAIL }} >> .env
+           echo USER_PASS: ${{ secrets.USER_PASS }} >> .env
+           echo CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }} >> .env
+           echo CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }} >> .env
+           echo CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }} >> .env
            cat .env
     - run: yarn install
     - run: yarn build
