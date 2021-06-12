@@ -85,19 +85,16 @@ const ContactForm = () => {
         </div>
       ) : (
         <form
-          className='w-full px-8 py-6 mx-3 mb-4 bg-white rounded shadow-md md:mx-0'
+          className='w-full px-8 py-6 mx-3 mb-4 bg-white rounded shadow-md dark:bg-gray-600 md:mx-0'
           onSubmit={sendMessage}>
-          <h2 className='mb-4 font-mono text-2xl tracking-tight text-center text-gray-800 md:text-4xl'>
+          <h2 className='mb-4 font-mono text-2xl tracking-tight text-center text-current dark:text-gray-100 md:text-4xl'>
             Get in touch
           </h2>
           {error && <p>{error.message}</p>}
-          <div className='mb-4'>
-            <label
-              className='block mb-2 text-sm font-bold text-gray-700'
-              htmlFor='name'
-            />
+          <div className='mb-4 text-current bg-transparent dark:text-black dark:bg-gray-100'>
+            <label className='block mb-2 text-sm font-bold ' htmlFor='name' />
             <input
-              className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+              className='w-full px-3 py-2 leading-tight text-current text-black border rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
               onChange={(e) => setName(e.target.value)}
               type='text'
               name='name'
@@ -105,13 +102,10 @@ const ContactForm = () => {
               value={name}
             />
           </div>
-          <div className='mb-4'>
-            <label
-              className='block mb-2 text-sm font-bold text-gray-700'
-              htmlFor='email'
-            />
+          <div className='mb-4 text-black bg-transparent'>
+            <label className='block mb-2 text-sm font-bold ' htmlFor='email' />
             <input
-              className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+              className='w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
               onChange={(e) => setEmail(e.target.value)}
               type='email'
               name='email'
@@ -119,13 +113,10 @@ const ContactForm = () => {
               value={email}
             />
           </div>
-          <div className='mb-4'>
-            <label
-              className='block mb-2 text-sm font-bold text-gray-700'
-              htmlFor='name'
-            />
+          <div className='mb-4 text-black bg-transparent'>
+            <label className='block mb-2 text-sm font-bold ' htmlFor='name' />
             <input
-              className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+              className='w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
               onChange={(e) => setSubject(e.target.value)}
               type='text'
               name='Subject'
@@ -139,7 +130,7 @@ const ContactForm = () => {
               htmlFor='message'
             />
             <textarea
-              className='w-full h-48 px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+              className='w-full h-48 px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
               value={message}
               name='message'
               placeholder='Message...'
@@ -148,7 +139,7 @@ const ContactForm = () => {
           </div>
           <button
             type='submit'
-            className='w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline'>
+            className='w-full px-4 py-2 font-bold text-white rounded dark:bg-yellow-500 dark:text-gray-100 hover:bg-blue-700 dark:hover:bg-yellow-700 focus:outline-none focus:shadow-outline'>
             Send
           </button>
           <ReCAPTCHA

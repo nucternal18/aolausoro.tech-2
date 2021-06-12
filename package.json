@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.4.1",
     "@types/nodemailer": "^6.4.0",
     "@types/react-google-recaptcha": "^2.1.0",
     "@types/styled-components": "^5.1.7",

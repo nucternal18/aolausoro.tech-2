@@ -22,12 +22,12 @@ export default function Login(props) {
     setPassword('');
   };
 
-  const createUser = (e) => {
-    e.preventDefault();
-    createAccount(email, password);
-    setEmail('');
-    setPassword('');
-  };
+  // const createUser = (e) => {
+  //   e.preventDefault();
+  //   createAccount(email, password);
+  //   setEmail('');
+  //   setPassword('');
+  // };
 
   if (user) {
     return router.push('/admin');
@@ -42,7 +42,7 @@ export default function Login(props) {
         <h1 className='my-8 text-3xl text-center'>
           Account <span className='text-blue-700'>Login</span>
         </h1>
-        <form className='px-8 pt-6 pb-8 mx-2 mb-4 bg-white rounded shadow-lg sm:mx-auto sm:w-3/4'>
+        <form className='px-8 pt-6 pb-8 mx-2 mb-4 bg-white rounded shadow-lg dark:bg-gray-600 sm:mx-auto sm:w-3/4'>
           <div className='mb-4'>
             <label
               htmlFor='email'
@@ -50,7 +50,7 @@ export default function Login(props) {
               Email Address
             </label>
             <input
-              className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline'
+              className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
               type='email'
               name='email'
               placeholder='Email'
@@ -65,7 +65,7 @@ export default function Login(props) {
               Password
             </label>
             <input
-              className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline'
+              className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
               type='password'
               name='password'
               placeholder='Password'
@@ -76,13 +76,7 @@ export default function Login(props) {
 
           <div className='flex items-center justify-between'>
             <button
-              className='w-2/4 px-4 py-2 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline'
-              type='button'
-              onClick={createUser}>
-              Register
-            </button>
-            <button
-              className='w-2/4 px-4 py-2 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline'
+              className='w-2/4 px-4 py-2 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-100 dark:hover:bg-yellow-700'
               type='button'
               onClick={login}>
               Login

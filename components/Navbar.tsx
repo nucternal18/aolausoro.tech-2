@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect, FC } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
-import { FiLogOut } from 'react-icons/fi';
+import { FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
+import { useTheme } from 'next-themes';
 import { firebaseClient } from '../firebase/firebaseClient';
 import { useRouter } from 'next/router';
 import { links, social } from '../data';
@@ -22,8 +23,8 @@ type NavLinkProps = {
 
 const Navbar = () => {
   firebaseClient();
-
-  const { user, error, logoutHandler } = useAuth();
+  const { theme, setTheme } = useTheme();
+  const { user, logoutHandler } = useAuth();
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -38,9 +39,9 @@ const Navbar = () => {
   };
 
   return (
-    <Nav bgColor='bg-black'>
+    <Nav bgColor='bg-white dark:bg-gray-900'>
       <Nav.Toggler toggle={toggle} isOpen={isOpen} />
-      <Nav.Container textColor='text-yellow-500'>
+      <Nav.Container textColor='dark:text-yellow-500'>
         <Nav.NavLinks left>
           {links.map((link) => {
             const { id, url, text } = link;
@@ -68,6 +69,18 @@ const Navbar = () => {
           )}
         </Nav.NavLinks>
         <Nav.NavLinks right>
+          <Nav.Item>
+            <button
+              type='button'
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className='flex p-1 ml-4 font-medium list-none border-2 border-current rounded-full cursor-pointer md:block lg:ml-0 lg:mb-0 lg:p-1 lg:px-1 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent'>
+              {theme === 'light' ? (
+                <FiSun className='text-lg font-bold ' />
+              ) : (
+                <FiMoon className='font-semibold ' />
+              )}
+            </button>
+          </Nav.Item>
           {social.map((link) => {
             const { id, url, icon } = link;
             return (
@@ -96,21 +109,25 @@ const Navbar = () => {
             </Nav.Item>
           );
         })}
-        {social.map((link) => {
-          const { id, url, icon } = link;
-          return (
-            <Nav.Item key={id}>
-              <Nav.Link href={url}>{icon}</Nav.Link>
+        <div className='flex flex-row'>
+          {social.map((link) => {
+            const { id, url, icon } = link;
+            return (
+              <Nav.Item key={id}>
+                <Nav.Link href={url}>{icon}</Nav.Link>
+              </Nav.Item>
+            );
+          })}
+          {user ? (
+            <Nav.Item>{user.displayName}</Nav.Item>
+          ) : (
+            <Nav.Item>
+              <Nav.Link href='/login'>
+                <FaUser />
+              </Nav.Link>
             </Nav.Item>
-          );
-        })}
-        {user ? (
-          <Nav.Item>{user.displayName}</Nav.Item>
-        ) : (
-          <Nav.Link href='/login'>
-            <FaUser />
-          </Nav.Link>
-        )}
+          )}
+        </div>
       </Nav.SideNav>
     </Nav>
   );
@@ -118,11 +135,11 @@ const Navbar = () => {
 
 /* Navbar logic */
 const Nav = ({ bgColor, children }) => (
-  <nav className={`${bgColor} md:p-2`}>{children}</nav>
+  <nav className={`${bgColor} md:px-6 md:py-1`}>{children}</nav>
 );
 Nav.Container = ({ children, textColor }) => (
   <div
-    className={` ${textColor} container mx-auto font-semibold md:relative md:flex  md:items-center shadow py-1 px-4 sm:px-1 md:px-0 md:flex-row md:justify-between z-0 md:z-50`}>
+    className={` ${textColor} container mx-auto font-semibold md:relative md:flex  md:items-center py-1 px-4 sm:px-1 md:px-0 md:flex-row md:justify-between z-0 md:z-50`}>
     {children}
   </div>
 );
@@ -135,14 +152,14 @@ Nav.Brand = ({ children, href }) => (
   </Link>
 );
 Nav.Toggler = ({ toggle, isOpen }) => (
-  <div className='text-orange-500 '>
+  <div className='text-current '>
     <button
       type='button'
       aria-expanded='false'
       aria-disabled={isOpen}
       disabled={isOpen}
       aria-label='Toggle navigation'
-      className='relative z-50 items-center block float-right py-5 mr-4 text-4xl md:hidden focus:outline-none focus:shadow-none'
+      className='relative z-50 items-center block float-right py-5 mr-4 text-4xl text-current md:hidden focus:outline-none focus:shadow-none dark:text-yellow-500'
       onClick={toggle}>
       <span className='z-50'>&#8801;</span>
     </button>
@@ -150,6 +167,7 @@ Nav.Toggler = ({ toggle, isOpen }) => (
 );
 Nav.SideNav = ({ isOpen, toggle, children }) => {
   const ref = useRef(null);
+  const { theme, setTheme } = useTheme();
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (!ref.current?.contains(event.target)) {
@@ -168,13 +186,25 @@ Nav.SideNav = ({ isOpen, toggle, children }) => {
           : `${className.default} ${className.disabled}`
       }
       ref={ref}>
-      <button
-        aria-label='Close'
-        className='absolute z-50 mb-8 text-3xl cursor-pointer top-1 focus:outline-none right-3'
-        onClick={toggle}>
-        &times;
-      </button>
-      <div className='mt-20'>{children}</div>
+      <div className='flex flex-row '>
+        <button
+          type='button'
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          className='absolute p-1 ml-4 font-medium list-none border-2 rounded-full cursor-pointer dark:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none'>
+          {theme === 'light' ? (
+            <FiSun className='font-semibold text-white' />
+          ) : (
+            <FiMoon className='font-semibold text-yellow-500' />
+          )}
+        </button>
+        <button
+          aria-label='Close'
+          className='absolute z-50 p-1 text-4xl cursor-pointer top-2 focus:outline-none right-3 focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none'
+          onClick={toggle}>
+          &times;
+        </button>
+      </div>
+      <div className='mt-12'>{children}</div>
     </aside>
   );
 };
@@ -189,22 +219,22 @@ Nav.NavLinks = ({ children, left, right, center }: NavLinkProps) => {
   return <ul className={className}>{children}</ul>;
 };
 Nav.Item = ({ children }) => (
-  <li className='flex md:block ml-4 mb-6 lg:ml-0 lg:mb-0 cursor-pointer py-1.5 lg:py-1 px-2 lg:px-1 text-lg font-medium list-none z-50'>
+  <li className='flex md:block   lg:ml-0 lg:mb-0 cursor-pointer py-1.5 lg:py-1 px-2 lg:px-1 text-lg font-medium list-none z-50'>
     {children}
   </li>
 );
 /* You can wrap the a tag with Link and pass href to Link if you are using either Create-React-App, Next.js or Gatsby */
 Nav.Link = ({ children, href }) => (
   <Link href={href}>
-    <a className='flex md:block ml-4 mb-6 lg:ml-0 lg:mb-0 cursor-pointer py-1.5 lg:py-1 px-2 lg:px-1 text-lg font-medium list-none z-50'>
+    <a className='flex md:block  mb-2 lg:ml-0 lg:mb-0 cursor-pointer py-1.5 lg:py-1 px-2 lg:px-1 text-lg font-medium list-none z-50'>
       {children}
     </a>
   </Link>
 );
 
 const className = {
-  default: `lg:hidden flex h-screen fixed top-0 right-0 transition-all ease duration-200 text-orange-500`,
-  enabled: `w-7/12 md:w-60 bg-black  overflow-x-hidden opacity-75  text-xl p-4 z-50`,
+  default: `lg:hidden flex h-screen fixed top-0 right-0 transition-all ease duration-200 text-white dark:text-yellow-500`,
+  enabled: `w-7/12 md:w-60 bg-black  overflow-x-hidden opacity-75  text-xl px-1 py-4 z-50`,
   disabled: `w-0  bg-gray-800 text-white overflow-x-hidden`,
 };
 

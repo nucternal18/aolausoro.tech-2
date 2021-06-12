@@ -6,7 +6,7 @@ const Card = ({ children, className }) => (
   </div>
 );
 const CardBody = ({ children }) => (
-  <div className='flex-grow flex-shrink block p-5 border-t border-gray-100 h-3/5'>
+  <div className='flex-grow flex-shrink block p-5 h-3/5'>
     {children}
   </div>
 );

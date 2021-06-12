@@ -3,7 +3,7 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
-  darkMode: false,
+  darkMode: 'class',
   purge: {
     layers: ['utilities'],
     content: [
@@ -12,8 +12,13 @@ module.exports = {
     ],
   },
   theme: {
+    typography: (theme) => ({}),
     extend: {},
   },
-  variants: {},
-  plugins: [],
+  variants: {
+    extend: {
+      textOpacity: ['dark'],
+    },
+  },
+  plugins: [require('@tailwindcss/typography')],
 };
