@@ -9,11 +9,11 @@ const url =
 
 export default function Home() {
   return (
-    <Layout title='aolausoro.tech - home'>
+    <Layout title='aolausoro.tech - home' color='text-white'>
       <Head>
         <title>aolausoro.tech - home</title>
       </Head>
-      <main className='z-50 mx-auto'>
+      <main className='z-50 mx-auto text-white'>
         <div className={styles.home}>
           <Image src={url} layout='fill' objectFit='cover' quality={100} />
         </div>
@@ -26,9 +26,12 @@ export default function Home() {
           }}
           className='relative '>
           <div className='z-50 mx-auto text-center border-b-2 border-yellow-500 border-opacity-100'>
-            <h1 className='z-50 w-full text-3xl font-semibold text-white sm:text-3xl md:text-4xl '>
+            <h1 className='z-50 w-full mb-1 text-3xl font-semibold text-white sm:text-3xl md:text-4xl '>
               Hi, I'm Woyin
             </h1>
+            {/* <h2 className='text-3xl font-semibold text-white sm:text-3xl md:text-3xl'>
+              Software Developer
+            </h2> */}
           </div>
           <h1 className='z-50 mt-2 text-3xl font-semibold text-center text-white md:text-4xl'>
             Welcome to My Portfolio

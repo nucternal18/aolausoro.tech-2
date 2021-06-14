@@ -10,8 +10,8 @@ import { links, social } from '../data';
 // context
 import { useAuth } from '../auth';
 
-type Props = {
-  session: { uid: string; email: string };
+type NavProps = {
+  textColor?: string;
 };
 
 type NavLinkProps = {
@@ -21,7 +21,7 @@ type NavLinkProps = {
   center?: any;
 };
 
-const Navbar = () => {
+const Navbar = ({textColor}: NavProps) => {
   firebaseClient();
   const { theme, setTheme } = useTheme();
   const { user, logoutHandler } = useAuth();
@@ -40,8 +40,8 @@ const Navbar = () => {
 
   return (
     <Nav bgColor='bg-white dark:bg-gray-900'>
-      <Nav.Toggler toggle={toggle} isOpen={isOpen} />
-      <Nav.Container textColor='dark:text-yellow-500'>
+      <Nav.Toggler toggle={toggle} isOpen={isOpen} color={textColor} />
+      <Nav.Container textColor={`${textColor} dark:text-yellow-500`}>
         <Nav.NavLinks left>
           {links.map((link) => {
             const { id, url, text } = link;
@@ -151,7 +151,7 @@ Nav.Brand = ({ children, href }) => (
     </a>
   </Link>
 );
-Nav.Toggler = ({ toggle, isOpen }) => (
+Nav.Toggler = ({ toggle, isOpen, color }) => (
   <div className='text-current '>
     <button
       type='button'
@@ -159,7 +159,7 @@ Nav.Toggler = ({ toggle, isOpen }) => (
       aria-disabled={isOpen}
       disabled={isOpen}
       aria-label='Toggle navigation'
-      className='relative z-50 items-center block float-right py-5 mr-4 text-4xl text-current md:hidden focus:outline-none focus:shadow-none dark:text-yellow-500'
+      className={`relative z-50 items-center block float-right py-5 mr-4 text-4xl text-current md:hidden focus:outline-none focus:shadow-none ${color} dark:text-yellow-500`}
       onClick={toggle}>
       <span className='z-50'>&#8801;</span>
     </button>

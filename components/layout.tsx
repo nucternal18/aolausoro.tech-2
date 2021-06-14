@@ -5,9 +5,10 @@ import Footer from './Footer';
 type LayoutProps = {
   children: React.ReactNode;
   title: string;
+  color?: string;
 };
 
-export const Layout = ({ children, title }: LayoutProps) => {
+export const Layout = ({ children, title, color }: LayoutProps) => {
   return (
     <div className='flex flex-col justify-between h-screen'>
       <Head>
@@ -16,7 +17,7 @@ export const Layout = ({ children, title }: LayoutProps) => {
         <meta name='og:title' content={title} />
         <meta name='twitter:card' content='summary_large_image' />
       </Head>
-      <Navbar />
+      <Navbar textColor={color}/>
 
       <main className='container z-0 flex w-full px-1 pt-1 mx-auto md:px-0 md:max-w-4xl'>
         {children}
