@@ -20,7 +20,7 @@ type NavLinkProps = {
   center?: any;
 };
 
-const Navbar = ({textColor}: NavProps) => {
+const Navbar = ({ textColor }: NavProps) => {
   firebaseClient();
   const { theme, setTheme } = useTheme();
   const { user, logoutHandler } = useAuth();
@@ -105,7 +105,7 @@ const Navbar = ({textColor}: NavProps) => {
             </Nav.Item>
           );
         })}
-        <div className='flex flex-row'>
+        <div className='flex flex-row mt-4'>
           {social.map((link) => {
             const { id, url, icon } = link;
             return (
@@ -114,9 +114,7 @@ const Navbar = ({textColor}: NavProps) => {
               </Nav.Item>
             );
           })}
-          {user ? (
-            <Nav.Item>{user.displayName}</Nav.Item>
-          ) : (
+          {!user && (
             <Nav.Item>
               <Nav.Link href='/login'>
                 <FaUser />
@@ -124,6 +122,7 @@ const Navbar = ({textColor}: NavProps) => {
             </Nav.Item>
           )}
         </div>
+        {user && <Nav.Item>{user.displayName}</Nav.Item>}
       </Nav.SideNav>
     </Nav>
   );
@@ -155,7 +154,7 @@ Nav.Toggler = ({ toggle, isOpen, color }) => (
       aria-disabled={isOpen}
       disabled={isOpen}
       aria-label='Toggle navigation'
-      className={`relative z-50 items-center block float-right py-5 mr-4 text-4xl text-current md:hidden focus:outline-none focus:shadow-none ${color} dark:text-yellow-500`}
+      className={`relative z-50 items-center block float-right py-5 mr-4 text-4xl text-current lg:hidden focus:outline-none focus:shadow-none ${color} dark:text-yellow-500`}
       onClick={toggle}>
       <span className='z-50'>&#8801;</span>
     </button>
@@ -182,11 +181,11 @@ Nav.SideNav = ({ isOpen, toggle, children }) => {
           : `${className.default} ${className.disabled}`
       }
       ref={ref}>
-      <div className='flex flex-row '>
+      <div className='flex flex-row justify-center px-1'>
         <button
           type='button'
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className='absolute p-1 ml-4 font-medium list-none border-2 rounded-full cursor-pointer dark:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none'>
+          className='absolute p-1 mt-2 ml-24 font-medium list-none border-2 rounded-full cursor-pointer dark:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none'>
           {theme === 'light' ? (
             <FiSun className='font-semibold text-white' />
           ) : (
@@ -200,7 +199,7 @@ Nav.SideNav = ({ isOpen, toggle, children }) => {
           &times;
         </button>
       </div>
-      <div className='mt-12'>{children}</div>
+      <div className='mt-20'>{children}</div>
     </aside>
   );
 };
@@ -215,14 +214,14 @@ Nav.NavLinks = ({ children, left, right, center }: NavLinkProps) => {
   return <ul className={className}>{children}</ul>;
 };
 Nav.Item = ({ children }) => (
-  <li className='flex md:block   lg:ml-0 lg:mb-0 cursor-pointer py-1.5 lg:py-1 px-2 lg:px-1 text-lg font-medium list-none z-50'>
+  <li className='z-50 flex px-2 py-2 mb-2 text-lg font-medium list-none cursor-pointer sm:block lg:ml-0 lg:mb-0 lg:py-1 lg:px-1'>
     {children}
   </li>
 );
 /* You can wrap the a tag with Link and pass href to Link if you are using either Create-React-App, Next.js or Gatsby */
 Nav.Link = ({ children, href }) => (
   <Link href={href}>
-    <a className='flex md:block  mb-2 lg:ml-0 lg:mb-0 cursor-pointer py-1.5 lg:py-1 px-2 lg:px-1 text-lg font-medium list-none z-50'>
+    <a className='flex sm:block  mb-2 lg:ml-0 lg:mb-0 cursor-pointer py-1.5 lg:py-1 px-2 lg:px-1 text-lg font-medium list-none z-50'>
       {children}
     </a>
   </Link>
@@ -230,7 +229,7 @@ Nav.Link = ({ children, href }) => (
 
 const className = {
   default: `lg:hidden flex h-screen fixed top-0 right-0 transition-all ease duration-200 text-white dark:text-yellow-500`,
-  enabled: `w-7/12 md:w-60 bg-black  overflow-x-hidden opacity-75  text-xl px-1 py-4 z-50`,
+  enabled: `w-8/12 md:w-60 bg-black  overflow-x-hidden opacity-75  text-xl px-1 py-4 z-50`,
   disabled: `w-0  bg-gray-800 text-white overflow-x-hidden`,
 };
 

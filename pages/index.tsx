@@ -26,7 +26,7 @@ export default function Home() {
           initial='hidden'
           animate='visible'
           variants={variants}
-          transition={{ duration: 3.0 }}
+          transition={{ duration: 5.0 }}
           drag
           dragTransition={{
             min: 0,

@@ -27,7 +27,7 @@ const Portfolio = (props) => {
 
   return (
     <Layout title='aolausoro.tech - Portfolio'>
-      <section className='flex-grow mx-auto mb-4 container-2xl'>
+      <section className='mx-auto mb-4'>
         <h1 className='my-4 text-2xl font-bold text-center text-black dark:text-gray-100'>
           PORTFOLIO
         </h1>
@@ -36,19 +36,18 @@ const Portfolio = (props) => {
           Some of my projects
         </h2>
 
-        <div className='grid grid-cols-1 gap-4 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0'>
+        <div className='grid grid-cols-1 gap-3 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:px-0'>
           {props &&
             props.data.map((doc) => {
-
-              return(
+              return (
                 <Card key={doc.id} className=''>
                   <div>
                     <Image
                       src={doc.data.url}
                       alt='project'
                       layout='intrinsic'
-                      width={405}
-                      height={250}
+                      width={500}
+                      height={350}
                       quality={100}
                       className='overflow-hidden'
                     />
@@ -70,7 +69,7 @@ const Portfolio = (props) => {
                     </div>
                   </CardBody>
                 </Card>
-              )
+              );
             })}
         </div>
         <div className='text-center'>
