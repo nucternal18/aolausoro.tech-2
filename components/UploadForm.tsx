@@ -3,7 +3,7 @@ import { FaPlusCircle } from 'react-icons/fa';
 import Notification from './notification/notification';
 import { projectFirestore, timestamp } from '../lib/firebaseClient';
 
-const UploadForm = ({ uid }) => {
+const UploadForm = () => {
   const [error, setError] = useState<any>(null);
   const [url, setUrl] = useState<string>('');
   const [projectName, setProjectName] = useState<string>('');
