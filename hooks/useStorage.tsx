@@ -3,7 +3,7 @@ import {
   projectStorage,
   projectFirestore,
   timestamp,
-} from '../firebase/firebaseClient';
+} from '../lib/firebaseClient';
 
 const useStorage = (file) => {
   const [progress, setProgress] = useState(0);

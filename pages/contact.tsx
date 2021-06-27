@@ -9,8 +9,8 @@ const contact = () => {
       <Head>
         <title>aolausoro.tech - contact</title>
       </Head>
-      <section className='w-screen'>
-        <div className='flex-grow w-full mx-auto -m-1 contact'>
+      <section className='flex items-center justify-center flex-grow mx-auto'>
+        <div className='w-full md:w-2/4'>
           <ContactForm />
         </div>
       </section>

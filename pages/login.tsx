@@ -3,14 +3,13 @@ import { useRouter } from 'next/router';
 
 import { Layout } from '../components/layout';
 // context
-import { useAuth } from '../auth';
-import Head from 'next/head';
+import { useAuth } from '../context/authContext';
 
 export default function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { user, error, loginHandler, createAccount } = useAuth();
+  const { user, error, loginHandler } = useAuth();
 
   const router = useRouter();
 
@@ -30,29 +29,25 @@ export default function Login(props) {
   // };
 
   if (user) {
-    return router.push('/admin');
+    router.push('/admin');
   }
 
   return (
     <Layout title='aolausoro.tech - login'>
-      <Head>
-        <title>aolausoro.tech - login</title>
-      </Head>
-      <section className='container flex-grow h-full mx-auto mb-4'>
-        <h1 className='my-8 text-3xl text-center'>
+      <section className='container mx-auto mb-4 md:flex-grow'>
+        <h1 className='my-8 text-3xl text-center dark:text-gray-400'>
           Account <span className='text-blue-700'>Login</span>
         </h1>
-        <form className='px-8 pt-6 pb-8 mx-2 mb-4 bg-white rounded shadow-lg dark:bg-gray-600 sm:mx-auto sm:w-3/4'>
+        <form className='px-8 pt-6 pb-8 mx-2 mb-4 bg-white rounded shadow-lg dark:bg-gray-600 sm:mx-auto sm:w-2/4'>
           <div className='mb-4'>
             <label
               htmlFor='email'
-              className='block mb-2 text-base font-bold text-gray-700'>
-              Email Address
-            </label>
+              className='block mb-2 text-base font-bold text-gray-700' />
+
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
               type='email'
-              name='email'
+              id='email'
               placeholder='Email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -61,13 +56,11 @@ export default function Login(props) {
           <div className='mb-8'>
             <label
               className='block mb-2 text-base font-bold text-gray-700'
-              htmlFor='password'>
-              Password
-            </label>
+              htmlFor='password' />
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
               type='password'
-              name='password'
+              id='password'
               placeholder='Password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}

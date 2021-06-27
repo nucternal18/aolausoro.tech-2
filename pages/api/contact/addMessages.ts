@@ -1,35 +1,55 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { projectFirestore, timestamp } from '../../../firebase/firebaseClient';
+import { projectFirestore, timestamp } from '../../../lib/firebaseClient';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const Message = {
-        name: req.body.name,
-        email: req.body.email,
-        subject: req.body.subject,
-        message: req.body.message,
-        createdAt: timestamp(),
-    };
+    if (req.method == "POST") {
 
-    try {
-        const setMessages = await projectFirestore.collection("messages").add(Message);
-        const messages = await setMessages.get();
-        return res.status(200).json({
-            success: true,
-            id: setMessages.id,
-            data: messages.data(),
-        });
-    } catch (err) {
-        if (err.name === "ValidationError") {
-            const messages = Object.values(err.errors).map((val) => val);
+        const { name, email, subject, message } = req.body;
+        if (
+            !email ||
+            !email.includes("@") ||
+            !name || name.trim() === '' ||
+            !subject ||
+            subject.trim() === '' ||
+            !message ||
+            message.trim() === ''
+        ) {
+            res.status(422).json({ message: "Invalid input" })
+        }
+        const Message = {
+            name: name,
+            email: email,
+            subject: subject,
+            message: message,
+            createdAt: timestamp(),
+        };
 
-            return res.status(400).json({
+        try {
+            const setMessages = await projectFirestore.collection("messages").add(Message);
+            const messages = await setMessages.get();
+            return res.status(200).json({
+                success: true,
+                id: setMessages.id,
+                data: messages.data(),
+            });
+        } catch (err) {
+            if (err.name === "ValidationError") {
+                const messages = Object.values(err.errors).map((val) => val);
+
+                res.status(400).json({
+                    success: false,
+                    error: messages,
+                });
+            }
+            res.status(500).json({
                 success: false,
-                error: messages,
+                error: "Server Error",
             });
         }
-        return res.status(500).json({
+    } else {
+        return res.status(405).json({
             success: false,
-            error: "Server Error",
+            error: "Server Error. Invalid Request",
         });
     }
- }
+}

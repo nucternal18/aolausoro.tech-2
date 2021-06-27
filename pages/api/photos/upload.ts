@@ -9,16 +9,23 @@ cloudinary.config({
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(process.env.CLOUDINARY_API_KEY);
-  try {
-    const fileStr = req.body.data;
-    const uploadedResponse = await cloudinary.uploader.upload(fileStr, {
-      upload_preset: 'aolausoro_portfolio',
+  if (req.method == "POST") {
+
+    try {
+      const fileStr = req.body.data;
+      const uploadedResponse = await cloudinary.uploader.upload(fileStr, {
+        upload_preset: 'aolausoro_portfolio',
+      });
+      res.status(201).json(uploadedResponse);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ err: 'Something went wrong uploading image' });
+    }
+  } else {
+    return res.status(500).json({
+      success: false,
+      error: "Server Error. Invalid Request",
     });
-    res.status(201).json(uploadedResponse);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ err: 'Something went wrong uploading image' });
   }
 };
 

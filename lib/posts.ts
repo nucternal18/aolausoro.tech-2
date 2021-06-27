@@ -1,12 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import remark from 'remark';
-import html from 'remark-html';
+import { POSTS_PER_PAGE } from '../config';
 
-const postsDirectory = path.join(process.cwd(), 'pages/blog/blogs');
+const postsDirectory = path.join(process.cwd(), '/blogs');
 
-export async function getSortedPostsData() {
+export async function getSortedPostsData(page) {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory);
 
@@ -16,23 +15,29 @@ export async function getSortedPostsData() {
 
     // Read markdown file as string
     const fullPath = path.join(postsDirectory, fileName);
-    const fileContents = await fs.readFileSync(fullPath, 'utf8');
+    const fileContents = await fs.readFileSync(fullPath, 'utf-8');
 
     // Use gray-matter to parse the post metadata section
-    const matterResult = matter(fileContents);
+    const { data, content } = matter(fileContents);
 
     // Combine the data with the id
     return {
       id,
-      ...matterResult.data,
+      contentHtml: content,
+      ...data,
     };
   }));
+
+  const numPages = Math.ceil(fileNames.length / POSTS_PER_PAGE);
+  const pageIndex = page - 1
+  const orderedPost = allPostsData.slice(pageIndex * POSTS_PER_PAGE, (pageIndex + 1) * POSTS_PER_PAGE)
   // Sort posts by date
-  return allPostsData;
+  return { orderedPost, numPages }
 }
 // .sort((a, b) => a.date < b.date ? 1 : -1)
 export function getAllPostIds() {
   const fileNames = fs.readdirSync(postsDirectory);
+
 
   // Returns an array that looks like this:
   // [
@@ -58,21 +63,15 @@ export function getAllPostIds() {
 
 export async function getPostData(id) {
   const fullPath = path.join(postsDirectory, `${id}.md`);
-  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  const fileContents = fs.readFileSync(fullPath, 'utf-8');
 
   // Use gray-matter to parse the post metadata section
   const matterResult = matter(fileContents);
 
-  // Use remark to convert markdown into HTML string
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content)
-  const contentHtml = processedContent.toString()
-
   // Combine the data with the id
   return {
     id,
-    contentHtml,
+    contentHtml: matterResult.content,
     ...matterResult.data,
   };
 }

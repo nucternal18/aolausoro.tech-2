@@ -36,6 +36,10 @@ jobs:
            echo CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} >> .env.local
            echo CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} >> .env.local
            echo NEXT_TELEMETRY_DISABLED=${{ secrets.NEXT_TELEMETRY_DISABLED }} >> .env.local
+           echo PRIVATE_KEY=${{ secrets.PRIVATE_KEY }} >> .env.local
+           echo CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }} >> .env.local
+           echo PROJECT_ID=${{ secrets.PROJECT_ID }} >> .env.local
+           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env.local
            cat .env.local
     - name: Cache multiple paths
       uses: actions/cache@v2

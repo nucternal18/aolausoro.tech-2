@@ -1,14 +1,17 @@
 import { AppProps } from 'next/app';
-import { AuthProvider } from '../auth';
+import { AuthProvider } from '../context/authContext';
 import 'tailwindcss/tailwind.css';
 import { ThemeProvider } from 'next-themes';
+import NotificationContextProvider from '../context/notificationContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute='class'>
-      <AuthProvider>
-        <Component {...pageProps} />
-      </AuthProvider>
+      <NotificationContextProvider>
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
+      </NotificationContextProvider>
     </ThemeProvider>
   );
 }

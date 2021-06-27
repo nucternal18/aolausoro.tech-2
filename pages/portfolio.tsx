@@ -1,24 +1,32 @@
-import Head from 'next/head';
-import React from 'react';
 import Image from 'next/image';
 import { FaGithub } from 'react-icons/fa';
 import { Layout } from '../components/layout';
-import useFirestore from '../hooks/useFireStore';
 import {
   Card,
   CardBody,
   CardTitle,
   CardText,
-  ArrowIcon,
 } from '../components/Card';
+import {server} from '../config'
 
-const Portfolio = () => {
-  const { docs } = useFirestore('projects');
+// type Data = {
+//   id: string;
+//   data: {
+//     address: string;
+//     url: string;
+//     github: string;
+//     createdAt: {
+//       seconds: number
+//       nanoseconds: number
+//     };
+//     projectName: string;
+//   }
+//  }[]
+
+const Portfolio = (props) => {
+
   return (
     <Layout title='aolausoro.tech - Portfolio'>
-      <Head>
-        <title>aolausoro.tech - Portfolio</title>
-      </Head>
       <section className='flex-grow mx-auto mb-4 container-2xl'>
         <h1 className='my-4 text-2xl font-bold text-center text-black dark:text-gray-100'>
           PORTFOLIO
@@ -29,37 +37,41 @@ const Portfolio = () => {
         </h2>
 
         <div className='grid grid-cols-1 gap-4 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0'>
-          {docs &&
-            docs.map((doc) => (
-              <Card key={doc.id} className=''>
-                <div>
-                  <Image
-                    src={doc.url}
-                    alt='project'
-                    layout='intrinsic'
-                    width={400}
-                    height={250}
-                    quality={100}
-                  />
-                </div>
-                <CardBody>
-                  <div className='flex items-center justify-between'>
-                    <a href={doc.address}>
-                      <CardTitle className='text-md'>
-                        <span className='code'>&lt;</span>
-                        {doc.projectName}
-                        <span className='code'>&#47;&gt;</span>
-                      </CardTitle>
-                    </a>
-                    <a href={doc.github}>
-                      <CardText>
-                        <FaGithub />
-                      </CardText>
-                    </a>
+          {props &&
+            props.data.map((doc) => {
+
+              return(
+                <Card key={doc.id} className=''>
+                  <div>
+                    <Image
+                      src={doc.data.url}
+                      alt='project'
+                      layout='intrinsic'
+                      width={405}
+                      height={250}
+                      quality={100}
+                      className='overflow-hidden'
+                    />
                   </div>
-                </CardBody>
-              </Card>
-            ))}
+                  <CardBody>
+                    <div className='flex items-center justify-between'>
+                      <a href={doc.data.address}>
+                        <CardTitle className='text-md'>
+                          <span className='code'>&lt;</span>
+                          {doc.data.projectName}
+                          <span className='code'>&#47;&gt;</span>
+                        </CardTitle>
+                      </a>
+                      <a href={doc.data.github}>
+                        <CardText>
+                          <FaGithub />
+                        </CardText>
+                      </a>
+                    </div>
+                  </CardBody>
+                </Card>
+              )
+            })}
         </div>
         <div className='text-center'>
           <a
@@ -73,5 +85,22 @@ const Portfolio = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps = async () => {
+  const project = await fetch(`${server}/api/projects/getProjects`)
+  const data = await project.json();
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      data: data.data,
+    },
+  }
+}
 
 export default Portfolio;

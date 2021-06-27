@@ -10,9 +10,10 @@ class MyDocument extends Document {
     return (
       <Html lang='en'>
         <Head />
-        <body className='box-border w-full min-h-screen p-0 m-0 bg-white dark:bg-gray-900'>
+        <body className='flex flex-col min-h-screen p-0 m-0 overflow-x-hidden overflow-y-auto text-gray-800 bg-white dark:bg-gray-900'>
           <Main />
           <NextScript />
+          <div id='notifications'></div>
         </body>
       </Html>
     );

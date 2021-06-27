@@ -3,12 +3,11 @@ import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
 import { FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
 import { useTheme } from 'next-themes';
-import { firebaseClient } from '../firebase/firebaseClient';
-import { useRouter } from 'next/router';
+import { firebaseClient } from '../lib/firebaseClient';
 import { links, social } from '../data';
 
 // context
-import { useAuth } from '../auth';
+import { useAuth } from '../context/authContext';
 
 type NavProps = {
   textColor?: string;
@@ -25,8 +24,6 @@ const Navbar = ({textColor}: NavProps) => {
   firebaseClient();
   const { theme, setTheme } = useTheme();
   const { user, logoutHandler } = useAuth();
-
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -35,7 +32,6 @@ const Navbar = ({textColor}: NavProps) => {
 
   const logout = () => {
     logoutHandler();
-    router.push('/');
   };
 
   return (
