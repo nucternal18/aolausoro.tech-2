@@ -1,13 +1,16 @@
 import Image from 'next/image';
 import { FaGithub } from 'react-icons/fa';
+// import { useQuery } from 'react-query';
+
+// Components
 import { Layout } from '../components/layout';
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardText,
-} from '../components/Card';
-import {server} from '../config'
+import { Card, CardBody, CardTitle } from '../components/Card';
+
+// Server address
+import { server } from '../config';
+// import { GithubRepoCard } from '../components/GithubRepoCard';
+// import Spinner from '../components/Spinner';
+import Link from 'next/link';
 
 // type Data = {
 //   id: string;
@@ -23,20 +26,34 @@ import {server} from '../config'
 //   }
 //  }[]
 
+// const fetcher = () =>
+//   fetch(
+//     'https://api.github.com/search/repositories?q=user:nucternal18+sort:author-date-asc'
+//   ).then((res) => res.json());
+
 const Portfolio = (props) => {
+  // const { isLoading, data } = useQuery('github-profile', fetcher);
 
   return (
     <Layout title='aolausoro.tech - Portfolio'>
-      <section className='mx-auto mb-4'>
-        <h1 className='my-4 text-2xl font-bold text-center text-black dark:text-gray-100'>
-          PORTFOLIO
-        </h1>
+      <section className='max-w-screen-lg mx-auto mb-4'>
+        <div className='flex items-center justify-between mb-6 border-b-2 border-gray-200'>
+          <h1 className='my-4 text-5xl font-thin text-center text-black dark:text-gray-100'>
+            PORTFOLIO
+          </h1>
+          <Link href='https://github.com/nucternal18?tab=repositories'>
+            <a className='px-4 py-2 font-semibold text-gray-700 bg-transparent border border-gray-500 rounded hover:text-white dark:text-yellow-500 dark:border-yellow-500 hover:bg-gray-500 dark:hover:bg-yellow-500 dark:hover:text-white hover:border-transparent'>
+              View GitHub
+              <i className='mx-2 fas fa-chevron-right' />
+            </a>
+          </Link>
+        </div>
 
-        <h2 className='text-center text-black dark:text-gray-100'>
+        <h2 className='text-2xl text-center text-black dark:text-gray-100'>
           Some of my projects
         </h2>
 
-        <div className='grid grid-cols-1 gap-3 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:px-0'>
+        <div className='grid grid-cols-1 gap-3 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0'>
           {props &&
             props.data.map((doc) => {
               return (
@@ -53,19 +70,46 @@ const Portfolio = (props) => {
                     />
                   </div>
                   <CardBody>
-                    <div className='flex items-center justify-between'>
-                      <a href={doc.data.address}>
-                        <CardTitle className='text-md'>
-                          <span className='code'>&lt;</span>
+                    <div>
+                      <div className='mb-2'>
+                        <CardTitle className='my-2 text-xl text-center'>
                           {doc.data.projectName}
-                          <span className='code'>&#47;&gt;</span>
                         </CardTitle>
-                      </a>
-                      <a href={doc.data.github}>
-                        <CardText>
-                          <FaGithub />
-                        </CardText>
-                      </a>
+                        <div className='w-1/4 mx-auto border-b-2 border-yellow-400'></div>
+                      </div>
+                      <div className='w-full mb-2'>
+                        <p className='text-sm text-center'>
+                          {doc.data?.description}
+                        </p>
+                      </div>
+                      <div className='flex flex-col items-center justify-between py-2'>
+                        <div className='w-full mb-2'>
+                          <h1 className='mb-2 text-center'>Tech Stack</h1>
+                          <div className='w-1/4 mx-auto border-b-2 border-yellow-400'></div>
+                        </div>
+                        <div className='flex items-center justify-between'>
+                          {doc.data.techStack?.map((tech, idx) => (
+                            <div
+                              key={idx}
+                              className='mr-2 text-sm text-gray-400'>
+                              {tech}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className='flex items-center justify-between my-2'>
+                        <a
+                          href={doc.data.address}
+                          className='px-2 py-1 text-gray-200 bg-gray-400 rounded-full'>
+                          Live Preview
+                        </a>
+                        <a
+                          href={doc.data.github}
+                          className='flex items-center px-2 py-1 text-gray-200 bg-gray-400 rounded-full'>
+                          <FaGithub className='mr-1' />
+                          <span>Source Code</span>
+                        </a>
+                      </div>
                     </div>
                   </CardBody>
                 </Card>
@@ -73,20 +117,25 @@ const Portfolio = (props) => {
             })}
         </div>
         <div className='text-center'>
-          <a
-            href='https://github.com/nucternal18?tab=repositories'
-            className='px-4 py-2 font-semibold text-blue-700 bg-transparent border border-blue-500 rounded dark:text-gray-100 dark:border-yellow-500 hover:bg-blue-500 dark:hover:bg-yellow-500 hover:text-white hover:border-transparent'>
-            Checkout my github page
-            <i className='mx-2 fas fa-chevron-right' />
-          </a>
+          {/* <div className='grid max-w-6xl grid-cols-1 gap-8 px-10 mx-auto md:grid-cols-2 lg:grid-cols-3 lg:mt-10 gap-y-20'>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              data.items
+                .splice(0, 6)
+                .map((latestRepo, idx) => (
+                  <GithubRepoCard latestRepo={latestRepo} key={idx} />
+                ))
+            )}
+          </div> */}
         </div>
       </section>
     </Layout>
   );
 };
 
-export const getServerSideProps = async () => {
-  const project = await fetch(`${server}/api/projects/getProjects`)
+export const getStaticProps = async () => {
+  const project = await fetch(`${server}/api/projects/getProjects`);
   const data = await project.json();
 
   if (!data) {
@@ -99,7 +148,7 @@ export const getServerSideProps = async () => {
     props: {
       data: data.data,
     },
-  }
-}
+  };
+};
 
 export default Portfolio;

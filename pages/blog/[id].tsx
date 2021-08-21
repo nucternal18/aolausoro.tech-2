@@ -27,10 +27,12 @@ export async function getStaticProps({ params }) {
 export default function Post({ postData }) {
   return (
     <Layout title={postData.title}>
-      <section className='flex-grow h-full text-black dark:text-gray-100'>
-        <Link href='/blog'>
-          <a className='my-4 text-2xl font-bold '>Go Back</a>
-        </Link>
+      <section className='flex-grow h-full max-w-screen-lg mx-auto text-black dark:text-gray-100'>
+        <button className='flex items-center justify-center px-4 py-1 font-medium text-center text-yellow-500 transition duration-200 ease-in border border-yellow-500 rounded shadow active:bg-yellow-500 active:text-white focus:outline-none'>
+          <Link href='/blog'>
+            <a className='text-2xl font-bold '>Go Back</a>
+          </Link>
+        </button>
         <div className='w-full px-10 py-6 mt-6 bg-gray-100 rounded-lg shadow-ld dark:shadow-lg dark:text-gray-800'>
           <div className='flex items-center justify-between mt-4'>
             <h1 className='text-5xl mb-7 '>{postData.title}</h1>

@@ -134,7 +134,7 @@ const Nav = ({ bgColor, children }) => (
 );
 Nav.Container = ({ children, textColor }) => (
   <div
-    className={` ${textColor} container mx-auto font-semibold md:relative md:flex  md:items-center py-1 px-4 sm:px-1 md:px-0 md:flex-row md:justify-between z-0 md:z-50`}>
+    className={` ${textColor} container mx-auto font-semibold md:relative md:flex  md:items-center py-1 px-4 sm:px-1 md:px-0 md:flex-row md:justify-between sm:max-w-screen-xl z-0 md:z-50`}>
     {children}
   </div>
 );

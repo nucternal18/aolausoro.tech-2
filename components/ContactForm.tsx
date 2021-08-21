@@ -1,5 +1,6 @@
 import React, { useState, useRef, FormEvent, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import Button from './Button';
 import Notification from './notification/notification';
 
 type newMessageProps = {
@@ -119,16 +120,12 @@ const ContactForm = () => {
   return (
     <section className='flex w-full mx-auto'>
       <form
-        className='w-full px-8 py-6 mx-3 mb-4 bg-white rounded shadow-md dark:bg-gray-600 md:mx-0'
+        className='w-full px-8 py-6 mx-3 mb-4 bg-white border border-gray-600 rounded dark:bg-gray-900 md:mx-0'
         onSubmit={sendMessage}>
-        <h2 className='mb-4 font-mono text-2xl tracking-tight text-center text-current dark:text-gray-100 md:text-4xl'>
-          Get in touch
-        </h2>
-        {error && <p>{error.message}</p>}
-        <div className='mb-4 text-current bg-transparent dark:text-black dark:bg-gray-100'>
-          <label className='block mb-2 text-sm font-bold ' htmlFor='name' />
+        <div className='mb-4 text-current bg-transparent dark:text-gray-700 dark:bg-gray-100'>
+          <label htmlFor='name' />
           <input
-            className='w-full px-3 py-2 leading-tight text-current text-black border rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
+            className='w-full px-3 py-2 leading-tight text-current border rounded appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
             onChange={(e) => setName(e.target.value)}
             type='text'
             id='name'
@@ -137,10 +134,10 @@ const ContactForm = () => {
             required
           />
         </div>
-        <div className='mb-4 text-black bg-transparent'>
-          <label className='block mb-2 text-sm font-bold ' htmlFor='email' />
+        <div className='mb-4 text-current bg-transparent dark:text-gray-700'>
+          <label htmlFor='email' />
           <input
-            className='w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
+            className='w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
             onChange={(e) => setEmail(e.target.value)}
             type='email'
             id='email'
@@ -148,10 +145,10 @@ const ContactForm = () => {
             value={email}
           />
         </div>
-        <div className='mb-4 text-black bg-transparent'>
-          <label className='block mb-2 text-sm font-bold ' htmlFor='subject' />
+        <div className='mb-4 text-current bg-transparent dark:text-gray-700'>
+          <label htmlFor='subject' />
           <input
-            className='w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
+            className='w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
             onChange={(e) => setSubject(e.target.value)}
             type='text'
             id='subject'
@@ -159,13 +156,10 @@ const ContactForm = () => {
             value={subject}
           />
         </div>
-        <div className='mb-4'>
-          <label
-            className='block mb-2 text-sm font-bold text-gray-700'
-            htmlFor='message'
-          />
+        <div className='mb-4 text-current bg-transparent dark:text-gray-700'>
+          <label htmlFor='message' />
           <textarea
-            className='w-full h-48 px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
+            className='w-full h-48 px-3 py-2 leading-tight text-gray-700 border rounded appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100'
             value={message}
             id='message'
             required
@@ -174,11 +168,10 @@ const ContactForm = () => {
             onChange={(e) => setMessage(e.target.value)}
           />
         </div>
-        <button
-          type='submit'
-          className='w-full px-4 py-2 font-bold text-blue-700 border-2 border-blue-700 rounded dark:border-transparent dark:bg-yellow-500 dark:text-gray-100 hover:bg-blue-700 dark:hover:bg-yellow-700 focus:outline-none focus:shadow-outline hover:text-white'>
+        <Button type='submit' color='yellow' className='w-full dark:text-white dark:bg-yellow-500'>
           Send
-        </button>
+        </Button>
+        {error && <p>{error.message}</p>}
         <ReCAPTCHA
           ref={recaptchaRef}
           size='invisible'

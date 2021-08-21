@@ -8,7 +8,7 @@ const url =
 const about = () => {
   return (
     <Layout title='aolausoro.tech - about'>
-      <section className='h-full px-2 md:-mt-56'>
+      <section className='h-full max-w-screen-lg px-2 pt-4 mx-auto '>
         <div className='flex items-center justify-between px-4 mb-4 text-gray-800 border-b-4 border-current dark:border-yellow-500 dark:text-gray-100'>
           <h1 className='text-3xl font-bold tracking-wider md:text-5xl'>
             About Me
@@ -30,21 +30,23 @@ const about = () => {
           <div className='col-span-2 leading-normal tracking-wider text-justify px-2font-light text-block sm:subpixel-antialiased md:antialiased'>
             <div className='text-lg font-semibold'>
               <p className='mb-2'>
-                I have always had a love for technology and computing. I took an
-                interest in software development after signing up for a BSC in
-                computing and IT. The first module required I had some skills in
-                python programming. My interest was piqued so I decided to take
-                a quick course in Python. I really enjoyed the course, so I got
-                stuck in and started learning to code alongside my degree. I
-                have cultivated a desire to build things, know how it works with
-                the added bonus of starting a fulfilling and challenging career.
+                Dad, husband, coffee lover, anime lover and technology
+                enthusiast. I have always had a love for technology and
+                computing. I took an interest in software development after
+                signing up for a BSC in computing and IT. The first module
+                required some basic understanding of the python programming
+                language, so I decided to take a quick course in Python. I
+                really enjoyed the course, so I got stuck in and started
+                learning to code alongside my degree. I have cultivated a desire
+                to build things and keep learning more technologies. The added
+                bonus of being a developer is a fun and fulfilling career.
               </p>
               <p className='mb-2'>
                 As a developer, there is always something new to learn.The
                 programming language, libraries and tools I have learnt so far
                 are HTML, CSS, JavaScript, ReactJS, NodeJS, NextJS, Java, git,
-                github actions, Redux, Tailwindcss, Typescript(beginner) and
-                python. I am really enjoying it.
+                github actions, Redux, TailwindCss, Typescript, React-Query,
+                React-Native and python.
               </p>
               <p className='mb-2'>
                 I love a good laugh. I feel that laughing makes everyone around
@@ -52,7 +54,7 @@ const about = () => {
                 conversation. In my free time, you will find me on the computer
                 learning new technologies, watching a great movie or anime with
                 my sons, skateboarding, going for walks and most importantly
-                family and most definitely loads of coffee.
+                family and loads of coffee.
               </p>
               <p className='mb-2'>
                 I am looking for a role as a Software developer at a company

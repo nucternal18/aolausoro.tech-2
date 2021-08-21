@@ -12,7 +12,7 @@ const postsDirectory = path.join(process.cwd(), '/blogs');
 export default function BlogPage({ posts, numPages, currentPage }) {
   return (
     <Layout title='aolausoro.tech - blog'>
-      <section className='md:mx-0 md:-mt-48'>
+      <section className='max-w-screen-lg mx-0 md:mx-auto md:-mt-48'>
         <h1 className='p-5 text-5xl font-bold border-b-4 border-current lg:mt-6 dark:border-yellow-500 dark:text-gray-100'>
           Blog
         </h1>

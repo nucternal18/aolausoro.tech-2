@@ -31,16 +31,19 @@ export const social = [
   {
     id: 1,
     url: 'https://github.com/nucternal18',
-    icon: <FaGithub />
+    icon: <FaGithub />,
+    color: 'text-gray-500',
   },
   {
     id: 2,
     url: 'https://twitter.com/woy_in',
-    icon: <FaTwitter />
+    icon: <FaTwitter />,
+    color: 'text-blue-500',
   },
   {
     id: 3,
     url: 'https://www.linkedin.com/in/adewoyin-oladipupo-usoro-267291100/',
-    icon: <FaLinkedin />
+    icon: <FaLinkedin />,
+    color: 'text-blue-500',
   },
 ];
