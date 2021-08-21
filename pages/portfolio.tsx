@@ -65,7 +65,7 @@ const Portfolio = (props) => {
                       layout='intrinsic'
                       width={500}
                       height={350}
-                      quality={100}
+                      quality={50}
                       className='overflow-hidden'
                     />
                   </div>
