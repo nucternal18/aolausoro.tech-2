@@ -105,7 +105,7 @@ const Navbar = ({ textColor }: NavProps) => {
             </Nav.Item>
           );
         })}
-        <div className='flex flex-row mt-4'>
+        <div className='flex flex-row mt-48 '>
           {social.map((link) => {
             const { id, url, icon } = link;
             return (
@@ -181,23 +181,25 @@ Nav.SideNav = ({ isOpen, toggle, children }) => {
           : `${className.default} ${className.disabled}`
       }
       ref={ref}>
-      <div className='flex flex-row justify-center px-1'>
-        <button
-          type='button'
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className='absolute p-1 mt-2 ml-24 font-medium list-none border-2 rounded-full cursor-pointer dark:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none'>
-          {theme === 'light' ? (
-            <FiSun className='font-semibold text-white' />
-          ) : (
-            <FiMoon className='font-semibold text-yellow-500' />
-          )}
-        </button>
-        <button
-          aria-label='Close'
-          className='absolute z-50 p-1 text-4xl cursor-pointer top-2 focus:outline-none right-3 focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none'
-          onClick={toggle}>
-          &times;
-        </button>
+      <div className='flex '>
+        <div className='flex flex-row '>
+          <button
+            type='button'
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className='absolute p-1 mt-2 ml-4 font-medium list-none border-2 rounded-full cursor-pointer dark:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none'>
+            {theme === 'light' ? (
+              <FiSun className='font-semibold text-white' />
+            ) : (
+              <FiMoon className='font-semibold text-yellow-500' />
+            )}
+          </button>
+          <button
+            aria-label='Close'
+            className='absolute z-50 p-1 text-4xl cursor-pointer top-3 focus:outline-none right-3 focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none'
+            onClick={toggle}>
+            &times;
+          </button>
+        </div>
       </div>
       <div className='mt-20'>{children}</div>
     </aside>
@@ -214,22 +216,22 @@ Nav.NavLinks = ({ children, left, right, center }: NavLinkProps) => {
   return <ul className={className}>{children}</ul>;
 };
 Nav.Item = ({ children }) => (
-  <li className='z-50 flex px-2 py-2 mb-2 text-lg font-medium list-none cursor-pointer sm:block lg:ml-0 lg:mb-0 lg:py-1 lg:px-1'>
+  <li className='z-50 flex px-2 py-1 mb-1 text-lg font-medium list-none cursor-pointer sm:block lg:ml-0 lg:mb-0 lg:py-1 lg:px-1'>
     {children}
   </li>
 );
 /* You can wrap the a tag with Link and pass href to Link if you are using either Create-React-App, Next.js or Gatsby */
 Nav.Link = ({ children, href }) => (
   <Link href={href}>
-    <a className='flex sm:block  mb-2 lg:ml-0 lg:mb-0 cursor-pointer py-1.5 lg:py-1 px-2 lg:px-1 text-lg font-medium list-none z-50'>
+    <a className='z-50 flex px-2 py-1 mb-1 text-lg font-medium list-none cursor-pointer sm:block lg:ml-0 lg:mb-0 lg:py-1 lg:px-1'>
       {children}
     </a>
   </Link>
 );
 
 const className = {
-  default: `lg:hidden flex h-screen fixed top-0 right-0 transition-all ease duration-200 text-white dark:text-yellow-500`,
-  enabled: `w-8/12 md:w-60 bg-black  overflow-x-hidden opacity-75  text-xl px-1 py-4 z-50`,
+  default: `lg:hidden flex h-screen fixed top-0 right-0 transition-all ease duration-200 text-gray-200 dark:text-yellow-500`,
+  enabled: `w-8/12  bg-gray-800 overflow-x-hidden   text-lg  py-4 z-50`,
   disabled: `w-0  bg-gray-800 text-white overflow-x-hidden`,
 };
 

@@ -37,7 +37,7 @@ const Portfolio = (props) => {
   return (
     <Layout title='aolausoro.tech - Portfolio'>
       <section className='max-w-screen-lg mx-auto mb-4'>
-        <div className='flex items-center justify-between mb-6 border-b-2 border-gray-200'>
+        <div className='flex items-center justify-between mb-6 border-b border-current dark:border-gray-500'>
           <h1 className='my-4 text-5xl font-thin text-center text-black dark:text-gray-100'>
             PORTFOLIO
           </h1>
@@ -57,7 +57,7 @@ const Portfolio = (props) => {
           {props &&
             props.data.map((doc) => {
               return (
-                <Card key={doc.id} className=''>
+                <Card key={doc.id}>
                   <div>
                     <Image
                       src={doc.data.url}
@@ -70,45 +70,43 @@ const Portfolio = (props) => {
                     />
                   </div>
                   <CardBody>
-                    <div>
-                      <div className='mb-2'>
-                        <CardTitle className='my-2 text-xl text-center'>
-                          {doc.data.projectName}
-                        </CardTitle>
-                        <div className='w-1/4 mx-auto border-b-2 border-yellow-400'></div>
-                      </div>
-                      <div className='w-full mb-2'>
-                        <p className='text-sm text-center'>
-                          {doc.data?.description}
-                        </p>
-                      </div>
-                      <div className='flex flex-col items-center justify-between py-2'>
-                        <div className='w-full mb-2'>
-                          <h1 className='mb-2 text-center'>Tech Stack</h1>
+                    <div className='flex flex-col justify-evenly-between'>
+                      <div className='flex-1'>
+                        <div className='mb-2'>
+                          <CardTitle className='my-2 text-xl text-center'>
+                            {doc.data.projectName}
+                          </CardTitle>
                           <div className='w-1/4 mx-auto border-b-2 border-yellow-400'></div>
                         </div>
-                        <div className='flex items-center justify-between'>
-                          {doc.data.techStack?.map((tech, idx) => (
-                            <div
-                              key={idx}
-                              className='mr-2 text-sm text-gray-400'>
-                              {tech}
-                            </div>
-                          ))}
-                        </div>
+                        {/* <div className='w-full mb-2'>
+                          <p className='text-sm text-center'>
+                            {doc.data?.description}
+                          </p>
+                        </div> */}
                       </div>
-                      <div className='flex items-center justify-between my-2'>
-                        <a
-                          href={doc.data.address}
-                          className='px-2 py-1 text-gray-200 bg-gray-400 rounded-full'>
-                          Live Preview
-                        </a>
-                        <a
-                          href={doc.data.github}
-                          className='flex items-center px-2 py-1 text-gray-200 bg-gray-400 rounded-full'>
-                          <FaGithub className='mr-1' />
-                          <span>Source Code</span>
-                        </a>
+
+                      <div className='flex items-center mx-auto my-2'>
+                        {doc.data.techStack?.map((tech, idx) => (
+                          <div key={idx} className='mr-2 text-sm text-blue-400'>
+                            {tech}
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className='my-2 '>
+                        <div className='flex items-center justify-between'>
+                          <a
+                            href={doc.data.address}
+                            className='px-2 py-1 text-gray-200 bg-gray-400 rounded-full'>
+                            Live Preview
+                          </a>
+                          <a
+                            href={doc.data.github}
+                            className='flex items-center px-2 py-1 text-gray-200 bg-gray-400 rounded-full'>
+                            <FaGithub className='mr-1' />
+                            <span>Source Code</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </CardBody>

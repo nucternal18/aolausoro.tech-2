@@ -13,8 +13,8 @@ export default function BlogPage({ posts, numPages, currentPage }) {
   return (
     <Layout title='aolausoro.tech - blog'>
       <section className='max-w-screen-lg mx-0 md:mx-auto md:-mt-48'>
-        <h1 className='p-5 text-5xl font-bold border-b-4 border-current lg:mt-6 dark:border-yellow-500 dark:text-gray-100'>
-          Blog
+        <h1 className='p-5 text-5xl font-thin border-b border-current lg:mt-6 dark:border-gray-500 dark:text-gray-100'>
+          BLOG
         </h1>
 
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>

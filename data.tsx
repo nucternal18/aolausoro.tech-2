@@ -1,4 +1,9 @@
-import { FaGithub, FaUser, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import {
+  FaGithub,
+  FaLinkedin,
+  FaTwitter,
+  FaStackOverflow,
+} from 'react-icons/fa';
 export const links = [
   {
     id: 1,
@@ -45,5 +50,11 @@ export const social = [
     url: 'https://www.linkedin.com/in/adewoyin-oladipupo-usoro-267291100/',
     icon: <FaLinkedin />,
     color: 'text-blue-500',
+  },
+  {
+    id: 4,
+    url: 'https://stackoverflow.com/users/11582232/aolausoro',
+    icon: <FaStackOverflow />,
+    color: 'text-red-700',
   },
 ];

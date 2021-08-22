@@ -1,4 +1,9 @@
-const Card = ({ children, className }) => (
+interface CardInterface {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const Card = ({ children, className }: CardInterface) => (
   <div
     className={`${className} relative flex flex-col bg-white rounded-b  mb-2`}
     style={style}>
