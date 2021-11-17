@@ -9,7 +9,7 @@ export default function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { user, error, loginHandler } = useAuth();
+  const { state, loginHandler } = useAuth();
 
   const router = useRouter();
 
@@ -28,7 +28,7 @@ export default function Login(props) {
   //   setPassword('');
   // };
 
-  if (user) {
+  if (state.isAuthenticated) {
     router.push('/admin');
   }
 
@@ -75,10 +75,10 @@ export default function Login(props) {
               Login
             </button>
           </div>
-          {error && (
+          {state.error && (
             <div>
-              <h3>{error.title}</h3>
-              <p>{error.message}</p>
+              
+              <p>{state.error}</p>
             </div>
           )}
         </form>

@@ -7,7 +7,7 @@ import { Layout } from '../components/layout';
 import { Card, CardBody, CardTitle } from '../components/Card';
 
 // Server address
-import { server } from '../config';
+import { NEXT_URL } from '../config';
 // import { GithubRepoCard } from '../components/GithubRepoCard';
 // import Spinner from '../components/Spinner';
 import Link from 'next/link';
@@ -37,8 +37,8 @@ const Portfolio = (props) => {
   return (
     <Layout title='aolausoro.tech - Portfolio'>
       <section className='max-w-screen-lg mx-auto mb-4'>
-        <div className='flex items-center justify-between mb-6 border-b border-current dark:border-gray-500'>
-          <h1 className='my-4 text-5xl font-thin text-center text-black dark:text-gray-100'>
+        <div className='flex items-center justify-between mb-6 border-b border-current dark:border-yellow-500'>
+          <h1 className='my-4 text-5xl font-thin text-center text-black dark:text-yellow-500'>
             PORTFOLIO
           </h1>
           <Link href='https://github.com/nucternal18?tab=repositories'>
@@ -133,7 +133,7 @@ const Portfolio = (props) => {
 };
 
 export const getStaticProps = async () => {
-  const project = await fetch(`${server}/api/projects/getProjects`);
+  const project = await fetch(`${NEXT_URL}/api/projects/getProjects`);
   const data = await project.json();
 
   if (!data) {

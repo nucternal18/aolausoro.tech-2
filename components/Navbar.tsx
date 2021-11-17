@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FaUser } from 'react-icons/fa';
 import { FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
 import { useTheme } from 'next-themes';
@@ -8,6 +9,7 @@ import { links, social } from '../data';
 
 // context
 import { useAuth } from '../context/authContext';
+import router from 'next/router';
 
 type NavProps = {
   textColor?: string;
@@ -21,6 +23,7 @@ type NavLinkProps = {
 };
 
 const Navbar = ({ textColor }: NavProps) => {
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { state, logoutHandler } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +34,7 @@ const Navbar = ({ textColor }: NavProps) => {
 
   const logout = () => {
     logoutHandler();
+    router.push('/')
   };
 
   return (

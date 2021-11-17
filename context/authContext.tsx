@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext, useReducer } from 'react';
+import {  useEffect, useContext, createContext, useReducer } from 'react';
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -109,7 +109,7 @@ const authReducer = (state: InitialAuthState, action) => {
   }
 };
 
-const auth = getAuth();
+export const auth = getAuth();
 
 const { Provider } = authContext;
 

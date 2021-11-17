@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { projectFirestore } from '../../../lib/firebaseClient';
+import { defaultFirestore } from "../../../lib/firebaseAdmin";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == "GET") {
         let projectData = [];
         try {
-            const setProject = await projectFirestore.collection("projects");
+            const setProject = await defaultFirestore.collection("projects");
             const projects = await setProject.get();
             projects.forEach((project) => {
                 const data = project.data();

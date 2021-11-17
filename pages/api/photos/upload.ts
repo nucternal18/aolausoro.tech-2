@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getAuth } from 'firebase-admin/auth';
+import { defaultFirestore } from '../../../lib/firebaseAdmin';
 const cloudinary = require('cloudinary').v2
 
 cloudinary.config({
@@ -10,8 +12,42 @@ cloudinary.config({
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
+    /**
+     * @desc creat a new menu item
+     * @route POST /api/menu/
+     * @access Private
+     */
+     if (
+      !req.headers.authorization ||
+      !req.headers.authorization.startsWith("Bearer ")
+    ) {
+      console.error(
+        "No Firebase ID token was passed as a Bearer token in the Authorization header.",
+        "Make sure you authorize your request by providing the following HTTP header:",
+        "Authorization: Bearer <Firebase ID Token>"
+      );
+      res.status(403).json({ message: "No token provided. Not Authorized " });
+      return;
+    }
+    const idToken = req.headers.authorization.split(" ")[1];
 
     try {
+      let userData;
+      const token = await getAuth().verifyIdToken(idToken);
+
+      const userRef = defaultFirestore.collection("users").doc(token.uid);
+      const snapshot = await userRef.get();
+      snapshot.exists ? (userData = snapshot.data()) : (userData = null);
+
+      if (!userData.isAdmin) {
+        res
+          .status(401)
+          .json({
+            message:
+              "Not Authorized. You do not have permission to perform this operation.",
+          });
+        return;
+      }
       const fileStr = req.body.data;
       const uploadedResponse = await cloudinary.uploader.upload(fileStr, {
         upload_preset: 'aolausoro_portfolio',
