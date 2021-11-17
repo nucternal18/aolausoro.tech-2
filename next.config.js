@@ -1,17 +1,15 @@
-module.exports = {
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      issuer: {
-        test: /\.(js|ts)x?$/,
-      },
-      use: ['@svgr/webpack'],
-    });
+const withPWA = require("next-pwa");
 
-    return config;
-  },
+module.exports = withPWA({
+  reactStrictMode: true,
   images: {
     domains: ['firebasestorage.googleapis.com', 'res.cloudinary.com'],
+  },
+  pwa: {
+    dest: "public",
+    register: true,
+    skipWaiting: true,
+    disable: process.env.NODE_ENV === "development",
   },
   env: {
     NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API,
@@ -20,4 +18,4 @@ module.exports = {
       process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
     NEXT_PUBLIC_SITE_KEY: process.env.NEXT_PUBLIC_SITE_KEY,
   },
-};
+});

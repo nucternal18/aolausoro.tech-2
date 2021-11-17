@@ -1,78 +1,149 @@
-import { useState, useEffect, useContext, createContext, Context } from 'react';
-
+import { useState, useEffect, useContext, createContext, useReducer } from 'react';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updatePassword,
+  sendPasswordResetEmail,
+  onIdTokenChanged,
+  signOut,
+  updateProfile,
+  User
+} from "firebase/auth";
 import nookies from 'nookies';
-import { auth, projectFirestore } from '../lib/firebaseClient';
-import firebase from 'firebase/app';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 import { useRouter } from 'next/router';
 
-interface AuthContextProps {
-  user: firebase.User | null;
+const FIREBASE_CONFIG = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: 'aolausoro-tech.firebaseapp.com',
+  databaseURL: 'https://aolausoro-tech.firebaseio.com',
+  projectId: 'aolausoro-tech',
+  storageBucket: 'aolausoro-tech.appspot.com',
+  messagingSenderId: process.env.NEXT_PUBLIC_APP_ID,
+  appId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+};
+
+// Initialize Firebase
+export const app = initializeApp(FIREBASE_CONFIG);
+export const db = getFirestore(app);
+
+
+interface InitialAuthState {
+  isAuthenticated: boolean;
   loading: boolean;
-  error: {
-    title: string;
-    message: string;
-  };
+  error: Error;
+  userData: User;
+  message: string;
+}
+
+export enum ActionType {
+  USER_ACTION_REQUEST = "USER_ACTION_REQUEST",
+  USER_ACTION_FAIL = "USER_ACTION_FAIL",
+  USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS",
+  USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS",
+  USER_UPDATE_PROFILE_SUCCESS = "USER_UPDATE_PROFILE_SUCCESS",
+  USER_EDIT_SUCCESS = "USER_EDIT_SUCCESS",
+  USER_REQUEST_PASSWORD_RESET_SUCCESS = "USER_REQUEST_PASSWORD_RESET_SUCCESS",
+  USER_RESET_PASSWORD_SUCCESS = "USER_RESET_PASSWORD_SUCCESS",
+  USER_EMAIL_VERIFICATION_SUCCESS = "USER_EMAIL_VERIFICATION_SUCCESS",
+  USER_IMAGE_UPLOAD_SUCCESS = "USER_IMAGE_UPLOAD_SUCCESS",
+  USER_LOGOUT_SUCCESS = "USER_LOGOUT_SUCCESS",
+  FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS",
+}
+
+const initialState = {
+  isAuthenticated: false,
+  loading: false,
+  error: null,
+  userData: null,
+  message: "",
+};
+
+
+export const authContext = createContext<{
+  state: InitialAuthState;
+  dispatch: React.Dispatch<any>;
   createAccount: (email: string, password: string) => void;
   loginHandler: (email: string, password: string) => void;
   logoutHandler: () => void;
-};
-
-type ErrorProps = {
-  title: string;
-  message: string;
-};
-
-export const authContext: Context<AuthContextProps> = createContext<AuthContextProps>({
-  user: null,
-  loading: false,
-  error: {
-    title: '',
-    message: '',
-  },
-  createAccount: (_email: '', _password: '') => {},
-  loginHandler: (_email: '', _password: '') => {},
+}>({
+  state: initialState,
+  dispatch: () => null,
+  createAccount: () => {},
+  loginHandler: () => {},
   logoutHandler: () => {},
 });
+
+const authReducer = (state: InitialAuthState, action) => {
+  switch (action.type) {
+    case ActionType.USER_ACTION_REQUEST:
+      return { ...state, loading: true };
+    case ActionType.USER_ACTION_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case ActionType.USER_REGISTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
+    case ActionType.USER_LOGIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+      };
+    case ActionType.FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userData: action.payload,
+        isAuthenticated: true,
+      };
+    case ActionType.USER_LOGOUT_SUCCESS:
+      return initialState;
+    default:
+      return state;
+  }
+};
+
+const auth = getAuth();
 
 const { Provider } = authContext;
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState<any>(null as firebase.User | null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<ErrorProps>({ title: '', message: '' });
+  const [state, dispatch] = useReducer(authReducer, initialState);
   const router = useRouter();
 
   useEffect(() => {
-    return auth.onIdTokenChanged(async (user) => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    return onIdTokenChanged(auth, async (user) => {
       if (!user) {
-        setUser(null);
-        nookies.set(undefined, 'token', '', {});
+        dispatch({
+          type: ActionType.USER_LOGOUT_SUCCESS,
+        });
+        nookies.set(undefined, "token", "", { path: "/" });
         return;
       }
-      const uid = user.uid;
-      const currentUser = projectFirestore.collection('users').doc(uid);
-      currentUser
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            setUser(doc.data());
-          } else {
-            setError({
-              title: 'An error occurred',
-              message: 'User does not exist. Please try again',
-            });
-          }
-        })
-        .catch((error) => {
-          const message = error.message;
-          setError({ title: 'An error occurred', message: message });
-        });
+      const userData = {
+        uid: user.uid,
+        displayName: user.displayName ? user.displayName : "",
+        email: user.email,
+        photoUrl: user.photoURL,
+        emailVerified: user.emailVerified,
+      };
+
+      dispatch({
+        type: ActionType.FETCH_USER_SUCCESS,
+        payload: userData,
+      });
       const token = await user.getIdToken();
-      nookies.set(undefined, 'token', token, {
+      nookies.set(undefined, "token", token, {
         maxAge: 30 * 24 * 60 * 60,
         sameSite: true,
-        path: '/'
+        path: "/",
       });
     });
   }, []);
@@ -88,47 +159,74 @@ export const AuthProvider = ({ children }) => {
     return () => clearInterval(handle);
   }, []);
 
+
+  // force refresh the token every 10 minutes
+  useEffect(() => {
+    const handle = setInterval(async () => {
+      const user = auth.currentUser;
+      if (user) await user.getIdToken(true);
+    }, 10 * 60 * 1000);
+
+    // clean up setInterval
+    return () => clearInterval(handle);
+  }, []);
+
   const createAccount = async (email: string, password: string) => {
-    setLoading(true);
     try {
-      await auth.createUserWithEmailAndPassword(email, password);
-      setLoading(false)
+      dispatch({
+        type: ActionType.USER_ACTION_REQUEST,
+      });
+      await createUserWithEmailAndPassword(auth, email, password);
+      dispatch({
+        type: ActionType.USER_REGISTER_SUCCESS,
+        payload: "Account created successfully",
+      });
     } catch (error) {
-      setLoading(false);
-      const message = error.message;
-      setError({ title: 'An error occurred', message: message });
+      const errorMessage = error.message;
+      dispatch({
+        type: ActionType.USER_ACTION_FAIL,
+        payload: errorMessage,
+      });
     }
   };
 
   const loginHandler = async (email: string, password: string) => {
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      setLoading(false);
+      dispatch({
+        type: ActionType.USER_ACTION_REQUEST,
+      });
+      await signInWithEmailAndPassword(auth, email, password);
+      dispatch({});
     } catch (error) {
-      setLoading(false);
-      const message = error.message;
-      setError({ title: 'An error occurred', message: message });
+      const errorMessage = error.message;
+      dispatch({
+        type: ActionType.USER_ACTION_FAIL,
+        payload: errorMessage,
+      });
     }
   };
 
   const logoutHandler = async () => {
-    try {
-      await auth.signOut();
+    signOut(auth)
+    .then(() => {
+      dispatch({
+        type: ActionType.USER_LOGOUT_SUCCESS,
+      });
       nookies.destroy(undefined, 'token');
-      router.push('/');
-      setUser(null)
-      setLoading(false);
-      setError(null)
-    } catch (error) {
-      setLoading(false);
-      const message = error.message;
-      setError({ title: 'An error occurred', message: message });
-    }
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      dispatch({
+        type: ActionType.USER_ACTION_FAIL,
+        payload: errorMessage,
+      });
+    });
+   
   };
 
   return (
     <Provider
-      value={{ user, error, loading, createAccount, loginHandler, logoutHandler }}>
+      value={{ state, dispatch, createAccount, loginHandler, logoutHandler }}>
       {children}
     </Provider>
   );

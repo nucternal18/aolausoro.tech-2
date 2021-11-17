@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
 import { FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
 import { useTheme } from 'next-themes';
-import { firebaseClient } from '../lib/firebaseClient';
+
 import { links, social } from '../data';
 
 // context
@@ -21,9 +21,8 @@ type NavLinkProps = {
 };
 
 const Navbar = ({ textColor }: NavProps) => {
-  firebaseClient();
   const { theme, setTheme } = useTheme();
-  const { user, logoutHandler } = useAuth();
+  const { state, logoutHandler } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -47,7 +46,7 @@ const Navbar = ({ textColor }: NavProps) => {
               </Nav.Item>
             );
           })}
-          {user && (
+          {state.isAuthenticated && (
             <>
               <Nav.Item>
                 <Nav.Link href='/admin'>ADMIN</Nav.Link>
@@ -85,8 +84,8 @@ const Navbar = ({ textColor }: NavProps) => {
               </Nav.Item>
             );
           })}
-          {user ? (
-            <Nav.Item>{user.displayName}</Nav.Item>
+          {state.isAuthenticated ? (
+            <Nav.Item>{state.userData.displayName}</Nav.Item>
           ) : (
             <Nav.Item>
               <Nav.Link href='/login'>
@@ -114,7 +113,7 @@ const Navbar = ({ textColor }: NavProps) => {
               </Nav.Item>
             );
           })}
-          {!user && (
+          {!state.isAuthenticated && (
             <Nav.Item>
               <Nav.Link href='/login'>
                 <FaUser />
@@ -122,7 +121,7 @@ const Navbar = ({ textColor }: NavProps) => {
             </Nav.Item>
           )}
         </div>
-        {user && <Nav.Item>{user.displayName}</Nav.Item>}
+        {state.isAuthenticated && <Nav.Item>{state.userData.displayName}</Nav.Item>}
       </Nav.SideNav>
     </Nav>
   );
