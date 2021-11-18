@@ -8,7 +8,7 @@ import { Hydrate } from 'react-query/hydration';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 // Context
-import NotificationContextProvider from '../context/notificationContext';
+import { PortfolioProvider } from '../context/portfolioContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -16,11 +16,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <ThemeProvider attribute='class'>
-          <NotificationContextProvider>
+            <PortfolioProvider>
             <AuthProvider>
               <Component {...pageProps} />
             </AuthProvider>
-          </NotificationContextProvider>
+            </PortfolioProvider>
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </Hydrate>

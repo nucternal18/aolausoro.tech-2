@@ -1,20 +1,22 @@
 import {  useEffect, useContext, createContext, useReducer } from 'react';
-import { collection, Timestamp, serverTimestamp, addDoc, doc, updateDoc } from '@firebase/firestore';
+import { collection, Timestamp, serverTimestamp, addDoc, doc, updateDoc, onSnapshot } from '@firebase/firestore';
 import { NEXT_URL } from '../config';
 import { db } from './authContext';
 
 type ProjectType = {
+  id?: string;
     url: string;
       projectName: string;
       github:string;
       address: string;
-      createdAt: Timestamp;
+      techStack: string[];
+      createdAt: typeof serverTimestamp;
 }
 
 interface InitialPortfolioState {
     loading: boolean;
     error: Error;
-    project: ProjectType;
+    projects: ProjectType[];
     message: string;
     imageUrl: string;
   }
@@ -32,7 +34,7 @@ interface InitialPortfolioState {
   const initialState = {
     loading: false,
     error: null,
-    project: null,
+    projects: null,
     imageUrl: null,
     message: "",
   };
@@ -89,7 +91,7 @@ interface InitialPortfolioState {
         return {
           ...state,
           loading: false,
-        project: action.payload,
+        projects: action.payload,
         };
       default:
         return state;
@@ -98,6 +100,19 @@ interface InitialPortfolioState {
 
   export const PortfolioProvider = ({ children }) => {
     const [state, dispatch] = useReducer(portfolioReducer, initialState);
+
+    useEffect(() => {
+      const unsub = onSnapshot(collection(db,'projects'), (snapshot) => {
+        const project = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        dispatch({ type: ActionType.FETCH_PROJECT_SUCCESS, payload: project });
+      }, (error) => {
+        dispatch({ type: ActionType.PROJECT_ACTION_FAIL, payload: error.message });
+      }) 
+      return unsub;
+    },[]);
 
     const addProject = async (projectName: string, github: string, address: string) => {
         try {
@@ -123,9 +138,9 @@ interface InitialPortfolioState {
             dispatch({ type: ActionType.PROJECT_ACTION_REQUEST });
             const project = {
                 url: state.imageUrl,
-                projectName: projectName ? projectName : state.project.projectName,
-                github: github ? github : state.project.github,
-                address: address ? address : state.project.address,
+                projectName: projectName ? projectName : state.projects.projectName,
+                github: github ? github : state.projects.github,
+                address: address ? address : state.projects.address,
                 createdAt: serverTimestamp(),
               };
               const projectRef = doc(db,'projects');
