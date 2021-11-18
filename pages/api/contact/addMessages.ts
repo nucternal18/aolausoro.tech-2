@@ -1,5 +1,6 @@
+import { collection } from "@firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
-import { projectFirestore, timestamp } from '../../../lib/firebaseClient';
+import { defaultFirestore, Timestamp } from '../../../lib/firebaseAdmin';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == "POST") {
@@ -21,11 +22,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             email: email,
             subject: subject,
             message: message,
-            createdAt: timestamp(),
+            createdAt: Timestamp.now(),
         };
 
         try {
-            const setMessages = await projectFirestore.collection("messages").add(Message);
+            const setMessages = await defaultFirestore.collection("messages").add(Message);
             const messages = await setMessages.get();
             return res.status(200).json({
                 success: true,

@@ -1,6 +1,6 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { projectFirestore, timestamp } from '../../../lib/firebaseClient';
+import { defaultFirestore, Timestamp } from '../../../lib/firebaseAdmin';
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,11 +22,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       email: email,
       subject: subject,
       message: message,
-      createdAt: timestamp(),
+      createdAt: Timestamp.now(),
     };
 
     try {
-      const messageRef = await projectFirestore.collection("messages").get();
+      const messageRef = await defaultFirestore.collection("messages").get();
       const messageArray = [];
       messageRef.forEach((doc) => {
         messageArray.push({
@@ -35,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         });
       });
       if (messageRef.empty) {
-        const messageDocRef = projectFirestore.collection("messages").doc();
+        const messageDocRef = defaultFirestore.collection("messages").doc();
         await messageDocRef.set(Message);
         return messageDocRef;
       }
