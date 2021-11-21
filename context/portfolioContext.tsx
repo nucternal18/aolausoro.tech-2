@@ -1,5 +1,5 @@
 import {  useEffect, useContext, createContext, useReducer } from 'react';
-import { collection, Timestamp, serverTimestamp, addDoc, doc, updateDoc, onSnapshot } from '@firebase/firestore';
+import { collection, Timestamp, serverTimestamp, addDoc, doc, updateDoc, onSnapshot, deleteDoc, getDoc } from '@firebase/firestore';
 import { NEXT_URL } from '../config';
 import { db } from './authContext';
 
@@ -19,6 +19,7 @@ interface InitialPortfolioState {
     projects: ProjectType[];
     message: string;
     imageUrl: string;
+    project: ProjectType;
   }
   
   export enum ActionType {
@@ -28,6 +29,7 @@ interface InitialPortfolioState {
     PROJECT_UPDATE_SUCCESS = "PROJECT_UPDATE_SUCCESS",
     PROJECT_DELETE_SUCCESS = "PROJECT_DELETE_SUCCESS",
     PROJECT_IMAGE_UPLOAD_SUCCESS='PROJECT_IMAGE_UPLOAD_SUCCESS',
+    FETCH_PROJECTS_SUCCESS = "FETCH_PROJECTS_SUCCESS",
     FETCH_PROJECT_SUCCESS = "FETCH_PROJECT_SUCCESS",
   }
   
@@ -36,6 +38,7 @@ interface InitialPortfolioState {
     error: null,
     projects: null,
     imageUrl: null,
+    project: null,
     message: "",
   };
   
@@ -44,7 +47,7 @@ interface InitialPortfolioState {
     state: InitialPortfolioState;
     dispatch: React.Dispatch<any>;
     addProject: (projectName: string, github: string, address: string) => void;
-    updateProject: (projectName: string, github: string, address: string) => void;
+    updateProject: (projectName: string, github: string, address: string, id: string) => void;
     deleteProject: (id: string) => void;
     uploadImage: (base64EncodedImage: string | ArrayBuffer) => void;
   }>({
@@ -87,11 +90,17 @@ interface InitialPortfolioState {
           loading: false,
           message: action.payload,
         };
-      case ActionType.FETCH_PROJECT_SUCCESS:
+      case ActionType.FETCH_PROJECTS_SUCCESS:
         return {
           ...state,
           loading: false,
         projects: action.payload,
+        };
+      case ActionType.FETCH_PROJECT_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+        project: action.payload,
         };
       default:
         return state;
@@ -107,7 +116,7 @@ interface InitialPortfolioState {
           ...doc.data(),
           id: doc.id,
         }));
-        dispatch({ type: ActionType.FETCH_PROJECT_SUCCESS, payload: project });
+        dispatch({ type: ActionType.FETCH_PROJECTS_SUCCESS, payload: project });
       }, (error) => {
         dispatch({ type: ActionType.PROJECT_ACTION_FAIL, payload: error.message });
       }) 
@@ -133,7 +142,22 @@ interface InitialPortfolioState {
             
     }
 
-    const updateProject = async (projectName: string, github: string, address: string) => {
+    const getDocById = async (id: string) => {
+      try {
+        const docRef = doc(collection(db,'projects'), id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          dispatch({ type: ActionType.FETCH_PROJECT_SUCCESS, payload: docSnap.data() });
+        } else {
+          // doc.data() will be undefined in this case
+          dispatch({ type: ActionType.PROJECT_ACTION_FAIL, payload: "No such Project!" });
+        }
+      } catch (error) {
+        dispatch({ type: ActionType.PROJECT_ACTION_FAIL, payload: error.message });
+      }
+    }
+
+    const updateProject = async (projectName: string, github: string, address: string, id: string) => {
         try {
             dispatch({ type: ActionType.PROJECT_ACTION_REQUEST });
             const project = {
@@ -143,7 +167,7 @@ interface InitialPortfolioState {
                 address: address ? address : state.projects.address,
                 createdAt: serverTimestamp(),
               };
-              const projectRef = doc(db,'projects');
+              const projectRef = doc(db,'projects', id);
             await updateDoc(projectRef, project)
 
               dispatch({ type: ActionType.PROJECT_ADD_SUCCESS, payload: 'Project added successfully' });
@@ -152,7 +176,16 @@ interface InitialPortfolioState {
         }
     }
 
-    const deleteProject = async (id: string) => {}
+    const deleteProject = async (id: string) => {
+        try {
+            dispatch({ type: ActionType.PROJECT_ACTION_REQUEST });
+            const projectRef = doc(db,'projects',id);
+            await deleteDoc(projectRef);
+            dispatch({ type: ActionType.PROJECT_DELETE_SUCCESS, payload: 'Project deleted successfully' });
+        } catch (error) {
+          dispatch({ type: ActionType.PROJECT_ACTION_FAIL, payload: error.message });
+        }
+    }
 
     const uploadImage = async (base64EncodedImage: string | ArrayBuffer) => {
         try {

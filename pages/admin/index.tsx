@@ -1,22 +1,25 @@
 import nookies from 'nookies';
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { getAuth } from "firebase-admin/auth";
+import getUser from '../../lib/getUser';
+
+// Components
 import { Layout } from '../../components/layout';
 import UploadForm from '../../components/UploadForm';
-import getUser from '../../lib/getUser';
+import AdminLayout from 'components/AdminLayout';
 
 const admin = () => {
   return (
-    <Layout title='aolausoro.tech - admin'>
-      <main className='flex-grow'>
-        <div className='items-center justify-center w-full p-6 my-4 overflow-hidden rounded shadow-lg dark:shadow-none md:w-2/4 md:mx-auto'>
-          <p className='mb-2 text-2xl font-bold text-center md:text-4xl dark:text-gray-300'>
+    <AdminLayout title="aolausoro.tech - admin">
+      <section className="flex items-center justify-center flex-grow w-full h-screen px-4 mx-auto  md:px-10">
+        <div className="items-center justify-center w-full p-6 my-4 overflow-hidden rounded shadow-lg dark:shadow-none md:w-2/4 md:mx-auto">
+          <p className="mb-2 text-2xl font-bold text-center md:text-4xl dark:text-gray-300">
             Add latest projects
           </p>
           <UploadForm />
         </div>
-      </main>
-    </Layout>
+      </section>
+    </AdminLayout>
   );
 };
 
