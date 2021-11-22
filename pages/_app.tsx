@@ -10,7 +10,11 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 // Context
 import { PortfolioProvider } from '../context/portfolioContext';
 
-function MyApp({ Component, pageProps }: AppProps) {
+interface WorkaroundAppProps extends AppProps {
+  err: any;
+}
+
+function MyApp({ Component, pageProps, err }: WorkaroundAppProps) {
   const [queryClient] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
@@ -18,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ThemeProvider attribute='class'>
             <PortfolioProvider>
             <AuthProvider>
-              <Component {...pageProps} />
+              <Component {...pageProps} err={err} />
             </AuthProvider>
             </PortfolioProvider>
         </ThemeProvider>
