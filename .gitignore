@@ -36,3 +36,6 @@ yarn-error.log*
 aolausoro-tech-firebase-adminsdk-d44mh-4bd1025f28.json
 yarn.lock
 
+
+# Sentry
+.sentryclirc
