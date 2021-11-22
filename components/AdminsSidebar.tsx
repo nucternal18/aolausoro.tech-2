@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaBars, FaNewspaper, FaTimes, FaUserCircle } from "react-icons/fa";
+import { FaBars, FaNewspaper, FaTimes, FaUserCircle, FaMailBulk } from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
 import ActiveLink from "./ActiveLink";
@@ -123,6 +123,12 @@ function AdminsSidebar() {
               <ActiveLink href="/admin/projects">
                 <FaUserCircle className="mr-2 text-sm" />
                 Manage Projects
+              </ActiveLink>
+            </li>
+            <li className="flex flex-row items-center">
+              <ActiveLink href="/admin/messages">
+                <FaMailBulk className="mr-2 text-sm" />
+                Messages
               </ActiveLink>
             </li>
           </ul>

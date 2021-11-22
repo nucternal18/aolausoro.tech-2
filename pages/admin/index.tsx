@@ -1,9 +1,9 @@
-import nookies from 'nookies';
-import {  GetServerSidePropsContext } from 'next';
-import getUser from '../../lib/getUser';
+import nookies from "nookies";
+import { GetServerSidePropsContext } from "next";
+import getUser from "../../lib/getUser";
 
 // Components
-import AdminLayout from 'components/AdminLayout';
+import AdminLayout from "components/AdminLayout";
 
 const admin = () => {
   return (
@@ -20,30 +20,28 @@ const admin = () => {
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-
-    const cookies = nookies.get(ctx);
-    if (!cookies.token) {
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
-    }
-    const { user } = await getUser(cookies.token);
-
-    if (!user.isAdmin) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
+  const cookies = nookies.get(ctx);
+  if (!cookies.token) {
     return {
-      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
     };
- 
+  }
+  const { user } = await getUser(cookies.token);
+
+  if (!user.isAdmin) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 };
 
 export default admin;

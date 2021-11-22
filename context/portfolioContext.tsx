@@ -1,5 +1,6 @@
 import {  useEffect, useContext, createContext, useReducer } from 'react';
 import { collection, Timestamp, serverTimestamp, addDoc, doc, updateDoc, onSnapshot, deleteDoc, getDoc } from '@firebase/firestore';
+import nookies from 'nookies';
 import { NEXT_URL } from '../config';
 import { db } from './authContext';
 
@@ -194,6 +195,7 @@ interface InitialPortfolioState {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
+                'authorization': `Bearer ${nookies.get(undefined, 'token')}`,
               },
               body: JSON.stringify({ data: base64EncodedImage }),
             });

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getAuth } from 'firebase-admin/auth';
+import { withSentry } from "@sentry/nextjs";
 import { defaultFirestore } from '../../../lib/firebaseAdmin';
 const cloudinary = require('cloudinary').v2
 
@@ -10,11 +11,11 @@ cloudinary.config({
 });
 
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
     /**
-     * @desc creat a new menu item
-     * @route POST /api/menu/
+     * @desc upload an image to cloudinary
+     * @route POST /api/photos/upload
      * @access Private
      */
      if (
@@ -73,3 +74,5 @@ export const config = {
     },
   },
 }
+
+export default withSentry(handler);

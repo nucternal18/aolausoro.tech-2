@@ -1,8 +1,8 @@
-import { collection } from "@firebase/firestore";
+import { withSentry } from "@sentry/nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { defaultFirestore, Timestamp } from '../../../lib/firebaseAdmin';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler =  async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == "POST") {
 
         const { name, email, subject, message } = req.body;
@@ -54,3 +54,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 }
+
+export default withSentry(handler);

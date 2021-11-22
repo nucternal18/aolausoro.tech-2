@@ -89,7 +89,7 @@ function Table2({ data }) {
       </thead>
       <tbody className=" block px-1 md:px-0 md:table-row-group">
         {data.map((item, index) => (
-          <tr className="bg-white text-gray-900 dark:text-gray-100 shadow-2xl md:shadow-none dark:bg-gray-700 rounded md:rounded-none overflow-x-hidden mb-2 md:mb-0 md:border-none block md:table-row">
+          <tr key={index} className="bg-white text-gray-900 dark:text-gray-100 shadow-2xl md:shadow-none dark:bg-gray-700 rounded md:rounded-none overflow-x-hidden mb-2 md:mb-0 md:border-none block md:table-row">
             <td className="p-2 flex items-center text-left  md:table-cell">
               <span className="inline-block w-1/3 md:hidden font-bold dark:text-yellow-500">
                 Project Name

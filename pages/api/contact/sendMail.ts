@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from 'nodemailer';
+import { withSentry } from "@sentry/nextjs";
 
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+const handler =  (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == "POST") {
 
         const { name, email, subject, message } = req.body;
@@ -86,3 +87,5 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     }
 
 }
+
+export default withSentry(handler);

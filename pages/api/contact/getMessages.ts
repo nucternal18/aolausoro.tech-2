@@ -1,29 +1,47 @@
-
 import { NextApiRequest, NextApiResponse } from "next";
+import { withSentry } from "@sentry/nextjs";
+
 import { defaultFirestore, Timestamp } from '../../../lib/firebaseAdmin';
+import { getAuth } from "firebase-admin/auth";
 
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
-    const { name, email, subject, message } = req.body;
-    if (
-      !email ||
-      !email.includes("@") ||
-      !name || name.trim() === '' ||
-      !subject ||
-      subject.trim() === '' ||
-      !message ||
-      message.trim() === ''
+    /**
+     * @desc upload an image to cloudinary
+     * @route POST /api/photos/upload
+     * @access Private
+     */
+     if (
+      !req.headers.authorization ||
+      !req.headers.authorization.startsWith("Bearer ")
     ) {
-      res.status(422).json({ message: "Invalid input" })
+      console.error(
+        "No Firebase ID token was passed as a Bearer token in the Authorization header.",
+        "Make sure you authorize your request by providing the following HTTP header:",
+        "Authorization: Bearer <Firebase ID Token>"
+      );
+      res.status(403).json({ message: "No token provided. Not Authorized " });
+      return;
     }
-    const Message = {
-      name: name,
-      email: email,
-      subject: subject,
-      message: message,
-      createdAt: Timestamp.now(),
-    };
+    const idToken = req.headers.authorization.split(" ")[1];
+
+    let userData;
+      const token = await getAuth().verifyIdToken(idToken);
+
+      const userRef = defaultFirestore.collection("users").doc(token.uid);
+      const snapshot = await userRef.get();
+      snapshot.exists ? (userData = snapshot.data()) : (userData = null);
+
+      if (!userData.isAdmin) {
+        res
+          .status(401)
+          .json({
+            message:
+              "Not Authorized. You do not have permission to perform this operation.",
+          });
+        return;
+      }
 
     try {
       const messageRef = await defaultFirestore.collection("messages").get();
@@ -34,11 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           data: doc.data(),
         });
       });
-      if (messageRef.empty) {
-        const messageDocRef = defaultFirestore.collection("messages").doc();
-        await messageDocRef.set(Message);
-        return messageDocRef;
-      }
+     
       res.status(200).json({
         success: true,
         data: messageArray,
@@ -57,3 +71,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 };
+
+export default withSentry(handler);

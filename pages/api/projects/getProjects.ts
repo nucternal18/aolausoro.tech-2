@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { withSentry } from "@sentry/nextjs";
 import { defaultFirestore } from "../../../lib/firebaseAdmin";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler =  async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == "GET") {
         let projectData = [];
         try {
@@ -32,3 +33,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
     }
 }
+
+export default  withSentry(handler);
