@@ -210,12 +210,12 @@ Nav.SideNav = ({ isOpen, toggle, children }) => {
 };
 Nav.NavLinks = ({ children, left, right, center }: NavLinkProps) => {
   const className = left
-    ? 'hidden  pl-0 mb-0 mr-auto lg:flex md:pl-0 md:mb-0'
+    ? "hidden  pl-0 mb-0 mr-auto md:flex md:items-center md:pl-0 md:mb-0"
     : right
-    ? 'hidden  pl-0 mb-0 ml-auto lg:flex md:pl-0 md:mb-0 '
+    ? "hidden  pl-0 mb-0 ml-auto md:flex md:items-center md:pl-0 md:mb-0 "
     : center
-    ? 'hidden  pl-0 mb-0 ml-auto lg:flex md:pl-0 md:mb-0 md:mx-auto '
-    : 'hidden  pl-0 mb-0 mr-auto lg:flex md:pl-0 md:mb-0';
+    ? "hidden  pl-0 mb-0 ml-auto md:flex md:pl-0 md:mb-0 md:mx-auto "
+    : "hidden  pl-0 mb-0 mr-auto md:flex md:pl-0 md:mb-0";
   return <ul className={className}>{children}</ul>;
 };
 Nav.Item = ({ children }) => (

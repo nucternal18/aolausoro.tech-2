@@ -4,17 +4,17 @@ import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 
 
 if (getApps().length === 0) {
-    initializeApp();
+    initializeApp({
+        credential: cert({
+            privateKey: process.env.PRIVATE_KEY,
+            clientEmail: process.env.CLIENT_EMAIL,
+            projectId: process.env.PROJECT_ID,
+        }),
+        databaseURL: process.env.DATABASE_URL,
+    });
 }
 
-// {
-//         credential: cert({
-//             privateKey: process.env.PRIVATE_KEY,
-//             clientEmail: process.env.CLIENT_EMAIL,
-//             projectId: process.env.PROJECT_ID,
-//         }),
-//         databaseURL: process.env.DATABASE_URL,
-//     }
+
 
 const initialApp = getAuth();
 const defaultFirestore = getFirestore();
