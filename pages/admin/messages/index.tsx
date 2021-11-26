@@ -5,7 +5,7 @@ import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 
 function index({messages}) {
-    console.log(messages.data)
+    
     return (
       <AdminLayout title="aolausoro.tech - admin">
         <section className="flex items-center justify-center flex-grow w-full h-screen px-4 mx-auto  md:px-10">
@@ -31,7 +31,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     };
   }
   const { user } = await getUser(cookies.token);
-
+  
   if (!user.isAdmin) {
     return {
       redirect: {

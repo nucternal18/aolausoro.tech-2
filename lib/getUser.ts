@@ -3,14 +3,7 @@ import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
 if (getApps().length === 0) {
-    initializeApp({
-        credential: cert({
-            privateKey: process.env.PRIVATE_KEY,
-            clientEmail: process.env.CLIENT_EMAIL,
-            projectId: process.env.PROJECT_ID,
-        }),
-        databaseURL: process.env.DATABASE_URL,
-    });
+    initializeApp();
 }
 
 export default async function getUser(token): Promise<{ user: any;  }> {
