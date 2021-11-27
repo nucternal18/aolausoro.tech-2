@@ -2,9 +2,9 @@ import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 
-
+let initialApp;
 if (getApps().length === 0) {
-    initializeApp({
+    initialApp = initializeApp({
         credential: cert({
             privateKey: process.env.PRIVATE_KEY,
             clientEmail: process.env.CLIENT_EMAIL,
@@ -16,7 +16,7 @@ if (getApps().length === 0) {
 
 
 
-const initialApp = getAuth();
-const defaultFirestore = getFirestore();
+const initialAuth = getAuth();
+const defaultFirestore = getFirestore(initialApp);
 
-export { initialApp, defaultFirestore, Timestamp };
+export { initialAuth, defaultFirestore, Timestamp };
