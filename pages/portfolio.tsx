@@ -44,7 +44,7 @@ const Portfolio = (props) => {
               <Loader classes="w-12 h-12" />
             </div>
           ) : (
-            state.projects.map((doc) => {
+            state.projects && state.projects.map((doc) => {
               return (
                 <Card key={doc.id}>
                   <div>
