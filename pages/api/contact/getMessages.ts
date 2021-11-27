@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const userRef = getFirestore().collection("users").doc(token.uid);
       const snapshot = await userRef.get();
       snapshot.exists ? (userData = snapshot.data()) : (userData = null);
-
+      console.log(userData);
       if (!userData.isAdmin) {
         res
           .status(401)
