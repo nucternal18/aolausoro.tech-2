@@ -12,6 +12,10 @@ if (getApps().length === 0) {
         }),
         databaseURL: process.env.DATABASE_URL,
     });
+    console.log('Initialized')
+} else {
+    initialApp = initializeApp({});
+    console.log('Initialized')
 }
 
 
