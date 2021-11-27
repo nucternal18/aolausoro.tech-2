@@ -112,6 +112,7 @@ interface InitialPortfolioState {
     const [state, dispatch] = useReducer(portfolioReducer, initialState);
 
     useEffect(() => {
+      dispatch({ type: ActionType.PROJECT_ACTION_REQUEST});
       const unsub = onSnapshot(collection(db,'projects'), (snapshot) => {
         const project = snapshot.docs.map((doc) => ({
           ...doc.data(),
