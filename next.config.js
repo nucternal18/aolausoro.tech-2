@@ -5,6 +5,7 @@
 
 const { withSentryConfig } = require('@sentry/nextjs');
 const withPWA = require("next-pwa");
+const runtimeCaching = require("next-pwa/cache");
 
 const moduleExports = withPWA({
   reactStrictMode: true,
@@ -16,6 +17,8 @@ const moduleExports = withPWA({
     register: true,
     skipWaiting: true,
     disable: process.env.NODE_ENV === "development",
+    runtimeCaching,
+    buildExcludes: [/middleware-manifest\.json$/]
   },
   env: {
     NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API,
