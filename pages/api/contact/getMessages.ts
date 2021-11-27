@@ -17,8 +17,8 @@ initializeApp({
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
     /**
-     * @desc upload an image to cloudinary
-     * @route POST /api/photos/upload
+     * @desc Get all messages
+     * @route GET /api/contact/getMessages
      * @access Private
      */
      if (
@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
     const idToken = req.headers.authorization.split(" ")[1];
-
+    console.log("idToken: ", idToken);
     let userData;
       const token = await getAuth().verifyIdToken(idToken);
 
