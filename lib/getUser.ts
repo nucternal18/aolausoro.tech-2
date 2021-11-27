@@ -1,10 +1,8 @@
 import {  getAuth } from 'firebase-admin/auth';
-import { initializeApp, cert, getApps } from 'firebase-admin/app';
+// import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
-if (getApps().length === 0) {
-    initializeApp();
-}
+
 
 export default async function getUser(token): Promise<{ user: any;  }> {
     
