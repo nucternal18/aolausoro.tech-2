@@ -1,9 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSentry } from "@sentry/nextjs";
+import { getAuth } from "firebase-admin/auth";
+import { cert, initializeApp } from "firebase-admin/app";
 
 import { defaultFirestore, Timestamp } from '../../../lib/firebaseAdmin';
-import { getAuth } from "firebase-admin/auth";
 
+initializeApp({
+        credential: cert({
+            privateKey: process.env.PRIVATE_KEY,
+            clientEmail: process.env.CLIENT_EMAIL,
+            projectId: process.env.PROJECT_ID,
+        }),
+        databaseURL: process.env.DATABASE_URL,
+});
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
