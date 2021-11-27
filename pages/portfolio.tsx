@@ -13,6 +13,7 @@ import { NEXT_URL } from '../config';
 
 // Context
 import { usePortfolio } from '../context/portfolioContext';
+import Loader from 'components/Loader';
 
 
 
@@ -40,6 +41,7 @@ const Portfolio = (props) => {
         </section>
         <section className='max-w-screen-lg mx-auto mb-4'>
         <div className='grid grid-cols-1 gap-3 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0'>
+          {state.loading && <Loader classes='w-12' />}
           {state.projects &&
             state.projects.map((doc) => {
               return (
@@ -104,22 +106,5 @@ const Portfolio = (props) => {
     </Layout>
   );
 };
-
-// export const getStaticProps = async () => {
-//   const project = await fetch(`${NEXT_URL}/api/projects/getProjects`);
-//   const data = await project.json();
-
-//   if (!data) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-
-//   return {
-//     props: {
-//       data: data.data,
-//     },
-//   };
-// };
 
 export default Portfolio;

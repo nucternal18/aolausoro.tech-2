@@ -3,7 +3,7 @@ import { withSentry } from "@sentry/nextjs";
 import { getAuth } from "firebase-admin/auth";
 import { cert, initializeApp } from "firebase-admin/app";
 
-import { defaultFirestore, Timestamp } from '../../../lib/firebaseAdmin';
+import { getFirestore } from 'firebase-admin/firestore';
 
 initializeApp({
         credential: cert({
@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let userData;
       const token = await getAuth().verifyIdToken(idToken);
 
-      const userRef = defaultFirestore.collection("users").doc(token.uid);
+      const userRef = getFirestore().collection("users").doc(token.uid);
       const snapshot = await userRef.get();
       snapshot.exists ? (userData = snapshot.data()) : (userData = null);
 
@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
     try {
-      const messageRef = await defaultFirestore.collection("messages").get();
+      const messageRef = await getFirestore().collection("messages").get();
       const messageArray = [];
       messageRef.forEach((doc) => {
         messageArray.push({
