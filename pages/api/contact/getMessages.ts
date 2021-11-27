@@ -34,14 +34,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
     const idToken = req.headers.authorization.split(" ")[1];
-    console.log("idToken: ", idToken);
+    
     let userData;
       const token = await getAuth().verifyIdToken(idToken);
 
       const userRef = getFirestore().collection("users").doc(token.uid);
       const snapshot = await userRef.get();
       snapshot.exists ? (userData = snapshot.data()) : (userData = null);
-      console.log(userData);
+      
       if (!userData.isAdmin) {
         res
           .status(401)
