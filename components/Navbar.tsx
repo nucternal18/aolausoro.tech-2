@@ -22,7 +22,7 @@ type NavLinkProps = {
   center?: any;
 };
 
-const Navbar = ({ textColor }: NavProps) => {
+export default function Navbar({ textColor }: NavProps){
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { state, logoutHandler } = useAuth();
@@ -238,4 +238,5 @@ const className = {
   disabled: `w-0  bg-gray-800 text-white overflow-x-hidden`,
 };
 
-export default Navbar;
+
+

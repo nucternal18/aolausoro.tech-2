@@ -10,7 +10,10 @@ const runtimeCaching = require("next-pwa/cache");
 const moduleExports = withPWA({
   reactStrictMode: true,
   images: {
-    domains: ['firebasestorage.googleapis.com', 'res.cloudinary.com'],
+    domains: ["firebasestorage.googleapis.com", "res.cloudinary.com"],
+  },
+  eslint: {
+    dirs: ["pages", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
   },
   pwa: {
     dest: "public",
@@ -18,7 +21,7 @@ const moduleExports = withPWA({
     skipWaiting: true,
     disable: process.env.NODE_ENV === "development",
     runtimeCaching,
-    buildExcludes: [/middleware-manifest\.json$/]
+    buildExcludes: [/middleware-manifest\.json$/],
   },
   env: {
     NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API,
