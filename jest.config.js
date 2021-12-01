@@ -1,7 +1,7 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   clearMocks: true,
-  coverageDirectory: 'coverage',
+  coverageDirectory: "coverage",
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",
@@ -22,4 +22,12 @@ module.exports = {
     },
   },
   setupFilesAfterEnv: ["./jest.setup.ts"],
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100,
+    },
+  },
 };

@@ -5,55 +5,56 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Create .env.local file
-      run: |
-           touch .env.local
-           echo NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }} >> .env.local
-           echo NEXT_PUBLIC_APP_ID=${{ secrets.NEXT_PUBLIC_APP_ID }} >> .env.local
-           echo NEXT_PUBLIC_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_MESSAGING_SENDER_ID }} >> .env.local
-           echo NEXT_PUBLIC_SITE_KEY=${{ secrets.NEXT_PUBLIC_SITE_KEY }} >> .env.local
-           echo USER_EMAIL=${{ secrets.USER_EMAIL }} >> .env.local
-           echo USER_PASS=${{ secrets.USER_PASS }} >> .env.local
-           echo CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }} >> .env.local
-           echo CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} >> .env.local
-           echo CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} >> .env.local
-           echo NEXT_TELEMETRY_DISABLED=${{ secrets.NEXT_TELEMETRY_DISABLED }} >> .env.local
-           echo PRIVATE_KEY=${{ secrets.PRIVATE_KEY }} >> .env.local
-           echo CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }} >> .env.local
-           echo PROJECT_ID=${{ secrets.PROJECT_ID }} >> .env.local
-           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env.local
-           cat .env.local
-    - name: Create .sentryclirc file
-      run: |
-            touch .sentryclirc
-            echo [auth] >> .sentryclirc
-            echo token=${{ secrets.SENTRY_AUTH_API }} >> .sentryclirc
-            cat .sentryclirc
-    - name: Cache multiple paths
-      uses: actions/cache@v2
-      with:
-        path: ${{ github.workspace }}/.next/cache
-        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}
-    - run: yarn install
-    - run: yarn build
-    - run: pm2 reload aolausoro.tech
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Create .env.local file
+        run: |
+          touch .env.local
+          echo NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }} >> .env.local
+          echo NEXT_PUBLIC_APP_ID=${{ secrets.NEXT_PUBLIC_APP_ID }} >> .env.local
+          echo NEXT_PUBLIC_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_MESSAGING_SENDER_ID }} >> .env.local
+          echo NEXT_PUBLIC_SITE_KEY=${{ secrets.NEXT_PUBLIC_SITE_KEY }} >> .env.local
+          echo USER_EMAIL=${{ secrets.USER_EMAIL }} >> .env.local
+          echo USER_PASS=${{ secrets.USER_PASS }} >> .env.local
+          echo CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }} >> .env.local
+          echo CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} >> .env.local
+          echo CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} >> .env.local
+          echo NEXT_TELEMETRY_DISABLED=${{ secrets.NEXT_TELEMETRY_DISABLED }} >> .env.local
+          echo PRIVATE_KEY=${{ secrets.PRIVATE_KEY }} >> .env.local
+          echo CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }} >> .env.local
+          echo PROJECT_ID=${{ secrets.PROJECT_ID }} >> .env.local
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env.local
+          cat .env.local
+      - name: Create .sentryclirc file
+        run: |
+          touch .sentryclirc
+          echo [auth] >> .sentryclirc
+          echo token=${{ secrets.SENTRY_AUTH_API }} >> .sentryclirc
+          cat .sentryclirc
+      - name: Cache multiple paths
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install
+      - run: yarn lint
+      # - run: yarn test:ci
+      - run: yarn build
+      - run: pm2 reload aolausoro.tech
     env:
-        CI: true
+      CI: true
