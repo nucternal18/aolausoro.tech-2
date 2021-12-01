@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "@next-auth/firebase-adapter": "^0.1.3",
@@ -64,11 +66,18 @@
     "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-testing-library": "^5.0.1",
+    "husky": ">=6",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.3",
+    "lint-staged": "^12.1.2",
+    "prettier": "^2.5.0",
     "react-test-renderer": "^17.0.2",
     "ts-jest": "^27.0.7",
     "typescript": "^4.5.2",
     "yarn-upgrade-all": "^0.5.4"
+  },
+  "lint-staged": {
+    "*.(tsx|ts)": "eslint --cache --fix",
+    "*": "prettier --write --ignore-unknown"
   }
 }
