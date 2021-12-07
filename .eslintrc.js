@@ -1,5 +1,3 @@
-const { displayName } = require("./jest.config");
-
 module.exports = {
   env: {
     browser: true,
@@ -51,6 +49,7 @@ module.exports = {
     "react/no-unescaped-entities": "off",
     "@typescript-eslint/ban-types": "off",
     "@next/next/no-img-element": "off",
-    "@typescript-eslint/no-var-requires": "off"
+    "@typescript-eslint/no-var-requires": "off",
+    "testing-library/no-render-in-setup": "off",
   },
 };

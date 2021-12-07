@@ -1,4 +1,4 @@
-import {  useEffect, useContext, createContext, useReducer } from 'react';
+import { useEffect, useContext, createContext, useReducer } from "react";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -9,19 +9,19 @@ import {
   onIdTokenChanged,
   signOut,
   updateProfile,
-  User
+  User,
 } from "firebase/auth";
-import nookies from 'nookies';
+import nookies from "nookies";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 const FIREBASE_CONFIG = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: 'aolausoro-tech.firebaseapp.com',
-  databaseURL: 'https://aolausoro-tech.firebaseio.com',
-  projectId: 'aolausoro-tech',
-  storageBucket: 'aolausoro-tech.appspot.com',
+  authDomain: "aolausoro-tech.firebaseapp.com",
+  databaseURL: "https://aolausoro-tech.firebaseio.com",
+  projectId: "aolausoro-tech",
+  storageBucket: "aolausoro-tech.appspot.com",
   messagingSenderId: process.env.NEXT_PUBLIC_APP_ID,
   appId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
 };
@@ -29,7 +29,6 @@ const FIREBASE_CONFIG = {
 // Initialize Firebase
 export const app = initializeApp(FIREBASE_CONFIG);
 export const db = getFirestore(app);
-
 
 interface InitialAuthState {
   isAuthenticated: boolean;
@@ -62,12 +61,17 @@ const initialState = {
   message: "",
 };
 
-
 export const authContext = createContext<{
   state: InitialAuthState;
   dispatch: React.Dispatch<any>;
   createAccount: (email: string, password: string) => void;
-  loginHandler: (email: string, password: string) => void;
+  loginHandler: ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => void;
   logoutHandler: () => void;
 }>({
   state: initialState,
@@ -159,7 +163,6 @@ export const AuthProvider = ({ children }) => {
     return () => clearInterval(handle);
   }, []);
 
-
   // force refresh the token every 10 minutes
   useEffect(() => {
     const handle = setInterval(async () => {
@@ -190,7 +193,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginHandler = async (email: string, password: string) => {
+  const loginHandler = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
     try {
       dispatch({
         type: ActionType.USER_ACTION_REQUEST,
@@ -208,25 +217,25 @@ export const AuthProvider = ({ children }) => {
 
   const logoutHandler = async () => {
     signOut(auth)
-    .then(() => {
-      dispatch({
-        type: ActionType.USER_LOGOUT_SUCCESS,
+      .then(() => {
+        dispatch({
+          type: ActionType.USER_LOGOUT_SUCCESS,
+        });
+        nookies.destroy(undefined, "token");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        dispatch({
+          type: ActionType.USER_ACTION_FAIL,
+          payload: errorMessage,
+        });
       });
-      nookies.destroy(undefined, 'token');
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      dispatch({
-        type: ActionType.USER_ACTION_FAIL,
-        payload: errorMessage,
-      });
-    });
-   
   };
 
   return (
     <Provider
-      value={{ state, dispatch, createAccount, loginHandler, logoutHandler }}>
+      value={{ state, dispatch, createAccount, loginHandler, logoutHandler }}
+    >
       {children}
     </Provider>
   );
