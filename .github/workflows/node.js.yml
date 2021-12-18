@@ -39,6 +39,11 @@ jobs:
           echo CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }} >> .env.local
           echo PROJECT_ID=${{ secrets.PROJECT_ID }} >> .env.local
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env.local
+          echo SENTRY_DSN=${{ secrets.SENTRY_DSN }} >> .env.local
+          echo SENTRY_AUTH_API=${{ secrets.SENTRY_AUTH_API }} >> .env.local
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.local
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env.local
+          echo NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} >> .env.local
           cat .env.local
       - name: Create .sentryclirc file
         run: |
@@ -53,7 +58,7 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
       - run: yarn lint
-      # - run: yarn test:ci
+      - run: yarn test:ci
       - run: yarn build
       - run: pm2 reload aolausoro.tech
     env:
