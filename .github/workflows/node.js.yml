@@ -58,7 +58,7 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
       - run: yarn lint
-      - run: yarn test:ci
+      - run: yarn test
       - run: yarn build
       - run: pm2 reload aolausoro.tech
     env:
