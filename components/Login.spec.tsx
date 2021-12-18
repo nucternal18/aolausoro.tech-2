@@ -8,7 +8,7 @@ describe("Login", () => {
 
   beforeEach(() => {
     handleLogin.mockClear();
-    render(<Login handleLogin={handleLogin} error="login failed" />);
+    render(<Login handleLogin={handleLogin} />);
   });
 
   it("handleLogin is called when all field pass validation", async () => {

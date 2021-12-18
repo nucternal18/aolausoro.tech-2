@@ -1,26 +1,23 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { FaGoogle } from "react-icons/fa";
 
+interface IFormInputs {
+  email: string;
+  password: string;
+}
 interface ILogin {
-  handleLogin: ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => void;
-  error: string;
+  handleLogin: ({ email, password }: IFormInputs) => void;
 }
 
-function LoginForm({ handleLogin, error }: ILogin) {
+function LoginForm({ handleLogin }: ILogin) {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<IFormInputs>();
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     handleLogin({ email: data.email, password: data.password });
   };
   return (
@@ -56,8 +53,12 @@ function LoginForm({ handleLogin, error }: ILogin) {
             })}
           />
         </div>
-        {errors.email && <span id="email-error">{errors.email.message}</span>}
-        <div className="mb-8">
+        {errors.email && (
+          <span id="email-error" className="text-gray-800 dark:text-yellow-500">
+            {errors.email.message}
+          </span>
+        )}
+        <div className="mb-4">
           <label
             className="block mb-2 text-base font-bold text-gray-700"
             htmlFor="password"
@@ -90,21 +91,29 @@ function LoginForm({ handleLogin, error }: ILogin) {
           />
         </div>
         {errors.password && (
-          <span id="password-error">{errors.password.message}</span>
+          <span
+            id="password-error"
+            className="text-gray-800 dark:text-yellow-500"
+          >
+            {errors.password.message}
+          </span>
         )}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-2">
           <button
             className="w-2/4 px-4 py-2 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-100 dark:hover:bg-yellow-700"
             type="submit"
           >
             Login
           </button>
+          <button
+            className="w-2/4 flex items-center justify-center px-4 py-2 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-100 dark:hover:bg-yellow-700"
+            type="button"
+            onClick={() => signIn()}
+          >
+            <span>SignIn with Google</span>
+            <FaGoogle className="ml-2 text-green-500" />
+          </button>
         </div>
-        {error && (
-          <div>
-            <p>{error}</p>
-          </div>
-        )}
       </form>
     </section>
   );

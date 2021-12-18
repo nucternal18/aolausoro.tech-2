@@ -51,5 +51,6 @@ module.exports = {
     "@next/next/no-img-element": "off",
     "@typescript-eslint/no-var-requires": "off",
     "testing-library/no-render-in-setup": "off",
+    "jest/expect-expect": "off",
   },
 };

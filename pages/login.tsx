@@ -11,20 +11,13 @@ export default function Login(props) {
   const { state, loginHandler } = useAuth();
   const router = useRouter();
 
-  // const createUser = (e) => {
-  //   e.preventDefault();
-  //   createAccount(email, password);
-  //   setEmail('');
-  //   setPassword('');
-  // };
-
   if (state.isAuthenticated) {
     router.push("/admin");
   }
 
   return (
     <Layout title="aolausoro.tech - login">
-      <LoginForm error={state.error} handleLogin={loginHandler} />
+      <LoginForm handleLogin={loginHandler} />
     </Layout>
   );
 }

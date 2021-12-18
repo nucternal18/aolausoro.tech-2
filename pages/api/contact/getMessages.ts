@@ -1,18 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSentry } from "@sentry/nextjs";
 import { getAuth } from "firebase-admin/auth";
-import { cert, initializeApp } from "firebase-admin/app";
-
-import { getFirestore } from 'firebase-admin/firestore';
-
-initializeApp({
-        credential: cert({
-            privateKey: process.env.PRIVATE_KEY,
-            clientEmail: process.env.CLIENT_EMAIL,
-            projectId: process.env.PROJECT_ID,
-        }),
-        databaseURL: process.env.DATABASE_URL,
-});
+import { getFirestore } from "firebase-admin/firestore";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
@@ -21,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
      * @route GET /api/contact/getMessages
      * @access Private
      */
-     if (
+    if (
       !req.headers.authorization ||
       !req.headers.authorization.startsWith("Bearer ")
     ) {
@@ -34,23 +23,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
     const idToken = req.headers.authorization.split(" ")[1];
-    
-    let userData;
-      const token = await getAuth().verifyIdToken(idToken);
 
-      const userRef = getFirestore().collection("users").doc(token.uid);
-      const snapshot = await userRef.get();
-      snapshot.exists ? (userData = snapshot.data()) : (userData = null);
-      
-      if (!userData.isAdmin) {
-        res
-          .status(401)
-          .json({
-            message:
-              "Not Authorized. You do not have permission to perform this operation.",
-          });
-        return;
-      }
+    let userData;
+    const token = await getAuth().verifyIdToken(idToken);
+
+    const userRef = getFirestore().collection("users").doc(token.uid);
+    const snapshot = await userRef.get();
+    snapshot.exists ? (userData = snapshot.data()) : (userData = null);
+
+    if (!userData.isAdmin) {
+      res.status(401).json({
+        message:
+          "Not Authorized. You do not have permission to perform this operation.",
+      });
+      return;
+    }
 
     try {
       const messageRef = await getFirestore().collection("messages").get();
@@ -61,7 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           data: doc.data(),
         });
       });
-     
+
       res.status(200).json({
         success: true,
         data: messageArray,
@@ -72,7 +59,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         error: "Server Error",
       });
     }
-
   } else {
     res.status(405).json({
       success: false,
