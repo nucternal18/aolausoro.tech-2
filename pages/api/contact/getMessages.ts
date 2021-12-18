@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSentry } from "@sentry/nextjs";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
+import { defaultFirestore, initialAuth } from "lib/firebaseAdmin";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
@@ -25,9 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const idToken = req.headers.authorization.split(" ")[1];
 
     let userData;
-    const token = await getAuth().verifyIdToken(idToken);
+    const token = await initialAuth.verifyIdToken(idToken);
 
-    const userRef = getFirestore().collection("users").doc(token.uid);
+    const userRef = defaultFirestore.collection("users").doc(token.uid);
     const snapshot = await userRef.get();
     snapshot.exists ? (userData = snapshot.data()) : (userData = null);
 
@@ -40,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     try {
-      const messageRef = await getFirestore().collection("messages").get();
+      const messageRef = await defaultFirestore.collection("messages").get();
       const messageArray = [];
       messageRef.forEach((doc) => {
         messageArray.push({
