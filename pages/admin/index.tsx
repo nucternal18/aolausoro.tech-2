@@ -4,6 +4,7 @@ import getUser from "../../lib/getUser";
 
 // Components
 import AdminLayout from "components/AdminLayout";
+import { getSession } from "next-auth/react";
 
 const admin = () => {
   return (
@@ -20,8 +21,11 @@ const admin = () => {
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const cookies = nookies.get(ctx);
-  if (!cookies.token) {
+  const req = ctx.req;
+  const session = await getSession({ req });
+
+  if (!session) {
+    // If no token is present redirect user to the login page
     return {
       redirect: {
         destination: "/login",
@@ -29,18 +33,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       },
     };
   }
-  const { user } = await getUser(cookies.token);
+  const userData = await getUser(req);
 
-  if (!user.isAdmin) {
+  if (!userData?.isAdmin) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/not-authorized",
         permanent: false,
       },
     };
   }
   return {
-    props: {},
+    props: {}, // will be passed to the page component as props
   };
 };
 

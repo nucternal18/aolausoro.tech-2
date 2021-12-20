@@ -4,12 +4,12 @@ import { useRouter } from "next/router";
 import { FaUser } from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
+import { getSession, signOut } from "next-auth/react";
 
 import { links, social } from "../data";
 
 // context
 import { useAuth } from "../context/authContext";
-import router from "next/router";
 
 type NavProps = {
   textColor?: string;
@@ -22,18 +22,38 @@ type NavLinkProps = {
   center?: any;
 };
 
+type SessionProps = {
+  expires: string;
+  user?: {
+    name?: string;
+    email?: string;
+    image?: string;
+  };
+};
+
 export default function Navbar({ textColor }: NavProps) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const { state, logoutHandler } = useAuth();
+  const { state } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadedSession, setLoadedSession] = useState<SessionProps>(null);
+  console.log(loadedSession);
+  useEffect(() => {
+    getSession().then((session) => {
+      setLoading(false);
+      if (session) {
+        setLoadedSession(session);
+      }
+    });
+  }, []);
 
   const toggle = () => {
     setIsOpen(!isOpen);
   };
 
   const logout = () => {
-    logoutHandler();
+    signOut();
     router.push("/");
   };
 
@@ -50,7 +70,7 @@ export default function Navbar({ textColor }: NavProps) {
               </Nav.Item>
             );
           })}
-          {state.isAuthenticated && (
+          {loadedSession && (
             <>
               <Nav.Item>
                 <Nav.Link href="/admin">ADMIN</Nav.Link>
@@ -90,7 +110,7 @@ export default function Navbar({ textColor }: NavProps) {
               </Nav.Item>
             );
           })}
-          {!state.isAuthenticated && (
+          {!loadedSession && (
             <Nav.Item>
               <Nav.Link href="/login">
                 <FaUser />
@@ -117,7 +137,7 @@ export default function Navbar({ textColor }: NavProps) {
               </Nav.Item>
             );
           })}
-          {!state.isAuthenticated && (
+          {!loadedSession && (
             <Nav.Item>
               <Nav.Link href="/login">
                 <FaUser />
@@ -125,9 +145,7 @@ export default function Navbar({ textColor }: NavProps) {
             </Nav.Item>
           )}
         </div>
-        {state.isAuthenticated && (
-          <Nav.Item>{state.userData.displayName}</Nav.Item>
-        )}
+        {loadedSession && <Nav.Item>{loadedSession.user.name}</Nav.Item>}
       </Nav.SideNav>
     </Nav>
   );

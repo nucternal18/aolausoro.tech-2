@@ -12,7 +12,7 @@ import {
 } from "@firebase/firestore";
 import nookies, { parseCookies } from "nookies";
 import { NEXT_URL } from "../config";
-import { db } from "./authContext";
+import { database as db } from "./authContext";
 
 type ProjectType = {
   id?: string;

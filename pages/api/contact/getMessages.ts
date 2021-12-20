@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSentry } from "@sentry/nextjs";
 import { defaultFirestore, initialAuth } from "lib/firebaseAdmin";
+import { getSession } from "next-auth/react";
+import getUser from "lib/getUser";
+import db from "lib/db";
+import Message from "models/messageModel";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
@@ -14,21 +18,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       !req.headers.authorization.startsWith("Bearer ")
     ) {
       console.error(
-        "No Firebase ID token was passed as a Bearer token in the Authorization header.",
+        "No  token was passed as a Bearer token in the Authorization header.",
         "Make sure you authorize your request by providing the following HTTP header:",
-        "Authorization: Bearer <Firebase ID Token>"
+        "Authorization: Bearer <ID Token>"
       );
       res.status(403).json({ message: "No token provided. Not Authorized " });
       return;
     }
-    const idToken = req.headers.authorization.split(" ")[1];
+    /**
+     * @desc Get user session
+     */
+    const session = await getSession({ req });
+    /**
+     * @desc check to see if their is a user session
+     */
+    if (!session) {
+      res.status(401).json({ message: "Not Authorized" });
+      return;
+    }
 
-    let userData;
-    const token = await initialAuth.verifyIdToken(idToken);
-
-    const userRef = defaultFirestore.collection("users").doc(token.uid);
-    const snapshot = await userRef.get();
-    snapshot.exists ? (userData = snapshot.data()) : (userData = null);
+    const userData = await getUser(req);
 
     if (!userData.isAdmin) {
       res.status(401).json({
@@ -37,27 +46,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
       return;
     }
+    await db.connectDB();
 
-    try {
-      const messageRef = await defaultFirestore.collection("messages").get();
-      const messageArray = [];
-      messageRef.forEach((doc) => {
-        messageArray.push({
-          id: doc.id,
-          data: doc.data(),
-        });
-      });
+    const messages = await Message.find({});
 
-      res.status(200).json({
-        success: true,
-        data: messageArray,
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: "Server Error",
-      });
-    }
+    await db.disconnect();
+
+    res.status(200).json(messages);
   } else {
     res.status(405).json({
       success: false,

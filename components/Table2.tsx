@@ -1,7 +1,10 @@
 import Image from "next/image";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 function Table2({ data }) {
+  const router = useRouter();
+
   return (
     <table className="w-full md:min-w-full rounded-md shadow-2xl  md:table">
       <thead className="bg-gray-50 dark:bg-yellow-500  hidden md:table-header-group">
@@ -88,8 +91,11 @@ function Table2({ data }) {
         </tr>
       </thead>
       <tbody className=" block px-1 md:px-0 md:table-row-group">
-        {data.map((item, index) => (
-          <tr key={index} className="bg-white text-gray-900 dark:text-gray-100 shadow-2xl md:shadow-none dark:bg-gray-700 rounded md:rounded-none overflow-x-hidden mb-2 md:mb-0 md:border-none block md:table-row">
+        {data.map((item) => (
+          <tr
+            key={item._id}
+            className="bg-white text-gray-900 dark:text-gray-100 shadow-2xl md:shadow-none dark:bg-gray-700 rounded md:rounded-none overflow-x-hidden mb-2 md:mb-0 md:border-none block md:table-row"
+          >
             <td className="p-2 flex items-center text-left  md:table-cell">
               <span className="inline-block w-1/3 md:hidden font-bold dark:text-yellow-500">
                 Project Name
@@ -131,7 +137,7 @@ function Table2({ data }) {
                     text-green-800
                   "
               >
-                {new Date(item.createdAt.toDate()).toDateString()}
+                {new Date(item.createdAt).toDateString()}
               </span>
             </td>
             {/* <td className="px-6 py-4  flex items-center text-left whitespace-nowrap md:table-cell">
@@ -169,7 +175,11 @@ function Table2({ data }) {
                 Action
               </span>
               <div className="flex items-center md:justify-around">
-                <button type="button" className="text-blue-500 mr-4 md:mr-0">
+                <button
+                  type="button"
+                  className="text-blue-500 mr-4 md:mr-0"
+                  onClick={() => router.push(`/admin/projects/${item._id}`)}
+                >
                   <FaEdit className="text-lg" />
                 </button>
                 <button type="button" className="text-red-500">

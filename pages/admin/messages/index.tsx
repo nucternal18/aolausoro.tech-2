@@ -2,9 +2,11 @@ import AdminLayout from "components/AdminLayout";
 import { NEXT_URL } from "config";
 import getUser from "lib/getUser";
 import { GetServerSidePropsContext } from "next";
+import { getSession } from "next-auth/react";
 import nookies from "nookies";
 
 function index({ messages }) {
+  console.log(messages);
   return (
     <AdminLayout title="aolausoro.tech - admin">
       <section className="flex items-center justify-center flex-grow w-full h-screen px-4 mx-auto  md:px-10">
@@ -19,8 +21,11 @@ function index({ messages }) {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const cookies = nookies.get(ctx);
-  if (!cookies.token) {
+  const req = ctx.req;
+  const session = await getSession({ req });
+
+  if (!session) {
+    // If no token is present redirect user to the login page
     return {
       redirect: {
         destination: "/login",
@@ -28,22 +33,22 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       },
     };
   }
-  const { user } = await getUser(cookies.token);
+  const userData = await getUser(req);
 
-  if (!user.isAdmin) {
+  if (!userData?.isAdmin) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/not-authorized",
         permanent: false,
       },
     };
   }
-
   const res = await fetch(`${NEXT_URL}/api/contact/getMessages`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${cookies.token}`,
+      authorization: `Bearer ${req.headers.cookie}`,
+      cookie: req.headers.cookie,
     },
   });
 

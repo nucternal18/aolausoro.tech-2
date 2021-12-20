@@ -1,15 +1,16 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getAuth } from 'firebase-admin/auth';
+import { NextApiRequest, NextApiResponse } from "next";
+import { getAuth } from "firebase-admin/auth";
 import { withSentry } from "@sentry/nextjs";
-import { defaultFirestore } from '../../../lib/firebaseAdmin';
-const cloudinary = require('cloudinary').v2
+import { defaultFirestore } from "../../../lib/firebaseAdmin";
+import { getSession } from "next-auth/react";
+import getUser from "lib/getUser";
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
@@ -18,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
      * @route POST /api/photos/upload
      * @access Private
      */
-     if (
+    if (
       !req.headers.authorization ||
       !req.headers.authorization.startsWith("Bearer ")
     ) {
@@ -30,33 +31,36 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(403).json({ message: "No token provided. Not Authorized " });
       return;
     }
-    const idToken = req.headers.authorization.split(" ")[1];
+    /**
+     * @desc Get user session
+     */
+    const session = await getSession({ req });
+    /**
+     * @desc check to see if their is a user session
+     */
+    if (!session) {
+      res.status(401).json({ message: "Not Authorized" });
+      return;
+    }
 
+    const userData = await getUser(req);
+
+    if (!userData.isAdmin) {
+      res.status(401).json({
+        message:
+          "Not Authorized. You do not have permission to perform this operation.",
+      });
+      return;
+    }
     try {
-      let userData;
-      const token = await getAuth().verifyIdToken(idToken);
-
-      const userRef = defaultFirestore.collection("users").doc(token.uid);
-      const snapshot = await userRef.get();
-      snapshot.exists ? (userData = snapshot.data()) : (userData = null);
-
-      if (!userData.isAdmin) {
-        res
-          .status(401)
-          .json({
-            message:
-              "Not Authorized. You do not have permission to perform this operation.",
-          });
-        return;
-      }
       const fileStr = req.body.data;
       const uploadedResponse = await cloudinary.uploader.upload(fileStr, {
-        upload_preset: 'aolausoro_portfolio',
+        upload_preset: "aolausoro_portfolio",
       });
       res.status(201).json(uploadedResponse);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ err: 'Something went wrong uploading image' });
+      res.status(500).json({ err: "Something went wrong uploading image" });
     }
   } else {
     return res.status(500).json({
@@ -66,13 +70,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '50mb',
+      sizeLimit: "50mb",
     },
   },
-}
+};
 
 export default withSentry(handler);

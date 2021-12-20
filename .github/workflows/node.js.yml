@@ -44,6 +44,9 @@ jobs:
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.local
           echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env.local
           echo NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} >> .env.local
+          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env.local
+          echo NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} >> .env.local
+          echo JWT_SIGNING_PRIVATE_KEY=${{ secrets.JWT_SIGNING_PRIVATE_KEY }} >> .env.local
           cat .env.local
       - name: Create .sentryclirc file
         run: |

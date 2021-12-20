@@ -25,6 +25,7 @@ export default NextAuth({
   session: {
     // Seconds - How long until an idle session expires and is no longer valid.
     maxAge: 30 * 24 * 60 * 60, // 30 days
+    strategy: "jwt",
   },
   jwt: {
     secret: process.env.JWT_SIGNING_PRIVATE_KEY,
@@ -41,6 +42,7 @@ export default NextAuth({
         await db.disconnect();
 
         if (user && (await user.matchPassword(credentials.password))) {
+          console.log(user);
           return {
             _id: user._id,
             image: user.image,
@@ -55,6 +57,7 @@ export default NextAuth({
       credentials: undefined,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     /**
      * @param  {object} session      Session object
@@ -84,31 +87,31 @@ export default NextAuth({
     },
   },
   cookies: {
-    sessionToken: {
-      name: `__Secure-next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-      },
-    },
-    callbackUrl: {
-      name: `__Secure-next-auth.callback-url`,
-      options: {
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-      },
-    },
-    csrfToken: {
-      name: `__Host-next-auth.csrf-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-      },
-    },
+    // sessionToken: {
+    //   name: `__Secure-next-auth.session-token`,
+    //   options: {
+    //     httpOnly: true,
+    //     sameSite: "lax",
+    //     path: "/",
+    //     secure: true,
+    //   },
+    // },
+    // callbackUrl: {
+    //   name: `__Secure-next-auth.callback-url`,
+    //   options: {
+    //     sameSite: "lax",
+    //     path: "/",
+    //     secure: true,
+    //   },
+    // },
+    // csrfToken: {
+    //   name: `__Host-next-auth.csrf-token`,
+    //   options: {
+    //     httpOnly: true,
+    //     sameSite: "lax",
+    //     path: "/",
+    //     secure: true,
+    //   },
+    // },
   },
 });
