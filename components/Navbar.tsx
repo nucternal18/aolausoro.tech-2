@@ -38,7 +38,7 @@ export default function Navbar({ textColor }: NavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadedSession, setLoadedSession] = useState<SessionProps>(null);
-  console.log(loadedSession);
+
   useEffect(() => {
     getSession().then((session) => {
       setLoading(false);

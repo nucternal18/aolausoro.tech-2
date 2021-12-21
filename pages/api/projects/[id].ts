@@ -91,7 +91,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const project = await Project.findOne({ _id: id });
 
-      if (project && userData.isAdmin) {
+      if (project.user === userData._id && userData.isAdmin) {
         await project.remove();
         await db.disconnect();
         res.status(201).json({ message: "Project removed" });

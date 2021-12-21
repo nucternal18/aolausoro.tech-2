@@ -1,79 +1,22 @@
 import { useState, useEffect } from "react";
 import { FaPlusCircle } from "react-icons/fa";
-import Notification from "./notification/notification";
+
 import { usePortfolio } from "../context/portfolioContext";
-import toast from "react-toastify";
+import { toast } from "react-toastify";
 
-const UploadForm = ({ project }) => {
-  const [error, setError] = useState<any>(null);
-  const [projectName, setProjectName] = useState<string>(
-    project.projectName || ""
-  );
-  const [github, setGithub] = useState<string>(project.github || "");
-  const [address, setAddress] = useState<string>(project.address || "");
-  const [requestStatus, setRequestStatus] = useState("");
-  const [message, setMessage] = useState("");
-
-  const { state, uploadImage, addProject } = usePortfolio();
-
-  const types = ["image/png", "image/jpeg", "image/jpg"];
-
-  const changeHandler = (e) => {
-    const file = e.target.files[0];
-
-    if (file && types.includes(file.type)) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        uploadImage(reader.result);
-      };
-      reader.onerror = () => {
-        console.error("something went wrong!");
-      };
-    } else {
-      setError("Please select an image file (png or jpeg)");
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    addProject(projectName, github, address);
-    setProjectName("");
-    setGithub("");
-    setAddress("");
-  };
-
-  let notification;
-
-  if (requestStatus === "pending") {
-    notification = {
-      status: "pending",
-      title: "Sending item...",
-      message: "Upload is on its way!",
-    };
-  }
-
-  if (requestStatus === "success") {
-    notification = {
-      status: "success",
-      title: "Success!",
-      message: message,
-    };
-  }
-
-  if (requestStatus === "error") {
-    notification = {
-      status: "error",
-      title: "Error!",
-      message: error,
-    };
-  }
-
+const UploadForm = ({
+  changeHandler,
+  register,
+  handleSubmit,
+  onSubmit,
+  imageUrl,
+  errors,
+}) => {
   return (
     <section>
       <form
         className="flex flex-col items-center justify-center w-full p-6 mb-4 text-center"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div className="mb-6 text-3xl">
           <label>
@@ -83,8 +26,7 @@ const UploadForm = ({ project }) => {
         </div>
 
         <div>
-          {state.error && <p className="justify-center">{state.error}</p>}
-          {state.imageUrl && <p className="truncate">{state.imageUrl}</p>}
+          {imageUrl && <p className="truncate">{imageUrl}</p>}
           {/* {file && <ProgressBar file={file} setFile={setFile} setUrl={setUrl} />} */}
         </div>
 
@@ -92,47 +34,101 @@ const UploadForm = ({ project }) => {
           <div className="mb-6 md:flex md:items-center">
             <label
               className="block mb-1 font-bold text-gray-500 md:text-right md:mb-0"
-              htmlFor="inline-full-name"
+              htmlFor="project-name"
             />
 
             <input
               className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-name"
+              id="project-name"
               placeholder="Project Name"
               type="text"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
+              name="project-name"
+              aria-label="project-name-input"
+              aria-errormessage="project-name-error"
+              aria-invalid="true"
+              {...register("projectName", {
+                required: "This is required",
+                maxLength: 20,
+                pattern: {
+                  value: /^[A-Za-z -]+$/,
+                  message: "Please enter your name",
+                },
+              })}
             />
           </div>
+          {errors.projectName && (
+            <span
+              id="project-name-error"
+              className="text-gray-800 dark:text-yellow-500"
+            >
+              {errors.projectName.message}
+            </span>
+          )}
           <div className="mb-6 md:flex md:items-center ">
             <label
               className="block mb-1 font-bold text-gray-500 md:text-right md:mb-0"
-              htmlFor="inline-github"
+              htmlFor="github"
             />
             <input
               className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-github"
+              id="github"
               type="text"
+              name="github"
               placeholder="Github Address"
-              value={github}
-              onChange={(e) => setGithub(e.target.value)}
+              aria-label="github-input"
+              aria-errormessage="github-error"
+              aria-invalid="true"
+              {...register("github", {
+                required: "This is required",
+                maxLength: 20,
+                pattern: {
+                  value: /^[A-Za-z -]+$/,
+                  message: "Please enter your name",
+                },
+              })}
             />
           </div>
+          {errors.github && (
+            <span
+              id="github-error"
+              className="text-gray-800 dark:text-yellow-500"
+            >
+              {errors.github.message}
+            </span>
+          )}
           <div className="mb-6 md:flex md:items-center ">
             <label
               className="block mb-1 font-bold text-gray-500 md:text-right md:mb-0"
-              htmlFor="inline-web-address"
+              htmlFor="url-address"
             />
 
             <input
               className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-web-address"
+              id="url-address"
               type="text"
+              name="url-address"
               placeholder="Web Address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              aria-label="url-address-input"
+              aria-errormessage="url-address-error"
+              aria-invalid="true"
+              {...register("address", {
+                required: "This is required",
+                maxLength: 20,
+                pattern: {
+                  value: /^[A-Za-z -]+$/,
+                  message: "Please enter your name",
+                },
+              })}
             />
           </div>
+          {errors.address && (
+            <span
+              id="url-address-error"
+              className="text-gray-800 dark:text-yellow-500"
+            >
+              {errors.address.message}
+            </span>
+          )}
           <div className="md:flex md:items-center">
             <div className="w-full mx-auto">
               <button
@@ -145,13 +141,6 @@ const UploadForm = ({ project }) => {
           </div>
         </div>
       </form>
-      {notification && (
-        <Notification
-          status={notification.status}
-          title={notification.title}
-          message={notification.message}
-        />
-      )}
     </section>
   );
 };

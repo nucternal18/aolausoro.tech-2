@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { GetServerSidePropsContext } from "next";
-import nookies from "nookies";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import { usePortfolio } from "context/portfolioContext";
 import AdminLayout from "components/AdminLayout";
@@ -8,8 +10,56 @@ import UploadForm from "components/UploadForm";
 import { getSession } from "next-auth/react";
 import { NEXT_URL } from "config";
 
-function project({ project }) {
-  console.log(project);
+interface IFormInputs {
+  projectName: string;
+  github: string;
+  address: string;
+  techStack: string[];
+}
+
+function project({ project, projectId }) {
+  const { state, uploadImage, updateProject } = usePortfolio();
+  const [techStack, setTechStack] = useState(project.techStack);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInputs>({
+    defaultValues: {
+      projectName: project.projectName,
+      github: project.github,
+      address: project.address,
+    },
+  });
+
+  const types = ["image/png", "image/jpeg", "image/jpg"];
+
+  const changeHandler = (e) => {
+    const file = e.target.files[0];
+
+    if (file && types.includes(file.type)) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        uploadImage(reader.result);
+      };
+      reader.onerror = () => {
+        toast.error("something went wrong!");
+      };
+    } else {
+      toast.error("Please select an image file (png or jpeg)");
+    }
+  };
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    const project = {
+      projectName: data.projectName,
+      github: data.github,
+      address: data.address,
+      techStack,
+      id: projectId,
+    };
+    updateProject(project);
+  };
   return (
     <AdminLayout title="">
       <section className="flex items-center  flex-grow w-full h-screen px-4 mx-auto  md:px-10">
@@ -17,7 +67,14 @@ function project({ project }) {
           <p className="mb-2 text-2xl font-bold text-center md:text-4xl dark:text-gray-300">
             Add latest projects
           </p>
-          <UploadForm project={project} />
+          <UploadForm
+            changeHandler={changeHandler}
+            handleSubmit={handleSubmit}
+            register={register}
+            onSubmit={onSubmit}
+            imageUrl={state.imageUrl}
+            errors={errors}
+          />
         </div>
       </section>
     </AdminLayout>
@@ -67,7 +124,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   return {
-    props: { project: data },
+    props: { project: data, projectId: id },
   };
 };
 

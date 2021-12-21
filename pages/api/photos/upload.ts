@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getAuth } from "firebase-admin/auth";
 import { withSentry } from "@sentry/nextjs";
-import { defaultFirestore } from "../../../lib/firebaseAdmin";
 import { getSession } from "next-auth/react";
 import getUser from "lib/getUser";
+
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -19,18 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
      * @route POST /api/photos/upload
      * @access Private
      */
-    if (
-      !req.headers.authorization ||
-      !req.headers.authorization.startsWith("Bearer ")
-    ) {
-      console.error(
-        "No Firebase ID token was passed as a Bearer token in the Authorization header.",
-        "Make sure you authorize your request by providing the following HTTP header:",
-        "Authorization: Bearer <Firebase ID Token>"
-      );
-      res.status(403).json({ message: "No token provided. Not Authorized " });
-      return;
-    }
+
     /**
      * @desc Get user session
      */

@@ -1,36 +1,6 @@
-import { useEffect, useContext, createContext, useReducer } from "react";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  updatePassword,
-  sendPasswordResetEmail,
-  onIdTokenChanged,
-  signOut,
-  updateProfile,
-  User,
-} from "firebase/auth";
-import nookies from "nookies";
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { useContext, createContext, useReducer } from "react";
 import { NEXT_URL } from "config";
 import { uploadImage } from "lib/upload";
-
-const FIREBASE_CONFIG = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: "aolausoro-tech.firebaseapp.com",
-  databaseURL: "https://aolausoro-tech.firebaseio.com",
-  projectId: "aolausoro-tech",
-  storageBucket: "aolausoro-tech.appspot.com",
-  messagingSenderId: process.env.NEXT_PUBLIC_APP_ID,
-  appId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
-};
-
-// Initialize Firebase
-export const app = initializeApp(FIREBASE_CONFIG);
-export const database = getFirestore(app);
 
 type UserInfoProps = {
   id: string;
@@ -39,12 +9,6 @@ type UserInfoProps = {
   token?: string;
   isAdmin?: boolean;
   email: string;
-  shippingAddress?: {
-    address: string;
-    city: string;
-    postalCode: string;
-    country: string;
-  };
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -53,7 +17,7 @@ interface InitialAuthState {
   loading: boolean;
   success: boolean;
   error: Error;
-  userData: User;
+  userData: UserInfoProps;
   message: string;
 }
 
@@ -133,7 +97,6 @@ const { Provider } = authContext;
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  const router = useRouter();
 
   const createAccount = async (
     displayName: string,

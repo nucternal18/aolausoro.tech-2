@@ -12,7 +12,6 @@ import {
 } from "@firebase/firestore";
 import nookies, { parseCookies } from "nookies";
 import { NEXT_URL } from "../config";
-import { database as db } from "./authContext";
 
 type ProjectType = {
   id?: string;
@@ -56,13 +55,30 @@ const initialState = {
 export const portfolioContext = createContext<{
   state: InitialPortfolioState;
   dispatch: React.Dispatch<any>;
-  addProject: (projectName: string, github: string, address: string) => void;
-  updateProject: (
-    projectName: string,
-    github: string,
-    address: string,
-    id: string
-  ) => void;
+  addProject: ({
+    projectName,
+    github,
+    address,
+    techStack,
+  }: {
+    projectName: string;
+    github: string;
+    address: string;
+    techStack: string[];
+  }) => void;
+  updateProject: ({
+    projectName,
+    github,
+    address,
+    techStack,
+    id,
+  }: {
+    projectName: string;
+    github: string;
+    address: string;
+    techStack: string[];
+    id: string;
+  }) => void;
   deleteProject: (id: string) => void;
   uploadImage: (base64EncodedImage: string | ArrayBuffer) => void;
 }>({
@@ -125,32 +141,17 @@ const portfolioReducer = (state: InitialPortfolioState, action) => {
 export const PortfolioProvider = ({ children }) => {
   const [state, dispatch] = useReducer(portfolioReducer, initialState);
 
-  useEffect(() => {
-    dispatch({ type: ActionType.PROJECT_ACTION_REQUEST });
-    const unsub = onSnapshot(
-      collection(db, "projects"),
-      (snapshot) => {
-        const project = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        dispatch({ type: ActionType.FETCH_PROJECTS_SUCCESS, payload: project });
-      },
-      (error) => {
-        dispatch({
-          type: ActionType.PROJECT_ACTION_FAIL,
-          payload: error.message,
-        });
-      }
-    );
-    return unsub;
-  }, []);
-
-  const addProject = async (
-    projectName: string,
-    github: string,
-    address: string
-  ) => {
+  const addProject = async ({
+    projectName,
+    github,
+    address,
+    techStack,
+  }: {
+    projectName: string;
+    github: string;
+    address: string;
+    techStack: string[];
+  }) => {
     try {
       dispatch({ type: ActionType.PROJECT_ACTION_REQUEST });
       const project = {
@@ -158,9 +159,16 @@ export const PortfolioProvider = ({ children }) => {
         projectName,
         github,
         address,
-        createdAt: serverTimestamp(),
+        techStack,
       };
-      await addDoc(collection(db, "projects"), project);
+
+      const res = await fetch(`${NEXT_URL}/api/projects`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(project),
+      });
 
       dispatch({
         type: ActionType.PROJECT_ADD_SUCCESS,
@@ -174,51 +182,40 @@ export const PortfolioProvider = ({ children }) => {
     }
   };
 
-  const getDocById = async (id: string) => {
-    try {
-      const docRef = doc(collection(db, "projects"), id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        dispatch({
-          type: ActionType.FETCH_PROJECT_SUCCESS,
-          payload: docSnap.data(),
-        });
-      } else {
-        // doc.data() will be undefined in this case
-        dispatch({
-          type: ActionType.PROJECT_ACTION_FAIL,
-          payload: "No such Project!",
-        });
-      }
-    } catch (error) {
-      dispatch({
-        type: ActionType.PROJECT_ACTION_FAIL,
-        payload: error.message,
-      });
-    }
-  };
-
-  const updateProject = async (
-    projectName: string,
-    github: string,
-    address: string,
-    id: string
-  ) => {
+  const updateProject = async ({
+    projectName,
+    github,
+    address,
+    techStack,
+    id,
+  }: {
+    projectName: string;
+    github: string;
+    address: string;
+    techStack: string[];
+    id: string;
+  }) => {
     try {
       dispatch({ type: ActionType.PROJECT_ACTION_REQUEST });
       const project = {
         url: state.imageUrl,
-        projectName: projectName ? projectName : state.projects.projectName,
-        github: github ? github : state.projects.github,
-        address: address ? address : state.projects.address,
-        createdAt: serverTimestamp(),
+        projectName,
+        github,
+        address,
+        techStack,
       };
-      const projectRef = doc(db, "projects", id);
-      await updateDoc(projectRef, project);
+
+      const res = await fetch(`${NEXT_URL}/api/projects/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(project),
+      });
 
       dispatch({
-        type: ActionType.PROJECT_ADD_SUCCESS,
-        payload: "Project added successfully",
+        type: ActionType.PROJECT_UPDATE_SUCCESS,
+        payload: "Project updated successfully",
       });
     } catch (error) {
       dispatch({
@@ -231,8 +228,14 @@ export const PortfolioProvider = ({ children }) => {
   const deleteProject = async (id: string) => {
     try {
       dispatch({ type: ActionType.PROJECT_ACTION_REQUEST });
-      const projectRef = doc(db, "projects", id);
-      await deleteDoc(projectRef);
+
+      const res = await fetch(`${NEXT_URL}/api/projects/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
       dispatch({
         type: ActionType.PROJECT_DELETE_SUCCESS,
         payload: "Project deleted successfully",
