@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from "next";
 import nookies from "nookies";
 // Components
 import AdminLayout from "components/AdminLayout";
-import Table2 from "components/Table2";
+import Table2 from "components/Table/ProjectTable";
 
 // Context
 import { usePortfolio } from "context/portfolioContext";
@@ -12,7 +12,7 @@ import { NEXT_URL } from "config";
 
 function Projects({ projects }) {
   const { state } = usePortfolio();
-  console.log(projects);
+
   return (
     <AdminLayout title="">
       <section className=" h-screen   py-10 md:px-8">

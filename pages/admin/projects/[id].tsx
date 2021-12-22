@@ -19,7 +19,7 @@ interface IFormInputs {
 
 function project({ project, projectId }) {
   const { state, uploadImage, updateProject } = usePortfolio();
-  const [techStack, setTechStack] = useState(project.techStack);
+  const [techStack, setTechStack] = useState<Array<string>>(project.techStack);
   const {
     register,
     handleSubmit,
@@ -31,6 +31,11 @@ function project({ project, projectId }) {
       address: project.address,
     },
   });
+
+  const updateTechStack = (tech: string) => {
+    const existingTech = techStack.find((t) => t === tech);
+    return !existingTech ? setTechStack([...techStack, tech]) : techStack;
+  };
 
   const types = ["image/png", "image/jpeg", "image/jpg"];
 
@@ -62,7 +67,7 @@ function project({ project, projectId }) {
   };
   return (
     <AdminLayout title="">
-      <section className="flex items-center  flex-grow w-full h-screen px-4 mx-auto  md:px-10">
+      <section className="flex items-center w-full h-screen px-4 mx-auto ">
         <div className="items-center w-full p-6 my-4 overflow-hidden rounded shadow-lg dark:shadow-none md:w-2/4 md:mx-auto">
           <p className="mb-2 text-2xl font-bold text-center md:text-4xl dark:text-gray-300">
             Add latest projects

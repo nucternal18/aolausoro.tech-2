@@ -1,10 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from "nodemailer";
 import { withSentry } from "@sentry/nextjs";
+import validateHuman from "lib/validateHuman";
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
+interface IFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  token?: string;
+}
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message, token }: IFormData = req.body;
+
+    const isHuman = await validateHuman(token);
+    if (!isHuman) {
+      res
+        .status(401)
+        .json({ message: "You are not human. We can't be fooled" });
+      return;
+    }
 
     if (
       !email ||

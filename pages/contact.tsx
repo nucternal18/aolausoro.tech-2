@@ -11,7 +11,7 @@ function contact() {
   const addMessage = async (data) => {
     toast.info("Sending message.... Your message is on its way!");
     try {
-      const response = await fetch("/api/contact/addMessages", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,6 +30,7 @@ function contact() {
   };
   const submitHandler = async (newMessage) => {
     toast.info("Sending message.... Your message is on its way!");
+
     try {
       const res = await fetch("/api/contact/sendMail", {
         method: "POST",

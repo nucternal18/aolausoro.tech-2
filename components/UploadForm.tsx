@@ -1,8 +1,4 @@
-import { useState, useEffect } from "react";
 import { FaPlusCircle } from "react-icons/fa";
-
-import { usePortfolio } from "../context/portfolioContext";
-import { toast } from "react-toastify";
 
 const UploadForm = ({
   changeHandler,
@@ -48,7 +44,10 @@ const UploadForm = ({
               aria-invalid="true"
               {...register("projectName", {
                 required: "This is required",
-                maxLength: 20,
+                maxLength: {
+                  value: 20,
+                  message: "Maximum number of characters is 20",
+                },
                 pattern: {
                   value: /^[A-Za-z -]+$/,
                   message: "Please enter your name",

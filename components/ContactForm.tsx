@@ -1,13 +1,14 @@
-import React, { useState, useRef, FormEvent, useEffect } from "react";
+import React, { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button from "./Button";
 
-interface IFormInputs {
+interface IFormData {
   name: string;
   email: string;
   subject: string;
   message: string;
+  token?: string;
 }
 
 function ContactForm({ submitHandler }) {
@@ -15,18 +16,20 @@ function ContactForm({ submitHandler }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInputs>();
+  } = useForm<IFormData>();
   const recaptchaRef = useRef<ReCAPTCHA>();
 
-  const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
-    const newMessage: IFormInputs = {
+  const onSubmit: SubmitHandler<IFormData> = async (data) => {
+    const token = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
+    const newMessage: IFormData = {
       name: data.name,
       email: data.email,
       subject: data.subject,
       message: data.message,
+      token,
     };
     submitHandler(newMessage);
-    await recaptchaRef.current.executeAsync();
   };
 
   return (
@@ -50,7 +53,6 @@ function ContactForm({ submitHandler }) {
           aria-invalid="true"
           {...register("name", {
             required: "This is required",
-            maxLength: 20,
             pattern: {
               value: /^[A-Za-z -]+$/,
               message: "Please enter your name",
@@ -159,7 +161,7 @@ function ContactForm({ submitHandler }) {
       <ReCAPTCHA
         ref={recaptchaRef}
         size="invisible"
-        sitekey={process.env.NEXT_PUBLIC_SITE_KEY}
+        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
       />
     </form>
   );

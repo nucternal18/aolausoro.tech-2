@@ -1,15 +1,5 @@
 import { useEffect, useContext, createContext, useReducer } from "react";
-import {
-  collection,
-  Timestamp,
-  serverTimestamp,
-  addDoc,
-  doc,
-  updateDoc,
-  onSnapshot,
-  deleteDoc,
-  getDoc,
-} from "@firebase/firestore";
+
 import nookies, { parseCookies } from "nookies";
 import { NEXT_URL } from "../config";
 
@@ -20,7 +10,6 @@ type ProjectType = {
   github: string;
   address: string;
   techStack: string[];
-  createdAt: typeof serverTimestamp;
 };
 
 interface InitialPortfolioState {

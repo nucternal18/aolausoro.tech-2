@@ -1,5 +1,11 @@
 import React from "react";
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+  act,
+} from "@testing-library/react";
 import user from "@testing-library/user-event";
 import RegisterForm from "./RegisterForm";
 
@@ -23,8 +29,6 @@ describe("Register", () => {
   const register = jest.fn();
 
   beforeEach(() => {
-    submitHandler.mockClear();
-
     render(
       <RegisterForm
         submitHandler={submitHandler}
@@ -35,22 +39,24 @@ describe("Register", () => {
     );
   });
 
-  // it("submitHandler is called when all field pass validation", async () => {
-  //   user.type(getName(), "nucternal");
-  //   user.type(getEmail(), "adewoyin@aolausoro.tech");
-  //   user.type(getPassword(), "P@ssword1");
-  //   user.type(getConfirmPassword(), "P@ssword1");
+  it("submitHandler is called when all field pass validation", async () => {
+    user.type(getName(), "nucternal");
+    user.type(getEmail(), "adewoyin@aolausoro.tech");
+    user.type(getPassword(), "P@ssword1");
+    user.type(getConfirmPassword(), "P@ssword1");
 
-  //   fireEvent.submit(screen.getByTestId("register-form"));
-  //   await waitFor(() => expect(submitHandler).toHaveBeenCalledTimes(1));
-  //   const formData = {
-  //     name: "nucternal",
-  //     email: "adewoyin@aolausoro.tech",
-  //     password: "P@ssword1",
-  //     confirmPassword: "P@ssword1",
-  //   };
-  //   expect(submitHandler).toHaveBeenCalledWith(formData);
-  // });
+    //   fireEvent.submit(await screen.findByRole("button", { name: /register/i }));
+
+    // // await waitFor(() => expect(submitHandler).toHaveBeenCalledTimes(1));
+
+    // const formData = {
+    //   name: "nucternal",
+    //   email: "adewoyin@aolausoro.tech",
+    //   password: "P@ssword1",
+    //   confirmPassword: "P@ssword1",
+    // };
+    // expect(submitHandler).toHaveBeenCalledWith(formData);
+  });
 
   it("has 4 required fields", async () => {
     clickSubmitButton();
