@@ -233,9 +233,9 @@ Nav.Link = ({ children, href }) => (
 );
 
 const className = {
-  default: `lg:hidden flex h-screen fixed top-0 right-0 transition-all ease duration-200 text-gray-200 dark:text-yellow-500`,
-  enabled: `w-8/12  bg-gray-800 overflow-x-hidden   text-lg  py-4 z-50`,
-  disabled: `w-0  bg-gray-800 text-white overflow-x-hidden`,
+  default: `lg:hidden flex h-screen fixed top-0 right-0 transition-all ease-in-out duration-300 text-gray-200 dark:text-yellow-500`,
+  enabled: `w-8/12  bg-gray-800 overflow-x-hidden translate-x-0   text-lg  py-4 z-50`,
+  disabled: `w-0  bg-gray-800 text-white overflow-x-hidden translate-x-full`,
 };
 
 export default Navbar;
