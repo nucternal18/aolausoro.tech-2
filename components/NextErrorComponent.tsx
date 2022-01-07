@@ -1,6 +1,10 @@
+import { ServerResponse } from "http";
+import { NextPageContext } from "next";
 import { Layout } from "./layout";
 
-export default function NextErrorComponent({ statusCode }) {
+export default function NextErrorComponent({
+  statusCode,
+}: NextErrorComponentProps) {
   return (
     <Layout title={`${statusCode} error on server`}>
       <div className="flex flex-col items-center mt-20">
@@ -15,7 +19,11 @@ export default function NextErrorComponent({ statusCode }) {
   );
 }
 
-NextErrorComponent.getInitialProps = async ({ res, err }) => {
+type NextErrorComponentProps = {
+  statusCode?: number;
+};
+
+NextErrorComponent.getInitialProps = async ({ res, err }: NextPageContext) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
   const hasGetInitialPropsRun = true;
   return { statusCode, hasGetInitialPropsRun };

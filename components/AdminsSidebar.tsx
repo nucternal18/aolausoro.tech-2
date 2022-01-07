@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaBars, FaNewspaper, FaTimes, FaUserCircle, FaMailBulk } from "react-icons/fa";
+import {
+  FaBars,
+  FaNewspaper,
+  FaTimes,
+  FaUserCircle,
+  FaMailBulk,
+} from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
+import { getSession, signOut } from "next-auth/react";
 import ActiveLink from "./ActiveLink";
 
 import { useAuth } from "../context/authContext";
@@ -13,11 +20,20 @@ function AdminsSidebar() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const [collapseShow, setCollapseShow] = useState("hidden");
+  const [loading, setLoading] = useState(true);
+  const [loadedSession, setLoadedSession] = useState(null);
 
-  const { logoutHandler } = useAuth();
+  useEffect(() => {
+    getSession().then((session) => {
+      setLoading(false);
+      if (session) {
+        setLoadedSession(session);
+      }
+    });
+  }, []);
 
   const handleLogout = () => {
-    logoutHandler();
+    signOut();
     router.push("/");
   };
   return (

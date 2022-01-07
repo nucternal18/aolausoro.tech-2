@@ -1,41 +1,23 @@
-import {  useEffect, useContext, createContext, useReducer } from 'react';
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  updatePassword,
-  sendPasswordResetEmail,
-  onIdTokenChanged,
-  signOut,
-  updateProfile,
-  User
-} from "firebase/auth";
-import nookies from 'nookies';
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { useRouter } from 'next/router';
+import { useContext, createContext, useReducer } from "react";
+import { NEXT_URL } from "config";
+import { uploadImage } from "lib/upload";
 
-const FIREBASE_CONFIG = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: 'aolausoro-tech.firebaseapp.com',
-  databaseURL: 'https://aolausoro-tech.firebaseio.com',
-  projectId: 'aolausoro-tech',
-  storageBucket: 'aolausoro-tech.appspot.com',
-  messagingSenderId: process.env.NEXT_PUBLIC_APP_ID,
-  appId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+type UserInfoProps = {
+  id: string;
+  name: string;
+  image?: string;
+  token?: string;
+  isAdmin?: boolean;
+  email: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
-
-// Initialize Firebase
-export const app = initializeApp(FIREBASE_CONFIG);
-export const db = getFirestore(app);
-
-
 interface InitialAuthState {
   isAuthenticated: boolean;
   loading: boolean;
+  success: boolean;
   error: Error;
-  userData: User;
+  userData: UserInfoProps;
   message: string;
 }
 
@@ -57,24 +39,24 @@ export enum ActionType {
 const initialState = {
   isAuthenticated: false,
   loading: false,
+  success: false,
   error: null,
   userData: null,
   message: "",
 };
 
-
 export const authContext = createContext<{
   state: InitialAuthState;
   dispatch: React.Dispatch<any>;
-  createAccount: (email: string, password: string) => void;
-  loginHandler: (email: string, password: string) => void;
-  logoutHandler: () => void;
+  createAccount: (name: string, email: string, password: string) => void;
+  updateProfile: (user: UserInfoProps) => void;
+  uploadUserImage: (base64EncodedImage: string | ArrayBuffer) => void;
 }>({
   state: initialState,
   dispatch: () => null,
   createAccount: () => {},
-  loginHandler: () => {},
-  logoutHandler: () => {},
+  updateProfile: () => {},
+  uploadUserImage: () => {},
 });
 
 const authReducer = (state: InitialAuthState, action) => {
@@ -87,13 +69,15 @@ const authReducer = (state: InitialAuthState, action) => {
       return {
         ...state,
         loading: false,
+        success: true,
         message: action.payload,
       };
-    case ActionType.USER_LOGIN_SUCCESS:
+    case ActionType.USER_UPDATE_PROFILE_SUCCESS:
       return {
         ...state,
         loading: false,
-        isAuthenticated: true,
+        success: true,
+        message: action.payload,
       };
     case ActionType.FETCH_USER_SUCCESS:
       return {
@@ -102,85 +86,48 @@ const authReducer = (state: InitialAuthState, action) => {
         userData: action.payload,
         isAuthenticated: true,
       };
-    case ActionType.USER_LOGOUT_SUCCESS:
-      return initialState;
+    case ActionType.USER_IMAGE_UPLOAD_SUCCESS:
+      return { ...state, loading: false, success: true, image: action.payload };
     default:
       return state;
   }
 };
 
-export const auth = getAuth();
-
 const { Provider } = authContext;
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  const router = useRouter();
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    return onIdTokenChanged(auth, async (user) => {
-      if (!user) {
+  const createAccount = async (
+    displayName: string,
+    email: string,
+    password: string
+  ) => {
+    try {
+      dispatch({
+        type: ActionType.USER_ACTION_REQUEST,
+      });
+      const res = await fetch(`${NEXT_URL}/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          displayName,
+          email,
+          password,
+          image:
+            "https://firebasestorage.googleapis.com/v0/b/aolausoro-tech.appspot.com/o/2C7EB02D-5902-4970-9807-43E09C9D5AED_1_201_a.jpeg?alt=media&token=52d9c142-99bc-4772-98db-a28c352d9deb",
+          isAdmin: true,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
         dispatch({
-          type: ActionType.USER_LOGOUT_SUCCESS,
+          type: ActionType.USER_REGISTER_SUCCESS,
+          payload: "Account created successfully",
         });
-        nookies.set(undefined, "token", "", { path: "/" });
-        return;
       }
-      const userData = {
-        uid: user.uid,
-        displayName: user.displayName ? user.displayName : "",
-        email: user.email,
-        photoUrl: user.photoURL,
-        emailVerified: user.emailVerified,
-      };
-
-      dispatch({
-        type: ActionType.FETCH_USER_SUCCESS,
-        payload: userData,
-      });
-      const token = await user.getIdToken();
-      nookies.set(undefined, "token", token, {
-        maxAge: 30 * 24 * 60 * 60,
-        sameSite: true,
-        path: "/",
-      });
-    });
-  }, []);
-
-  // force refresh the token every 10 minutes
-  useEffect(() => {
-    const handle = setInterval(async () => {
-      const user = auth.currentUser;
-      if (user) await user.getIdToken(true);
-    }, 10 * 60 * 1000);
-
-    // clean up setInterval
-    return () => clearInterval(handle);
-  }, []);
-
-
-  // force refresh the token every 10 minutes
-  useEffect(() => {
-    const handle = setInterval(async () => {
-      const user = auth.currentUser;
-      if (user) await user.getIdToken(true);
-    }, 10 * 60 * 1000);
-
-    // clean up setInterval
-    return () => clearInterval(handle);
-  }, []);
-
-  const createAccount = async (email: string, password: string) => {
-    try {
-      dispatch({
-        type: ActionType.USER_ACTION_REQUEST,
-      });
-      await createUserWithEmailAndPassword(auth, email, password);
-      dispatch({
-        type: ActionType.USER_REGISTER_SUCCESS,
-        payload: "Account created successfully",
-      });
     } catch (error) {
       const errorMessage = error.message;
       dispatch({
@@ -190,43 +137,75 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginHandler = async (email: string, password: string) => {
+  /**
+   * @desc Update current logged in user profile details
+   *
+   * @param user
+   * @returns {Promise<void>}
+   */
+  const updateProfile = async (user: UserInfoProps): Promise<void> => {
     try {
       dispatch({
         type: ActionType.USER_ACTION_REQUEST,
       });
-      await signInWithEmailAndPassword(auth, email, password);
-      dispatch({});
+
+      const res = await fetch(`${NEXT_URL}/api/auth/updateProfile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        dispatch({
+          type: ActionType.USER_UPDATE_PROFILE_SUCCESS,
+          payload: data,
+        });
+      }
     } catch (error) {
-      const errorMessage = error.message;
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : "Unable to update user details. Please try again.";
       dispatch({
         type: ActionType.USER_ACTION_FAIL,
-        payload: errorMessage,
+        payload: err,
       });
     }
   };
 
-  const logoutHandler = async () => {
-    signOut(auth)
-    .then(() => {
+  /**
+   * @desc Upload a base64EncodedImage to cloudinary
+   *
+   * @param base64EncodedImage
+   */
+  const uploadUserImage = async (base64EncodedImage: string): Promise<void> => {
+    try {
       dispatch({
-        type: ActionType.USER_LOGOUT_SUCCESS,
+        type: ActionType.USER_ACTION_REQUEST,
       });
-      nookies.destroy(undefined, 'token');
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
+      const data = await uploadImage(base64EncodedImage);
+
+      if (data) {
+        dispatch({ type: ActionType.USER_IMAGE_UPLOAD_SUCCESS, payload: data });
+      }
+    } catch (error) {
+      const err =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : "Unable to upload image. Please try again.";
       dispatch({
         type: ActionType.USER_ACTION_FAIL,
-        payload: errorMessage,
+        payload: err,
       });
-    });
-   
+    }
   };
 
   return (
     <Provider
-      value={{ state, dispatch, createAccount, loginHandler, logoutHandler }}>
+      value={{ state, dispatch, createAccount, uploadUserImage, updateProfile }}
+    >
       {children}
     </Provider>
   );
