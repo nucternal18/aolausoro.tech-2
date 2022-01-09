@@ -4,12 +4,12 @@ import { useRouter } from "next/router";
 import { FaUser } from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { getSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 import { links, social } from "../data";
 
 // context
-import { useAuth } from "../context/authContext";
+import { useAuth, ActionType } from "../context/authContext";
 
 type NavProps = {
   textColor?: string;
@@ -34,19 +34,8 @@ type SessionProps = {
 export default function Navbar({ textColor }: NavProps) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const { state } = useAuth();
+  const { state, dispatch } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [loadedSession, setLoadedSession] = useState<SessionProps>(null);
-
-  useEffect(() => {
-    getSession().then((session) => {
-      setLoading(false);
-      if (session) {
-        setLoadedSession(session);
-      }
-    });
-  }, []);
 
   const toggle = () => {
     setIsOpen(!isOpen);
@@ -54,6 +43,7 @@ export default function Navbar({ textColor }: NavProps) {
 
   const logout = () => {
     signOut();
+    dispatch({ type: ActionType.USER_LOGOUT_SUCCESS });
     router.push("/");
   };
 
@@ -70,7 +60,7 @@ export default function Navbar({ textColor }: NavProps) {
               </Nav.Item>
             );
           })}
-          {loadedSession && (
+          {state.userData && state.userData?.isAdmin && (
             <>
               <Nav.Item>
                 <Nav.Link href="/admin">ADMIN</Nav.Link>
@@ -110,7 +100,7 @@ export default function Navbar({ textColor }: NavProps) {
               </Nav.Item>
             );
           })}
-          {!loadedSession && (
+          {!state.userData && (
             <Nav.Item>
               <Nav.Link href="/login">
                 <FaUser />
@@ -137,7 +127,7 @@ export default function Navbar({ textColor }: NavProps) {
               </Nav.Item>
             );
           })}
-          {!loadedSession && (
+          {!state.userData && (
             <Nav.Item>
               <Nav.Link href="/login">
                 <FaUser />
@@ -145,7 +135,7 @@ export default function Navbar({ textColor }: NavProps) {
             </Nav.Item>
           )}
         </div>
-        {loadedSession && <Nav.Item>{loadedSession.user.name}</Nav.Item>}
+        {state.userData && <Nav.Item>{state.userData.name}</Nav.Item>}
       </Nav.SideNav>
     </Nav>
   );

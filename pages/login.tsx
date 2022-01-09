@@ -7,7 +7,7 @@ import { Layout } from "../components/layout";
 import LoginForm from "components/Login";
 
 // context
-import { useAuth } from "../context/authContext";
+import { ActionType, useAuth } from "../context/authContext";
 
 type Inputs = {
   email: string;
@@ -15,9 +15,8 @@ type Inputs = {
 };
 
 export default function Login(props) {
-  const { state } = useAuth();
+  const { dispatch } = useAuth();
   const router = useRouter();
-  const { redirect } = router.query;
 
   const submitHandler = async ({ email, password }) => {
     const result = await signIn("credentials", {
@@ -29,6 +28,12 @@ export default function Login(props) {
       toast.error("Invalid email or password");
     }
     if (result.ok) {
+      const session = await getSession();
+      console.log(session.user);
+      dispatch({
+        type: ActionType.FETCH_USER_SUCCESS,
+        payload: session.user,
+      });
       router.push("/admin");
     }
   };

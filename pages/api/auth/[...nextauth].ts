@@ -10,16 +10,18 @@ type CredentialsProps = {
   password: string;
 };
 
-type SessionProps = {
-  user: {
-    _id: string;
-    image: string;
-    name: string;
-    email: string;
-    isAdmin: boolean;
-  };
-  expires: Date;
+type UserProps = {
+  _id: string;
+  image: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
 };
+
+interface ISessionProps {
+  user: UserProps;
+  expires: Date;
+}
 
 export default NextAuth({
   session: {
@@ -66,9 +68,9 @@ export default NextAuth({
      * @param  {object}  user      User object      (only available on sign in)
      * @return {object}              Session that will be returned to the client
      */
-    async session({ session, user }) {
+    async session({ session, token, user }) {
       // Add property to session, like an access_token from a provider.
-      user && (session.user = user.user);
+      session.user = token.user;
       return session;
     },
     /**
@@ -79,10 +81,7 @@ export default NextAuth({
      */
     async jwt({ token, user, account }) {
       // Add access_token to the token right after signin
-      if (user) {
-        token.accessToken = user._id;
-        token.user = user;
-      }
+      user && (token.user = user);
       return token;
     },
   },

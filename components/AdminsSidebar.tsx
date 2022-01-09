@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useState } from "react";
+
 import Link from "next/link";
 import {
   FaBars,
@@ -10,30 +10,21 @@ import {
 } from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { getSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import ActiveLink from "./ActiveLink";
 
-import { useAuth } from "../context/authContext";
+import { ActionType, useAuth } from "../context/authContext";
 import { useRouter } from "next/router";
 
 function AdminsSidebar() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
+  const { dispatch } = useAuth();
   const [collapseShow, setCollapseShow] = useState("hidden");
-  const [loading, setLoading] = useState(true);
-  const [loadedSession, setLoadedSession] = useState(null);
-
-  useEffect(() => {
-    getSession().then((session) => {
-      setLoading(false);
-      if (session) {
-        setLoadedSession(session);
-      }
-    });
-  }, []);
 
   const handleLogout = () => {
     signOut();
+    dispatch({ type: ActionType.USER_LOGOUT_SUCCESS });
     router.push("/");
   };
   return (

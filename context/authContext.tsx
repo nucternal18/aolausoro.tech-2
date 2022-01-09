@@ -1,4 +1,5 @@
-import { useContext, createContext, useReducer } from "react";
+import { useContext, createContext, useReducer, useEffect } from "react";
+import { getSession } from "next-auth/react";
 import { NEXT_URL } from "config";
 import { uploadImage } from "lib/upload";
 
@@ -9,8 +10,6 @@ type UserInfoProps = {
   token?: string;
   isAdmin?: boolean;
   email: string;
-  createdAt?: Date;
-  updatedAt?: Date;
 };
 interface InitialAuthState {
   isAuthenticated: boolean;
@@ -88,6 +87,8 @@ const authReducer = (state: InitialAuthState, action) => {
       };
     case ActionType.USER_IMAGE_UPLOAD_SUCCESS:
       return { ...state, loading: false, success: true, image: action.payload };
+    case ActionType.USER_LOGOUT_SUCCESS:
+      return initialState;
     default:
       return state;
   }
@@ -97,6 +98,17 @@ const { Provider } = authContext;
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
+
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session) {
+        dispatch({
+          type: ActionType.FETCH_USER_SUCCESS,
+          payload: session.user,
+        });
+      }
+    });
+  }, []);
 
   const createAccount = async (
     displayName: string,
