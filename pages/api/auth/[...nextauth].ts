@@ -44,7 +44,6 @@ export default NextAuth({
         await db.disconnect();
 
         if (user && (await user.matchPassword(credentials.password))) {
-          console.log(user);
           return {
             _id: user._id,
             image: user.image,
