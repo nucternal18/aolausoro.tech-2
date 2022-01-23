@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/layout/AdminLayout";
 import MessageTable from "components/Table/MessageTable";
 import { NEXT_URL } from "config";
 import getUser from "lib/getUser";

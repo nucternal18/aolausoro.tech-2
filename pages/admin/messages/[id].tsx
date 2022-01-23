@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Button from "components/Button";
 import { NEXT_URL } from "config";
 import getUser from "lib/getUser";
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/layout/AdminLayout";
 
 function Message({ message }) {
   const router = useRouter();

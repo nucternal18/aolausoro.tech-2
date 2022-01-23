@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext } from "next";
 import nookies from "nookies";
 // Components
-import AdminLayout from "components/AdminLayout";
-import Table2 from "components/Table/ProjectTable";
+import AdminLayout from "components/layout/AdminLayout";
+import Table from "components/Table/ProjectTable";
 
 // Context
 import { usePortfolio } from "context/portfolioContext";
@@ -14,9 +14,9 @@ function Projects({ projects }) {
   const { state } = usePortfolio();
 
   return (
-    <AdminLayout title="">
-      <section className=" h-screen   py-10 md:px-8">
-        <Table2 data={projects} />
+    <AdminLayout title="Admin - Projects">
+      <section className="w-full h-full py-10 md:px-8">
+        <Table data={projects} />
       </section>
     </AdminLayout>
   );

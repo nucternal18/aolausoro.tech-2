@@ -23,13 +23,13 @@ function MyApp({ Component, pageProps, err }: WorkaroundAppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <ThemeProvider attribute="class">
-          <PortfolioProvider>
-            <SessionProvider session={pageProps.session}>
-              <AuthProvider>
+          <SessionProvider session={pageProps.session}>
+            <AuthProvider>
+              <PortfolioProvider>
                 <Component {...pageProps} err={err} />
-              </AuthProvider>
-            </SessionProvider>
-          </PortfolioProvider>
+              </PortfolioProvider>
+            </AuthProvider>
+          </SessionProvider>
         </ThemeProvider>
         <ToastContainer
           position="top-right"

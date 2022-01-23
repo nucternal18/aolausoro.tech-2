@@ -6,10 +6,10 @@ import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
 import { signOut } from "next-auth/react";
 
-import { links, social } from "../data";
+import { links, social } from "../../data";
 
 // context
-import { useAuth, ActionType } from "../context/authContext";
+import { useAuth, ActionType } from "../../context/authContext";
 
 type NavProps = {
   textColor?: string;

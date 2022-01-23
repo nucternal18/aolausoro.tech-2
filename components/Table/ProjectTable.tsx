@@ -2,11 +2,11 @@ import Image from "next/image";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useRouter } from "next/router";
 
-function Table2({ data }) {
+function Table({ data }) {
   const router = useRouter();
 
   return (
-    <table className="w-full md:min-w-full rounded-md shadow-2xl  md:table">
+    <table className="w-full md:min-w-full rounded-md shadow-xl  md:table">
       <thead className="bg-gray-50 dark:bg-yellow-500  hidden md:table-header-group">
         <tr className="md:table-row absolute  -top-full md:top-auto -left-full md:left-auto  md:relative">
           <th
@@ -194,4 +194,4 @@ function Table2({ data }) {
   );
 }
 
-export default Table2;
+export default Table;

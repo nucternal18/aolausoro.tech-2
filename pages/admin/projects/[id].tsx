@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import { usePortfolio } from "context/portfolioContext";
-import AdminLayout from "components/AdminLayout";
+import AdminLayout from "components/layout/AdminLayout";
 import getUser from "lib/getUser";
 import UploadForm from "components/UploadForm";
 import { getSession } from "next-auth/react";

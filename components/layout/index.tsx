@@ -1,8 +1,12 @@
+import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import AdminsSidebar from "./AdminsSidebar";
 
-type LayoutProps = {
+// Components
+import Navbar from "../navigation/Navbar";
+import Footer from "../Footer";
+
+interface LayoutProps {
   children: React.ReactNode;
   title: string;
   color?: string;
@@ -10,9 +14,9 @@ type LayoutProps = {
   image?: string;
   type?: string;
   date?: Date;
-};
+}
 
-export default function AdminLayout({
+export const Layout = ({
   children,
   title,
   color,
@@ -20,13 +24,38 @@ export default function AdminLayout({
   image,
   type,
   date,
-}: LayoutProps) {
+}: LayoutProps) => {
   const router = useRouter();
+  const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
+
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    scrollRef.current.scrollTo(0, 0);
+  }, []);
   return (
     <div className="flex flex-col justify-between h-screen">
       <Head>
         <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
         <meta name="description" content="Personal portfolio website" />
         <meta name="og:title" content={title} />
         <meta name="twitter:card" content="summary_large_image" />
@@ -52,8 +81,20 @@ export default function AdminLayout({
           />
         )}
       </Head>
-      <AdminsSidebar />
-      <main className="relative md:ml-64">{children}</main>
+      <Navbar textColor={color} />
+
+      <main className="pb-2 flex-1 h-screen overflow-y-scroll" ref={scrollRef}>
+        {children}
+      </main>
+      <Footer />
     </div>
   );
-}
+};
+
+Layout.defaultProps = {
+  title: "Adewoyin Oladipupo-Usoro - Web & Mobile Developer",
+  description:
+    "I've been developing websites for 5 years straight. Get in touch with me to know more.",
+  image: "/profile.jpg",
+  type: "website",
+};

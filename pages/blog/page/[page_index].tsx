@@ -1,23 +1,23 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-import { getSortedPostsData } from '../../../lib/posts';
-import { Layout } from '../../../components/layout';
-import BlogItem from '../../../components/Blog';
-import Pagination from '../../../components/Pagination';
-import { POSTS_PER_PAGE } from '../../../config';
+import { getSortedPostsData } from "../../../lib/posts";
+import { Layout } from "../../../components/layout";
+import BlogItem from "../../../components/Blog";
+import Pagination from "../../../components/Pagination";
+import { POSTS_PER_PAGE } from "../../../config";
 
-const postsDirectory = path.join(process.cwd(), '/blogs');
+const postsDirectory = path.join(process.cwd(), "/blogs");
 
 export default function BlogPage({ posts, numPages, currentPage }) {
   return (
-    <Layout title='aolausoro.tech - blog'>
-      <section className='max-w-screen-lg mx-0 md:mx-auto md:-mt-48'>
-        <h1 className='p-5 text-5xl font-thin border-b border-current lg:mt-6 dark:border-yellow-500 dark:text-yellow-500'>
+    <Layout title="aolausoro.tech - blog">
+      <section className="max-w-screen-lg mx-0 md:mx-auto">
+        <h1 className="p-5 text-5xl font-thin border-b border-current lg:mt-6 dark:border-yellow-500 dark:text-yellow-500">
           BLOG
         </h1>
 
-        <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {posts
             .sort((postA, postB) => (postA.date > postB.date ? -1 : 1))
             .map((post) => (

@@ -1,13 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
+import { withSentry } from "@sentry/nextjs";
 import User from "../../../models/userModel";
 
 import db from "../../../lib/db";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const { displayName, password, email, isAdmin, image } = req.body;
 
@@ -54,3 +51,5 @@ export default async function handler(
     res.status(405).json({ message: `Method ${req.method} not allowed` });
   }
 }
+
+export default withSentry(handler);

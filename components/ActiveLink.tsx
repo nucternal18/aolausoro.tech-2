@@ -10,8 +10,8 @@ function ActiveLink({ children, href }) {
         className={`${
           router.asPath === href
             ? "text-yellow-500"
-            : "text-gray-900 uppercase hover:text-yellow-500 dark:text-gray-100"
-        } flex flex-row py-3 text-xs font-bold text-gray-800 uppercase hover:text-gray-600`}
+            : "text-gray-900 hover:text-yellow-500 dark:text-gray-100"
+        } flex items-center flex-row py-3 text-lg font-semibold text-gray-800 capitalize hover:text-gray-600`}
       >
         {children}
       </a>

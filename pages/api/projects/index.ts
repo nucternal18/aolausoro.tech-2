@@ -1,11 +1,12 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from "next";
+import { withSentry } from "@sentry/nextjs";
+import { getSession } from "next-auth/react";
 import db from "lib/db";
 import Project from "models/projectModel";
-import { getSession } from "next-auth/react";
 import getUser from "lib/getUser";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     /**
      * @desc get all projects
@@ -72,3 +73,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 };
+
+export default withSentry(handler);
