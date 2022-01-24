@@ -1,17 +1,18 @@
 import { GetServerSidePropsContext } from "next";
-import nookies from "nookies";
+import { getSession } from "next-auth/react";
+
 // Components
 import AdminLayout from "components/layout/AdminLayout";
 import Table from "components/Table/ProjectTable";
 
 // Context
-import { usePortfolio } from "context/portfolioContext";
+import { useGlobalApp } from "context/appContext";
+
 import getUser from "lib/getUser";
-import { getSession } from "next-auth/react";
 import { NEXT_URL } from "config";
 
 function Projects({ projects }) {
-  const { state } = usePortfolio();
+  const { state } = useGlobalApp();
 
   return (
     <AdminLayout title="Admin - Projects">

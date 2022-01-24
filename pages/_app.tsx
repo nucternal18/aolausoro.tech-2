@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import { AuthProvider } from "../context/authContext";
 import { ToastContainer } from "react-toastify";
 import "tailwindcss/tailwind.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +10,7 @@ import { Hydrate } from "react-query/hydration";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 // Context
-import { PortfolioProvider } from "../context/portfolioContext";
+import { AppProvider } from "../context/appContext";
 
 interface WorkaroundAppProps extends AppProps {
   err: any;
@@ -24,11 +23,9 @@ function MyApp({ Component, pageProps, err }: WorkaroundAppProps) {
       <Hydrate state={pageProps.dehydratedState}>
         <ThemeProvider attribute="class">
           <SessionProvider session={pageProps.session}>
-            <AuthProvider>
-              <PortfolioProvider>
-                <Component {...pageProps} err={err} />
-              </PortfolioProvider>
-            </AuthProvider>
+            <AppProvider>
+              <Component {...pageProps} err={err} />
+            </AppProvider>
           </SessionProvider>
         </ThemeProvider>
         <ToastContainer

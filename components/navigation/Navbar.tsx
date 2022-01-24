@@ -9,7 +9,8 @@ import { signOut } from "next-auth/react";
 import { links, social } from "../../data";
 
 // context
-import { useAuth, ActionType } from "../../context/authContext";
+import { useGlobalApp } from "context/appContext";
+import { ActionType } from "context/appActions";
 
 type NavProps = {
   textColor?: string;
@@ -34,7 +35,7 @@ type SessionProps = {
 export default function Navbar({ textColor }: NavProps) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const { state, dispatch } = useAuth();
+  const { state, dispatch } = useGlobalApp();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -79,6 +80,20 @@ export default function Navbar({ textColor }: NavProps) {
           )}
         </Nav.NavLinks>
         <Nav.NavLinks right>
+          {state.userData && (
+            <button
+              type="button"
+              className="flex items-center bg-gray-800 dark:bg-yellow-500 px-2 mr-2  py-1 rounded-3xl text-gray-200 shadow-xl"
+              onClick={() => router.push(`/user-profile/${state.userData.id}`)}
+            >
+              <p className="mr-2 capitalize text-base">{state.userData.name}</p>
+              <img
+                src={state.userData.image}
+                alt="user-profile"
+                className="w-8 h-8 rounded-full"
+              />
+            </button>
+          )}
           <Nav.Item>
             <button
               type="button"
@@ -118,6 +133,21 @@ export default function Navbar({ textColor }: NavProps) {
             </Nav.Item>
           );
         })}
+        {state.userData && (
+          <button
+            type="button"
+            className="flex items-center bg-gray-800 dark:bg-yellow-500 px-4 ml-4 py-2 rounded-3xl text-gray-200 shadow-xl"
+            onClick={() => router.push(`/user-profile/${state.userData.id}`)}
+          >
+            <p className="mr-2 capitalize text-base">{state.userData.name}</p>
+            <img
+              src={state.userData.image}
+              alt="user-profile"
+              className="w-8 h-8 rounded-full"
+            />
+          </button>
+        )}
+
         <div className="flex flex-row mt-48 ">
           {social.map((link) => {
             const { id, url, icon } = link;
@@ -135,7 +165,6 @@ export default function Navbar({ textColor }: NavProps) {
             </Nav.Item>
           )}
         </div>
-        {state.userData && <Nav.Item>{state.userData.name}</Nav.Item>}
       </Nav.SideNav>
     </Nav>
   );

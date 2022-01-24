@@ -6,10 +6,10 @@ import { GetServerSideProps } from "next";
 import { toast } from "react-toastify";
 
 import { Layout } from "../components/layout";
+import RegisterForm from "components/RegisterForm";
 
 // context
-import { useAuth } from "../context/authContext";
-import RegisterForm from "components/RegisterForm";
+import { useGlobalApp } from "../context/appContext";
 
 type Inputs = {
   name: string;
@@ -19,7 +19,7 @@ type Inputs = {
 };
 
 export default function Register(props) {
-  const { state, createAccount } = useAuth();
+  const { state, createAccount } = useGlobalApp();
   const router = useRouter();
 
   const {

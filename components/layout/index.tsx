@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -26,7 +26,6 @@ export const Layout = ({
   date,
 }: LayoutProps) => {
   const router = useRouter();
-  const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
 
   const scrollRef = useRef(null);
 

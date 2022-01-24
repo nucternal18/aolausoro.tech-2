@@ -1,7 +1,13 @@
 import AdminLayout from "components/layout/AdminLayout";
+import AddJobComponent from "../../../components/AddJobComponent";
 
 function AddJob() {
-  return <AdminLayout title="Admin - Add Job">Add Job</AdminLayout>;
+  const submitHandler = async (newMessage) => {};
+  return (
+    <AdminLayout title="Admin - Add Job">
+      <AddJobComponent submitHandler={submitHandler} />
+    </AdminLayout>
+  );
 }
 
 export default AddJob;

@@ -3,8 +3,13 @@ import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
+// components
 import AdminLayout from "components/layout/AdminLayout";
 import MessageTable from "components/Table/MessageTable";
+
+// context
+import { useGlobalApp } from "context/appContext";
+
 import { NEXT_URL } from "config";
 import getUser from "lib/getUser";
 

@@ -11,16 +11,20 @@ import {
 } from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
+
+// components
 import ActiveLink from "../ActiveLink";
 
-import { ActionType, useAuth } from "../../context/authContext";
-import { useRouter } from "next/router";
+// context
+import { useGlobalApp } from "context/appContext";
+import { ActionType } from "context/appActions";
 
 function AdminsSidebar() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
-  const { state, dispatch } = useAuth();
+  const { state, dispatch } = useGlobalApp();
   const [collapseShow, setCollapseShow] = useState("hidden");
 
   const handleLogout = () => {

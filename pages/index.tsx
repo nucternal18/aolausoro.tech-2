@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { Layout } from "../components/layout";
-import Button from "../components/Button";
+import Button from "components/Button";
 
 const url =
   "https://res.cloudinary.com/dus5nxe5w/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1622888216/ruijia-wang-_cX76xaZB5A-unsplash_hqwwlm.jpg";
@@ -16,33 +16,6 @@ const variants = {
 export default function Home() {
   return (
     <Layout title="aolausoro.tech - home" color=" dark:text-yellow-500">
-      {/* <section className='z-50 flex items-center justify-center h-full mx-auto text-white'>
-        <div className={styles.home}>
-          <Image src={url} layout='fill' objectFit='cover' quality={75} />
-        </div>
-        <motion.div
-          initial='hidden'
-          animate='visible'
-          variants={variants}
-          transition={{ duration: 5.0 }}
-          drag
-          dragTransition={{
-            min: 0,
-            max: 100,
-            bounceStiffness: 100,
-          }}
-          className='relative opacity-75'>
-          <div className='z-50 mx-auto text-center border-b-2 border-yellow-500 border-opacity-100 md:w-3/4'>
-            <h1 className='z-50 w-full mb-1 text-3xl font-thin text-white sm:text-3xl md:text-5xl '>
-              <span>Hi there, I'm Woyin.</span>
-              <span>I am a web & mobile application developer.</span>
-            </h1>
-          </div>
-          <h1 className='z-50 mt-2 text-3xl font-thin text-center text-white md:text-4xl'>
-            Welcome to My Portfolio
-          </h1>
-        </motion.div>
-      </section> */}
       <section className="relative flex items-center content-center justify-center h-screen max-w-screen-xl pt-16 pb-32 mx-auto">
         <div className="absolute top-0 w-full h-screen bg-center bg-cover">
           <Image

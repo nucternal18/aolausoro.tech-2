@@ -1,8 +1,13 @@
-import { FaAlignLeft, FaUserCircle, FaCaretDown } from "react-icons/fa";
+import { FaCaretDown } from "react-icons/fa";
+import { useRouter } from "next/router";
 import { MdOutlineDashboard } from "react-icons/md";
-import { useAuth } from "../../context/authContext";
+
+// context
+import { useGlobalApp } from "context/appContext";
+
 const AdminNavBar = () => {
-  const { state } = useAuth();
+  const router = useRouter();
+  const { state } = useGlobalApp();
   return (
     <nav className="p-6 md:flex gap-2 md:gap-5 w-full hidden shadow-xl bg-white dark:bg-gray-900 ">
       <div className="flex items-center justify-center text-gray-800 dark:text-gray-200 dark:hover:text-yellow-500 ">
@@ -14,6 +19,7 @@ const AdminNavBar = () => {
           <button
             type="button"
             className="flex items-center bg-gray-800 dark:bg-yellow-500 px-4 py-2 rounded-3xl text-gray-200 shadow-xl"
+            onClick={() => router.push(`/user-profile/${state.userData.id}`)}
           >
             <p className="mr-2 capitalize text-base">{state.userData.name}</p>
             <img

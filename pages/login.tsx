@@ -7,7 +7,8 @@ import { Layout } from "../components/layout";
 import LoginForm from "components/Login";
 
 // context
-import { ActionType, useAuth } from "../context/authContext";
+import { useGlobalApp } from "../context/appContext";
+import { ActionType } from "context/appActions";
 
 type Inputs = {
   email: string;
@@ -15,10 +16,10 @@ type Inputs = {
 };
 
 export default function Login(props) {
-  const { dispatch } = useAuth();
+  const { dispatch } = useGlobalApp();
   const router = useRouter();
 
-  const submitHandler = async ({ email, password }) => {
+  const submitHandler = async ({ email, password }: Inputs) => {
     const result = await signIn("credentials", {
       redirect: false,
       email,

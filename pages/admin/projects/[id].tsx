@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GetServerSidePropsContext } from "next";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
-
-import { usePortfolio } from "context/portfolioContext";
-import AdminLayout from "components/layout/AdminLayout";
-import getUser from "lib/getUser";
-import UploadForm from "components/UploadForm";
 import { getSession } from "next-auth/react";
+
+// components
+import AdminLayout from "components/layout/AdminLayout";
+import UploadForm from "components/UploadForm";
+
+// context
+import { useGlobalApp } from "context/appContext";
+
+import getUser from "lib/getUser";
 import { NEXT_URL } from "config";
 
 interface IFormInputs {
@@ -18,7 +22,7 @@ interface IFormInputs {
 }
 
 function project({ project, projectId }) {
-  const { state, uploadImage, updateProject } = usePortfolio();
+  const { state, uploadImage, updateProject } = useGlobalApp();
   const [techStack, setTechStack] = useState<Array<string>>(project.techStack);
   const {
     register,
