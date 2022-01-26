@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import user from "@testing-library/user-event";
-import Login from "./Login";
+import Login from "../Login";
 
 describe("Login", () => {
   const handleLogin = jest.fn();

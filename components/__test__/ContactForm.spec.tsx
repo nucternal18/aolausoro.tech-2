@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import user from "@testing-library/user-event";
-import ContactForm from "./ContactForm";
+import ContactForm from "../ContactForm";
 
 describe("Login", () => {
   const submitHandler = jest.fn();

@@ -5,8 +5,11 @@ import styles from "../styles/Home.module.css";
 import { Layout } from "../components/layout";
 import Button from "components/Button";
 
-const url =
-  "https://res.cloudinary.com/dus5nxe5w/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1622888216/ruijia-wang-_cX76xaZB5A-unsplash_hqwwlm.jpg";
+const randomImage =
+  "https://source.unsplash.com/random/1600x900/?coder-setup,code";
+
+// const url =
+//   "https://res.cloudinary.com/dus5nxe5w/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1622888216/ruijia-wang-_cX76xaZB5A-unsplash_hqwwlm.jpg";
 
 const variants = {
   hidden: { opacity: 0 },
@@ -19,7 +22,7 @@ export default function Home() {
       <section className="relative flex items-center content-center justify-center h-screen max-w-screen-xl pt-16 pb-32 mx-auto">
         <div className="absolute top-0 w-full h-screen bg-center bg-cover">
           <Image
-            src={url}
+            src={randomImage}
             alt="home background image"
             layout="fill"
             objectFit="cover"

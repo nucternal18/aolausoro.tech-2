@@ -7,7 +7,7 @@ import {
   act,
 } from "@testing-library/react";
 import user from "@testing-library/user-event";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "../RegisterForm";
 
 describe("Register", () => {
   const submitHandler = jest.fn();

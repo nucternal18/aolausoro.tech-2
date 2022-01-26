@@ -3,14 +3,18 @@
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-const { withSentryConfig } = require('@sentry/nextjs');
+const { withSentryConfig } = require("@sentry/nextjs");
 const withPWA = require("next-pwa");
 const runtimeCaching = require("next-pwa/cache");
 
 const moduleExports = withPWA({
   reactStrictMode: true,
   images: {
-    domains: ["firebasestorage.googleapis.com", "res.cloudinary.com"],
+    domains: [
+      "firebasestorage.googleapis.com",
+      "res.cloudinary.com",
+      "source.unsplash.com",
+    ],
   },
   eslint: {
     dirs: ["pages", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)

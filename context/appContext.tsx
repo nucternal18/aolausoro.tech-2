@@ -34,11 +34,11 @@ export const initialState = {
   job: {
     position: "",
     company: "",
-    jobLocation: "",
+    jobLocation: "London, UK",
     jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
     jobType: "full-time",
     statusOptions: ["Interviewing", "Declined", "Pending", "Offer"],
-    status: "pending",
+    status: "Pending",
   },
   projects: null,
   imageUrl: null,
