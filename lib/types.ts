@@ -21,7 +21,7 @@ export type JobProps = {
   company: string;
   jobLocation: string;
   jobType: string;
-  jobTypeOptions: string[];
+  jobTypeOptions?: string[];
   status: string;
-  statusOptions: string[];
+  statusOptions?: string[];
 };

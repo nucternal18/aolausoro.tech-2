@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { FiEyeOff, FiEye } from "react-icons/fi";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface IFormInputs {
@@ -12,29 +14,35 @@ function LoginForm({ handleLogin }: ILogin) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IFormInputs>();
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     handleLogin({ email: data.email, password: data.password });
+    reset();
   };
   return (
-    <section className="container mx-auto mb-4 md:flex-grow">
+    <div className="w-full">
       <h1 className="my-8 text-3xl text-center dark:text-gray-400">
         Account <span className="text-blue-700">Login</span>
       </h1>
       <form
-        className="px-8 pt-6 pb-8 mx-2 mb-4 bg-white rounded shadow-lg dark:bg-gray-600 sm:mx-auto sm:w-2/4"
+        className="px-4 pt-6 pb-8 mx-2 mb-4 bg-white rounded shadow-lg dark:bg-gray-600 sm:mx-auto sm:w-2/4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="mb-4">
+        <div className="mb-4 w-full bg-white flex gap-1 p-1 rounded-md">
           <label
             htmlFor="email"
             className="block mb-2 text-base font-bold text-gray-700"
           />
 
           <input
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100"
+            className="w-full px-3 py-2 leading-tight text-gray-700 border-none appearance-none focus:outline-none  focus:ring-0 bg-white"
             type="email"
             id="email"
             placeholder="Email"
@@ -56,14 +64,14 @@ function LoginForm({ handleLogin }: ILogin) {
             {errors.email.message}
           </span>
         )}
-        <div className="mb-4">
+        <div className="mb-4 w-full bg-white flex gap-1 p-1 rounded-md">
           <label
             className="block mb-2 text-base font-bold text-gray-700"
             htmlFor="password"
           />
           <input
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100"
-            type="password"
+            className="w-full px-3 py-2 leading-tight text-gray-700 border-none appearance-none focus:outline-none  focus:ring-0 bg-white"
+            type={showPassword ? "text" : "password"}
             id="password"
             name="password"
             placeholder="Password"
@@ -87,6 +95,17 @@ function LoginForm({ handleLogin }: ILogin) {
               },
             })}
           />
+          <button
+            aria-label="toggle password visibility"
+            onClick={handleClickShowPassword}
+            className="p-1 font-semibold"
+          >
+            {showPassword ? (
+              <FiEye fontSize={21} />
+            ) : (
+              <FiEyeOff fontSize={21} />
+            )}
+          </button>
         </div>
         {errors.password && (
           <span
@@ -98,14 +117,14 @@ function LoginForm({ handleLogin }: ILogin) {
         )}
         <div className="flex items-center justify-between mt-2">
           <button
-            className="w-2/4 px-4 py-2 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-100 dark:hover:bg-yellow-700"
+            className="w-full px-4 py-2 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-100 dark:hover:bg-yellow-700"
             type="submit"
           >
             Login
           </button>
         </div>
       </form>
-    </section>
+    </div>
   );
 }
 

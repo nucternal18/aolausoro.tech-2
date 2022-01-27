@@ -29,11 +29,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === "GET") {
     await db.connectDB();
-    const jobs = await Job.find({});
+    const jobs = await Job.find({ createdBy: userData._id });
     await db.disconnect();
-    res.status(200).json({ jobs });
+    res.status(200).json({ jobs, totalJobs: jobs.length, numberOfPages: 1 });
   } else if (req.method === "POST") {
-    console.log(req.body);
     const { company, position } = req.body;
     if (!company || !position) {
       res.status(400).json({ message: "Please provide company and position" });

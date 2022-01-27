@@ -15,8 +15,8 @@ interface IFormData {
   statusOptions: string[];
 }
 
-const AddJobComponent = ({ submitHandler }) => {
-  const { state, dispatch } = useGlobalApp();
+const AddJobComponent = () => {
+  const { state, addJob } = useGlobalApp();
 
   const {
     register,
@@ -33,13 +33,18 @@ const AddJobComponent = ({ submitHandler }) => {
     },
   });
 
-  const onSubmit: SubmitHandler<IFormData> = async (data) => {
+  const onSubmit: SubmitHandler<IFormData> = (data) => {
     if (!data.position || !data.company || !data.jobLocation) {
       toast.error("Please fill out all fields");
       return;
     }
-    console.log("Create Job", data);
+    if (state?.isEditing) {
+      // editJob()
+      return;
+    }
+    addJob(data);
     reset();
+    toast.success(state.message);
   };
 
   return (
@@ -55,7 +60,7 @@ const AddJobComponent = ({ submitHandler }) => {
             inputType="text"
             type="position"
             register={register}
-            errors={errors}
+            errors={errors.position}
           />
           <FormRowInput
             title="Company"
@@ -63,7 +68,7 @@ const AddJobComponent = ({ submitHandler }) => {
             inputType="text"
             type="company"
             register={register}
-            errors={errors}
+            errors={errors.company}
           />
           <FormRowInput
             title="Job Location"
@@ -71,10 +76,10 @@ const AddJobComponent = ({ submitHandler }) => {
             inputType="text"
             type="jobLocation"
             register={register}
-            errors={errors}
+            errors={errors.jobLocation}
           />
         </div>
-        <div className="flex flex-col gap-2 md:flex-row ">
+        <div className="flex flex-col gap-2 md:flex-row">
           <FormRowSelect
             name="Status"
             type="status"
@@ -92,8 +97,9 @@ const AddJobComponent = ({ submitHandler }) => {
 
           <div className="w-full flex flex-col md:flex-row items-center gap-2  mt-2">
             <button
-              className=" px-4 py-2  font-bold text-white bg-black w-full  rounded hover:bg-yellow-500 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-200 dark:hover:bg-yellow-700"
+              className=" px-4 py-2  font-bold text-white capitalize bg-black w-full  rounded hover:bg-yellow-500 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-200 dark:hover:bg-yellow-700"
               type="submit"
+              disabled={state?.loading}
             >
               submit
             </button>

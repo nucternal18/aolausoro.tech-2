@@ -76,6 +76,7 @@ export const appContext = createContext<{
   }) => void;
   deleteProject: (id: string) => void;
   uploadImage: (base64EncodedImage: string | ArrayBuffer) => void;
+  addJob: (job: JobProps) => void;
 }>({
   state: initialState,
   dispatch: () => null,
@@ -85,6 +86,7 @@ export const appContext = createContext<{
   updateProject: () => {},
   deleteProject: () => {},
   uploadImage: () => {},
+  addJob: () => {},
 });
 
 const { Provider } = appContext;
@@ -103,6 +105,7 @@ export const AppProvider = ({ children }) => {
     });
   }, []);
 
+  // Authentication/User
   const createAccount = async (
     displayName: string,
     email: string,
@@ -179,6 +182,8 @@ export const AppProvider = ({ children }) => {
       });
     }
   };
+
+  // Projects
 
   /**
    *
@@ -291,6 +296,37 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Jobs
+
+  const addJob = async (job): Promise<void> => {
+    dispatch({ type: ActionType.ACTION_REQUEST });
+    try {
+      const { position, company, jobLocation, jobType, status } = job;
+      await fetch(`${NEXT_URL}/api/jobs`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          position,
+          company,
+          jobLocation,
+          jobType,
+          status,
+        }),
+      });
+      dispatch({
+        type: ActionType.JOB_ADD_SUCCESS,
+        payload: "Job added successfully",
+      });
+    } catch (error) {
+      dispatch({
+        type: ActionType.ACTION_FAIL,
+        payload: error.message,
+      });
+    }
+  };
+
   /**
    * @desc Upload a base64EncodedImage to cloudinary
    *
@@ -332,6 +368,7 @@ export const AppProvider = ({ children }) => {
         addProject,
         updateProject,
         deleteProject,
+        addJob,
         uploadImage,
       }}
     >

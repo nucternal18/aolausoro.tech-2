@@ -30,7 +30,7 @@ export default function Login(props) {
     }
     if (result.ok) {
       const session = await getSession();
-      console.log(session.user);
+
       dispatch({
         type: ActionType.FETCH_USER_SUCCESS,
         payload: session.user,
@@ -41,7 +41,9 @@ export default function Login(props) {
 
   return (
     <Layout title="aolausoro.tech - login">
-      <LoginForm handleLogin={submitHandler} />
+      <section className="flex items-center justify-center">
+        <LoginForm handleLogin={submitHandler} />
+      </section>
     </Layout>
   );
 }

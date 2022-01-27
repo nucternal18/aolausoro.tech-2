@@ -1,14 +1,22 @@
 import React from "react";
+import { FieldError } from "react-hook-form";
 
 interface IFormRowSelect {
   title: string;
-  name: string;
+  name?: string;
   type: string;
   inputType: string;
   register: any;
+  errors: FieldError | undefined;
 }
 
-const FormRowInput = ({ title, register, errors, name, type, inputType }) => {
+const FormRowInput = ({
+  title,
+  register,
+  errors,
+  type,
+  inputType,
+}: IFormRowSelect) => {
   return (
     <div className="mb-4 w-full">
       <label
@@ -33,7 +41,7 @@ const FormRowInput = ({ title, register, errors, name, type, inputType }) => {
             message: "Please enter a name with at least 2 characters",
           },
           pattern: {
-            value: /^[A-Za-z -]+$/,
+            value: /^[A-Za-z\s, -]+$/,
             message: "Please enter a valid name",
           },
         })}

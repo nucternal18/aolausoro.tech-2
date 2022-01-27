@@ -53,6 +53,13 @@ export const appReducer = (state: InitialAppState, action) => {
         loading: false,
         message: action.payload,
       };
+    case ActionType.JOB_ADD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isEditing: false,
+        message: action.payload,
+      };
     case ActionType.USER_LOGOUT_SUCCESS:
       return initialState;
     default:
