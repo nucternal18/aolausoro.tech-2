@@ -133,22 +133,47 @@ export default function Navbar({ textColor }: NavProps) {
             </Nav.Item>
           );
         })}
-        {state.userData && (
-          <button
-            type="button"
-            className="flex items-center bg-gray-800 dark:bg-yellow-500 px-4 ml-4 py-2 rounded-3xl text-gray-200 shadow-xl"
-            onClick={() => router.push(`/user-profile/${state.userData.id}`)}
-          >
-            <p className="mr-2 capitalize text-base">{state.userData.name}</p>
-            <img
-              src={state.userData.image}
-              alt="user-profile"
-              className="w-8 h-8 rounded-full"
-            />
-          </button>
+        {state.userData && state.userData?.isAdmin && (
+          <>
+            <Nav.Item>
+              <Nav.Link href="/admin">ADMIN</Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item>
+              <button
+                type="button"
+                className="flex items-center text-gray-900 uppercase  hover:text-gray-500 ml-2 dark:hover:text-yellow-500 dark:text-yellow-500"
+                onClick={logout}
+              >
+                <p className="flex flex-row py-3 text-lg mr-1">Logout</p>
+                <FiLogOut fontSize={18} className="mr-2" />
+              </button>
+            </Nav.Item>
+          </>
         )}
 
-        <div className="flex flex-row mt-48 ">
+        {state.userData && (
+          <Nav.Item>
+            <button
+              type="button"
+              className="flex items-center bg-gray-800 dark:bg-yellow-500 px-4 ml-2 py-2 rounded-3xl text-gray-200 shadow-xl"
+              onClick={() => router.push(`/user-profile/${state.userData.id}`)}
+            >
+              <p className="mr-2 capitalize text-base">{state.userData.name}</p>
+              <img
+                src={state.userData.image}
+                alt="user-profile"
+                className="w-8 h-8 rounded-full"
+              />
+            </button>
+          </Nav.Item>
+        )}
+
+        <div
+          className={`${
+            state.isAuthenticated ? " mt-8" : "mt-48"
+          }  flex flex-row justify-end`}
+        >
           {social.map((link) => {
             const { id, url, icon } = link;
             return (
