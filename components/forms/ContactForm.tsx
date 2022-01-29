@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Button from "./Button";
+import Button from "../Button";
 
 interface IFormData {
   name: string;

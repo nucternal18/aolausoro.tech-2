@@ -6,7 +6,7 @@ import { getSession } from "next-auth/react";
 
 // components
 import AdminLayout from "components/layout/AdminLayout";
-import UploadForm from "components/UploadForm";
+import UploadForm from "components/forms/UploadForm";
 
 // context
 import { useGlobalApp } from "context/appContext";

@@ -2,8 +2,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import { useGlobalApp } from "context/appContext";
-import FormRowSelect from "./FormRowSelect";
-import FormRowInput from "./FormRowInput";
+import FormRowSelect from "../FormRowSelect";
+import FormRowInput from "../FormRowInput";
 
 interface IFormData {
   position: string;
@@ -38,20 +38,17 @@ const AddJobComponent = () => {
       toast.error("Please fill out all fields");
       return;
     }
-    if (state?.isEditing) {
-      // editJob()
-      return;
-    }
+
     addJob(data);
-    reset();
     toast.success(state.message);
+    reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className=" p-2  max-w-screen-xl  bg-white dark:bg-gray-900 shadow-xl mt-5 mx-2 md:p-4">
         <h3 className="capitalize text-xl font-semibold text-gray-900 dark:text-gray-200 mb-4">
-          {state.isEditing ? "edit job" : "add job"}
+          add job
         </h3>
         <div className="flex flex-col gap-2 md:flex-row">
           <FormRowInput

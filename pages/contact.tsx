@@ -4,7 +4,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 import { Layout } from "../components/layout";
-import ContactForm from "../components/ContactForm";
+import ContactForm from "../components/forms/ContactForm";
 import { social } from "../data";
 
 function contact() {

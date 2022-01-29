@@ -17,6 +17,7 @@ export type ProjectProps = {
 };
 
 export type JobProps = {
+  _id?: string;
   position: string;
   company: string;
   jobLocation: string;
@@ -24,4 +25,14 @@ export type JobProps = {
   jobTypeOptions?: string[];
   status: string;
   statusOptions?: string[];
+  updatedAt?: string;
+  __v?: number;
+  createdAt?: string;
+  createdBy?: string;
+};
+
+export type JobsProps = {
+  jobs: JobProps[];
+  totalJobs: number;
+  numberOfPages: number;
 };

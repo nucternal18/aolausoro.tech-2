@@ -77,6 +77,8 @@ export const appContext = createContext<{
   deleteProject: (id: string) => void;
   uploadImage: (base64EncodedImage: string | ArrayBuffer) => void;
   addJob: (job: JobProps) => void;
+  updateJob: (job: JobProps, cookie: string) => void;
+  deleteJob: (id: string) => void;
 }>({
   state: initialState,
   dispatch: () => null,
@@ -87,6 +89,8 @@ export const appContext = createContext<{
   deleteProject: () => {},
   uploadImage: () => {},
   addJob: () => {},
+  updateJob: () => {},
+  deleteJob: () => {},
 });
 
 const { Provider } = appContext;
@@ -298,7 +302,11 @@ export const AppProvider = ({ children }) => {
 
   // Jobs
 
-  const addJob = async (job): Promise<void> => {
+  /**
+   *
+   * @param job
+   */
+  const addJob = async (job: JobProps): Promise<void> => {
     dispatch({ type: ActionType.ACTION_REQUEST });
     try {
       const { position, company, jobLocation, jobType, status } = job;
@@ -318,6 +326,60 @@ export const AppProvider = ({ children }) => {
       dispatch({
         type: ActionType.JOB_ADD_SUCCESS,
         payload: "Job added successfully",
+      });
+    } catch (error) {
+      dispatch({
+        type: ActionType.ACTION_FAIL,
+        payload: error.message,
+      });
+    }
+  };
+
+  /**
+   *
+   * @param id
+   */
+  const updateJob = async (job: JobProps, cookie: string): Promise<void> => {
+    dispatch({ type: ActionType.ACTION_REQUEST });
+    const session = getSession();
+    try {
+      console.log("Edit job");
+      await fetch(`${NEXT_URL}/api/jobs/${job._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          cookie: cookie,
+        },
+        body: JSON.stringify(job),
+      });
+      dispatch({
+        type: ActionType.JOB_UPDATE_SUCCESS,
+        payload: "Job updated successfully",
+      });
+    } catch (error) {
+      dispatch({
+        type: ActionType.ACTION_FAIL,
+        payload: error.message,
+      });
+    }
+  };
+
+  /**
+   *
+   * @param id
+   */
+  const deleteJob = async (id: string): Promise<void> => {
+    dispatch({ type: ActionType.ACTION_REQUEST });
+    try {
+      await fetch(`${NEXT_URL}/api/jobs/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      dispatch({
+        type: ActionType.JOB_DELETE_SUCCESS,
+        payload: "Job deleted successfully",
       });
     } catch (error) {
       dispatch({
@@ -369,6 +431,8 @@ export const AppProvider = ({ children }) => {
         updateProject,
         deleteProject,
         addJob,
+        updateJob,
+        deleteJob,
         uploadImage,
       }}
     >

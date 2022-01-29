@@ -6,7 +6,7 @@ import { GetServerSideProps } from "next";
 import { toast } from "react-toastify";
 
 import { Layout } from "../components/layout";
-import RegisterForm from "components/RegisterForm";
+import RegisterForm from "components/forms/RegisterForm";
 
 // context
 import { useGlobalApp } from "../context/appContext";

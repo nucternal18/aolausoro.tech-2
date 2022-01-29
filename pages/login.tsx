@@ -4,7 +4,7 @@ import { GetServerSideProps } from "next";
 import { toast } from "react-toastify";
 
 import { Layout } from "../components/layout";
-import LoginForm from "components/Login";
+import LoginForm from "components/forms/Login";
 
 // context
 import { useGlobalApp } from "../context/appContext";
