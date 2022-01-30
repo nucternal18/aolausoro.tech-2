@@ -21,12 +21,12 @@ const FormRowInput = ({
     <div className="mb-4 w-full">
       <label
         htmlFor="position"
-        className="block mb-2 text-base font-bold text-gray-700"
+        className="block mb-2 text-base font-bold text-gray-900 dark:text-gray-200"
       >
         {title}
       </label>
       <input
-        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100"
+        className="w-full px-3 py-2 leading-tight text-gray-900 border rounded shadow-md appearance-none focus:outline-none focus:shadow-outline dark:bg-white"
         id={`${type}`}
         type={`${inputType}`}
         placeholder={`${title}`}

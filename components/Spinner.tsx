@@ -1,39 +1,10 @@
-import React from 'react';
+const Spinner = ({ message }: { message?: string }) => {
+  return (
+    <div className="flex flex-col justify-center items-center w-full h-full">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-[#00BFFF] m-5 p-4" />
+      <p className="text-lg text-center px-2">{message}</p>
+    </div>
+  );
+};
 
-import styled from 'styled-components';
-
-const Spinner = () => (
-  <SpinnerOverlay>
-    <SpinnerContainer />
-  </SpinnerOverlay>
-);
-
-const SpinnerOverlay = styled.div`
-  height: 60vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SpinnerContainer = styled.div`
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(195, 195, 195, 0.6);
-  border-radius: 50%;
-  border-top-color: #636767;
-  animation: spin 1s ease-in-out infinite;
-  -webkit-animation: spin 1s ease-in-out infinite;
-  @keyframes spin {
-    to {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-  @-webkit-keyframes spin {
-    to {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-`;
 export default Spinner;

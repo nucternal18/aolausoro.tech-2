@@ -5,6 +5,13 @@ import Job from "models/jobsModel";
 import db from "lib/db";
 import getUser from "lib/getUser";
 
+type QueryObjProps = {
+  createdBy: string;
+  status?: string | string[];
+  jobType?: string | string[];
+  position?: { $regex: string | string[]; $options: string };
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   /**
    * @desc Get user session
@@ -29,10 +36,59 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   if (req.method === "GET") {
+    const { status, jobType, sort, search } = req.query;
+
+    const queryObj: QueryObjProps = {
+      createdBy: userData._id,
+    };
+    if (status && status !== "all") {
+      queryObj.status = status;
+    }
+    if (jobType && jobType !== "all") {
+      queryObj.jobType = jobType;
+    }
+
+    if (search) {
+      queryObj.position = { $regex: search, $options: "i" };
+    }
     await db.connectDB();
-    const jobs = await Job.find({ createdBy: userData._id });
+
+    // No await here because we don't need to wait for the query to finish
+    let result = Job.find(queryObj);
+    let page: number;
+    // Chain sort conditions
+    if (sort === "latest") {
+      result = result.sort("-createdAt");
+    }
+    if (sort === "oldest") {
+      result = result.sort("createdAt");
+    }
+    if (sort === "a-z") {
+      result = result.sort("position");
+    }
+    if (sort === "z-a") {
+      result = result.sort("-position");
+    }
+
+    //Pagination
+
+    if (Number(req.query.page) > 1) {
+      page = Number(req.query.page);
+    } else {
+      page = 1;
+    }
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    result = result.skip(skip).limit(limit);
+
+    const jobs = await result;
+
+    const totalJobs = await Job.countDocuments(queryObj);
+    const numberOfPages = Math.ceil(totalJobs / limit);
+
     await db.disconnect();
-    res.status(200).json({ jobs, totalJobs: jobs.length, numberOfPages: 1 });
+
+    res.status(200).json({ jobs, totalJobs, numberOfPages });
   } else if (req.method === "POST") {
     const { company, position } = req.body;
     if (!company || !position) {

@@ -1,4 +1,4 @@
-import { FaCaretDown } from "react-icons/fa";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { MdOutlineDashboard } from "react-icons/md";
 
@@ -8,8 +8,21 @@ import { useGlobalApp } from "context/appContext";
 const AdminNavBar = () => {
   const router = useRouter();
   const { state } = useGlobalApp();
+  const [pos, setPos] = useState("top");
+
+  // Check the top position of the navigation in the window
+  useEffect(() => {
+    document.addEventListener("scroll", (e) => {
+      const scrolled = document.scrollingElement.scrollTop;
+      if (scrolled >= 1) {
+        setPos("moved");
+      } else {
+        setPos("top");
+      }
+    });
+  }, []);
   return (
-    <nav className="p-6 md:flex gap-2 md:gap-5 w-full hidden shadow-xl bg-white dark:bg-gray-900 ">
+    <nav className=" p-6 md:flex gap-2 md:gap-5 w-full font-mono hidden shadow-xl bg-white dark:bg-gray-900">
       <div className="flex items-center justify-center text-gray-800 dark:text-gray-200 dark:hover:text-yellow-500 ">
         <MdOutlineDashboard fontSize={28} className="mr-2" />
         <h1 className="text-2xl font font-semibold">Dashboard</h1>

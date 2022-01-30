@@ -1,13 +1,9 @@
-import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useGlobalApp } from "context/appContext";
 import FormRowSelect from "../FormRowSelect";
 import FormRowInput from "../FormRowInput";
-import { JobProps } from "lib/types";
-import Router from "next/router";
-import { setValues } from "framer-motion/types/render/utils/setters";
 
 interface IFormData {
   position: string;

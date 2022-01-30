@@ -1,5 +1,3 @@
-import { useEffect, useContext, createContext, useReducer } from "react";
-
 export enum ActionType {
   ACTION_REQUEST = "ACTION_REQUEST",
   ACTION_FAIL = "ACTION_FAIL",
@@ -20,4 +18,5 @@ export enum ActionType {
   PROJECT_UPDATE_SUCCESS = "PROJECT_UPDATE_SUCCESS",
   PROJECT_DELETE_SUCCESS = "PROJECT_DELETE_SUCCESS",
   IMAGE_UPLOAD_SUCCESS = "IMAGE_UPLOAD_SUCCESS",
+  CHANGE_PAGE = "CHANGE_PAGE",
 }

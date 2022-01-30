@@ -14,6 +14,12 @@ import Button from "./Button";
 import Spinner from "./Spinner";
 import JobCard from "./Job";
 import JobInfo from "./JobInfo";
+import StatsContainer from "./StatsContainer";
+import StatsItem from "./StatsItem";
+import ChartsContainer from "./ChartsContainer";
+import BarChartComponent from "./charts/BarChart";
+import AreaChartComponent from "./charts/AreaChart";
+import PageBtnContainer from "./PageBtnContainer";
 
 export {
   AddJobComponent,
@@ -32,4 +38,10 @@ export {
   Spinner,
   JobCard,
   JobInfo,
+  StatsContainer,
+  StatsItem,
+  ChartsContainer,
+  BarChartComponent,
+  AreaChartComponent,
+  PageBtnContainer,
 };

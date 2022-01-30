@@ -27,8 +27,14 @@ export type JobProps = {
   statusOptions?: string[];
   updatedAt?: string;
   __v?: number;
+  page?: number;
   createdAt?: string;
   createdBy?: string;
+  search?: string;
+  searchStatus?: string;
+  searchType?: string;
+  sort?: string;
+  sortOptions?: string[];
 };
 
 export type JobsProps = {

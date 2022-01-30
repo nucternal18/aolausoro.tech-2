@@ -79,6 +79,8 @@ export const appReducer = (state: InitialAppState, action) => {
         loading: false,
         message: action.payload,
       };
+    case ActionType.CHANGE_PAGE:
+      return { ...state, page: action.payload.page };
     case ActionType.USER_LOGOUT_SUCCESS:
       return initialState;
     default:

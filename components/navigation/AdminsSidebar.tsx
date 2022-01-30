@@ -35,7 +35,7 @@ function AdminsSidebar() {
 
   const handleCloseSidebar = () => {};
   return (
-    <aside className="z-10  flex flex-initial px-2 py-4 bg-white md:h-full dark:bg-gray-900  shadow-xl md:shadow-none md:left-0  md:top-0 md:bottom-0 md:overflow-y-scroll  md:overflow-hidden md:w-64 ">
+    <aside className="z-10  flex flex-initial font-mono px-2 py-4 bg-white md:h-full dark:bg-gray-900  shadow-xl md:shadow-none md:left-0  md:top-0 md:bottom-0 md:overflow-y-scroll  md:overflow-hidden md:w-64 ">
       <nav className="flex flex-wrap items-center justify-between min-w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap">
         {/* Toggler */}
         <div className="flex justify-between items-center w-full">
