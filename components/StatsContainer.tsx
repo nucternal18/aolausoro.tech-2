@@ -29,37 +29,37 @@ const StatsContainer = ({ stats }: { stats: StatsContainerProps }) => {
       title: "pending applications",
       count: stats.pending || 0,
       icon: <FaSuitcaseRolling fontSize={18} color="#e9b949" />,
-      textColor: "text-[#e9b949]",
-      borderColor: "border-[#e9b949]",
-      bcg: "bg-[#fcefc7]",
+      textColor: "text-amber-500",
+      borderColor: "border-amber-500",
+      bcg: "bg-amber-100",
     },
     {
       title: "interviews scheduled",
       count: stats.interview || 0,
       icon: <FaCalendarCheck fontSize={18} color="#647acb" />,
-      textColor: "text-[#647acb]",
-      borderColor: "border-[#647acb]",
-      bcg: "bg-[#e0e8f9]",
+      textColor: "text-indigo-500",
+      borderColor: "border-indigo-500",
+      bcg: "bg-indigo-100",
     },
     {
       title: "jobs declined",
       count: stats.declined || 0,
       icon: <FaBug fontSize={18} color="#d66a6a" />,
-      textColor: "text-[#d66a6a]",
-      borderColor: "border-[#d66a6a]",
-      bcg: "bg-[#ffeeee]",
+      textColor: "text-pink-500",
+      borderColor: "border-pink-500",
+      bcg: "bg-pink-100",
     },
     {
       title: "offers received",
       count: stats.offer || 0,
       icon: <FaFileContract fontSize={18} color="#14b8a8" />,
-      textColor: "text-[#14b8a8]",
-      borderColor: "border-[#14b8a8]",
-      bcg: "bg-[#CDF8FD]",
+      textColor: "text-teal-500",
+      borderColor: "border-teal-500",
+      bcg: "bg-teal-100",
     },
   ];
   return (
-    <section className="px-2 mx-auto max-w-screen-xl my-6 font-mono md:px-4">
+    <section className="px-2 mx-auto max-w-screen-xl my-6 font-mono text-gray-900 dark:text-gray-200 md:px-4">
       <div className="grid grid-cols-2 md:grid-cols-4">
         {defaultStats.map((item, index) => {
           return <StatsItem key={index} {...item} />;
