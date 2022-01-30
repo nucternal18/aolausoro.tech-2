@@ -17,10 +17,10 @@ function ContactForm({ submitHandler }) {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormData>();
-  const recaptchaRef = useRef<ReCAPTCHA>();
+  const recaptchaRef = useRef(null);
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    const token = await recaptchaRef.current.executeAsync();
+    const token = await recaptchaRef.current?.executeAsync();
     recaptchaRef.current.reset();
     const newMessage: IFormData = {
       name: data.name,
