@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Pagination({ currentPage, numPages }) {
   const isFirst = currentPage === 1;
@@ -8,19 +8,19 @@ export default function Pagination({ currentPage, numPages }) {
 
   if (numPages === 1) return <></>;
   return (
-    <div className='mt-6'>
-      <ul className='flex pl-0 my-2 list-none'>
+    <div className="mt-6">
+      <ul className="flex pl-0 my-2 list-none">
         {!isFirst && (
           <Link href={prevPage}>
-            <li className='relative block px-3 py-2 mr-1 leading-tight text-gray-800 bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-200'>
+            <li className="relative block px-3 py-2 mr-1 leading-tight text-gray-800 bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-200">
               Previous
             </li>
           </Link>
         )}
 
         {Array.from({ length: numPages }, (_, i) => (
-          <Link href={`/blog/page/${i + 1}`}>
-            <li className='relative block px-3 py-2 mr-1 leading-tight text-gray-800 bg-white border border-gray-300 cursor-pointer hover:bg-gray-200'>
+          <Link key={`${i + 1}`} href={`/blog/page/${i + 1}`}>
+            <li className="relative block px-3 py-2 mr-1 leading-tight text-gray-800 bg-white border border-gray-300 cursor-pointer hover:bg-gray-200">
               {i + 1}
             </li>
           </Link>
@@ -28,7 +28,7 @@ export default function Pagination({ currentPage, numPages }) {
 
         {!isLast && (
           <Link href={nextPage}>
-            <li className='relative block px-3 py-2 mr-1 leading-tight text-gray-800 bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-200'>
+            <li className="relative block px-3 py-2 mr-1 leading-tight text-gray-800 bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-200">
               Next
             </li>
           </Link>
