@@ -1,4 +1,3 @@
-import React from "react";
 import { StatsItem } from ".";
 import {
   FaSuitcaseRolling,
@@ -18,7 +17,7 @@ export type DefaultStatsProps = {
 
 interface StatsContainerProps {
   pending: number;
-  interview: number;
+  interviewing: number;
   declined: number;
   offer: number;
 }
@@ -27,7 +26,7 @@ const StatsContainer = ({ stats }: { stats: StatsContainerProps }) => {
   const defaultStats: DefaultStatsProps[] = [
     {
       title: "pending applications",
-      count: stats.pending || 0,
+      count: stats?.pending || 0,
       icon: <FaSuitcaseRolling fontSize={18} color="#e9b949" />,
       textColor: "text-amber-500",
       borderColor: "border-amber-500",
@@ -35,7 +34,7 @@ const StatsContainer = ({ stats }: { stats: StatsContainerProps }) => {
     },
     {
       title: "interviews scheduled",
-      count: stats.interview || 0,
+      count: stats?.interviewing || 0,
       icon: <FaCalendarCheck fontSize={18} color="#647acb" />,
       textColor: "text-indigo-500",
       borderColor: "border-indigo-500",
@@ -43,7 +42,7 @@ const StatsContainer = ({ stats }: { stats: StatsContainerProps }) => {
     },
     {
       title: "jobs declined",
-      count: stats.declined || 0,
+      count: stats?.declined || 0,
       icon: <FaBug fontSize={18} color="#d66a6a" />,
       textColor: "text-pink-500",
       borderColor: "border-pink-500",
@@ -51,7 +50,7 @@ const StatsContainer = ({ stats }: { stats: StatsContainerProps }) => {
     },
     {
       title: "offers received",
-      count: stats.offer || 0,
+      count: stats?.offer || 0,
       icon: <FaFileContract fontSize={18} color="#14b8a8" />,
       textColor: "text-teal-500",
       borderColor: "border-teal-500",

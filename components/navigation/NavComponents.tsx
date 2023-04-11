@@ -38,9 +38,9 @@ Nav.Container = ({
 Nav.Brand = ({ children, href }: { href: string; children: ReactNode }) => (
   <Link
     href={href}
-    className="inline-block w-48 p-0 m-0 py-1.5 mr-4 cursor-pointer text-2xl font-bold whitespace-nowrap hover:text-gray-400"
+    className="hidden sm:block  p-0 m-0 py-1.5 mr-2 cursor-pointer text-2xl font-bold whitespace-nowrap hover:text-gray-400"
   >
-    <strong>{children}</strong>
+    {children}
   </Link>
 );
 

@@ -6399,8 +6399,8 @@ __metadata:
   linkType: hard
 
 "framer-motion@npm:^10.11.2":
-  version: 10.11.2
-  resolution: "framer-motion@npm:10.11.2"
+  version: 10.11.4
+  resolution: "framer-motion@npm:10.11.4"
   dependencies:
     "@emotion/is-prop-valid": ^0.8.2
     tslib: ^2.4.0
@@ -6415,7 +6415,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 7444d145dd6317172b047a9904227e6f515978060b19949a67c74d40b2ead7c2191a6899ab534845f0b33b7b36cb08bd2a1e28697c57242ec2b686ff02512830
+  checksum: fb6981ac5e14c929e82d7de6c5cce63f6cc2a4a400d7bfde8feebf1031cb857ae812b04a2eafdc9d8ade5cce2b084814fbaa63b4c302c0f2754b9f1d12cf413a
   languageName: node
   linkType: hard
 
@@ -13862,14 +13862,14 @@ __metadata:
   linkType: hard
 
 "vm2@npm:^3.9.11":
-  version: 3.9.15
-  resolution: "vm2@npm:3.9.15"
+  version: 3.9.16
+  resolution: "vm2@npm:3.9.16"
   dependencies:
     acorn: ^8.7.0
     acorn-walk: ^8.2.0
   bin:
     vm2: bin/vm2
-  checksum: 1df70d5a88173651c0062901aba67e5edfeeb3f699fe6c305f5efb6a5a7391e5724cbf98a6516600b65016c6824dc07cc79947ea4222f8537ae1d9ce0b730ad7
+  checksum: 646b45dca721acb3c8e4ae0742129f13612972387911c2475f3c06ac2b4232000cab0bdaaa65d97d6ea8dc70880e039542618b1b3d04adea79cd94803cbc4ab3
   languageName: node
   linkType: hard
 

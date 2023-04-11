@@ -15,12 +15,12 @@ const StatsItem = ({
     >
       <header className={`flex justify-between items-center pb-4`}>
         <span
-          className={`inline-flex items-center justify-center p-2 ${textColor} rounded-md shadow-lg text-white w-12 h-12`}
+          className={`inline-flex items-center justify-center p-2 ${textColor} rounded-md shadow-lg  w-12 h-12`}
         >
           {count}
         </span>
         <div
-          className={`inline-flex items-center justify-center p-2 ${bcg} rounded-md shadow-lg text-white w-12 h-12`}
+          className={`inline-flex items-center justify-center p-2 ${bcg} rounded-md shadow-lg  w-12 h-12`}
         >
           {icon}
         </div>

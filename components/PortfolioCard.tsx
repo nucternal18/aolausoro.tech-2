@@ -12,6 +12,7 @@ function PortfolioCard({ doc }) {
           width={500}
           height={350}
           quality={50}
+          priority
           className="overflow-hidden"
         />
       </div>

@@ -1,8 +1,15 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useCallback } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button from "../Button";
+
+// redux
+import {
+  useCreateMessageMutation,
+  useSendMailMutation,
+} from "app/GlobalReduxStore/features/messages/messagesApiSlice";
+import { toast } from "react-toastify";
 
 interface IFormData {
   name: string;
@@ -12,26 +19,38 @@ interface IFormData {
   token?: string;
 }
 
-function ContactForm({ submitHandler }) {
+function ContactForm() {
+  const [createMessage] = useCreateMessageMutation();
+  const [sendMail] = useSendMailMutation();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IFormData>();
-  const recaptchaRef = useRef(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
-  const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    // const token = await recaptchaRef.current?.executeAsync();
-    // recaptchaRef.current?.reset();
+  const onSubmit: SubmitHandler<IFormData> = useCallback(async (data) => {
+    const token = await recaptchaRef.current?.executeAsync();
+    recaptchaRef.current?.reset();
     const newMessage: IFormData = {
       name: data.name,
       email: data.email,
       subject: data.subject,
       message: data.message,
-      token: "",
+      token: token as string,
     };
-    submitHandler(newMessage);
-  };
+    try {
+      const sendMailResponse = await sendMail(newMessage).unwrap();
+      if (sendMailResponse) {
+        await createMessage(newMessage).unwrap();
+        reset();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong, please try again later");
+    }
+  }, []);
 
   return (
     <form
@@ -54,7 +73,7 @@ function ContactForm({ submitHandler }) {
           {...register("name", {
             required: "This is required",
             pattern: {
-              value: /^[A-Za-z -]+$/,
+              value: /^[A-Za-z_ -]+$/,
               message: "Please enter your name",
             },
           })}
@@ -109,7 +128,7 @@ function ContactForm({ submitHandler }) {
             required: "This is required",
             maxLength: 20,
             pattern: {
-              value: /^[A-Za-z ]+$/,
+              value: /^[A-Za-z0-9.?_@ -]+$/,
               message: "Please enter a subject",
             },
           })}
@@ -136,7 +155,7 @@ function ContactForm({ submitHandler }) {
           {...register("message", {
             required: "This is required",
             pattern: {
-              value: /^[A-Za-z ]+$/i,
+              value: /^[A-Za-z0-9.?_@ -]+$/,
               message: "Please enter a message",
             },
           })}
@@ -155,11 +174,11 @@ function ContactForm({ submitHandler }) {
         Send
       </Button>
 
-      {/* <ReCAPTCHA
+      <ReCAPTCHA
         ref={recaptchaRef}
         size="invisible"
-        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-      /> */}
+        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
+      />
     </form>
   );
 }

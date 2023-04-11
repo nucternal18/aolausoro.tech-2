@@ -1,18 +1,27 @@
 "use client";
 import { FaGithub, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
-
-// Server address
-import { NEXT_URL } from "../../config";
+import Loader from "components/Loader";
+// redux
 import { useGetProjectsQuery } from "../GlobalReduxStore/features/projects/projectApiSlice";
 
+// components
 import PortfolioCard from "components/PortfolioCard";
 
 const Portfolio = () => {
-  const { data: projects } = useGetProjectsQuery();
-  console.log("🚀 ~ file: page.tsx:15 ~ Portfolio ~ projects:", projects);
+  const { data: projects, isLoading } = useGetProjectsQuery();
+
+  if (isLoading)
+    return (
+      <section className="max-w-screen-lg mx-auto mb-4 h-full px-4 lg:px-0">
+        <div className="flex items-center justify-center h-full">
+          <Loader classes="h-8 w-8" />
+        </div>
+      </section>
+    );
+
   return (
-    <>
+    <section className="h-full">
       <section className="max-w-screen-lg mx-auto mb-4 px-4 lg:px-0">
         <div className="relative flex items-center justify-between mb-6 border-b border-current dark:border-yellow-500">
           <h1 className="my-4 text-5xl font-thin text-center text-black dark:text-yellow-500">
@@ -31,13 +40,13 @@ const Portfolio = () => {
           Some of my projects
         </h2>
       </section>
-      <section className="max-w-screen-lg mx-auto px-4 lg:px-0 mb-4">
+      <section className="relative max-w-screen-lg mx-auto px-4 lg:px-0 mb-4">
         <div className="grid grid-cols-1 gap-3 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0">
           {projects &&
             projects.map((doc) => <PortfolioCard key={doc.id} doc={doc} />)}
         </div>
       </section>
-    </>
+    </section>
   );
 };
 

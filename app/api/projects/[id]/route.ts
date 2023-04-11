@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]";
+import { authOptions } from "../../auth/[...nextauth]/route";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 
@@ -29,7 +29,7 @@ export async function GET(
   }
 
   const projectId = params.id;
-  const project = await prisma.projects.findUnique({
+  const project = await prisma.project.findUnique({
     where: {
       id: projectId,
     },
@@ -71,14 +71,14 @@ export async function PUT(
 
   const { address, github, projectName, techStack, url } = await req.json();
 
-  const project = await prisma.projects.findUnique({
+  const project = await prisma.project.findUnique({
     where: {
       id: projectId,
     },
   });
 
   if (project) {
-    await prisma.projects.update({
+    await prisma.project.update({
       where: {
         id: projectId,
       },
@@ -124,14 +124,14 @@ export async function DELETE(
 
   const projectId = params.id;
 
-  const project = await prisma.projects.findUnique({
+  const project = await prisma.project.findUnique({
     where: {
       id: projectId,
     },
   });
 
   if (project) {
-    await prisma.projects.delete({
+    await prisma.project.delete({
       where: {
         id: projectId,
       },

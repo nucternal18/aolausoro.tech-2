@@ -1,55 +1,10 @@
 import { MdEmail } from "react-icons/md";
 import Link from "next/link";
-import { toast } from "react-toastify";
 
 import ContactForm from "../../components/forms/ContactForm";
 import { social } from "../../data";
 
-function contact() {
-  const addMessage = async (data) => {
-    toast.info("Sending message.... Your message is on its way!");
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const resData = await response.json();
-      if (!response.ok) {
-        toast.error("Message not sent!" + resData.message);
-        throw new Error(resData.message || "Something went wrong");
-      }
-      toast.success("Message sent successfully!");
-    } catch (err) {
-      toast.error("Message not sent!" + err.message);
-    }
-  };
-  const submitHandler = async (newMessage) => {
-    toast.info("Sending message.... Your message is on its way!");
-
-    try {
-      const res = await fetch("/api/contact/sendMail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newMessage),
-      });
-      const resData = await res.json();
-      if (res.ok) {
-        addMessage(newMessage);
-      }
-      if (!res.ok) {
-        toast.error("Message not sent!" + resData.message);
-        throw new Error(resData.message || "Something went wrong");
-      }
-      toast.success("Message sent successfully!");
-    } catch (err) {
-      toast.error("Message not sent!" + err.message);
-    }
-  };
+function Contact() {
   return (
     <section className="flex items-center justify-center h-full flex-grow mx-auto sm:max-w-screen-md">
       <div className="relative z-10 p-2 mx-auto my-10 rounded-md shadow-2xl dark:bg-indigo-900 md:p-8">
@@ -89,7 +44,7 @@ function contact() {
             </div>
           </div>
           <div>
-            <ContactForm submitHandler={submitHandler} />
+            <ContactForm />
           </div>
         </div>
       </div>
@@ -97,4 +52,4 @@ function contact() {
   );
 }
 
-export default contact;
+export default Contact;

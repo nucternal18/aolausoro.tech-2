@@ -1,6 +1,6 @@
 import AddJobComponent from "./forms/AddJobComponent";
 import ContactForm from "./forms/ContactForm";
-import LoginForm from "./forms/Login";
+import LoginForm from "./forms/LoginForm";
 import SearchForm from "./forms/SearchForm";
 import UploadForm from "./forms/UploadForm";
 import AdminNavBar from "./navigation/AdminNavBar";

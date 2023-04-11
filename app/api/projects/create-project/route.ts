@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]";
+import { authOptions } from "../../auth/[...nextauth]/route";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   }
   const { address, github, projectName, techStack, url } = await req.json();
 
-  const createdProject = await prisma.projects.create({
+  const createdProject = await prisma.project.create({
     data: {
       address,
       github,

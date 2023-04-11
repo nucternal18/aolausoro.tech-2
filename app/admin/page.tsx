@@ -1,19 +1,32 @@
+"use client";
 import { Suspense } from "react";
 
 // Components
-import { NEXT_URL } from "config";
 import { ChartsContainer, Spinner, StatsContainer } from "components";
 
-const admin = ({ stats, isLoading }) => {
+// redux
+import { useGetStatsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
+import { DefaultStatsProps } from "lib/types";
+import Loader from "components/Loader";
+
+const admin = () => {
+  const { data: stats, isLoading } = useGetStatsQuery();
+  console.log("🚀 ~ file: page.tsx:14 ~ admin ~ stats:", stats);
+
+  if (isLoading) {
+    <section className="w-full h-full flex items-center justify-center">
+      <Loader classes="w-8 h-8" />
+    </section>;
+  }
   return (
-    <>
-      <Suspense fallback={<Spinner />}>
-        <StatsContainer stats={stats.defaultStats} />
-        {stats.monthlyStats?.length > 0 && (
-          <ChartsContainer monthlyStats={stats.monthlyStats} />
-        )}
-      </Suspense>
-    </>
+    <section className="w-full h-full flex flex-col items-center justify-center">
+      <div className="flex flex-col gap-4 w-full h-full">
+        <StatsContainer stats={stats?.defaultStats as DefaultStatsProps} />
+        {/* {stats!.monthlyApplicationStats?.length > 0 && (
+          <ChartsContainer monthlyStats={stats?.monthlyApplicationStats} />
+        )} */}
+      </div>
+    </section>
   );
 };
 

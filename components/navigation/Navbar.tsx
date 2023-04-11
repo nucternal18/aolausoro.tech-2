@@ -1,11 +1,10 @@
 "use client";
-import { useState, useRef, useEffect, ReactNode } from "react";
-import Link from "next/link";
+import { useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { signOut, signIn } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 import { links, social } from "../../data";
 
@@ -36,7 +35,7 @@ export default function Navbar({ textColor }: NavProps) {
   };
 
   return (
-    <Nav bgColor="bg-white dark:bg-gray-900">
+    <Nav bgColor="bg-white dark:bg-gray-900 drop-shadow-sm">
       <Nav.Toggler
         toggle={toggle}
         isOpen={isOpen}
@@ -44,6 +43,13 @@ export default function Navbar({ textColor }: NavProps) {
       />
       {/* Main navigation */}
       <Nav.Container textColor={`${textColor} dark:text-yellow-500`}>
+        <Nav.Brand href="/">
+          <img
+            src={"/android-chrome-512x512.png"}
+            alt="logo"
+            className="h-8 w-8"
+          />
+        </Nav.Brand>
         <Nav.NavLinks left>
           {links.map((link) => {
             const { id, url, text } = link;
@@ -55,20 +61,6 @@ export default function Navbar({ textColor }: NavProps) {
           })}
         </Nav.NavLinks>
         <Nav.NavLinks right>
-          {currentUser && (
-            <button
-              type="button"
-              className="flex items-center bg-gray-800 dark:bg-yellow-500 px-2 mr-2  py-1 rounded-3xl text-gray-200 shadow-xl"
-              onClick={() => router.push(`/user-profile/${currentUser?.id}`)}
-            >
-              <p className="mr-2 capitalize text-base">{currentUser.name}</p>
-              <img
-                src={currentUser.image}
-                alt="user-profile"
-                className="w-8 h-8 rounded-full"
-              />
-            </button>
-          )}
           <Nav.Item>
             <button
               type="button"

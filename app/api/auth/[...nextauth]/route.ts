@@ -1,18 +1,11 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth, {
-  Account,
-  Awaitable,
-  DefaultSession,
-  NextAuthOptions,
-  Session,
-  User,
-} from "next-auth";
+import NextAuth, { Account, NextAuthOptions, Session, User } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import matchPassword from "lib/matchPasswords";
 import { JWT } from "next-auth/jwt";
 import { AdapterUser } from "next-auth/adapters";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -29,11 +22,6 @@ type UserProps = {
   isAdmin: boolean;
 };
 
-interface ISessionProps {
-  user: UserProps;
-  expires: Date;
-}
-
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
@@ -45,19 +33,23 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.JWT_SIGNING_PRIVATE_KEY,
     maxAge: 60 * 60 * 24 * 30,
   },
-  debug: true,
   providers: [
     CredentialsProvider({
+      name: "aolausoro.tech",
+      credentials: {
+        email: { label: "Email", type: "text", placeholder: "email" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials: CredentialsProps) {
-        const user = await prisma.users.findUnique({
+        if (!credentials?.email || !credentials.password) {
+          return null;
+        }
+
+        const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-        await prisma.$disconnect();
 
-        if (
-          user &&
-          (await matchPassword(credentials.password, user.password))
-        ) {
+        if (user && bcrypt.compareSync(credentials.password, user.password)) {
           return {
             id: user.id,
             image: user.image,
@@ -69,13 +61,13 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
       },
-      credentials: {
-        email: { label: "Username", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/auth/login",
+    signOut: "/auth/logout",
+  },
+  secret: process.env.NEXTAUTH_SECRET as string,
   callbacks: {
     /**
      * @param  {object} session      Session object
@@ -97,16 +89,8 @@ export const authOptions: NextAuthOptions = {
       trigger: "update";
       newSession: any;
     }): Promise<Session> {
-      // Note, that `rest.session` can be any arbitrary object, remember to validate it!
-      if (trigger === "update" && newSession?.user) {
-        // You can update the session in the database if it's not already updated.
-        // await adapter.updateUser(session.user.id, { name: newSession.name })
-
-        // Make sure the updated value is reflected on the client
-        session.user = newSession.user;
-      }
       // Add property to session, like an access_token from a provider.
-      session.user = token.user as UserProps;
+      session.user = token.user as Session["user"];
       return session;
     },
     /**
@@ -131,4 +115,5 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export default NextAuth(authOptions);
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };

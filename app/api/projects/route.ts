@@ -3,14 +3,13 @@ import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  const projects = await prisma.projects.findMany({});
-  console.log("🚀 ~ file: route.ts:7 ~ GET ~ projects:", projects);
+  const projects = await prisma.project.findMany({});
 
   if (projects) {
     return NextResponse.json(projects);
   } else {
     return new Response("No projects found", {
-      status: 500,
+      status: 400,
     });
   }
 }

@@ -53,3 +53,29 @@ export type BlogPost = {
   author: string;
   author_image: string;
 };
+
+export type IMessageData = {
+  id?: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  token?: string;
+};
+
+export type DefaultStatsProps = {
+  pending: number;
+  interviewing: number;
+  declined: number;
+  offer: number;
+};
+
+export type MonthlyApplicationsProps = {
+  date: string;
+  totalPrice: number;
+};
+
+export type StatsProps = {
+  defaultStats: DefaultStatsProps;
+  monthlyApplicationStats: MonthlyApplicationsProps[];
+};

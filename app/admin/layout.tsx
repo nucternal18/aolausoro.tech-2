@@ -6,11 +6,10 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex md:flex-row flex-col h-screen transition-height duration-75 ease-out">
+    <section className="flex md:flex-row flex-col h-full transition-height duration-75 ease-out">
       <AdminsSidebar />
 
-      <section className="pb-2 flex-1 h-screen overflow-y-scroll ">
-        <AdminNavBar />
+      <section className=" flex-1 h-full overflow-y-scroll ">
         <section className="w-full">{children}</section>
       </section>
     </section>

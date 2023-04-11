@@ -12,29 +12,14 @@ import {
 } from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
 
 // components
 import ActiveLink from "../ActiveLink";
 
-// context
-import { useAppSelector } from "app/GlobalReduxStore/hooks";
-import { currentUserSelector } from "app/GlobalReduxStore/features/users/usersSlice";
-
 function AdminsSidebar() {
   const { theme, setTheme } = useTheme();
-  const router = useRouter();
-  const currentUser = useAppSelector(currentUserSelector);
   const [collapseShow, setCollapseShow] = useState("hidden");
 
-  const handleLogout = () => {
-    signOut();
-    // dispatch({ type: ActionType.USER_LOGOUT_SUCCESS });
-    router.push("/");
-  };
-
-  const handleCloseSidebar = () => {};
   return (
     <aside className="z-10  flex flex-initial font-mono px-2 py-4 bg-white md:h-full dark:bg-gray-900  shadow-xl md:shadow-none md:left-0  md:top-0 md:bottom-0 md:overflow-y-scroll  md:overflow-hidden md:w-64 ">
       <nav className="flex flex-wrap items-center justify-between min-w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap">
@@ -50,27 +35,15 @@ function AdminsSidebar() {
           <div className=" p-2   text-gray-900 uppercase dark:text-gray-200 dark:hover:text-yellow-500">
             <Link
               href="/"
-              className="flex items-center justify-between text-xl capitalize whitespace-no-wrap font-bold text-left "
+              className="flex items-center justify-between text-xl capitalize whitespace-no-wrap sm:hidden font-bold text-left "
             >
               <img
                 src={"/android-chrome-512x512.png"}
                 alt="logo"
                 className="h-8 w-8"
               />
-              <span className="ml-1">aolausoro.tech</span>
             </Link>
           </div>
-          <button
-            type="button"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-1 ml-4 font-medium list-none border-2 border-current rounded-full cursor-pointer text-gray-900 dark:text-gray-200 dark:hover:text-yellow-500 md:block lg:ml-0 lg:mb-0 lg:p-1 lg:px-1 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent"
-          >
-            {theme === "light" ? (
-              <FiSun className="text-lg font-bold " />
-            ) : (
-              <FiMoon className="font-semibold " />
-            )}
-          </button>
         </div>
 
         {/* Collapse */}
@@ -186,32 +159,13 @@ function AdminsSidebar() {
           {/* Divider */}
           <hr className="my-4 md:min-w-full" />
           <ul className="flex flex-col list-none md:min-w-full md:mb-4 px-1">
-            <li>
-              <button
-                type="button"
-                className="flex items-center text-gray-900 uppercase  hover:text-gray-500 dark:hover:text-yellow-500 dark:text-gray-200"
-                onClick={handleLogout}
-              >
-                <FiLogOut fontSize={18} className="mr-2" />
-                <p className="flex flex-row py-3 text-lg ">Logout</p>
-              </button>
-            </li>
-            <li className="px-1 content-end flex md:hidden">
-              {currentUser && (
-                <Link
-                  href={`/user-profile/${currentUser.id}`}
-                  className="flex flex-end my-5 mb-3 gap-2 p-1 items-center  bg-gray-900 dark:bg-yellow-500 rounded-3xl w-full shadow-xl px-2 text-gray-200 uppercase hover:text-gray-300 "
-                  onClick={handleCloseSidebar}
-                >
-                  <img
-                    src={currentUser.image}
-                    alt="user-profile"
-                    className="w-12 h-12 rounded-full"
-                  />
-                  <p>{currentUser.name}</p>
-                </Link>
-              )}
-            </li>
+            <Link
+              href={"/auth/logout"}
+              className="flex items-center text-gray-900 uppercase  hover:text-gray-500 dark:hover:text-yellow-500 dark:text-gray-200"
+            >
+              <FiLogOut fontSize={18} className="mr-2" />
+              <p className="flex flex-row py-3 text-lg ">Logout</p>
+            </Link>
           </ul>
         </div>
       </nav>

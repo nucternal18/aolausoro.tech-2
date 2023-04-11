@@ -18,6 +18,7 @@ const moduleExports = withPWA({
   // Your existing module.exports
   experimental: {
     appDir: true,
+    serverComponentsExternalPackages: ["@prisma/client", "bcryptjs"],
   },
   reactStrictMode: true,
   images: {

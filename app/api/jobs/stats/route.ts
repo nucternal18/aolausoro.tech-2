@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]";
+import { authOptions } from "../../auth/[...nextauth]/route";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
@@ -63,6 +63,7 @@ export async function GET(req: Request) {
     declined: declinedStats || 0,
     offer: offerStats || 0,
   };
+  console.log("🚀 ~ file: route.ts:66 ~ GET ~ defaultStats:", defaultStats);
 
   const monthlyApplications = (await prisma.job.aggregateRaw({
     pipeline: [
@@ -80,22 +81,34 @@ export async function GET(req: Request) {
       { $limit: 6 },
     ],
   })) as unknown as Prisma.JsonArray;
+  console.log(
+    "🚀 ~ file: route.ts:84 ~ GET ~ monthlyApplications:",
+    monthlyApplications
+  );
 
   const monthlyApplicationDSta = JSON.parse(
     JSON.stringify(monthlyApplications)
+  );
+  console.log(
+    "🚀 ~ file: route.ts:88 ~ GET ~ monthlyApplicationDSta:",
+    monthlyApplicationDSta
   );
 
   const monthlyApplicationStats = monthlyApplicationDSta.map((item) => {
     const {
       _id: { year, month },
-      totalPrice,
+      count,
     } = item;
     const date = moment()
       .month(month - 1)
       .year(year)
       .format("MMM YYYY");
-    return { date, totalPrice };
+    return { date, count };
   });
+  console.log(
+    "🚀 ~ file: route.ts:100 ~ monthlyApplicationStats ~ monthlyApplicationStats:",
+    monthlyApplicationStats
+  );
 
   if (monthlyApplications) {
     return NextResponse.json({ defaultStats, monthlyApplicationStats });

@@ -27,6 +27,7 @@ export default function Page() {
           alt="home background image"
           quality={75}
           fill
+          priority
           style={{
             objectFit: "cover",
             objectPosition: "center",

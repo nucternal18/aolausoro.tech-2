@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { MdOutlineDashboard } from "react-icons/md";
 
 import { currentUserSelector } from "app/GlobalReduxStore/features/users/usersSlice";
