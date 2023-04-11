@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
@@ -6,6 +5,7 @@ import CategoryLabel from "../../../components/CategoryLabel";
 import { getPostData, getSortedPostsData } from "../../../lib/posts";
 import Date from "../../../components/date";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 export function generateStaticParams() {
   const { orderedPost } = getSortedPostsData(1);
@@ -16,7 +16,11 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetaData({ params }: { params: { id: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
   const { orderedPost } = getSortedPostsData(1);
   const { id } = params;
 
