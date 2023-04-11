@@ -10,6 +10,8 @@ import {
 } from "./api";
 import userReducer from "./features/users/usersSlice";
 import jobsReducer from "./features/jobs/jobsSlice";
+import projectReducer from "./features/projects/projectsSlice";
+import messageReducer from "./features/messages/messagesSlice";
 
 const reducers = {
   [userApiSlice.reducerPath]: userApiSlice.reducer,
@@ -18,6 +20,8 @@ const reducers = {
   [jobsApiSlice.reducerPath]: jobsApiSlice.reducer,
   user: userReducer,
   jobs: jobsReducer,
+  projects: projectReducer,
+  messages: messageReducer,
 };
 
 const rootReducer = combineReducers(reducers);

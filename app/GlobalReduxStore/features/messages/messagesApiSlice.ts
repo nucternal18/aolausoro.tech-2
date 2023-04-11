@@ -27,6 +27,18 @@ export const messagesApi = messageApiSlice.injectEndpoints({
         { type: "Message", id: "LIST" },
       ],
     }),
+    deleteMessage: builder.mutation<
+      { success: boolean; message: string },
+      string
+    >({
+      query: (id) => ({
+        url: `/contact/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Message", id: "LIST" },
+      ],
+    }),
     sendMail: builder.mutation<
       { success: boolean; message: string },
       IMessageData
@@ -47,5 +59,6 @@ export const {
   useGetMessagesQuery,
   useGetMessageQuery,
   useCreateMessageMutation,
+  useDeleteMessageMutation,
   useSendMailMutation,
 } = messagesApi;

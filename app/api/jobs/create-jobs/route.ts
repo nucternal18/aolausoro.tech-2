@@ -58,6 +58,6 @@ export async function POST(req: Request) {
       message: "Job created successfully",
     });
   } else {
-    return new Response("Job not created", { status: 404 });
+    return NextResponse.json("Job not created", { status: 404 });
   }
 }

@@ -61,6 +61,7 @@ export type IMessageData = {
   subject: string;
   message: string;
   token?: string;
+  createdAt?: string;
 };
 
 export type DefaultStatsProps = {

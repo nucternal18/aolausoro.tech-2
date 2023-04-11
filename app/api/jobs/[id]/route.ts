@@ -33,9 +33,9 @@ export async function GET(
   });
 
   if (foundJob) {
-    return NextResponse.json(foundJob);
+    return NextResponse.json(foundJob, { status: 200 });
   } else {
-    return new Response("Job not found", { status: 404 });
+    return NextResponse.json("Job not found", { status: 404 });
   }
 }
 

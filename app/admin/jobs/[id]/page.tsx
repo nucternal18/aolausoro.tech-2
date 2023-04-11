@@ -2,11 +2,12 @@
 import EditJobComponent from "components/forms/EditJobComponent";
 
 // redux
-import { useGetJobsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
+import { useGetJobByIdQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
 import Loader from "components/Loader";
 
-function Job() {
-  const { data: job, isLoading } = useGetJobsQuery({ status: "all" });
+function Job({ param }: { param: { id: string } }) {
+  const { id } = param;
+  const { data: job, isLoading } = useGetJobByIdQuery(id);
 
   if (isLoading) {
     return (

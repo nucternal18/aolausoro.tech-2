@@ -1,6 +1,20 @@
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { IMessageData } from "lib/types";
 
-export default function MessageTable({ messages, router, deleteMessage }) {
+interface MessageTableProps {
+  messages: IMessageData[];
+  router: AppRouterInstance;
+  deleteMessage: (id: string) => void;
+  isLoading: boolean;
+}
+
+export default function MessageTable({
+  messages,
+  router,
+  deleteMessage,
+  isLoading,
+}: MessageTableProps) {
   return (
     <table className="w-full md:min-w-full rounded-md shadow-2xl  md:table">
       <thead className="bg-gray-50 dark:bg-yellow-500  hidden md:table-header-group">
@@ -89,7 +103,7 @@ export default function MessageTable({ messages, router, deleteMessage }) {
       <tbody className=" block px-1 md:px-0 md:table-row-group">
         {messages.map((item) => (
           <tr
-            key={item._id}
+            key={item.id}
             className="bg-white text-gray-900 dark:text-gray-100 shadow-2xl md:shadow-none dark:bg-gray-700 rounded md:rounded-none overflow-x-hidden mb-2 md:mb-0 md:border-none block md:table-row"
           >
             <td className="p-2 flex items-center text-left  md:table-cell">
@@ -127,7 +141,7 @@ export default function MessageTable({ messages, router, deleteMessage }) {
                     text-green-800
                   "
               >
-                {new Date(item.createdAt).toDateString()}
+                {new Date(item.createdAt as string).toDateString()}
               </span>
             </td>
 
@@ -149,14 +163,15 @@ export default function MessageTable({ messages, router, deleteMessage }) {
                 <button
                   type="button"
                   className="text-blue-500 mr-4 "
-                  onClick={() => router.push(`/admin/messages/${item._id}`)}
+                  onClick={() => router.push(`/admin/messages/${item.id}`)}
                 >
                   <FaEdit className="text-lg" />
                 </button>
                 <button
                   type="button"
                   className="text-red-500"
-                  onClick={() => deleteMessage(item._id)}
+                  disabled={isLoading}
+                  onClick={() => deleteMessage(item.id as string)}
                 >
                   <FaTrash />
                 </button>

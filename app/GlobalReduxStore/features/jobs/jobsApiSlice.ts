@@ -1,5 +1,5 @@
 import { jobsApiSlice } from "app/GlobalReduxStore/api";
-import { JobsProps, StatsProps } from "lib/types";
+import { JobProps, JobsProps, StatsProps } from "lib/types";
 
 export const jobsApi = jobsApiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -27,10 +27,11 @@ export const jobsApi = jobsApiSlice.injectEndpoints({
           { type: "Jobs", id: "LIST" },
         ],
     }),
-    createJob: build.mutation<
-      { success: boolean; message: string },
-      JobsProps["jobs"]
-    >({
+    getJobById: build.query<JobsProps["jobs"], string>({
+      query: (id) => `/jobs/${id}`,
+      providesTags: (result) => [{ type: "Jobs", id: result?.[0]?.id }],
+    }),
+    createJob: build.mutation<{ success: boolean; message: string }, JobProps>({
       query: (job) => ({
         url: "/jobs/create-jobs",
         method: "POST",
@@ -59,6 +60,7 @@ export const jobsApi = jobsApiSlice.injectEndpoints({
 export const {
   useGetStatsQuery,
   useGetJobsQuery,
+  useGetJobByIdQuery,
   useCreateJobMutation,
   useUpdateJobMutation,
   useDeleteJobMutation,

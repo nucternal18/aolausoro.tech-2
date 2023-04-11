@@ -1,15 +1,19 @@
 "use client";
-import { useState } from "react";
-import { GetServerSidePropsContext } from "next";
+import { useCallback, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
-import { getSession } from "next-auth/react";
 
 // components
 import UploadForm from "components/forms/UploadForm";
 
-import getUser from "lib/getUser";
-import { NEXT_URL } from "config";
+// redux
+import {
+  useGetProjectByIdQuery,
+  useUploadImageMutation,
+  useUpdateProjectMutation,
+} from "app/GlobalReduxStore/features/projects/projectApiSlice";
+import { useAppSelector } from "app/GlobalReduxStore/hooks";
+import { projectSelector } from "app/GlobalReduxStore/features/projects/projectsSlice";
 
 interface IFormInputs {
   projectName: string;
@@ -18,8 +22,13 @@ interface IFormInputs {
   techStack: string[];
 }
 
-function project({ project, projectId }) {
+function project({ params }: { params: { id: string } }) {
+  const { data: project, refetch } = useGetProjectByIdQuery(params.id);
   const [techStack, setTechStack] = useState<Array<string>>(project.techStack);
+  const state = useAppSelector(projectSelector);
+  const [uploadImage] = useUploadImageMutation();
+  const [updateProject] = useUpdateProjectMutation();
+
   const {
     register,
     handleSubmit,
@@ -46,7 +55,7 @@ function project({ project, projectId }) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        // uploadImage(reader.result);
+        uploadImage(reader.result);
       };
       reader.onerror = () => {
         toast.error("something went wrong!");
@@ -55,16 +64,24 @@ function project({ project, projectId }) {
       toast.error("Please select an image file (png or jpeg)");
     }
   };
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<IFormInputs> = useCallback(async (data) => {
     const project = {
       projectName: data.projectName,
       github: data.github,
       address: data.address,
       techStack,
-      id: projectId,
+      id: params.id,
     };
     // updateProject(project);
-  };
+    try {
+      const response = await updateProject(project).unwrap();
+      if (response.success) {
+        toast.success(response.message);
+      }
+    } catch (error) {
+      toast.error("Error updating project");
+    }
+  }, []);
   return (
     <section className="flex items-center w-full h-screen px-4 mx-auto ">
       <div className="items-center w-full p-6 my-4 overflow-hidden rounded shadow-lg dark:shadow-none md:w-2/4 md:mx-auto">
@@ -76,59 +93,12 @@ function project({ project, projectId }) {
           handleSubmit={handleSubmit}
           register={register}
           onSubmit={onSubmit}
-          imageUrl={state.imageUrl}
+          imageUrl={state.image}
           errors={errors}
         />
       </div>
     </section>
   );
 }
-
-// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-//   const { id } = ctx.params;
-//   const req = ctx.req;
-//   const session = await getSession({ req });
-
-//   if (!session) {
-//     // If no token is present redirect user to the login page
-//     return {
-//       redirect: {
-//         destination: "/login",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   const userData = await getUser(req);
-
-//   if (!userData?.isAdmin) {
-//     return {
-//       redirect: {
-//         destination: "/not-authorized",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   const res = await fetch(`${NEXT_URL}/api/projects/${id}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-
-//   const data = await res.json();
-
-//   if (!data) {
-//     return {
-//       redirect: {
-//         destination: "/admin",
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: { project: data, projectId: id },
-//   };
-// };
 
 export default project;

@@ -1,67 +1,28 @@
-import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/react";
-
 // Components
-
 import Table from "components/Table/ProjectTable";
+import Loader from "components/Loader";
 
-// Context
+// redux
+import {
+  useGetProjectByIdQuery,
+  useGetProjectsQuery,
+} from "app/GlobalReduxStore/features/projects/projectApiSlice";
 
-import getUser from "lib/getUser";
-import { NEXT_URL } from "config";
+function Projects() {
+  const { data: projects, isLoading } = useGetProjectsQuery();
 
-function Projects({ projects }) {
+  if (isLoading) {
+    return (
+      <section className="w-full h-full flex items-center justify-center">
+        <Loader classes="w-8 h-8" />
+      </section>
+    );
+  }
   return (
     <section className="w-full h-full py-10 md:px-8">
       <Table data={projects} />
     </section>
   );
 }
-
-// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-//   const req = ctx.req;
-//   const session = await getSession({ req });
-
-//   if (!session) {
-//     // If no token is present redirect user to the login page
-//     return {
-//       redirect: {
-//         destination: "/login",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   const userData = await getUser(req);
-
-//   if (!userData?.isAdmin) {
-//     return {
-//       redirect: {
-//         destination: "/not-authorized",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   const res = await fetch(`${NEXT_URL}/api/projects`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-
-//   const data = await res.json();
-
-//   if (!data) {
-//     return {
-//       redirect: {
-//         destination: "/admin",
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: { projects: data },
-//   };
-// };
 
 export default Projects;

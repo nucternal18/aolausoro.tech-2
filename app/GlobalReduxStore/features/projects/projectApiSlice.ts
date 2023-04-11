@@ -1,6 +1,7 @@
 "use client";
 import { projectApiSlice } from "app/GlobalReduxStore/api";
 import { ProjectProps } from "./../../../../lib/types";
+import { setError, setImage } from "./projectsSlice";
 
 export const projectApi = projectApiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -49,6 +50,31 @@ export const projectApi = projectApiSlice.injectEndpoints({
         { type: "Project", id: "LIST" },
       ],
     }),
+    uploadImage: build.mutation<{ image: string }, string | ArrayBuffer | null>(
+      {
+        query: (base64EncodedImage) => ({
+          url: `/photos/upload`,
+          method: "POST",
+          body: { data: base64EncodedImage },
+        }),
+        invalidatesTags: (result, error, arg) => [
+          { type: "Project", id: "LIST" },
+        ],
+        onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled;
+            dispatch(setImage(data.image));
+          } catch (error: any) {
+            if (error.response) {
+              dispatch(setError(error.response.data.message));
+            } else {
+              dispatch(setError(error.message));
+            }
+            console.log(error);
+          }
+        },
+      }
+    ),
   }),
   overrideExisting: true,
 });
@@ -59,4 +85,5 @@ export const {
   useCreateProjectMutation,
   useUpdateProjectMutation,
   useDeleteProjectMutation,
+  useUploadImageMutation,
 } = projectApi;

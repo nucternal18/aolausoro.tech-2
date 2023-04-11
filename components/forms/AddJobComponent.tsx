@@ -1,9 +1,12 @@
 "use client";
+import { useCallback } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 
+// redux
 import { useAppSelector } from "app/GlobalReduxStore/hooks";
 import { jobSelector } from "app/GlobalReduxStore/features/jobs/jobsSlice";
+import { useCreateJobMutation } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
 
 import FormRowSelect from "../FormRowSelect";
 import FormRowInput from "../FormRowInput";
@@ -20,6 +23,7 @@ interface IFormData {
 
 const AddJobComponent = () => {
   const state = useAppSelector(jobSelector);
+  const [addJob, { isLoading }] = useCreateJobMutation();
 
   const {
     register,
@@ -30,22 +34,37 @@ const AddJobComponent = () => {
     defaultValues: {
       position: "",
       company: "",
-      jobLocation: job?.jobLocation,
-      jobType: job?.jobType,
-      status: job?.status,
+      jobLocation: state.jobLocation,
+      jobType: state.jobType,
+      status: state.status,
     },
   });
 
-  const onSubmit: SubmitHandler<IFormData> = (data) => {
+  const onSubmit: SubmitHandler<IFormData> = useCallback(async (data) => {
     if (!data.position || !data.company || !data.jobLocation) {
       toast.error("Please fill out all fields");
       return;
     }
 
-    // addJob(data);
-    // toast.success(state.message);
-    reset();
-  };
+    const jobData = {
+      position: data.position,
+      company: data.company,
+      jobLocation: data.jobLocation,
+      jobType: data.jobType,
+      status: data.status,
+    };
+
+    try {
+      const response = await addJob(jobData).unwrap();
+
+      if (response.success) {
+        toast.success(response.message);
+        reset();
+      }
+    } catch (error) {
+      toast.error("Error. Unable to add job.");
+    }
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -99,7 +118,7 @@ const AddJobComponent = () => {
             <button
               className=" px-4 py-2  font-bold text-white capitalize bg-black w-full  rounded hover:bg-yellow-500 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-200 dark:hover:bg-yellow-700"
               type="submit"
-              disabled={state?.loading}
+              disabled={isLoading}
             >
               submit
             </button>
