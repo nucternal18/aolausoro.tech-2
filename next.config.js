@@ -4,10 +4,21 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 const { withSentryConfig } = require("@sentry/nextjs");
-const withPWA = require("next-pwa");
 const runtimeCaching = require("next-pwa/cache");
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  runtimeCaching,
+  disable: process.env.NODE_ENV === "development",
+  buildExcludes: [/middleware-manifest\.json$/],
+});
 
 const moduleExports = withPWA({
+  // Your existing module.exports
+  experimental: {
+    appDir: true,
+  },
   reactStrictMode: true,
   images: {
     domains: [
@@ -17,15 +28,16 @@ const moduleExports = withPWA({
     ],
   },
   eslint: {
-    dirs: ["pages", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
+    dirs: ["app", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
   },
-  pwa: {
-    dest: "public",
-    register: true,
-    skipWaiting: true,
-    disable: process.env.NODE_ENV === "development",
-    runtimeCaching,
-    buildExcludes: [/middleware-manifest\.json$/],
+  sentry: {
+    // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
+    // for client-side builds. (This will be the default starting in
+    // `@sentry/nextjs` version 8.0.0.) See
+    // https://webpack.js.org/configuration/devtool/ and
+    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
+    // for more information.
+    hideSourceMaps: true,
   },
   env: {
     NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API,

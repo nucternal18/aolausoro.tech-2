@@ -1,20 +1,21 @@
 import React from "react";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
-import { useGlobalApp } from "context/appContext";
-import { ActionType } from "context/appActions";
+import { useAppSelector, useAppDispatch } from "app/GlobalReduxStore/hooks";
+import {
+  jobSelector,
+  setPage,
+} from "app/GlobalReduxStore/features/jobs/jobsSlice";
 
 const PageBtnContainer = ({ numberOfPages }) => {
-  const { state, dispatch } = useGlobalApp();
+  const dispatch = useAppDispatch();
+  const state = useAppSelector(jobSelector);
   const pages = Array.from({ length: numberOfPages }, (_, i) => i + 1);
   const changePage = (page) => {
-    dispatch({
-      type: ActionType.CHANGE_PAGE,
-      payload: { page },
-    });
+    dispatch(setPage(page));
   };
   const prevPage = () => {
     console.log("prev page");
-    let newPage = state.job?.page - 1;
+    let newPage = state.page - 1;
     if (newPage < 1) {
       newPage = numberOfPages;
     }
@@ -22,7 +23,7 @@ const PageBtnContainer = ({ numberOfPages }) => {
   };
   const nextPage = () => {
     console.log("next page");
-    let newPage = state.job?.page + 1;
+    let newPage = state.page + 1;
     if (newPage > numberOfPages) {
       newPage = 1;
     }
@@ -43,7 +44,7 @@ const PageBtnContainer = ({ numberOfPages }) => {
             <button
               type="button"
               className={`${
-                pageNumber === state.job.page
+                pageNumber === state.page
                   ? "bg-teal-800 text-white rounded-md"
                   : "bg-teal-300 text-white"
               } py-2 px-4 gap-2  hover:bg-teal-400 shadow-md`}

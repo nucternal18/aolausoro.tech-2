@@ -1,15 +1,15 @@
 import React from "react";
 import moment from "moment";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
-import { useGlobalApp } from "context/appContext";
+
 import { JobProps } from "lib/types";
-import { ActionType } from "context/appActions";
+
 import JobInfo from "./JobInfo";
 
 const JobCard: React.FC<JobProps> = ({
-  _id,
+  id,
   position,
   company,
   jobLocation,
@@ -19,7 +19,6 @@ const JobCard: React.FC<JobProps> = ({
 }: JobProps): JSX.Element => {
   const router = useRouter();
   const date = moment(createdAt).format("MMMM Do, YYYY");
-  const { dispatch, deleteJob } = useGlobalApp();
 
   const statusColor =
     status === "Pending"
@@ -28,11 +27,11 @@ const JobCard: React.FC<JobProps> = ({
       ? "bg-green-500"
       : "bg-red-500";
   const setEditJob = () => {
-    dispatch({
-      type: ActionType.JOB_EDIT_STATUS,
-      payload: true,
-    });
-    router.push(`/admin/jobs/${_id}`);
+    // dispatch({
+    //   type: ActionType.JOB_EDIT_STATUS,
+    //   payload: true,
+    // });
+    router.push(`/admin/jobs/${id}`);
   };
   return (
     <div className="px-1 py-2 bg-white dark:bg-gray-900 shadow-xl mt-5 mx-2 md:p-4">
@@ -70,7 +69,7 @@ const JobCard: React.FC<JobProps> = ({
           <button
             type="button"
             className="px-4 py-2 bg-red-500 rounded-md shadow-lg capitalize text-sm font-base font-mono text-white"
-            onClick={() => deleteJob(_id)}
+            // onClick={() => deleteJob(id as string)}
           >
             delete
           </button>

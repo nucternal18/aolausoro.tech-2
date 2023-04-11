@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -20,14 +21,14 @@ function ContactForm({ submitHandler }) {
   const recaptchaRef = useRef(null);
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    const token = await recaptchaRef.current?.executeAsync();
-    recaptchaRef.current.reset();
+    // const token = await recaptchaRef.current?.executeAsync();
+    // recaptchaRef.current?.reset();
     const newMessage: IFormData = {
       name: data.name,
       email: data.email,
       subject: data.subject,
       message: data.message,
-      token,
+      token: "",
     };
     submitHandler(newMessage);
   };
@@ -47,7 +48,6 @@ function ContactForm({ submitHandler }) {
           type="text"
           id="name"
           placeholder="Name"
-          name="name"
           aria-label="name-input"
           aria-errormessage="name-error"
           aria-invalid="true"
@@ -77,7 +77,6 @@ function ContactForm({ submitHandler }) {
           placeholder="Email"
           aria-label="email-input"
           aria-errormessage="email-error"
-          name="email"
           aria-invalid="true"
           {...register("email", {
             required: "This is required",
@@ -102,7 +101,6 @@ function ContactForm({ submitHandler }) {
           className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline dark:bg-gray-100"
           type="text"
           id="subject"
-          name="subject"
           placeholder="Subject"
           aria-label="subject-input"
           aria-errormessage="subject-error"
@@ -132,7 +130,6 @@ function ContactForm({ submitHandler }) {
           id="message"
           rows={5}
           placeholder="Message..."
-          name="message"
           aria-label="message-input"
           aria-errormessage="message-error"
           aria-invalid="true"
@@ -158,11 +155,11 @@ function ContactForm({ submitHandler }) {
         Send
       </Button>
 
-      <ReCAPTCHA
+      {/* <ReCAPTCHA
         ref={recaptchaRef}
         size="invisible"
         sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-      />
+      /> */}
     </form>
   );
 }

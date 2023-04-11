@@ -1,10 +1,9 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useRouter } from "next/router";
-import { useGlobalApp } from "context/appContext";
+"use client";
 import FormRowSelect from "../FormRowSelect";
 import FormRowInput from "../FormRowInput";
-import { useEffect } from "react";
-import { NEXT_URL } from "config";
+
+import { useAppSelector } from "app/GlobalReduxStore/hooks";
+import { jobSelector } from "app/GlobalReduxStore/features/jobs/jobsSlice";
 
 interface IFormData {
   search: string;
@@ -18,7 +17,7 @@ interface IFormData {
 }
 
 const SearchForm = ({ register, reset, errors }) => {
-  const { state } = useGlobalApp();
+  const state = useAppSelector(jobSelector);
 
   return (
     <form>
@@ -41,14 +40,14 @@ const SearchForm = ({ register, reset, errors }) => {
             type="status"
             register={register}
             errors={errors.status}
-            list={["all", ...state.job.statusOptions]}
+            list={["all", ...state.statusOptions]}
           />
           <FormRowSelect
             name="Job Type"
             type="jobType"
             register={register}
             errors={errors.jobType}
-            list={["all", ...state.job.jobTypeOptions]}
+            list={["all", ...state.jobTypeOptions]}
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
@@ -57,7 +56,7 @@ const SearchForm = ({ register, reset, errors }) => {
             type="sort"
             register={register}
             errors={errors.sort}
-            list={state.job.sortOptions}
+            list={state.sortOptions}
           />
 
           <button

@@ -26,7 +26,7 @@ const JobsContainer: React.FC<JobsContainerProps> = ({
       </h5>
       <div className=" grid grid-cols-1 sm:grid-cols-2  gap-2 my-5 ">
         {jobsArr.map((job) => (
-          <JobCard key={job._id} {...job} />
+          <JobCard key={job.id} {...job} />
         ))}
       </div>
       {numberOfPages > 1 && (

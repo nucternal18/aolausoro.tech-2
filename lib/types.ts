@@ -1,10 +1,11 @@
 export type UserInfoProps = {
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
   image?: string;
   token?: string;
   isAdmin?: boolean;
-  email: string;
+  email?: string;
+  location?: string;
 };
 
 export type ProjectProps = {
@@ -17,7 +18,7 @@ export type ProjectProps = {
 };
 
 export type JobProps = {
-  _id?: string;
+  id?: string;
   position: string;
   company: string;
   jobLocation: string;
@@ -26,7 +27,6 @@ export type JobProps = {
   status: string;
   statusOptions?: string[];
   updatedAt?: string;
-  __v?: number;
   page?: number;
   createdAt?: string;
   createdBy?: string;
@@ -41,4 +41,15 @@ export type JobsProps = {
   jobs: JobProps[];
   totalJobs: number;
   numberOfPages: number;
+};
+
+export type BlogPost = {
+  id: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  cover_image: string;
+  category: string;
+  author: string;
+  author_image: string;
 };

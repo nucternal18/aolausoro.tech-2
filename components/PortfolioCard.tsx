@@ -9,7 +9,6 @@ function PortfolioCard({ doc }) {
         <Image
           src={doc.url}
           alt="project"
-          layout="intrinsic"
           width={500}
           height={350}
           quality={50}

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { FiEyeOff, FiEye } from "react-icons/fi";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -48,7 +49,6 @@ function LoginForm({ handleLogin }: ILogin) {
             placeholder="Email"
             aria-label="email-input"
             aria-errormessage="email-error"
-            name="email"
             aria-invalid="true"
             {...register("email", {
               required: "This is required",
@@ -73,7 +73,6 @@ function LoginForm({ handleLogin }: ILogin) {
             className="w-full px-3 py-2 leading-tight text-gray-700 border-none appearance-none focus:outline-none  focus:ring-0 bg-white"
             type={showPassword ? "text" : "password"}
             id="password"
-            name="password"
             placeholder="Password"
             aria-label="password-input"
             aria-errormessage="password-error"

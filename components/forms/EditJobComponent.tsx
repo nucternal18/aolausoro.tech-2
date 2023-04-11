@@ -1,9 +1,11 @@
+"use client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { useGlobalApp } from "context/appContext";
 import FormRowSelect from "../FormRowSelect";
 import FormRowInput from "../FormRowInput";
+import { useAppSelector } from "app/GlobalReduxStore/hooks";
+import { jobSelector } from "app/GlobalReduxStore/features/jobs/jobsSlice";
 
 interface IFormData {
   position: string;
@@ -17,7 +19,7 @@ interface IFormData {
 
 const EditJobComponent = ({ job, cookie }) => {
   const router = useRouter();
-  const { state, updateJob } = useGlobalApp();
+  const state = useAppSelector(jobSelector);
 
   const {
     register,
@@ -44,7 +46,7 @@ const EditJobComponent = ({ job, cookie }) => {
       _id: job?.job?._id,
       ...data,
     };
-    updateJob(jobData, cookie);
+    // updateJob(jobData, cookie);
 
     toast.success(state.message);
     router.push("/admin/jobs");
@@ -88,14 +90,14 @@ const EditJobComponent = ({ job, cookie }) => {
             type="status"
             register={register}
             errors={errors.status}
-            list={state.job.statusOptions}
+            list={state.statusOptions}
           />
           <FormRowSelect
             name="Job Type"
             type="jobType"
             register={register}
             errors={errors.jobType}
-            list={state.job.jobTypeOptions}
+            list={state.jobTypeOptions}
           />
 
           <div className="w-full flex flex-col md:flex-row items-center gap-2  mt-2">

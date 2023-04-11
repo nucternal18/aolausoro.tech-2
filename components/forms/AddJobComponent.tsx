@@ -1,7 +1,10 @@
+"use client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 
-import { useGlobalApp } from "context/appContext";
+import { useAppSelector } from "app/GlobalReduxStore/hooks";
+import { jobSelector } from "app/GlobalReduxStore/features/jobs/jobsSlice";
+
 import FormRowSelect from "../FormRowSelect";
 import FormRowInput from "../FormRowInput";
 
@@ -16,7 +19,7 @@ interface IFormData {
 }
 
 const AddJobComponent = () => {
-  const { state, addJob } = useGlobalApp();
+  const state = useAppSelector(jobSelector);
 
   const {
     register,
@@ -27,9 +30,9 @@ const AddJobComponent = () => {
     defaultValues: {
       position: "",
       company: "",
-      jobLocation: state.job?.jobLocation,
-      jobType: state.job?.jobType,
-      status: state.job?.status,
+      jobLocation: job?.jobLocation,
+      jobType: job?.jobType,
+      status: job?.status,
     },
   });
 
@@ -39,8 +42,8 @@ const AddJobComponent = () => {
       return;
     }
 
-    addJob(data);
-    toast.success(state.message);
+    // addJob(data);
+    // toast.success(state.message);
     reset();
   };
 
@@ -82,14 +85,14 @@ const AddJobComponent = () => {
             type="status"
             register={register}
             errors={errors.status}
-            list={state.job.statusOptions}
+            list={state.statusOptions}
           />
           <FormRowSelect
             name="Job Type"
             type="jobType"
             register={register}
             errors={errors.jobType}
-            list={state.job.jobTypeOptions}
+            list={state.jobTypeOptions}
           />
 
           <div className="w-full flex flex-col md:flex-row items-center gap-2  mt-2">

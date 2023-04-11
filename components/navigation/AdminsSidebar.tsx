@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -11,25 +12,25 @@ import {
 } from "react-icons/fa";
 import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 // components
 import ActiveLink from "../ActiveLink";
 
 // context
-import { useGlobalApp } from "context/appContext";
-import { ActionType } from "context/appActions";
+import { useAppSelector } from "app/GlobalReduxStore/hooks";
+import { currentUserSelector } from "app/GlobalReduxStore/features/users/usersSlice";
 
 function AdminsSidebar() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
-  const { state, dispatch } = useGlobalApp();
+  const currentUser = useAppSelector(currentUserSelector);
   const [collapseShow, setCollapseShow] = useState("hidden");
 
   const handleLogout = () => {
     signOut();
-    dispatch({ type: ActionType.USER_LOGOUT_SUCCESS });
+    // dispatch({ type: ActionType.USER_LOGOUT_SUCCESS });
     router.push("/");
   };
 
@@ -47,18 +48,16 @@ function AdminsSidebar() {
             <FaBars fontSize={21} />
           </button>
           <div className=" p-2   text-gray-900 uppercase dark:text-gray-200 dark:hover:text-yellow-500">
-            <Link href="/">
-              <a
-                href="#pablo"
-                className="flex items-center justify-between text-xl capitalize whitespace-no-wrap font-bold text-left "
-              >
-                <img
-                  src={"/android-chrome-512x512.png"}
-                  alt="logo"
-                  className="h-8 w-8"
-                />
-                <span className="ml-1">aolausoro.tech</span>
-              </a>
+            <Link
+              href="/"
+              className="flex items-center justify-between text-xl capitalize whitespace-no-wrap font-bold text-left "
+            >
+              <img
+                src={"/android-chrome-512x512.png"}
+                alt="logo"
+                className="h-8 w-8"
+              />
+              <span className="ml-1">aolausoro.tech</span>
             </Link>
           </div>
           <button
@@ -85,18 +84,16 @@ function AdminsSidebar() {
           <div className="block pb-4 mb-4 border-b  border-gray-300 border-solid md:min-w-full md:hidden">
             <div className="flex justify-between w-full">
               <div className="flex items-center text-gray-900 dark:text-gray-200 hover:text-yellow-500">
-                <Link href="/">
-                  <a
-                    href="#pablo"
-                    className="flex items-center text-xl uppercase whitespace-no-wrap font-bold text-left  md:pb-2"
-                  >
-                    <img
-                      src={"/android-chrome-512x512.png"}
-                      alt="logo"
-                      className="h-8 w-8"
-                    />
-                    <span className="ml-1">aolausoro.tech</span>
-                  </a>
+                <Link
+                  href="/"
+                  className="flex items-center text-xl uppercase whitespace-no-wrap font-bold text-left  md:pb-2"
+                >
+                  <img
+                    src={"/android-chrome-512x512.png"}
+                    alt="logo"
+                    className="h-8 w-8"
+                  />
+                  <span className="ml-1">aolausoro.tech</span>
                 </Link>
               </div>
               <div className="flex items-center justify-end w-full md:hidden">
@@ -200,19 +197,18 @@ function AdminsSidebar() {
               </button>
             </li>
             <li className="px-1 content-end flex md:hidden">
-              {state.userData && (
-                <Link href={`/user-profile/${state.userData.id}`}>
-                  <a
-                    className="flex flex-end my-5 mb-3 gap-2 p-1 items-center  bg-gray-900 dark:bg-yellow-500 rounded-3xl w-full shadow-xl px-2 text-gray-200 uppercase hover:text-gray-300 "
-                    onClick={handleCloseSidebar}
-                  >
-                    <img
-                      src={state.userData.image}
-                      alt="user-profile"
-                      className="w-12 h-12 rounded-full"
-                    />
-                    <p>{state.userData.name}</p>
-                  </a>
+              {currentUser && (
+                <Link
+                  href={`/user-profile/${currentUser.id}`}
+                  className="flex flex-end my-5 mb-3 gap-2 p-1 items-center  bg-gray-900 dark:bg-yellow-500 rounded-3xl w-full shadow-xl px-2 text-gray-200 uppercase hover:text-gray-300 "
+                  onClick={handleCloseSidebar}
+                >
+                  <img
+                    src={currentUser.image}
+                    alt="user-profile"
+                    className="w-12 h-12 rounded-full"
+                  />
+                  <p>{currentUser.name}</p>
                 </Link>
               )}
             </li>

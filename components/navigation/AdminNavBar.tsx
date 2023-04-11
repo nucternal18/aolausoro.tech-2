@@ -1,20 +1,21 @@
+"use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { MdOutlineDashboard } from "react-icons/md";
 
-// context
-import { useGlobalApp } from "context/appContext";
+import { currentUserSelector } from "app/GlobalReduxStore/features/users/usersSlice";
+import { useAppSelector } from "app/GlobalReduxStore/hooks";
 
 const AdminNavBar = () => {
   const router = useRouter();
-  const { state } = useGlobalApp();
+  const currenUser = useAppSelector(currentUserSelector);
   const [pos, setPos] = useState("top");
 
   // Check the top position of the navigation in the window
   useEffect(() => {
     document.addEventListener("scroll", (e) => {
-      const scrolled = document.scrollingElement.scrollTop;
-      if (scrolled >= 1) {
+      const scrolled = document.scrollingElement?.scrollTop;
+      if ((scrolled as number) >= 1) {
         setPos("moved");
       } else {
         setPos("top");
@@ -28,15 +29,15 @@ const AdminNavBar = () => {
         <h1 className="text-2xl font font-semibold">Dashboard</h1>
       </div>
       <div className="flex justify-end items-center w-full px-2 rounded-md text-gray-800 dark:text-gray-200 dark:hover:text-yellow-500 border-none outline-none focus-within:shadow-sm">
-        {state.userData && (
+        {currenUser && (
           <button
             type="button"
             className="flex items-center bg-gray-800 dark:bg-yellow-500 px-4 py-2 rounded-3xl text-gray-200 shadow-xl"
-            onClick={() => router.push(`/user-profile/${state.userData.id}`)}
+            onClick={() => router.push(`/user-profile/${currenUser?.id}`)}
           >
-            <p className="mr-2 capitalize text-base">{state.userData.name}</p>
+            <p className="mr-2 capitalize text-base">{currenUser.name}</p>
             <img
-              src={state.userData.image}
+              src={currenUser.image}
               alt="user-profile"
               className="w-8 h-8 rounded-full"
             />

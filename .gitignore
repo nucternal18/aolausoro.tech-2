@@ -4,6 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
+.yarn
+.yarnrc.yml
 
 # testing
 /coverage
@@ -25,6 +27,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -47,3 +50,12 @@ yarn.lock
 **/public/sw.js.map
 **/public/workbox-*.js.map
 **/public/worker-*.js.map
+
+# Sentry
+.sentryclirc
+
+# Sentry
+next.config.original.js
+
+# Sentry
+next.config.wizardcopy.js

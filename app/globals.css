@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.code {
+  background: #fafafa;
+  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.logo {
+  height: 1em;
+}
+
+.blog-text p {
+  margin: 15px 0;
+  line-height: 1.8;
+}
+
+.blog-text ul,
+.blog-text ol {
+  font-size: 110%;
+  line-height: 2.3;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.blog-text pre {
+  background: #f4f4f4;
+  padding: 20px;
+  margin: 20px 0;
+  line-height: 2.3;
+}
+
+.blog-text h1 {
+  font-size: 35px;
+}
+
+.blog-text h2,
+.blog-text h3,
+.blog-text h4 {
+  font-size: 27px;
+}
