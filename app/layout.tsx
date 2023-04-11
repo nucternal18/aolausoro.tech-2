@@ -14,12 +14,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="border-box h-screen flex flex-col p-0 m-0 text-gray-800 bg-white dark:bg-gray-900">
+      <body className="border-box h-screen scroll-smooth antialiased flex flex-col p-0 m-0 text-gray-800 bg-white dark:bg-gray-900">
         <NextAuthSessionProvider>
           <NextThemeProvider>
             <Providers>
               <Navbar textColor="dark:text-yellow-500" />
-              <main className="h-full flex-grow ">{children}</main>
+              <main className="h-full grow">{children}</main>
             </Providers>
             <Footer />
           </NextThemeProvider>

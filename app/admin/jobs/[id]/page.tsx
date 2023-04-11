@@ -5,8 +5,8 @@ import EditJobComponent from "components/forms/EditJobComponent";
 import { useGetJobByIdQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
 import Loader from "components/Loader";
 
-function Job({ param }: { param: { id: string } }) {
-  const { id } = param;
+function Job({ params }: { params: { id: string } }) {
+  const { id } = params;
   const { data: job, isLoading } = useGetJobByIdQuery(id);
 
   if (isLoading) {
