@@ -1,12 +1,26 @@
+"use client";
 import EditJobComponent from "components/forms/EditJobComponent";
-import { NEXT_URL } from "config";
-import getUser from "lib/getUser";
-import { JobProps } from "lib/types";
-import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/react";
 
-function Job({ job, cookie }: { job: JobProps; cookie: string }) {
-  return <EditJobComponent job={job} cookie={cookie} />;
+// redux
+import { useGetJobsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
+import Loader from "components/Loader";
+
+function Job() {
+  const { data: job, isLoading } = useGetJobsQuery({ status: "all" });
+
+  if (isLoading) {
+    return (
+      <section className="flex items-center justify-center w-full h-full">
+        <Loader classes="w-8 h-8" />
+      </section>
+    );
+  }
+
+  return (
+    <section className="flex items-center justify-center w-full h-full">
+      <EditJobComponent job={job} />
+    </section>
+  );
 }
 
 export default Job;

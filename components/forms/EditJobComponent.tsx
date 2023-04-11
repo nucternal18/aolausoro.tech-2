@@ -4,8 +4,11 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import FormRowSelect from "../FormRowSelect";
 import FormRowInput from "../FormRowInput";
+
+// redux
 import { useAppSelector } from "app/GlobalReduxStore/hooks";
 import { jobSelector } from "app/GlobalReduxStore/features/jobs/jobsSlice";
+import { useUpdateJobMutation } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
 
 interface IFormData {
   position: string;
@@ -17,9 +20,10 @@ interface IFormData {
   statusOptions: string[];
 }
 
-const EditJobComponent = ({ job, cookie }) => {
+const EditJobComponent = ({ job }) => {
   const router = useRouter();
   const state = useAppSelector(jobSelector);
+  const [updateJob, { isLoading }] = useUpdateJobMutation();
 
   const {
     register,
@@ -43,7 +47,7 @@ const EditJobComponent = ({ job, cookie }) => {
       return;
     }
     const jobData = {
-      _id: job?.job?._id,
+      id: job?.job?.id,
       ...data,
     };
     // updateJob(jobData, cookie);
@@ -104,7 +108,7 @@ const EditJobComponent = ({ job, cookie }) => {
             <button
               className=" px-4 py-2  font-bold text-white capitalize bg-black w-full  rounded hover:bg-yellow-500 focus:outline-none focus:shadow-outline dark:bg-yellow-500 dark:text-gray-200 dark:hover:bg-yellow-700"
               type="submit"
-              disabled={state?.loading}
+              disabled={isLoading}
             >
               submit
             </button>

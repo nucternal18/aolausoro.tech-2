@@ -63,7 +63,6 @@ export async function GET(req: Request) {
     declined: declinedStats || 0,
     offer: offerStats || 0,
   };
-  console.log("🚀 ~ file: route.ts:66 ~ GET ~ defaultStats:", defaultStats);
 
   const monthlyApplications = (await prisma.job.aggregateRaw({
     pipeline: [
