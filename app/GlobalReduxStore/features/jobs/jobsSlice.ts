@@ -1,3 +1,4 @@
+"use client";
 import { RootState } from "../../store";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 

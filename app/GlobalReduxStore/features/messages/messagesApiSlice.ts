@@ -1,3 +1,4 @@
+"use client";
 import { messageApiSlice } from "app/GlobalReduxStore/api";
 import { IMessageData } from "lib/types";
 

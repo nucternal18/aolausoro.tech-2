@@ -1,3 +1,4 @@
+"use client";
 import { userApiSlice } from "app/GlobalReduxStore/api";
 import { UserInfoProps } from "lib/types";
 import { setError, setUserState, setImage } from "./usersSlice";

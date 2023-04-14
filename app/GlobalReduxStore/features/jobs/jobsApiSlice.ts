@@ -1,3 +1,4 @@
+"use client";
 import { jobsApiSlice } from "app/GlobalReduxStore/api";
 import { JobProps, JobsProps, StatsProps } from "lib/types";
 
