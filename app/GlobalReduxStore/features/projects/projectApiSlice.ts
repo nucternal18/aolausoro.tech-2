@@ -1,4 +1,3 @@
-"use client";
 import { projectApiSlice } from "app/GlobalReduxStore/api";
 import { ProjectProps } from "./../../../../lib/types";
 import { setError, setImage } from "./projectsSlice";
