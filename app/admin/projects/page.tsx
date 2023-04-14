@@ -1,3 +1,4 @@
+"use client";
 // Components
 import Table from "components/Table/ProjectTable";
 import Loader from "components/Loader";
