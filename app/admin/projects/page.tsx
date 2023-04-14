@@ -3,7 +3,7 @@ import Table from "components/Table/ProjectTable";
 import Loader from "components/Loader";
 
 // redux
-import { useGetProjectsQuery } from "app/GlobalReduxStore/features/projects/projectApiSlice";
+import { useGetProjectsQuery } from "../../GlobalReduxStore/features/projects/projectApiSlice";
 import { ProjectProps } from "lib/types";
 
 function Projects() {
