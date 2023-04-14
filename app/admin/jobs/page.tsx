@@ -1,16 +1,17 @@
 "use client";
-import { useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 import { JobsContainer, SearchForm } from "components";
-import { NEXT_URL } from "config";
 
 // redux
 import { useAppSelector } from "app/GlobalReduxStore/hooks";
 import { jobSelector } from "app/GlobalReduxStore/features/jobs/jobsSlice";
 import { useGetJobsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
 import { JobsProps } from "lib/types";
+
+// Components
+import Loader from "components/Loader";
+
 interface IFormData {
   search: string;
   company: string;
@@ -51,6 +52,14 @@ function Jobs() {
     jobType: jobType,
     search: search,
   });
+
+  if (isLoading) {
+    return (
+      <section className="flex items-center justify-center w-full h-full">
+        <Loader classes="w-8 h-8" />
+      </section>
+    );
+  }
 
   return (
     <div className="md:p-4">
