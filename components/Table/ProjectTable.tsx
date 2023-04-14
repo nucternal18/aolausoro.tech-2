@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";

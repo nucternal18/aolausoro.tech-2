@@ -3,10 +3,8 @@ import Table from "components/Table/ProjectTable";
 import Loader from "components/Loader";
 
 // redux
-import {
-  useGetProjectByIdQuery,
-  useGetProjectsQuery,
-} from "app/GlobalReduxStore/features/projects/projectApiSlice";
+import { useGetProjectsQuery } from "app/GlobalReduxStore/features/projects/projectApiSlice";
+import { ProjectProps } from "lib/types";
 
 function Projects() {
   const { data: projects, isLoading } = useGetProjectsQuery();
@@ -20,7 +18,7 @@ function Projects() {
   }
   return (
     <section className="w-full h-full py-10 md:px-8">
-      <Table data={projects} />
+      <Table data={projects as ProjectProps[]} />
     </section>
   );
 }
