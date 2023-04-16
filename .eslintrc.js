@@ -43,6 +43,7 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "@next/next/link-passhref": "off",
     "react-hooks/rules-of-hooks": "off",
     "react/display-name": "off",

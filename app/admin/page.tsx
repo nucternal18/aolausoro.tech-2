@@ -1,6 +1,4 @@
 "use client";
-import { Suspense } from "react";
-
 // Components
 import { ChartsContainer, StatsContainer } from "components";
 import Loader from "components/Loader";
@@ -10,10 +8,9 @@ import { useGetStatsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlic
 import { DefaultStatsProps } from "lib/types";
 
 const admin = () => {
-  const { data: stats, isLoading } = useGetStatsQuery();
-  console.log("🚀 ~ file: page.tsx:14 ~ admin ~ stats:", stats);
+  const { data: stats, isLoading, isFetching } = useGetStatsQuery();
 
-  if (isLoading) {
+  if (isFetching) {
     <section className="w-full h-full flex items-center justify-center">
       <Loader classes="w-8 h-8" />
     </section>;

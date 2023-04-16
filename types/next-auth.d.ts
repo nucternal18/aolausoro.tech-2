@@ -1,4 +1,5 @@
 import NextAuth, { DefaultSession, Session } from "next-auth";
+import "next-auth/jwt";
 
 declare module "next-auth" {
   /**
@@ -11,4 +12,13 @@ declare module "next-auth" {
     } & DefaultSession["user"];
     expires: ISODateString;
   };
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    /** The user's role. */
+    role: "admin";
+    isAdmin: boolean;
+    user: Session["user"];
+  }
 }

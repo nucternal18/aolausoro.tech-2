@@ -1,7 +1,7 @@
 "use client";
+import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { useCallback } from "react";
 
 // components
 import MessageTable from "components/Table/MessageTable";

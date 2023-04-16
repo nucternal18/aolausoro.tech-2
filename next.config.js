@@ -36,6 +36,7 @@ module.exports = withPWA({
       "firebasestorage.googleapis.com",
       "res.cloudinary.com",
       "source.unsplash.com",
+      "cdn.jsdelivr.net",
     ],
   },
   eslint: {

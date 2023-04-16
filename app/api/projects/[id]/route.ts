@@ -69,7 +69,15 @@ export async function PUT(
 
   const projectId = params.id;
 
-  const { address, github, projectName, techStack, url } = await req.json();
+  const {
+    address,
+    github,
+    projectName,
+    techStacks,
+    url,
+    description,
+    published,
+  } = await req.json();
 
   const project = await prisma.project.findUnique({
     where: {
@@ -86,8 +94,10 @@ export async function PUT(
         address: address || project.address,
         github: github || project.github,
         projectName: projectName || project.projectName,
-        techStack: techStack || project.techStack,
+        techStack: techStacks || project.techStack,
         url: url || project.url,
+        description: description || project.description,
+        published: published,
       },
     });
 

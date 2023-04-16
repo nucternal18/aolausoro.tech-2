@@ -10,6 +10,7 @@ import PortfolioCard from "components/PortfolioCard";
 
 const Portfolio = () => {
   const { data: projects, isLoading } = useGetProjectsQuery();
+  const publishedProjects = projects?.filter((doc) => doc.published);
 
   if (isLoading)
     return (
@@ -36,14 +37,16 @@ const Portfolio = () => {
           </Link>
         </div>
 
-        <h2 className="text-2xl text-center text-black dark:text-gray-100">
+        <h2 className="text-2xl text-center text-black dark:text-gray-100 my-4">
           Some of my projects
         </h2>
       </section>
       <section className="relative max-w-screen-lg mx-auto px-4 lg:px-0 mb-4">
         <div className="grid grid-cols-1 gap-3 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0">
           {projects &&
-            projects.map((doc) => <PortfolioCard key={doc.id} doc={doc} />)}
+            publishedProjects?.map((doc) => (
+              <PortfolioCard key={doc.id} doc={doc} />
+            ))}
         </div>
       </section>
     </section>

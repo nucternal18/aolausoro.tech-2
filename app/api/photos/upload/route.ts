@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     const uploadedResponse = await cloudinary.uploader.upload(data, {
       upload_preset: "aolausoro_portfolio",
     });
-    return NextResponse.json(uploadedResponse);
+    return NextResponse.json(uploadedResponse.secure_url);
   } catch (error) {
     console.error(error);
     return new Response("Something went wrong uploading image", {

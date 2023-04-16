@@ -1,61 +1,62 @@
 import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
-import { Card, CardBody, CardTitle } from "./Card";
+import { Card, CardBody, CardText, CardTitle } from "./Card";
+import { techSkillsData } from "config/data";
+import Button from "./Button";
 
 function PortfolioCard({ doc }) {
+  // map through the techSkilsData array and return the image url that matches the doc.techStack array.
+  // if the doc.techStack array includes the tech.name.toLowerCase() then return the tech.iconUrl
+  // ensure both the doc.techStack and tech.name.toLowerCase() are in lowercase
+  const tecStackImgUrl = techSkillsData.map((tech) => {
+    if (doc.techStack.includes(tech.name)) {
+      return tech.iconUrl;
+    }
+  });
+
   return (
-    <Card>
-      <div>
-        <Image
-          src={doc.url}
-          alt="project"
-          width={500}
-          height={350}
-          quality={50}
-          priority
-          className="overflow-hidden"
-        />
-      </div>
+    <Card imgUrl={doc.url}>
       <CardBody>
-        <div className="flex flex-col justify-evenly-between">
-          <div className="flex-1">
-            <div className="mb-2">
-              <CardTitle className="my-2 text-xl text-center">
-                {doc.projectName}
-              </CardTitle>
-              <div className="w-1/4 mx-auto border-b-2 border-yellow-400"></div>
-            </div>
-            {/* <div className='w-full mb-2'>
-                <p className='text-sm text-center'>
-                  {doc?.description}
-                </p>
-              </div> */}
-          </div>
+        <CardTitle className="my-2 text-xl text-center">
+          {doc.projectName}
+        </CardTitle>
 
-          <div className="flex items-center mx-auto my-2">
-            {doc.techStack?.map((tech, idx) => (
-              <div key={idx} className="mr-2 text-sm text-blue-400">
-                {tech}
-              </div>
-            ))}
-          </div>
+        <div className="flex items-center justify-center space-x-4 mx-auto my-4">
+          {tecStackImgUrl.map((iconUrl: string, idx: number) => {
+            if (iconUrl !== undefined) {
+              return (
+                <Image
+                  key={`${idx}-stack`}
+                  src={iconUrl}
+                  width={40}
+                  height={40}
+                  alt="Stack icon"
+                />
+              );
+            }
+          })}
+        </div>
 
-          <div className="my-2 ">
-            <div className="flex items-center justify-between">
-              <a
-                href={doc.address}
-                className="px-2 py-1 text-gray-200 bg-gray-400 rounded-full"
-              >
+        <CardText>
+          <p className="text-center">{doc.description}</p>
+        </CardText>
+
+        <div className="my-2">
+          <div className="flex items-center justify-between">
+            <Button type="button" color="dark">
+              <a href={doc.address} className="text-xs">
                 Live Preview
               </a>
+            </Button>
+            <Button type="button" color="dark">
               <a
                 href={doc.github}
-                className="flex items-center px-2 py-1 text-gray-200 bg-gray-400 rounded-full"
+                className="flex items-center justify-center space-x-1"
               >
                 <FaGithub className="mr-1" />
-                <span>Source Code</span>
+                <span className="text-xs">Source Code</span>
               </a>
-            </div>
+            </Button>
           </div>
         </div>
       </CardBody>

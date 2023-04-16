@@ -19,7 +19,7 @@ const Nav = ({
 }: {
   bgColor: string;
   children: ReactNode;
-}) => <nav className={`${bgColor} md:px-6 md:py-1`}>{children}</nav>;
+}) => <nav className={`${bgColor} md:px-6 md:py-1 z-50`}>{children}</nav>;
 
 Nav.Container = ({
   children,
@@ -29,7 +29,7 @@ Nav.Container = ({
   children: ReactNode;
 }) => (
   <div
-    className={` ${textColor} container mx-auto font-semibold md:relative md:flex m-0  md:items-center sm:px-1 md:px-0 md:flex-row md:justify-between sm:max-w-screen-xl z-0 md:z-50`}
+    className={` ${textColor} container mx-auto font-semibold md:relative md:flex m-0  md:items-center sm:px-1 md:px-0 md:flex-row md:justify-between sm:max-w-screen-xl z-50`}
   >
     {children}
   </div>
@@ -38,7 +38,7 @@ Nav.Container = ({
 Nav.Brand = ({ children, href }: { href: string; children: ReactNode }) => (
   <Link
     href={href}
-    className="hidden sm:block  p-0 m-0 py-1.5 mr-2 cursor-pointer text-2xl font-bold whitespace-nowrap hover:text-gray-400"
+    className="hidden md:block  p-0 m-0 py-1.5 mr-2 cursor-pointer text-2xl font-bold whitespace-nowrap hover:text-gray-400"
   >
     {children}
   </Link>
@@ -60,10 +60,10 @@ Nav.Toggler = ({
       aria-disabled={isOpen}
       disabled={isOpen}
       aria-label="Toggle navigation"
-      className={`relative container flex mx-auto font-semibold md:relative m-0  md:items-center sm:px-1 md:px-0 md:flex-row  z-50 items-center ml-3  text-4xl text-current md:hidden focus:outline-none focus:shadow-none ${color} text-slate-800 dark:text-yellow-500`}
+      className={` font-semibold m-0 items-center ml-3  text-4xl text-current md:hidden focus:outline-none focus:shadow-none ${color} text-slate-800 dark:text-yellow-500`}
       onClick={toggle}
     >
-      <span className="z-50">&#8801;</span>
+      <span>&#8801;</span>
     </button>
   </div>
 );
@@ -150,8 +150,8 @@ Nav.Link = ({ children, href }: { children: ReactNode; href: string }) => (
 );
 
 const className = {
-  default: `lg:hidden flex flex-col h-full fixed top-0 right-0 transition-all ease-in-out duration-300 text-gray-200 dark:text-yellow-500`,
-  enabled: `w-8/12  bg-gray-800 overflow-x-hidden translate-x-0   text-lg  py-4 z-50`,
+  default: `lg:hidden flex flex-col h-screen fixed top-0 right-0 transition-all ease-in-out duration-300 text-gray-100 dark:text-yellow-500`,
+  enabled: `w-8/12  bg-gray-800 overflow-y-hidden translate-y-0   text-lg  py-4`,
   disabled: `w-0  bg-gray-800 text-white overflow-x-hidden translate-x-full`,
 };
 

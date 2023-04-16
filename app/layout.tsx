@@ -1,9 +1,10 @@
 import { Navbar } from "components";
 import Footer from "components/Footer";
 import { Providers } from "app/GlobalReduxStore/provider";
-import "./globals.css";
 import NextAuthSessionProvider from "./GlobalReduxStore/session-provider";
 import NextThemeProvider from "./GlobalReduxStore/theme-provider";
+import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RootLayout({
   // Layouts must accept a children prop.
@@ -14,12 +15,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="border-box h-screen scroll-smooth antialiased flex flex-col p-0 m-0 text-gray-800 bg-white dark:bg-gray-900">
+      <body className="border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-gray-100 dark:bg-gray-900">
         <NextAuthSessionProvider>
           <NextThemeProvider>
+            <Navbar textColor="dark:text-yellow-500" />
             <Providers>
-              <Navbar textColor="dark:text-yellow-500" />
-              <main className="h-full grow">{children}</main>
+              <main className="relative h-screen flex-grow p-2 md:p-0 overflow-y-auto">
+                {children}
+              </main>
             </Providers>
             <Footer />
           </NextThemeProvider>

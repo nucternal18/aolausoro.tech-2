@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 import { useAppSelector, useAppDispatch } from "app/GlobalReduxStore/hooks";

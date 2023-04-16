@@ -1,4 +1,6 @@
 "use client";
+
+// component
 import EditJobComponent from "components/forms/EditJobComponent";
 
 // redux

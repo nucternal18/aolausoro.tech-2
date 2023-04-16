@@ -14,7 +14,11 @@ export type ProjectProps = {
   projectName: string;
   github: string;
   address: string;
+  description: string;
+  published: boolean;
   techStack: string[];
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type JobProps = {

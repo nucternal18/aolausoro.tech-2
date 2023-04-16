@@ -44,6 +44,8 @@ model Project {
   createdAt   DateTime @default(now())
   github      String
   projectName String
+  description String
+  published   Boolean
   techStack   String[]
   updatedAt   DateTime @updatedAt
   url         String

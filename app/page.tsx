@@ -17,11 +17,8 @@ const variants = {
 
 export default function Page() {
   return (
-    <section className="relative flex items-center content-center justify-center  pt-16 pb-32 mx-auto h-full">
-      <div
-        className="absolute top-0 w-full h-['100%'] flex-grow bg-center bg-cover"
-        style={{ height: "100%" }}
-      >
+    <section className="relative flex items-center h-full mx-auto">
+      <div className="absolute top-0 w-full" style={{ height: "100%" }}>
         <Image
           src={randomImage}
           alt="home background image"
@@ -48,12 +45,15 @@ export default function Page() {
             variants={variants}
             transition={{ duration: 2.0 }}
           >
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <div className="p-2">
-                <div className="mx-auto mb-1 text-left">
-                  <h1 className="grid grid-cols-1 mb-4 text-3xl gap-2 font-thin text-gray-300 md:text-5xl ">
-                    <span>Hi there, I'm Woyin.</span>
-                    <span>Full Stack Software Dveloper</span>
+            <div className="flex flex-col md:flex-row gap-2 max-w-screen-md">
+              <div className="p-2 w-2/3">
+                <div className="mx-auto mb-1 text-left w-full">
+                  <h1 className="grid grid-cols- mb-4 text-3xl gap-2 font-thin text-gray-300 md:text-4xl text-justify ">
+                    <span>Hi, I'm Woyin.</span>
+                    <span>
+                      A Full-Stack developer who enjoys developing real world
+                      application from web to mobile to backend systems.
+                    </span>
                   </h1>
                   <div className="border-b-2 border-yellow-400 sm:w-3/4"></div>
                 </div>

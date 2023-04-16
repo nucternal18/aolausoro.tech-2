@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { techSkillsData } from "config/data";
 // import url from 'https://res.cloudinary.com/dus5nxe5w/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1623533235/2C7EB02D-5902-4970-9807-43E09C9D5AED_1_201_a_mwr1ys.jpg'
 
 export const metadata = {
@@ -11,7 +12,7 @@ const url =
 
 const about = () => {
   return (
-    <section className="h-full">
+    <section className="mx-auto h-screen  flex-grow max-w-screen-md mb-6">
       <section className="max-w-screen-lg px-2 md:px-0 pt-4 md:-pt-8 mx-auto">
         <div className="flex items-center justify-between px-2  text-gray-800 border-b-2 border-current dark:border-yellow-500 dark:text-gray-100">
           <h1 className="text-3xl font-bold tracking-wider md:text-5xl mb-2 dark:text-yellow-500">
@@ -19,7 +20,7 @@ const about = () => {
           </h1>
         </div>
       </section>
-      <section className="content relative  max-w-screen-lg px-2 md:px-0 pt-4 mx-auto ">
+      <section className="content relative w-full h-ful grid gird-cols-1 gap-2 px-2 md:px-0 pt-4 justify-items-center ">
         <Image
           src={url}
           alt="Profile picture"
@@ -30,7 +31,7 @@ const about = () => {
           className="border-4 float-left  border-gray-800 dark:border-yellow-500 drop-shadow-xl shadow-black rounded-full mx-2 mt-8"
         />
 
-        <div className="col-span-2 leading-normal tracking-wider text-justify px-2 font-light text-block sm:subpixel-antialiased md:antialiased">
+        <article className="col-span-1 leading-normal tracking-wider text-justify px-2 mb-4 font-light text-block sm:subpixel-antialiased md:antialiased">
           <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold text-gray-800 dark:text-gray-100">
             I am a software developer with experience in ReactJS, React Native,
             JavaScript, and NodeJS. I enjoy building high-performing and
@@ -52,7 +53,29 @@ const about = () => {
             opportunities for growth and career advancement. Please take a look
             at my portfolio and feel free to get in touch!
           </p>
-        </div>
+        </article>
+        <section className="cols-span-1">
+          <div className="flex items-center justify-between px-2  text-gray-800 border-b-2 border-current dark:border-yellow-500 dark:text-gray-100">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-wider md:text-4xl mb-2 dark:text-yellow-500">
+              Tech Stack and Tools I Use
+            </h2>
+          </div>
+          <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 md:gap-4 w-full">
+            {techSkillsData.map((skill, index) => (
+              <div
+                key={`${skill.name}-${index}`}
+                className="flex items-center justify-center m-2"
+              >
+                <Image
+                  src={skill.iconUrl}
+                  width={50}
+                  height={50}
+                  alt="Skill icon"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
       </section>
     </section>
   );

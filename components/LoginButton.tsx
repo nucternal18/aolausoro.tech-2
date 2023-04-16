@@ -16,8 +16,10 @@ const LoginButton = () => {
         <>
           <Nav.Item>
             <Nav.Link href={`"/user-profile/${session.user?.id}"`}>
-              <div className="flex gap-2 items-center">
-                <p className="mr-2 capitalize text-base">{session.user.name}</p>
+              <div className="flex flex-row-reverse md:flex-row gap-2 items-center">
+                <p className="mr-2 capitalize text-base block">
+                  {session.user.name}
+                </p>
                 <Image
                   src={
                     (session.user.image as string) ||
@@ -35,12 +37,14 @@ const LoginButton = () => {
           <Nav.Item>
             <Nav.Link href="/admin">
               <RiAdminFill fontSize={24} />
+              <span className="block md:hidden text-base ml-2">Admin</span>
             </Nav.Link>
           </Nav.Item>
 
           <Nav.Item>
             <Nav.Link href="/auth/logout">
               <FiLogOut />
+              <span className="block md:hidden text-base ml-2">Logout</span>
             </Nav.Link>
           </Nav.Item>
         </>

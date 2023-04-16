@@ -1,16 +1,11 @@
 "use client";
-import { useState, Suspense } from "react";
-import { useRouter } from "next/navigation";
-import { FaUser } from "react-icons/fa";
-import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
+import { useState } from "react";
+
+import { FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { signOut } from "next-auth/react";
 
 import { links, social } from "../../data";
 
-// context
-import { useAppSelector } from "app/GlobalReduxStore/hooks";
-import { currentUserSelector } from "app/GlobalReduxStore/features/users/usersSlice";
 import Nav from "./NavComponents";
 import LoginButton from "components/LoginButton";
 
@@ -19,23 +14,15 @@ type NavProps = {
 };
 
 export default function Navbar({ textColor }: NavProps) {
-  const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const currentUser = useAppSelector(currentUserSelector);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
     setIsOpen(!isOpen);
   };
 
-  const logout = () => {
-    signOut();
-    // dispatch({ type: ActionType.USER_LOGOUT_SUCCESS });
-    router.push("/");
-  };
-
   return (
-    <Nav bgColor="bg-white dark:bg-gray-900 drop-shadow-sm">
+    <Nav bgColor="bg-gray-200 dark:bg-gray-900 drop-shadow-sm">
       <Nav.Toggler
         toggle={toggle}
         isOpen={isOpen}
@@ -95,47 +82,8 @@ export default function Navbar({ textColor }: NavProps) {
             </Nav.Item>
           );
         })}
-        {currentUser && currentUser?.isAdmin && (
-          <>
-            <Nav.Item>
-              <Nav.Link href="/admin">ADMIN</Nav.Link>
-            </Nav.Item>
 
-            <Nav.Item>
-              <button
-                type="button"
-                className="flex items-center text-gray-900 uppercase  hover:text-gray-500 ml-2 dark:hover:text-yellow-500 dark:text-yellow-500"
-                onClick={logout}
-              >
-                <p className="flex flex-row py-3 text-lg mr-1">Logout</p>
-                <FiLogOut fontSize={18} className="mr-2" />
-              </button>
-            </Nav.Item>
-          </>
-        )}
-
-        {currentUser ? (
-          <Nav.Item>
-            <button
-              type="button"
-              className="flex items-center bg-gray-800 dark:bg-yellow-500 px-4 ml-2 py-2 rounded-3xl text-gray-200 shadow-xl"
-              onClick={() => router.push(`/user-profile/${currentUser?.id}`)}
-            >
-              <p className="mr-2 capitalize text-base">{currentUser.name}</p>
-              <img
-                src={currentUser.image}
-                alt="user-profile"
-                className="w-8 h-8 rounded-full"
-              />
-            </button>
-          </Nav.Item>
-        ) : (
-          <Nav.Item>
-            <Nav.Link href="/login">
-              <FaUser />
-            </Nav.Link>
-          </Nav.Item>
-        )}
+        <LoginButton />
 
         <div
           className={`absolute flex bottom-0 items-center justify-center mb-2`}

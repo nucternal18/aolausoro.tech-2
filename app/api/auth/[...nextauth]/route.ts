@@ -2,7 +2,6 @@ import NextAuth, { Account, NextAuthOptions, Session, User } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
-import matchPassword from "lib/matchPasswords";
 import { JWT } from "next-auth/jwt";
 import { AdapterUser } from "next-auth/adapters";
 import bcrypt from "bcryptjs";
@@ -90,7 +89,7 @@ export const authOptions: NextAuthOptions = {
       newSession: any;
     }): Promise<Session> {
       // Add property to session, like an access_token from a provider.
-      session.user = token.user as Session["user"];
+      session.user = token.user ;
       return session;
     },
     /**
@@ -103,13 +102,16 @@ export const authOptions: NextAuthOptions = {
       token,
       user,
       account,
+      session,
     }: {
       token: JWT;
       user: User | AdapterUser;
       account: Account | null;
+      session: Session;
     }) {
       // Add access_token to the token right after signin
       user && (token.user = user);
+      token.userRole = "admin";
       return token;
     },
   },

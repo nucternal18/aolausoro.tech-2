@@ -21,21 +21,21 @@ function AdminsSidebar() {
   const [collapseShow, setCollapseShow] = useState("hidden");
 
   return (
-    <aside className="z-10  flex flex-initial font-mono px-2 py-4 bg-white md:h-full dark:bg-gray-900  shadow-xl md:shadow-none md:left-0  md:top-0 md:bottom-0 md:overflow-y-scroll  md:overflow-hidden md:w-64 ">
-      <nav className="flex flex-wrap items-center justify-between min-w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap">
+    <aside className="z-10  flex flex-initial font-mono px-2 py-4 bg-gray-200 md:h-full dark:bg-gray-900  md:left-0  md:top-0 md:bottom-0   md:overflow-hidden md:w-72 ">
+      <nav className="flex flex-wrap items-center justify-between min-w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap md:overflow-y-auto">
         {/* Toggler */}
         <div className="flex justify-between items-center w-full">
           <button
-            className="px-3 py-1 text-xl leading-none text-gray-900 dark:text-gray-100 dark:hover:text-yellow-500 bg-transparent border border-transparent border-solid rounded opacity-50 cursor-pointer md:hidden"
+            className=" py-1 text-xl leading-none text-gray-900  dark:text-yellow-600 bg-transparent border border-transparent border-solid rounded  cursor-pointer md:hidden"
             type="button"
             onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
           >
             <FaBars fontSize={21} />
           </button>
-          <div className=" p-2   text-gray-900 uppercase dark:text-gray-200 dark:hover:text-yellow-500">
+          <div className="  text-gray-900 uppercase dark:text-yellow-500">
             <Link
               href="/"
-              className="flex items-center justify-between text-xl capitalize whitespace-no-wrap sm:hidden font-bold text-left "
+              className="flex items-center justify-between text-xl capitalize whitespace-no-wrap md:hidden font-bold text-left "
             >
               <img
                 src={"/android-chrome-512x512.png"}
