@@ -54,15 +54,20 @@ jobs:
           echo token=${{ secrets.SENTRY_AUTH_API }} >> .sentryclirc
           cat .sentryclirc
       - name: Cache multiple paths
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-v2-${{ hashFiles('**/yarn.lock') }}
-      - run: npm install
-      - run: npm run lint
+          key: ${{ runner.os }}-nextjs-v3-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run ESLint
+        run: npm run lint
       # - run: yarn test
-      - run: npm run generate
-      - run: npm run build
-      - run: pm2 reload aolausoro.tech --watch
+      - name: Generate prisma client
+        run: npm run generate
+      - name: Build
+        run: npm run build
+      - name: Restart pm2
+        run: pm2 restart aolausoro.tech --watch
     env:
       CI: true
