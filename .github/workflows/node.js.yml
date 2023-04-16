@@ -58,11 +58,11 @@ jobs:
         with:
           path: ${{ github.workspace }}/.next/cache
           key: ${{ runner.os }}-nextjs-v2-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
-      - run: yarn lint
+      - run: npm install
+      - run: npm run lint
       # - run: yarn test
-      - run: yarn generate
-      - run: yarn build
+      - run: npm run generate
+      - run: npm run build
       - run: pm2 reload aolausoro.tech --watch
     env:
       CI: true
