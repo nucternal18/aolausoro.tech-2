@@ -89,7 +89,7 @@ export const authOptions: NextAuthOptions = {
       newSession: any;
     }): Promise<Session> {
       // Add property to session, like an access_token from a provider.
-      session.user = token.user ;
+      session.user = token.user;
       return session;
     },
     /**
@@ -102,12 +102,12 @@ export const authOptions: NextAuthOptions = {
       token,
       user,
       account,
-      session,
     }: {
       token: JWT;
-      user: User | AdapterUser;
+      user:
+        | (User & { isAdmin: boolean })
+        | (AdapterUser & { isAdmin: boolean });
       account: Account | null;
-      session: Session;
     }) {
       // Add access_token to the token right after signin
       user && (token.user = user);

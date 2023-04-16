@@ -12,6 +12,11 @@ declare module "next-auth" {
     } & DefaultSession["user"];
     expires: ISODateString;
   };
+
+  // type User = {
+  //   id: string | null | undefined;
+  //   isAdmin: boolean | null | undefined;
+  // } & DefaultSession["user"];
 }
 
 declare module "next-auth/jwt" {
