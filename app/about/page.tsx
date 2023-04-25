@@ -12,7 +12,7 @@ const url =
 
 const about = () => {
   return (
-    <section className="mx-auto h-screen  flex-grow max-w-screen-md mb-6">
+    <section className="mx-auto h-full flex-grow max-w-screen-md mb-6">
       <section className="max-w-screen-lg px-2 md:px-0 pt-4 md:-pt-8 mx-auto">
         <div className="flex items-center justify-between px-2  text-gray-800 border-b-2 border-current dark:border-yellow-500 dark:text-gray-100">
           <h1 className="text-3xl font-bold tracking-wider md:text-5xl mb-2 dark:text-yellow-500">
