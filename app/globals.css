@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply dark:bg-gray-800 bg-gray-100;
+  }
+}
+
 .code {
   background: #fafafa;
   border-radius: 5px;

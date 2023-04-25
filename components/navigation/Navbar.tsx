@@ -14,7 +14,8 @@ type NavProps = {
 };
 
 export default function Navbar({ textColor }: NavProps) {
-  const { theme, setTheme } = useTheme();
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -51,7 +52,9 @@ export default function Navbar({ textColor }: NavProps) {
           <Nav.Item>
             <button
               type="button"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={() =>
+                theme == "dark" ? setTheme("light") : setTheme("dark")
+              }
               className="flex p-1 ml-4 font-medium list-none border-2 border-current rounded-full cursor-pointer md:block lg:ml-0 lg:mb-0 lg:p-1 lg:px-1 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent"
             >
               {theme === "light" ? (

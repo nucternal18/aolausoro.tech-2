@@ -6,7 +6,7 @@ import { social } from "../../data";
 
 function Contact() {
   return (
-    <section className="flex items-center justify-center h-full flex-grow mx-auto sm:max-w-screen-md">
+    <section className="flex items-center justify-center h-screen flex-grow mx-auto sm:max-w-screen-md">
       <div className="relative z-10 p-2 mx-auto my-10 rounded-md shadow-2xl dark:bg-indigo-900 md:p-8">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           <div className="grid">

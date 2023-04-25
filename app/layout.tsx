@@ -20,7 +20,7 @@ export default function RootLayout({
           <NextThemeProvider>
             <Navbar textColor="dark:text-yellow-500" />
             <Providers>
-              <main className="relative h-screen flex-grow p-2 md:p-0 overflow-y-auto">
+              <main className="relative h-full flex-grow p-2 md:p-0 overflow-y-auto">
                 {children}
               </main>
             </Providers>

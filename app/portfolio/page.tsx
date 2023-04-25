@@ -14,7 +14,7 @@ const Portfolio = () => {
 
   if (isLoading)
     return (
-      <section className="max-w-screen-lg mx-auto mb-4 h-full px-4 lg:px-0">
+      <section className="max-w-screen-lg mx-auto mb-4 h-screen px-4 lg:px-0">
         <div className="flex items-center justify-center h-full">
           <Loader classes="h-8 w-8" />
         </div>
@@ -22,7 +22,7 @@ const Portfolio = () => {
     );
 
   return (
-    <section className="h-full">
+    <section className="h-screen">
       <section className="max-w-screen-lg mx-auto mb-4 px-4 lg:px-0">
         <div className="relative flex items-center justify-between mb-6 border-b border-current dark:border-yellow-500">
           <h1 className="my-4 text-5xl font-thin text-center text-black dark:text-yellow-500">

@@ -17,7 +17,7 @@ const variants = {
 
 export default function Page() {
   return (
-    <section className="relative flex items-center h-full mx-auto">
+    <section className="relative flex flex-grow items-center h-screen mx-auto">
       <div className="absolute top-0 w-full" style={{ height: "100%" }}>
         <Image
           src={randomImage}

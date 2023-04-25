@@ -20,7 +20,7 @@ const about = () => {
           </h1>
         </div>
       </section>
-      <section className="content relative w-full h-ful grid gird-cols-1 gap-2 px-2 md:px-0 pt-4 justify-items-center ">
+      <section className="content relative w-full h-full grid gird-cols-1 gap-2 px-2 md:px-0 pt-4 justify-items-center ">
         <Image
           src={url}
           alt="Profile picture"
