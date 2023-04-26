@@ -7,8 +7,8 @@ import Button from "components/Button";
 const randomImage =
   "https://source.unsplash.com/random/1600x900/?coder-setup,code";
 
-// const url =
-//   "https://res.cloudinary.com/dus5nxe5w/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1622888216/ruijia-wang-_cX76xaZB5A-unsplash_hqwwlm.jpg";
+const cvDoc =
+  "https://res.cloudinary.com/dus5nxe5w/image/upload/v1682539569/Adewoyin_Oladipupo-Usoro_CV_fnqnq1.pdf";
 
 const variants = {
   hidden: { opacity: 0 },
@@ -62,10 +62,7 @@ export default function Page() {
                     Welcome to My Portfolio!
                   </h1>
                 </div>
-                <a
-                  data-testid="cv-button"
-                  href="https://firebasestorage.googleapis.com/v0/b/aolausoro-tech.appspot.com/o/Adewoyin%20Oladipupo-Usoro%20CV.pdf?alt=media&token=ab66f4d3-ae06-4edf-8084-52dd24b17de5"
-                >
+                <a data-testid="cv-button" href={cvDoc}>
                   <Button type="button" color="yellow">
                     My Resume
                   </Button>
