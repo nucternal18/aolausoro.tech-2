@@ -23,17 +23,16 @@ function PortfolioCard({ doc }) {
 
         <div className="flex items-center justify-center space-x-4 mx-auto my-4">
           {tecStackImgUrl.map((iconUrl: string, idx: number) => {
-            if (iconUrl !== undefined) {
-              return (
-                <Image
-                  key={`${idx}-stack`}
-                  src={iconUrl}
-                  width={40}
-                  height={40}
-                  alt="Stack icon"
-                />
-              );
-            }
+            return (
+              <Image
+                key={`${idx}-stack`}
+                src={iconUrl}
+                width={40}
+                height={40}
+                alt="Stack icon"
+                quality={75}
+              />
+            );
           })}
         </div>
 

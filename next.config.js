@@ -32,12 +32,22 @@ module.exports = withPWA({
   },
   reactStrictMode: true,
   images: {
-    domains: [
-      "firebasestorage.googleapis.com",
-      "res.cloudinary.com",
-      "source.unsplash.com",
-      "cdn.jsdelivr.net",
+    domains: ["res.cloudinary.com", "source.unsplash.com", "cdn.jsdelivr.net"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "source.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.jsdelivr.net",
+      },
     ],
+    formats: ["image/webp"],
   },
   eslint: {
     dirs: ["app", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
