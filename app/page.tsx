@@ -48,7 +48,7 @@ export default function Page() {
             <div className="flex flex-col md:flex-row gap-2 max-w-screen-md">
               <div className="p-2 w-2/3">
                 <div className="mx-auto mb-1 text-left w-full">
-                  <h1 className="grid grid-cols- mb-4 text-3xl gap-2 font-thin text-gray-300 md:text-4xl text-justify ">
+                  <h1 className="grid grid-cols- mb-4 text-xl sm:text-3xl gap-2 font-thin text-gray-300 md:text-4xl text-justify ">
                     <span>Hi, I'm Woyin.</span>
                     <span>
                       A Full-Stack developer who enjoys developing real world
