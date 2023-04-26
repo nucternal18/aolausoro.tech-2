@@ -23,16 +23,18 @@ function PortfolioCard({ doc }) {
 
         <div className="flex items-center justify-center space-x-4 mx-auto my-4">
           {tecStackImgUrl.map((iconUrl: string, idx: number) => {
-            return (
-              <Image
-                key={`${idx}-stack`}
-                src={iconUrl}
-                width={40}
-                height={40}
-                alt="Stack icon"
-                quality={75}
-              />
-            );
+            if (iconUrl !== undefined) {
+              return (
+                <Image
+                  key={`${idx}-stack`}
+                  src={iconUrl}
+                  width={40}
+                  height={40}
+                  alt="Stack icon"
+                  quality={75}
+                />
+              );
+            }
           })}
         </div>
 
@@ -43,14 +45,17 @@ function PortfolioCard({ doc }) {
         <div className="my-2">
           <div className="flex items-center justify-between">
             <Button type="button" color="dark">
-              <a href={doc.address} className="text-xs">
+              <a
+                href={doc.address}
+                className="text-xs text-gray-900 dark:text-gray-200 hover:text-gray-200"
+              >
                 Live Preview
               </a>
             </Button>
             <Button type="button" color="dark">
               <a
                 href={doc.github}
-                className="flex items-center justify-center space-x-1"
+                className="flex items-center justify-center space-x-1 text-gray-900 dark:text-gray-200 hover:text-gray-200"
               >
                 <FaGithub className="mr-1" />
                 <span className="text-xs">Source Code</span>

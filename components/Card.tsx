@@ -1,3 +1,4 @@
+"use client";
 interface CardInterface {
   className?: string;
   imgUrl: string;
@@ -8,10 +9,10 @@ const Card = ({ children, className, imgUrl }: CardInterface) => (
   <div className="w-full max-w-md  mx-auto rounded-3xl shadow-xl overflow-hidden bg-gray-100 dark:bg-gray-700">
     <div className="max-w-md mx-auto">
       <div
-        className="h-[236px]"
+        className="h-[236px] w-full"
         style={{
           backgroundImage: `url(${imgUrl})`,
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
