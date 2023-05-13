@@ -1,7 +1,8 @@
 "use client";
+import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import FormRowSelect from "../FormRowSelect";
 import FormRowInput from "../FormRowInput";
 
@@ -33,28 +34,36 @@ const EditJobComponent = ({ job }) => {
     formState: { errors },
   } = useForm<IFormData>({
     defaultValues: {
-      position: job?.job?.position,
-      company: job?.job?.company,
-      jobLocation: job?.job?.jobLocation,
-      jobType: job?.job?.jobType,
-      status: job?.job?.status,
+      position: job?.position,
+      company: job?.company,
+      jobLocation: job?.jobLocation,
+      jobType: job?.jobType,
+      status: job?.status,
     },
   });
 
-  const onSubmit: SubmitHandler<IFormData> = (data) => {
+  const onSubmit: SubmitHandler<IFormData> = React.useCallback(async (data) => {
     if (!data.position || !data.company || !data.jobLocation) {
       toast.error("Please fill out all fields");
       return;
     }
     const jobData = {
-      id: job?.job?.id,
+      id: job?.id,
       ...data,
     };
-    // updateJob(jobData, cookie);
+    try {
+      const response = await updateJob(jobData).unwrap();
 
-    toast.success(state.message);
-    router.push("/admin/jobs");
-  };
+      if (response.success) {
+        toast.success(state.message);
+        router.push("/admin/jobs");
+      }
+    } catch (error) {
+      toast.error("Error updating job", {
+        autoClose: 2000,
+      });
+    }
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

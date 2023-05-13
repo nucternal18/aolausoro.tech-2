@@ -8,7 +8,7 @@ import { useGetStatsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlic
 import { DefaultStatsProps } from "lib/types";
 
 const admin = () => {
-  const { data: stats, isLoading, isFetching } = useGetStatsQuery();
+  const { data: stats, isFetching } = useGetStatsQuery();
 
   if (isFetching) {
     <section className="w-full h-full flex items-center justify-center">
@@ -16,7 +16,7 @@ const admin = () => {
     </section>;
   }
   return (
-    <section className="w-full h-full flex flex-col items-center justify-center">
+    <section className="w-full min-h-screen flex flex-col py-4">
       <div className="flex flex-col gap-4 w-full h-full">
         <StatsContainer stats={stats?.defaultStats as DefaultStatsProps} />
         {/* {stats!.monthlyApplicationStats?.length > 0 && (

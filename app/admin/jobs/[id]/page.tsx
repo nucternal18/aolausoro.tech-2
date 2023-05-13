@@ -1,5 +1,4 @@
 "use client";
-
 // component
 import EditJobComponent from "components/forms/EditJobComponent";
 
@@ -20,8 +19,10 @@ function Job({ params }: { params: { id: string } }) {
   }
 
   return (
-    <section className="flex items-center justify-center w-full h-full">
-      <EditJobComponent job={job} />
+    <section className="flex w-full p-4 min-h-screen">
+      <div className="container mx-auto">
+        <EditJobComponent job={job} />
+      </div>
     </section>
   );
 }

@@ -16,7 +16,7 @@ export default function Logout() {
   }, [session]);
 
   return (
-    <section className="relative flex justify-center items-center w-full h-full">
+    <section className="relative flex justify-center items-center w-full min-h-screen">
       <h1 className="text-3xl font-mono font-medium dark:text-yellow-500">
         Logging out.......
       </h1>

@@ -13,7 +13,7 @@ export function metadata() {
 
 export default function Login() {
   return (
-    <section className="flex items-center justify-center h-screen">
+    <section className="flex items-center justify-center h-screen bg-slate-100 dark:bg-slate-900">
       <LoginForm />
     </section>
   );

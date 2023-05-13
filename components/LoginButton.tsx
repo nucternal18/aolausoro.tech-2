@@ -15,7 +15,7 @@ const LoginButton = () => {
       {session?.user && session.user?.isAdmin ? (
         <>
           <Nav.Item>
-            <Nav.Link href={`"/user-profile/${session.user?.id}"`}>
+            <Nav.Link href={`/auth/user-profile/${session.user?.id}`}>
               <div className="flex flex-row-reverse md:flex-row gap-2 items-center">
                 <p className="mr-2 capitalize text-base block">
                   {session.user.name}

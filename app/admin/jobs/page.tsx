@@ -1,6 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
-
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import { JobsContainer, SearchForm } from "components";
 
 // redux
@@ -24,6 +25,7 @@ interface IFormData {
 }
 
 function Jobs() {
+  const { status: authStatus } = useSession();
   const state = useAppSelector(jobSelector);
 
   const {
@@ -52,6 +54,10 @@ function Jobs() {
     jobType: jobType,
     search: search,
   });
+
+  if (status === "unauthenticated") {
+    return redirect("/auth/login");
+  }
 
   if (isLoading) {
     return (

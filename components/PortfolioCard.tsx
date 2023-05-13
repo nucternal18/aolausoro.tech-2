@@ -39,7 +39,7 @@ function PortfolioCard({ doc }) {
         </div>
 
         <CardText>
-          <p className="text-center">{doc.description}</p>
+          <span className="text-center">{doc.description}</span>
         </CardText>
 
         <div className="my-2">

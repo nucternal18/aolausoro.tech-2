@@ -24,8 +24,8 @@ function project({ params }: { params: { id: string } }) {
   }
 
   return (
-    <section className="flex items-center w-full h-screen px-4 mx-auto mt-20 ">
-      <div className="items-center w-full p-6 my-4 overflow-hidden rounded shadow-lg dark:shadow-none md:mx-auto">
+    <section className="flex items-center w-full h-screen p-4 overflow-y-auto  ">
+      <div className="items-center w-full p-6 mt-20 mb-4 overflow-hidden rounded shadow-lg dark:shadow-none ">
         <div className="flex items-center justify-between border-b-2 mb-4 pb-2">
           <h3 className="mb-2 text-2xl font-bold text-center md:text-4xl dark:text-gray-300">
             Update project

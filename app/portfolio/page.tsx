@@ -57,28 +57,4 @@ const Portfolio = () => {
   );
 };
 
-// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-//   const res = await fetch(`${NEXT_URL}/api/projects`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-
-//   const data = await res.json();
-
-//   if (!data) {
-//     return {
-//       redirect: {
-//         destination: "/",
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: { projects: data },
-//   };
-// };
-
 export default Portfolio;

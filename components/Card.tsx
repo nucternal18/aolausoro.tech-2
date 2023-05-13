@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 interface CardInterface {
   className?: string;
   imgUrl: string;
@@ -8,15 +9,19 @@ interface CardInterface {
 const Card = ({ children, className, imgUrl }: CardInterface) => (
   <div className="w-full max-w-md  mx-auto rounded-3xl shadow-xl overflow-hidden bg-gray-100 dark:bg-gray-700">
     <div className="max-w-md mx-auto">
-      <div
-        className="h-[236px] w-full"
-        style={{
-          backgroundImage: `url(${imgUrl})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      ></div>
+      <div className="h-[236px] w-[336px] relative">
+        <Image
+          src={imgUrl}
+          alt=""
+          fill
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+          loading="lazy"
+        />
+      </div>
     </div>
     {children}
   </div>

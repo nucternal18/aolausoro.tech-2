@@ -1,28 +1,6 @@
 "use client";
-import { ThemeProvider, useTheme } from "next-themes";
-import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "next-themes";
 
-export default function NextThemeProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { theme } = useTheme();
-  return (
-    <ThemeProvider attribute="class">
-      {children}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={theme === "dark" ? "dark" : "light"}
-      />
-    </ThemeProvider>
-  );
+export function NextThemeProvider({ children }: { children: React.ReactNode }) {
+  return <ThemeProvider attribute="class">{children}</ThemeProvider>;
 }

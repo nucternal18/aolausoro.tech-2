@@ -302,7 +302,7 @@ function ProjectForm({
             {errors.address.message}
           </span>
         )}
-        <div className="mb-6 grid grid-cols-1 gap-2 md:items-center space-x-2 bg-gray-100 dark:bg-gray-800 ">
+        <div className="mb-6 grid grid-cols-1 gap-2 md:items-center bg-gray-100 dark:bg-gray-800 ">
           <button
             type="button"
             className="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 mb-2  transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline"
@@ -313,7 +313,7 @@ function ProjectForm({
           {fields.map((field, idx) => {
             return (
               <div
-                className="bg-gray-100 dark:bg-gray-800 w-full mb-2 flex space-x-4"
+                className="bg-gray-100 dark:bg-gray-800 w-full mb-2 flex space-x-2"
                 key={`${field}-${idx}`}
               >
                 <input

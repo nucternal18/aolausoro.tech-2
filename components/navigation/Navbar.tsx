@@ -14,8 +14,8 @@ type NavProps = {
 };
 
 export default function Navbar({ textColor }: NavProps) {
-  const { systemTheme, theme, setTheme } = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
+  const { theme, setTheme } = useTheme();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -23,7 +23,7 @@ export default function Navbar({ textColor }: NavProps) {
   };
 
   return (
-    <Nav bgColor="bg-gray-200 dark:bg-gray-900 drop-shadow-sm">
+    <Nav bgColor="bg-slate-200 dark:bg-slate-900 drop-shadow-sm">
       <Nav.Toggler
         toggle={toggle}
         isOpen={isOpen}

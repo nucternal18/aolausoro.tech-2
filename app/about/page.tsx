@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 const url =
-  "https://res.cloudinary.com/dus5nxe5w/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1623533235/2C7EB02D-5902-4970-9807-43E09C9D5AED_1_201_a_mwr1ys.jpg";
+  "https://res.cloudinary.com/dus5nxe5w/image/upload/e_auto_color,q_80,r_30/v1684008562/Screenshot_2023-05-13_at_21.06.25_aerrka.webp";
 
 const about = () => {
   return (

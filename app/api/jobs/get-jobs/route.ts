@@ -60,7 +60,6 @@ export async function GET(req: Request) {
     },
     orderBy: {
       createdAt: sort === "latest" ? "asc" : "desc",
-      position: sort === "a-z" ? "asc" : "desc",
     },
     skip: skip,
     take: pageLimit,
