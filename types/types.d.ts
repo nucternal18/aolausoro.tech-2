@@ -75,7 +75,7 @@ export type StatsProps = {
 };
 
 export type Meta = {
-  id: string;
+  id?: string;
   title: string;
   date: string;
   excerpt: string;

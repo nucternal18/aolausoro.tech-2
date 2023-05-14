@@ -19,7 +19,8 @@ const Card = ({ children, className, imgUrl }: CardInterface) => (
             objectPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
-          loading="lazy"
+          priority
+          sizes="(max-width: 336px) 100vw, 336px"
         />
       </div>
     </div>

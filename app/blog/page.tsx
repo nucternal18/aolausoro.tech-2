@@ -1,8 +1,6 @@
 import { getPostsMeta } from "../../lib/posts";
 
 import BlogItem from "../../components/Blog";
-import Pagination from "../../components/Pagination";
-import { POSTS_PER_PAGE } from "../../config";
 
 export const revalidate = 10;
 

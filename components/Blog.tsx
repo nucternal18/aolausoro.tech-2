@@ -5,10 +5,9 @@ import { BlogPost } from "types/types";
 import getFormattedDateString from "lib/getFormattedDateString";
 
 export default function BlogItem({ post }: { post: BlogPost["meta"] }) {
-  console.log("🚀 ~ file: Blog.tsx:8 ~ BlogItem ~ post:", post);
   const formattedDate = getFormattedDateString(post.date);
   return (
-    <div className="w-full px-10 py-6 mt-6 bg-white rounded-lg shadow-md">
+    <div className="w-full px-4 py-6 mt-6 bg-white rounded-lg shadow-md">
       <Image
         src={post.cover_image}
         alt="Do something great"

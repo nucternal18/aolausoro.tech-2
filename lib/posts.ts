@@ -64,8 +64,8 @@ export async function getPostByName(
       title: frontmatter.title,
       date: frontmatter.date,
       tags: frontmatter.tags,
-      excerpt: frontmatter.excerpt,
       cover_image: frontmatter.cover_image,
+      excerpt: frontmatter.excerpt,
       category: frontmatter.category,
       author: frontmatter.author,
       author_image: frontmatter.author_image,
@@ -91,10 +91,6 @@ export async function getPostsMeta(): Promise<Meta[] | undefined> {
   if (!res.ok) return undefined;
 
   const repoFiletree: Filetree = await res.json();
-  console.log(
-    "🚀 ~ file: posts.ts:95 ~ getPostsMeta ~ repoFiletree:",
-    repoFiletree.tree[0]
-  );
 
   const filesArray = repoFiletree.tree
     .map((obj) => obj.path)
