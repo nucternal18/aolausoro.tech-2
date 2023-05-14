@@ -9,7 +9,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import { RootState } from "./store";
-import { UserInfoProps } from "../../lib/types";
+import { UserInfoProps } from "../../types/types";
 
 const dev = process.env.NODE_ENV !== "production";
 

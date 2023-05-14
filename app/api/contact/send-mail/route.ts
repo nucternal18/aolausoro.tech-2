@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import { withSentry } from "@sentry/nextjs";
 import validateHuman from "lib/validateHuman";
 import { NextResponse } from "next/server";
-import { IMessageData } from "lib/types";
+import { IMessageData } from "types/types";
 
 export async function POST(req: Request) {
   const { name, email, subject, message, token }: IMessageData =

@@ -5,7 +5,7 @@ import Loader from "components/Loader";
 
 // redux
 import { useGetProjectsQuery } from "../../GlobalReduxStore/features/projects/projectApiSlice";
-import { ProjectProps } from "lib/types";
+import { ProjectProps } from "types/types";
 import ProjectForm from "components/forms/ProjectForm";
 
 function Projects() {

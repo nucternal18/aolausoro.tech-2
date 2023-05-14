@@ -1,107 +1,114 @@
-import * as fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-import { remark } from "remark";
-import html from "remark-html";
-import { POSTS_PER_PAGE } from "../config";
-import { BlogPost } from "./types";
+import { compileMDX } from "next-mdx-remote/rsc";
+import rehypeAutolinkHeadings from "rehype-autolink-headings/lib";
+import rehypeHighlight from "rehype-highlight/lib";
+import rehypeSlug from "rehype-slug";
+import { BlogPost, Meta } from "types/types";
+import { CustomImage, Video } from "../components";
 
-const postsDirectory = path.join(process.cwd(), "/blogs");
+type Filetree = {
+  tree: [
+    {
+      path: string;
+    }
+  ];
+};
 
-export function getSortedPostsData(page: number) {
-  // Get file names under /posts
-  const fileNames = fs.readdirSync(postsDirectory);
-
-  const allPostsData = fileNames.map((fileName) => {
-    // Remove ".md" from file name to get id
-    const id = fileName.replace(/\.md$/, "");
-
-    // Read markdown file as string
-    const fullPath = path.join(postsDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, "utf-8");
-
-    // Use gray-matter to parse the post metadata section
-    const { data, content } = matter(fileContents);
-
-    const blogPost: BlogPost = {
-      id,
-      title: data.title,
-      date: data.date,
-      excerpt: data.excerpt,
-      cover_image: data.cover_image,
-      category: data.category,
-      author: data.author,
-      author_image: data.author_image,
-    };
-
-    // Combine the data with the id
-    return blogPost;
-  });
-
-  const numPages = Math.ceil(fileNames.length / POSTS_PER_PAGE);
-  const pageIndex = page - 1;
-  const orderedPost = allPostsData.slice(
-    pageIndex * POSTS_PER_PAGE,
-    (pageIndex + 1) * POSTS_PER_PAGE
-  );
-  // Sort posts by date
-  // return { orderedPost, numPages }
-  return {
-    orderedPost: orderedPost.sort((a, b) => (a.date < b.date ? 1 : -1)),
-    numPages,
-  };
-}
-// .sort((a, b) => a.date < b.date ? 1 : -1)
-export function getAllPostIds() {
-  const fileNames = fs.readdirSync(postsDirectory);
-
-  // Returns an array that looks like this:
-  // [
-  //   {
-  //     params: {
-  //       id: 'ssg-ssr'
-  //     }
-  //   },
-  //   {
-  //     params: {
-  //       id: 'pre-rendering'
-  //     }
-  //   }
-  // ]
-  return fileNames.map((fileName) => {
-    return {
-      params: {
-        id: fileName.replace(/\.md$/, ""),
+export async function getPostByName(
+  fileName: string
+): Promise<BlogPost | undefined> {
+  const res = await fetch(
+    `https://raw.githubusercontent.com/nucternal18/blogs/main/${fileName}`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${process.env.REPO_TOKEN}`,
+        "X-GitHub-Api-Version": "2022-11-28",
       },
-    };
+    }
+  );
+
+  if (!res.ok) return undefined;
+
+  const rawMDX = await res.text();
+
+  if (rawMDX === "404: Not Found") return undefined;
+
+  const { frontmatter, content } = await compileMDX<Meta>({
+    source: rawMDX,
+    components: {
+      Video,
+      CustomImage,
+    },
+    options: {
+      parseFrontmatter: true,
+      mdxOptions: {
+        rehypePlugins: [
+          rehypeHighlight,
+          rehypeSlug,
+          [
+            rehypeAutolinkHeadings,
+            {
+              behavior: "wrap",
+            },
+          ],
+        ],
+      },
+    },
   });
-}
 
-export async function getPostData(id: string) {
-  const fullPath = path.join(postsDirectory, `${id}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf-8");
+  const id = fileName.replace(/\.mdx$/, "");
 
-  // Use gray-matter to parse the post metadata section
-  const matterResult = matter(fileContents);
-
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content);
-
-  const contentHtml = processedContent.toString();
-
-  const blogWithHtml: BlogPost & { contentHtml: string } = {
-    id,
-    title: matterResult.data.title,
-    date: matterResult.data.date,
-    excerpt: matterResult.data.excerpt,
-    cover_image: matterResult.data.cover_image,
-    category: matterResult.data.category,
-    author: matterResult.data.author,
-    author_image: matterResult.data.author_image,
-    contentHtml,
+  const blogPostObj: BlogPost = {
+    meta: {
+      id,
+      title: frontmatter.title,
+      date: frontmatter.date,
+      tags: frontmatter.tags,
+      excerpt: frontmatter.excerpt,
+      cover_image: frontmatter.cover_image,
+      category: frontmatter.category,
+      author: frontmatter.author,
+      author_image: frontmatter.author_image,
+    },
+    contentHtml: content,
   };
 
-  // Combine the data with the id
-  return blogWithHtml;
+  return blogPostObj;
+}
+
+export async function getPostsMeta(): Promise<Meta[] | undefined> {
+  const res = await fetch(
+    "https://api.github.com/repos/nucternal18/blogs/git/trees/main?recursive=1",
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${process.env.REPO_TOKEN}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    }
+  );
+
+  if (!res.ok) return undefined;
+
+  const repoFiletree: Filetree = await res.json();
+  console.log(
+    "🚀 ~ file: posts.ts:95 ~ getPostsMeta ~ repoFiletree:",
+    repoFiletree.tree[0]
+  );
+
+  const filesArray = repoFiletree.tree
+    .map((obj) => obj.path)
+    .filter((path) => path.endsWith(".mdx"));
+
+  const posts: Meta[] = [];
+
+  for (const file of filesArray) {
+    const post = await getPostByName(file);
+    if (post) {
+      const { meta } = post;
+      posts.push(meta);
+    }
+  }
+
+  return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
 }

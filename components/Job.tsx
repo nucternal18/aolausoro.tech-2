@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 
-import { JobProps } from "lib/types";
+import { JobProps } from "types/types";
 
 import JobInfo from "./JobInfo";
 

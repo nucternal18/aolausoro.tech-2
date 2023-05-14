@@ -21,7 +21,7 @@ import {
   setEditImage,
   setImage,
 } from "app/GlobalReduxStore/features/projects/projectsSlice";
-import { ProjectProps } from "lib/types";
+import { ProjectProps } from "types/types";
 import Image from "next/image";
 import UploadForm from "./UploadForm";
 import ToggleControlButton from "components/ToggleControlButton";

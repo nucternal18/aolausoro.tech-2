@@ -5,7 +5,7 @@ import Loader from "components/Loader";
 
 // redux
 import { useGetStatsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
-import { DefaultStatsProps } from "lib/types";
+import { DefaultStatsProps } from "types/types";
 
 const admin = () => {
   const { data: stats, isFetching } = useGetStatsQuery();

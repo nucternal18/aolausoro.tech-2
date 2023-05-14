@@ -2,7 +2,7 @@
 import { AppDispatch, RootState } from "../../store";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { IMessageData } from "lib/types";
+import { IMessageData } from "types/types";
 
 interface MessageState {
   messages: IMessageData[] | null;

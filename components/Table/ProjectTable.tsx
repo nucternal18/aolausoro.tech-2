@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { ProjectProps } from "lib/types";
+import { ProjectProps } from "types/types";
 
 import { useAppDispatch } from "app/GlobalReduxStore/hooks";
 import { setAction } from "app/GlobalReduxStore/features/projects/projectsSlice";

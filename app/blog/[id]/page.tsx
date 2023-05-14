@@ -2,14 +2,21 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
 import CategoryLabel from "../../../components/CategoryLabel";
-import { getPostData, getSortedPostsData } from "../../../lib/posts";
+import { getPostsMeta, getPostByName } from "../../../lib/posts";
 import Date from "../../../components/date";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import Image from "next/image";
+import "highlight.js/styles/github-dark.css";
 
-export function generateStaticParams() {
-  const { orderedPost } = getSortedPostsData(1);
-  return orderedPost.map((post) => ({
+export const revalidate = 10;
+
+export async function generateStaticParams() {
+  const posts = await getPostsMeta();
+
+  if (!posts) return [];
+
+  return posts.map((post) => ({
     params: {
       id: post.id,
     },
@@ -17,14 +24,11 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({
-  params,
+  params: { id },
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const { orderedPost } = getSortedPostsData(1);
-  const { id } = params;
-
-  const post = orderedPost.find((post) => post.id === id);
+  const post = await getPostByName(`${id}.mdx`);
 
   if (!post) {
     return {
@@ -33,50 +37,50 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} | aolausoro.tech`,
+    title: `${post.meta.title} | aolausoro.tech`,
   };
 }
 
-export default async function Post({ params }: { params: { id: string } }) {
-  const { orderedPost } = getSortedPostsData(1);
-  const { id } = params;
+export default async function Post({
+  params: { id },
+}: {
+  params: { id: string };
+}) {
+  const post = await getPostByName(`${id}.mdx`);
 
-  if (!orderedPost.find((post) => post.id === id)) {
-    return notFound();
-  }
+  if (!post) notFound();
 
-  const post = await getPostData(id);
+  const { contentHtml, meta } = post;
 
   return (
-    <section className="flex-grow h-full max-w-screen-lg mx-auto text-black dark:text-gray-100">
-      <button className="flex items-center justify-center px-4 py-1 font-medium text-center text-yellow-500 transition duration-200 ease-in border border-yellow-500 rounded shadow active:bg-yellow-500 active:text-white focus:outline-none">
-        <Link href="/blog" className="text-2xl font-bold ">
+    <section className="flex-grow h-full max-w-screen-lg mx-auto text-black dark:text-gray-100 py-4">
+      <button className="flex items-center justify-center px-4 py-1 font-medium text-center transition duration-200 ease-in border border-gray-900 rounded shadow text-gray-900 hover:bg-yellow-500 hover:text-white hover:border-yellow-500 dark:border-yellow-500 dark:text-yellow-500 focus:outline-none">
+        <Link href="/blog" className="text-lg font-bold ">
           Go Back
         </Link>
       </button>
-      <div className="w-full px-10 py-6 mt-6 bg-gray-100 rounded-lg shadow-ld dark:shadow-lg dark:text-gray-800">
-        <div className="flex items-center justify-between mt-4">
-          <h1 className="text-5xl mb-7 ">{post.title}</h1>
-          <CategoryLabel>{post.category}</CategoryLabel>
+      <section className="w-full px-10 py-6 mt-6 bg-slate-100 rounded-lg shadow-ld dark:shadow-lg dark:text-gray-800">
+        <div className="flex items-center justify-between mt-4 w-full">
+          <h1 className="text-3xl mb-7 ">{meta.title}</h1>
+          <CategoryLabel>{meta.category}</CategoryLabel>
         </div>
-        <img src={post.cover_image} alt="" className="w-full rounded" />
         <div className="flex items-center justify-between p-2 my-8 bg-gray-300">
-          <div className="flex items-center">
-            <img
-              src={post.author_image}
-              alt=""
+          <div className="flex items-center relative">
+            <Image
+              src={meta.author_image}
+              alt="author image"
+              width={40}
+              height={40}
               className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block"
             />
-            <h4>{post.author}</h4>
+            <h4>{meta.author}</h4>
           </div>
           <div className="mr-4 text-gray-500">
-            <Date dateString={post.date} />
+            <Date dateString={meta.date} />
           </div>
         </div>
-        <div className="mt-2 blog-text">
-          <ReactMarkdown>{post.contentHtml}</ReactMarkdown>
-        </div>
-      </div>
+        <article className="mt-2 blog-text">{contentHtml}</article>
+      </section>
     </section>
   );
 }

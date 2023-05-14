@@ -1,4 +1,4 @@
-import { UserInfoProps } from "../lib/types";
+import { UserInfoProps } from "../types/types";
 
 interface IUserProfile {
   randomImage: string;

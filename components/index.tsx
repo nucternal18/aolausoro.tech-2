@@ -17,6 +17,8 @@ import ChartsContainer from "./ChartsContainer";
 import BarChartComponent from "./charts/BarChart";
 import AreaChartComponent from "./charts/AreaChart";
 import PageBtnContainer from "./PageBtnContainer";
+import CustomImage from "./CustomImage";
+import Video from "./Video";
 
 export {
   AddJobComponent,
@@ -38,4 +40,6 @@ export {
   BarChartComponent,
   AreaChartComponent,
   PageBtnContainer,
+  CustomImage,
+  Video,
 };

@@ -1,6 +1,6 @@
 "use client";
 import { messageApiSlice } from "app/GlobalReduxStore/api";
-import { IMessageData } from "lib/types";
+import { IMessageData } from "types/types";
 
 export const messagesApi = messageApiSlice.injectEndpoints({
   endpoints: (builder) => ({

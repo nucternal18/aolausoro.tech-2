@@ -1,6 +1,6 @@
 "use client";
 import { userApiSlice } from "app/GlobalReduxStore/api";
-import { UserInfoProps } from "lib/types";
+import { UserInfoProps } from "types/types";
 import { setError, setUserState, setImage } from "./usersSlice";
 
 export const userApi = userApiSlice.injectEndpoints({

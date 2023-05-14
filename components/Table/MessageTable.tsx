@@ -1,6 +1,6 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { IMessageData } from "lib/types";
+import { IMessageData } from "types/types";
 
 interface MessageTableProps {
   messages: IMessageData[];

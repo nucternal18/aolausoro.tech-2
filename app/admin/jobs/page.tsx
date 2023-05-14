@@ -8,7 +8,7 @@ import { JobsContainer, SearchForm } from "components";
 import { useAppSelector } from "app/GlobalReduxStore/hooks";
 import { jobSelector } from "app/GlobalReduxStore/features/jobs/jobsSlice";
 import { useGetJobsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
-import { JobsProps } from "lib/types";
+import { JobsProps } from "types/types";
 
 // Components
 import Loader from "components/Loader";

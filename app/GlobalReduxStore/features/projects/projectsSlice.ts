@@ -2,7 +2,7 @@
 import { AppDispatch, RootState } from "../../store";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { ProjectProps } from "lib/types";
+import { ProjectProps } from "types/types";
 
 interface ProjectState {
   projects: ProjectProps[] | null;

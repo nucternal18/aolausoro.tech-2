@@ -1,4 +1,4 @@
-import { JobsProps } from "lib/types";
+import { JobsProps } from "types/types";
 import { JobCard, PageBtnContainer, Spinner } from ".";
 
 interface JobsContainerProps {

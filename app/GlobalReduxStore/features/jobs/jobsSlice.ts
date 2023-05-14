@@ -2,7 +2,7 @@
 import { RootState } from "../../store";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { JobProps } from "lib/types";
+import { JobProps } from "types/types";
 
 interface JobState {
   jobs: JobProps[] | null;

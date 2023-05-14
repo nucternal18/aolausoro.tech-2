@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import prisma from "lib/prismadb";
-import { IMessageData } from "lib/types";
+import { IMessageData } from "types/types";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {

@@ -2,7 +2,7 @@
 import { RootState } from "../../store";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { UserInfoProps } from "lib/types";
+import { UserInfoProps } from "types/types";
 
 interface UserState {
   currentUser: UserInfoProps | null;

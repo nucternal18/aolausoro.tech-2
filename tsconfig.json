@@ -33,7 +33,8 @@
     "sentry.edge.config.js",
     ".next/types/**/*.ts",
     "tailwind.config.js",
-    "postcss.config.js"
+    "postcss.config.js",
+    "next-sitemap.config.js"
   ],
   "exclude": ["node_modules", "/app/api/auth/[...nextauth].ts"],
   "typeRoots": ["node_modules/@types", "./types"]

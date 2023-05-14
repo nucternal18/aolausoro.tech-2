@@ -12,7 +12,7 @@ import {
   useDeleteMessageMutation,
   useGetMessagesQuery,
 } from "app/GlobalReduxStore/features/messages/messagesApiSlice";
-import { IMessageData } from "lib/types";
+import { IMessageData } from "types/types";
 
 function Messages() {
   const router = useRouter();

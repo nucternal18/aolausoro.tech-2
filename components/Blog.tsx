@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import CategoryLabel from "./CategoryLabel";
-import { BlogPost } from "lib/types";
+import { BlogPost } from "types/types";
 import getFormattedDateString from "lib/getFormattedDateString";
 
-export default function BlogItem({ post }: { post: BlogPost }) {
+export default function BlogItem({ post }: { post: BlogPost["meta"] }) {
+  console.log("🚀 ~ file: Blog.tsx:8 ~ BlogItem ~ post:", post);
   const formattedDate = getFormattedDateString(post.date);
   return (
     <div className="w-full px-10 py-6 mt-6 bg-white rounded-lg shadow-md">
@@ -24,7 +25,7 @@ export default function BlogItem({ post }: { post: BlogPost }) {
           href={`/blog/${post.id}`}
           className="text-2xl font-bold text-gray-700 hover:underline"
         >
-          {post.id}
+          {post.title}
         </Link>
         <p className="mt-2 text-gray-600">{post.excerpt}</p>
       </div>

@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../../api/auth/[...nextauth]/route";
 
 import UserProfileComponent from "components/UserProfile";
-import { UserInfoProps } from "lib/types";
+import { UserInfoProps } from "types/types";
 import { redirect } from "next/navigation";
 
 const randomImage =

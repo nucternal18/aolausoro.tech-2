@@ -5,6 +5,7 @@ import { NextAuthSessionProvider } from "./session-provider";
 import { NextThemeProvider } from "./theme-provider";
 import { ToastContainer } from "react-toastify";
 import { useTheme } from "next-themes";
+import "react-toastify/dist/ReactToastify.css";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
