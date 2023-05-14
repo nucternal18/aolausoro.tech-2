@@ -8,7 +8,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import "highlight.js/styles/github-dark.css";
 
-export const revalidate = 10;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const posts = await getPostsMeta();

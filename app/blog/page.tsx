@@ -2,7 +2,7 @@ import { getPostsMeta } from "../../lib/posts";
 
 import BlogItem from "../../components/Blog";
 
-export const revalidate = 10;
+export const revalidate = 86400;
 
 export default async function BlogPage() {
   const posts = await getPostsMeta();
