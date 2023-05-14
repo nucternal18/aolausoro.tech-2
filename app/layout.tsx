@@ -1,9 +1,10 @@
 import { Navbar } from "components";
 import Footer from "components/Footer";
 
+import { Providers } from "./GlobalReduxStore/providers";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import { Providers } from "./GlobalReduxStore/providers";
+import "highlight.js/styles/github-dark.css";
 
 export default function RootLayout({
   children,
