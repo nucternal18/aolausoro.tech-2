@@ -59,7 +59,7 @@ export default async function Post({
         </Link>
       </button>
       <section className="w-full px-10 py-6 mt-6 bg-slate-100 rounded-lg shadow-ld dark:shadow-lg dark:text-gray-800">
-        <div className="flex flex-col items-center justify-between mt-4 w-full">
+        <div className="flex flex-col mt-4 w-full">
           <h1 className="text-3xl mb-7 ">{meta.title}</h1>
           <CategoryLabel>{meta.category}</CategoryLabel>
         </div>
