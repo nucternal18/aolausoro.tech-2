@@ -22,7 +22,6 @@
     "@next/mdx": "^13.4.3",
     "@prisma/client": "^4.12.0",
     "@reduxjs/toolkit": "^1.9.3",
-    "@sentry/nextjs": "^7.47.0",
     "@tailwindcss/typography": "^0.5.9",
     "@types/mdx": "^2.0.5",
     "@types/nodemailer": "^6.4.7",
@@ -37,7 +36,6 @@
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "mongodb": "^5.2.0",
-    "mongoose": "^7.0.3",
     "next": "^13.4.2",
     "next-auth": "^4.22.1",
     "next-mdx-remote": "^4.4.1",
@@ -65,7 +63,6 @@
     "remark-gfm": "^3.0.1",
     "remove": "^0.1.5",
     "sharp": "^0.32.0",
-    "styled-components": "^5.3.9",
     "swr": "^2.1.2",
     "tailwind-merge": "^1.12.0"
   },
