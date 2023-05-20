@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import { MDXRemote } from "next-mdx-remote/rsc";
 import CategoryLabel from "../../../components/CategoryLabel";
 import { getPostsMeta, getPostByName } from "../../../lib/posts";
 import Date from "../../../components/date";

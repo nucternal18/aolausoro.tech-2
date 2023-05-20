@@ -5,6 +5,8 @@ import rehypeSlug from "rehype-slug";
 import rehypePrettyCode from "rehype-pretty-code";
 import { BlogPost, Meta } from "types/types";
 import { CustomImage, Video } from "../components";
+import { MDXComponents } from "components/mdx-components";
+import { useMDXComponents } from "../mdx-components";
 
 type Filetree = {
   tree: [
@@ -34,45 +36,17 @@ export async function getPostByName(
 
   if (rawMDX === "404: Not Found") return undefined;
 
+  const components = useMDXComponents(MDXComponents);
+
   const { frontmatter, content } = await compileMDX<Meta>({
     source: rawMDX,
     components: {
       Video,
       CustomImage,
+      ...components,
     },
     options: {
       parseFrontmatter: true,
-      mdxOptions: {
-        rehypePlugins: [
-          rehypeHighlight,
-          rehypeSlug,
-          [
-            rehypeAutolinkHeadings,
-            {
-              behavior: "wrap",
-            },
-          ],
-          [
-            rehypePrettyCode,
-            {
-              theme: "github-dark",
-              onVisitLine(node) {
-                // Prevent lines from collapsing in `display: grid` mode, and allow empty
-                // lines to be copy/pasted
-                if (node.children.length === 0) {
-                  node.children = [{ type: "text", value: " " }];
-                }
-              },
-              onVisitHighlightedLine(node) {
-                node.properties.className.push("line--highlighted");
-              },
-              onVisitHighlightedWord(node) {
-                node.properties.className = ["word--highlighted"];
-              },
-            },
-          ],
-        ],
-      },
     },
   });
 
