@@ -79,7 +79,7 @@ export const MDXComponents = {
     <ol className={cn("my-6 ml-6 list-decimal", className)} {...props} />
   ),
   li: ({ className, ...props }) => (
-    <li className={cn("mt-2", className)} {...props} />
+    <li className={cn("mt-2 text-sm", className)} {...props} />
   ),
   blockquote: ({ className, ...props }) => (
     <blockquote
@@ -140,7 +140,7 @@ export const MDXComponents = {
   code: ({ className, ...props }) => (
     <code
       className={cn(
-        "relative rounded border px-[0.3rem] py-[0.2rem] font-mono text-sm",
+        "relative rounded border px-[0.3rem] py-[0.2rem] bg-slate-900 bg-opacity-10 font-mono text-sm text-slate-100",
         className
       )}
       {...props}
