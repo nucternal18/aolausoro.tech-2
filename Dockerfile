@@ -27,4 +27,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Start the Next.js application using the .env file
-CMD ["sh", "-c", "source /app/.env && source /app/.env.local && npm run start"]
+CMD ["npm", "run", "start"]
