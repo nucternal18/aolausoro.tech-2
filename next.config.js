@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-const rehypeHighlight = require("rehype-highlight");
-const rehypeSlug = require("rehype-slug");
-const rehypeAutolinkHeadings = require("rehype-autolink-headings");
-const rehypePrettyCode = require("@fec/rehype-pretty-code");
 const runtimeCaching = require("next-pwa/cache");
 const withPWA = require("next-pwa")({
   dest: "public",
