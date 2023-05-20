@@ -140,7 +140,7 @@ export const MDXComponents = {
   code: ({ className, ...props }) => (
     <code
       className={cn(
-        "relative rounded border px-[0.3rem] py-[0.2rem] bg-slate-900 bg-opacity-10 font-mono text-sm text-slate-100",
+        "relative rounded border px-[0.3rem] py-[0.2rem]  font-mono text-sm",
         className
       )}
       {...props}
