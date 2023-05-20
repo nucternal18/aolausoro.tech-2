@@ -14,8 +14,8 @@ RUN npm install
 COPY . .
 
 # Copy the .env file to the container
-COPY .env ./.env
-COPY .env.local ./.env.local
+COPY .env /app/.env
+COPY .env.local /app/.env.local
 
 # generate the prisma client
 RUN npx prisma generate
@@ -27,4 +27,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Start the Next.js application using the .env file
-CMD ["sh", "-c", "source .env && source .env.local && npm run start"]
+CMD ["sh", "-c", "source /app/.env && source /app/.env.local && npm run start"]
