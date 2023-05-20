@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { withSentry } from "@sentry/nextjs";
 
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";

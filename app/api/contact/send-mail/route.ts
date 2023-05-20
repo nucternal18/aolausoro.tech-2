@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from "nodemailer";
-import { withSentry } from "@sentry/nextjs";
 import validateHuman from "lib/validateHuman";
 import { NextResponse } from "next/server";
 import { IMessageData } from "types/types";
