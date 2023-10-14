@@ -6,6 +6,11 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 
 import { cn } from "utils/utils";
+import type { DialogPortalProps } from "@radix-ui/react-alert-dialog";
+
+interface SheetProps extends DialogPortalProps {
+  className?: string;
+}
 
 const Sheet = SheetPrimitive.Root;
 
@@ -13,11 +18,8 @@ const SheetTrigger = SheetPrimitive.Trigger;
 
 const SheetClose = SheetPrimitive.Close;
 
-const SheetPortal = ({
-  className,
-  ...props
-}: SheetPrimitive.DialogPortalProps) => (
-  <SheetPrimitive.Portal className={cn(className)} {...props} />
+const SheetPortal = ({ className, ...props }: SheetProps) => (
+  <SheetPrimitive.Portal {...props} />
 );
 SheetPortal.displayName = SheetPrimitive.Portal.displayName;
 

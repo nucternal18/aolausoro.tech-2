@@ -1,17 +1,18 @@
 "use client";
-import { userApiSlice } from "app/GlobalReduxStore/api";
-import { UserInfoProps } from "types/types";
-import { setError, setUserState, setImage } from "./usersSlice";
+
+import { userApiSlice } from "@app/GlobalReduxStore/api";
+import { setError, setImage } from "./usersSlice";
+import type { PartialUserProps } from "schema/User";
 
 export const userApi = userApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getUser: builder.query<UserInfoProps, void>({
+    getUser: builder.query<PartialUserProps, void>({
       query: () => `/auth`,
       providesTags: (result, error, arg) => [{ type: "User", id: result?.id }],
     }),
     createUser: builder.mutation<
       { success: boolean; message: string },
-      UserInfoProps
+      PartialUserProps
     >({
       query: (user) => ({
         url: "/auth/register",
@@ -22,7 +23,7 @@ export const userApi = userApiSlice.injectEndpoints({
     }),
     updateUser: builder.mutation<
       { success: boolean; message: string },
-      UserInfoProps
+      PartialUserProps
     >({
       query: (user) => ({
         url: "/auth/update-profile",

@@ -1,7 +1,6 @@
 "use client";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
-import { configureStore, ThunkAction, combineReducers } from "@reduxjs/toolkit";
-import type { Action } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
   userApiSlice,
   messageApiSlice,

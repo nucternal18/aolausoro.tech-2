@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-
-import { FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
 
 import { links, social } from "../../data";

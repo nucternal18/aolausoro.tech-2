@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function CategoryLabel({ variant }: { variant: string }) {
   const colorKey: { [key: string]: string } = {
     "Web Development": "black",

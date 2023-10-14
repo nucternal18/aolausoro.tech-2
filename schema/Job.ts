@@ -21,6 +21,23 @@ export const jobsSchema = z.object({
   numberOfPages: z.number(),
 });
 
+export const defaultStatsSchema = z.object({
+  pending: z.number(),
+  interviewing: z.number(),
+  declined: z.number(),
+  offer: z.number(),
+});
+
+export const monthlyApplicationsSchema = z.object({
+  date: z.string(),
+  totalPrice: z.number(),
+});
+
+export const statsSchema = z.object({
+  defaultStats: defaultStatsSchema,
+  monthlyApplicationStats: z.array(monthlyApplicationsSchema),
+});
+
 export const partialJobSchema = jobSchema.partial();
 
 export type JobProps = Prettify<z.infer<typeof jobSchema>>;
@@ -28,3 +45,11 @@ export type JobProps = Prettify<z.infer<typeof jobSchema>>;
 export type JobsProps = Prettify<z.infer<typeof jobsSchema>>;
 
 export type PartialJobProps = Prettify<z.infer<typeof partialJobSchema>>;
+
+export type DefaultStatsProps = Prettify<z.infer<typeof defaultStatsSchema>>;
+
+export type MonthlyApplicationProps = Prettify<
+  z.infer<typeof monthlyApplicationsSchema>
+>;
+
+export type StatsProps = Prettify<z.infer<typeof statsSchema>>;

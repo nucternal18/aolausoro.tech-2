@@ -10,7 +10,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const BarChartComponent = ({ data }) => {
+// zod schema
+import type { MonthlyApplicationProps } from "schema/Job";
+
+const BarChartComponent = ({ data }: { data: MonthlyApplicationProps[] }) => {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data} margin={{ top: 50 }}>

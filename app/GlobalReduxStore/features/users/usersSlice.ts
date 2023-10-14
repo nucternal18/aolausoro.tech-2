@@ -1,11 +1,10 @@
 "use client";
-import { RootState } from "../../store";
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-
-import { UserInfoProps } from "types/types";
+import type { PartialUserProps } from "schema/User";
+import type { RootState } from "../../store";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
-  currentUser: UserInfoProps | null;
+  currentUser: PartialUserProps | null;
   message: string;
   image: string | ArrayBuffer | null;
   error: { name: string; message: string } | null;
@@ -26,7 +25,7 @@ export const userSlice = createSlice({
       state,
       {
         payload: { currentUser },
-      }: PayloadAction<{ currentUser: Partial<UserInfoProps> }>
+      }: PayloadAction<{ currentUser: PartialUserProps }>,
     ) => {
       state.currentUser = currentUser;
     },

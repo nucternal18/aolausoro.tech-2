@@ -1,6 +1,6 @@
 "use client";
 
-import { Table } from "@tanstack/react-table";
+import { type Table } from "@tanstack/react-table";
 import { Trash, X } from "lucide-react";
 
 import { Button } from "@components/ui/button";

@@ -1,9 +1,7 @@
 "use client";
-import { useState, useRef, useEffect, type ReactNode } from "react";
+import { useRef, useEffect, type ReactNode } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FaUser } from "react-icons/fa";
-import { FiLogOut, FiMoon, FiSun } from "react-icons/fi";
+import { FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
 
 type NavLinkProps = {

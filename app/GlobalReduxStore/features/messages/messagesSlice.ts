@@ -1,11 +1,14 @@
 "use client";
-import { AppDispatch, RootState } from "../../store";
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-
-import { IMessageData } from "types/types";
+import type { PartialMessageProps } from "schema/Message";
+import type { AppDispatch, RootState } from "../../store";
+import {
+  createSlice,
+  type PayloadAction,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
 
 interface MessageState {
-  messages: IMessageData[] | null;
+  messages: PartialMessageProps[] | null;
   error: { name: string; message: string } | null;
 }
 
@@ -18,7 +21,7 @@ export const messageSlice = createSlice({
   name: "messages",
   initialState,
   reducers: {
-    setMessages: (state, { payload }: PayloadAction<IMessageData[]>) => {
+    setMessages: (state, { payload }: PayloadAction<PartialMessageProps[]>) => {
       state.messages = payload;
     },
     setError: (state, { payload }: PayloadAction<Error>) => {

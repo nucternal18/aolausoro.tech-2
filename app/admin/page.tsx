@@ -5,8 +5,13 @@ import Loader from "components/Loader";
 
 // redux
 import { useGetStatsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
-import { type DefaultStatsProps } from "types/types";
+
+// components
 import StatsContainer from "@components/StatsContainer";
+import ChartsContainer from "@components/ChartsContainer";
+
+// zod schema
+import type { DefaultStatsProps, MonthlyApplicationProps } from "schema/Job";
 
 const admin = () => {
   const { data: stats, isFetching } = useGetStatsQuery();
@@ -20,9 +25,13 @@ const admin = () => {
     <section className="w-full min-h-screen flex flex-col py-4">
       <div className="flex flex-col gap-4 w-full h-full">
         <StatsContainer stats={stats?.defaultStats as DefaultStatsProps} />
-        {/* {stats!.monthlyApplicationStats?.length > 0 && (
-          <ChartsContainer monthlyStats={stats?.monthlyApplicationStats} />
-        )} */}
+        {stats!.monthlyApplicationStats?.length > 0 && (
+          <ChartsContainer
+            monthlyStats={
+              stats?.monthlyApplicationStats as MonthlyApplicationProps[]
+            }
+          />
+        )}
       </div>
     </section>
   );

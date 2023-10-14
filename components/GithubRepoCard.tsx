@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { PartialProjectProps } from "schema/Project";
 
 export const GithubRepoCard = ({

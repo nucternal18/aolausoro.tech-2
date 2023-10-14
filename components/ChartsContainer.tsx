@@ -2,8 +2,13 @@
 import { useState } from "react";
 import BarChartComponent from "./charts/BarChart";
 import AreaChartComponent from "./charts/AreaChart";
+import type { MonthlyApplicationProps } from "schema/Job";
 
-const ChartsContainer = ({ monthlyStats }) => {
+const ChartsContainer = ({
+  monthlyStats,
+}: {
+  monthlyStats: MonthlyApplicationProps[];
+}) => {
   const [barChart, setBarChart] = useState(true);
   return (
     <section className="px-4 mx-auto max-w-screen-xl mt-24 font-mono text-gray-900 dark:text-gray-200 md:px-6 flex flex-col gap-4 items-center justify-center">

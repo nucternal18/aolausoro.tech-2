@@ -1,4 +1,5 @@
 "use client";
+
 import {
   AreaChart,
   Area,
@@ -8,7 +9,11 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-const AreaChartComponent = ({ data }) => {
+
+// zod schema
+import type { MonthlyApplicationProps } from "schema/Job";
+
+const AreaChartComponent = ({ data }: { data: MonthlyApplicationProps[] }) => {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <AreaChart data={data} margin={{ top: 50 }}>
