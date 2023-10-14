@@ -2,20 +2,15 @@
 import {
   createApi,
   fetchBaseQuery,
-  BaseQueryFn,
-  FetchArgs,
-  FetchBaseQueryError,
-  FetchBaseQueryMeta,
+  type BaseQueryFn,
+  type FetchArgs,
+  type FetchBaseQueryError,
+  type FetchBaseQueryMeta,
 } from "@reduxjs/toolkit/query/react";
-import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
-import { RootState } from "./store";
-import { UserInfoProps } from "../../types/types";
+
+import { env } from "@lib/env";
 
 const dev = process.env.NODE_ENV !== "production";
-
-export const NEXT_URL = dev
-  ? "http://localhost:3000"
-  : "https://aolausoro.tech";
 
 interface RefreshResult {
   error?: FetchBaseQueryError | undefined;
@@ -40,7 +35,7 @@ const baseQuery: BaseQueryFn<
   Record<string, unknown>,
   FetchBaseQueryMeta
 > = fetchBaseQuery({
-  baseUrl: `${NEXT_URL}/api`,
+  baseUrl: `${env.NEXTAUTH_URL}/api`,
   credentials: "include",
   prepareHeaders: (headers, api) => {
     headers.set("Content-Type", "application/json");
@@ -51,7 +46,7 @@ const baseQuery: BaseQueryFn<
 const baseQueryWithReAuth: BaseQueryFn = async (
   args: string | FetchArgs,
   api,
-  extraOptions
+  extraOptions,
 ) => {
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 400) {
@@ -62,14 +57,9 @@ const baseQueryWithReAuth: BaseQueryFn = async (
     const refreshResult: RefreshResult = await baseQuery(
       "/refresh/",
       api,
-      extraOptions
+      extraOptions,
     );
     if (refreshResult?.data) {
-      const { user } = api.getState() as RootState;
-      const currentUser = user.currentUser as UserInfoProps;
-      console.log("🚀 ~ file: api.ts:71 ~ user:", user);
-      // store new token
-
       // retry original request
       result = await baseQuery(args, api, extraOptions);
     } else {
