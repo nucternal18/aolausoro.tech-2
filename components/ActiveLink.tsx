@@ -1,8 +1,15 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import type React from "react";
 
-function ActiveLink({ children, href }) {
+function ActiveLink({
+  children,
+  href,
+}: {
+  children: React.ReactNode;
+  href: string;
+}) {
   const router = useRouter();
   const pathName = usePathname();
   return (

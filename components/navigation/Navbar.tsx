@@ -8,6 +8,7 @@ import { links, social } from "../../data";
 
 import Nav from "./NavComponents";
 import LoginButton from "components/LoginButton";
+import { ModeToggle } from "@components/ModeToggle";
 
 type NavProps = {
   textColor?: string;
@@ -23,7 +24,7 @@ export default function Navbar({ textColor }: NavProps) {
   };
 
   return (
-    <Nav bgColor="bg-slate-200 dark:bg-slate-900 drop-shadow-sm">
+    <Nav bgColor=" drop-shadow-sm">
       <Nav.Toggler
         toggle={toggle}
         isOpen={isOpen}
@@ -50,19 +51,7 @@ export default function Navbar({ textColor }: NavProps) {
         </Nav.NavLinks>
         <Nav.NavLinks right>
           <Nav.Item>
-            <button
-              type="button"
-              onClick={() =>
-                theme == "dark" ? setTheme("light") : setTheme("dark")
-              }
-              className="flex p-1 ml-4 font-medium list-none border-2 border-current rounded-full cursor-pointer md:block lg:ml-0 lg:mb-0 lg:p-1 lg:px-1 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent"
-            >
-              {theme === "light" ? (
-                <FiSun className="text-lg font-bold " />
-              ) : (
-                <FiMoon className="font-semibold " />
-              )}
-            </button>
+            <ModeToggle />
           </Nav.Item>
           {social.map((link) => {
             const { id, url, icon } = link;

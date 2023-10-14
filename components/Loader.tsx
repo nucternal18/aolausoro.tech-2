@@ -12,6 +12,6 @@ function Loader({ classes }: { classes: string }) {
       ></div>
     </div>
   );
-};
+}
 
 export default Loader;

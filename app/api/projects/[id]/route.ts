@@ -3,10 +3,16 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
+import { partialProjectSchema } from "schema/Project";
 
+/**
+ * @description method to get a project by id
+ * @param req
+ * @returns
+ */
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const session = await getServerSession(authOptions);
 
@@ -15,7 +21,7 @@ export async function GET(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -24,7 +30,7 @@ export async function GET(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -43,9 +49,16 @@ export async function GET(
     });
   }
 }
+
+/**
+ * @description method to update project
+ * @param req
+ * @param param1
+ * @returns
+ */
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const session = await getServerSession(authOptions);
 
@@ -54,7 +67,7 @@ export async function PUT(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -63,8 +76,14 @@ export async function PUT(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
+  }
+
+  const validate = partialProjectSchema.safeParse(await req.json());
+
+  if (!validate.success) {
+    return NextResponse.json(validate.error.errors, { status: 400 });
   }
 
   const projectId = params.id;
@@ -108,9 +127,16 @@ export async function PUT(
     });
   }
 }
+
+/**
+ * @description method to delete project
+ * @param req
+ * @param param1
+ * @returns
+ */
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const session = await getServerSession(authOptions);
 
@@ -119,7 +145,7 @@ export async function DELETE(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -128,7 +154,7 @@ export async function DELETE(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 

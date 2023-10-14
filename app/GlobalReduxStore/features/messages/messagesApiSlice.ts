@@ -1,23 +1,23 @@
 "use client";
 import { messageApiSlice } from "app/GlobalReduxStore/api";
-import { IMessageData } from "types/types";
+import type { PartialMessageProps } from "schema/Message";
 
 export const messagesApi = messageApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getMessages: builder.query<IMessageData[], void>({
+    getMessages: builder.query<PartialMessageProps[], void>({
       query: () => "/contact",
       providesTags: (result) =>
         result
           ? [...result.map(({ id }) => ({ type: "Message" as const, id }))]
           : [{ type: "Message", id: "LIST" }],
     }),
-    getMessage: builder.query<IMessageData, string>({
+    getMessage: builder.query<PartialMessageProps, string>({
       query: (id) => `/contact/${id}`,
       providesTags: (result) => [{ type: "Message", id: result?.id }],
     }),
     createMessage: builder.mutation<
       { success: boolean; message: string },
-      IMessageData
+      PartialMessageProps & { token: string }
     >({
       query: (message) => ({
         url: "/contact/create-message",
@@ -42,7 +42,7 @@ export const messagesApi = messageApiSlice.injectEndpoints({
     }),
     sendMail: builder.mutation<
       { success: boolean; message: string },
-      IMessageData
+      PartialMessageProps & { token: string }
     >({
       query: (message) => ({
         url: "/contact/send-mail",

@@ -1,12 +1,15 @@
 "use client";
-import { AppDispatch, RootState } from "../../store";
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-
-import { ProjectProps } from "types/types";
+import { type RootState } from "../../store";
+import {
+  createSlice,
+  type PayloadAction,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
+import type { PartialProjectProps } from "schema/Project";
 
 interface ProjectState {
-  projects: ProjectProps[] | null;
-  image: string | ArrayBuffer | null;
+  projects: PartialProjectProps[] | null;
+  image: string | null;
   action: "Create" | "Update";
   editImage: boolean;
   error: { name: string; message: string } | null;
@@ -24,7 +27,7 @@ export const projectSlice = createSlice({
   name: "projects",
   initialState,
   reducers: {
-    setProjects: (state, { payload }: PayloadAction<ProjectProps[]>) => {
+    setProjects: (state, { payload }: PayloadAction<PartialProjectProps[]>) => {
       state.projects = payload;
     },
     setImage: (state, { payload }: PayloadAction<string>) => {

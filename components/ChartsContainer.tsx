@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { AreaChartComponent, BarChartComponent } from ".";
+import BarChartComponent from "./charts/BarChart";
+import AreaChartComponent from "./charts/AreaChart";
 
 const ChartsContainer = ({ monthlyStats }) => {
   const [barChart, setBarChart] = useState(true);

@@ -1,4 +1,4 @@
-import { Button } from "components";
+import { Button } from "@components/ui/button";
 import Link from "next/link";
 export default function NotFound() {
   return (
@@ -6,7 +6,7 @@ export default function NotFound() {
       <h1 className="p-5 text-5xl font-thin border-b border-current lg:mt-6 dark:border-yellow-500 dark:text-yellow-500">
         The requested blog does not exist.
       </h1>
-      <Button type="button" color="dark">
+      <Button asChild>
         <Link href="/blog" className="text-lg font-bold ">
           Go Back
         </Link>

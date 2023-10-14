@@ -15,7 +15,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <main className="relative min-h-screen bg-slate-200 max-w-lg py-1 px-4 flex-grow overflow-y-auto">
+    <main className="relative min-h-scree max-w-lg py-1 px-4 flex-grow overflow-y-auto">
       <h2 className="my-4 text-2xl font-bold">Something went wrong!</h2>
       <button
         onClick={() => reset()}

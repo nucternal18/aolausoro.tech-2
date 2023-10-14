@@ -1,23 +1,26 @@
 import { Prisma } from "@prisma/client";
 import prisma from "lib/prismadb";
-import { IMessageData } from "types/types";
+import { type IMessageData } from "types/types";
 import { NextResponse } from "next/server";
+import validateHuman from "lib/validateHuman";
+
+import { partialMessageSchema } from "schema/Message";
 
 export async function POST(req: Request) {
+  const validate = partialMessageSchema.safeParse(await req.json());
+
+  if (!validate.success) {
+    return NextResponse.json(validate.error.errors, { status: 400 });
+  }
+
   const { name, email, subject, message, token }: IMessageData =
     await req.json();
 
-  if (
-    !email ||
-    !email.includes("@") ||
-    !name ||
-    name.trim() === "" ||
-    !subject ||
-    subject.trim() === "" ||
-    !message ||
-    message.trim() === ""
-  ) {
-    return new Response("Invalid input", { status: 400 });
+  const isHuman = await validateHuman(token as string);
+  if (!isHuman) {
+    return new Response("You are not human. We can't be fooled", {
+      status: 401,
+    });
   }
 
   try {
@@ -41,10 +44,7 @@ export async function POST(req: Request) {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // your code
-      console.error(
-        "🚀 ~ file: create-message/route.ts:47 ~ POST ~ error:",
-        error
-      );
+      console.error(error);
       return new Response("Message not created", { status: 400 });
     }
   }

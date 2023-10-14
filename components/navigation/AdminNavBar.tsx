@@ -23,7 +23,7 @@ const AdminNavBar = () => {
     });
   }, []);
   return (
-    <nav className=" p-6 md:flex gap-2 md:gap-5 w-full font-mono hidden shadow-xl bg-white dark:bg-gray-900">
+    <nav className=" p-6 md:flex gap-2 md:gap-5 w-full font-mono hidden shadow-xl">
       <div className="flex items-center justify-center text-gray-800 dark:text-gray-200 dark:hover:text-yellow-500 ">
         <MdOutlineDashboard fontSize={28} className="mr-2" />
         <h1 className="text-2xl font font-semibold">Dashboard</h1>

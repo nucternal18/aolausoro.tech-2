@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
-import { NEXT_URL } from "config";
+import { partialProjectSchema } from "schema/Project";
 
 const cloudinary = require("cloudinary").v2;
 
@@ -12,6 +12,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/**
+ * @description method to create project
+ * @param req
+ * @returns
+ */
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
 
@@ -20,7 +25,7 @@ export async function POST(req: Request) {
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -29,9 +34,15 @@ export async function POST(req: Request) {
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
+  const validate = partialProjectSchema.safeParse(await req.json());
+
+  if (!validate.success) {
+    return NextResponse.json(validate.error.errors, { status: 400 });
+  }
+
   const {
     address,
     github,

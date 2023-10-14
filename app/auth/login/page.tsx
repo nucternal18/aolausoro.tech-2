@@ -1,19 +1,18 @@
-import LoginForm from "components/forms/LoginForm";
+import LoginForm from "./LoginForm";
 
-export function metadata() {
-  return {
+export const metadata = {
+  metadataBase: new URL("https://aolausoro.tech"),
+  title: "aolausoro.tech - Login",
+  description: "Login to your account",
+  openGraph: {
     title: "aolausoro.tech - Login",
     description: "Login to your account",
-    openGraph: {
-      title: "aolausoro.tech - Login",
-      description: "Login to your account",
-    },
-  };
-}
+  },
+};
 
 export default function Login() {
   return (
-    <section className="flex items-center justify-center h-screen bg-slate-100 dark:bg-slate-900">
+    <section className="flex items-center justify-center h-screen bg-background px-2 sm:px-0 ">
       <LoginForm />
     </section>
   );

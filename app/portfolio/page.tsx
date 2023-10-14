@@ -3,11 +3,12 @@ import { Suspense } from "react";
 import { FaGithub, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
 import Loader from "components/Loader";
+
 // redux
 import { useGetProjectsQuery } from "../GlobalReduxStore/features/projects/projectApiSlice";
 
 // components
-import PortfolioCard from "components/PortfolioCard";
+import PortfolioCard from "@components/PortfolioCard";
 
 const Portfolio = () => {
   const { data: projects, isLoading } = useGetProjectsQuery();
@@ -48,7 +49,7 @@ const Portfolio = () => {
           <div className="grid grid-cols-1 gap-3 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0">
             {projects &&
               publishedProjects?.map((doc) => (
-                <PortfolioCard key={doc.id} doc={doc} />
+                <PortfolioCard key={doc.id} project={doc} />
               ))}
           </div>
         </Suspense>

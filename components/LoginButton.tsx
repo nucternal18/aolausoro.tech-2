@@ -9,6 +9,10 @@ import Image from "next/image";
 
 const LoginButton = () => {
   const { data: session } = useSession();
+  console.log(
+    "🚀 ~ file: LoginButton.tsx:12 ~ LoginButton ~ session:",
+    session,
+  );
 
   return (
     <>

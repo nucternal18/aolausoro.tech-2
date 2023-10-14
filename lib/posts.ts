@@ -1,23 +1,31 @@
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeHighlight from "rehype-highlight";
 import { compileMDX } from "next-mdx-remote/rsc";
-import rehypeAutolinkHeadings from "rehype-autolink-headings/lib";
-import rehypeHighlight from "rehype-highlight/lib";
+
 import rehypeSlug from "rehype-slug";
 import rehypePrettyCode from "rehype-pretty-code";
-import { BlogPost, Meta } from "types/types";
-import { CustomImage, Video } from "../components";
-import { MDXComponents } from "components/mdx-components";
-import { useMDXComponents } from "../mdx-components";
+import type { BlogPost, Meta } from "types/types";
+import CustomImage from "@components/CustomImage";
+import Video from "@components/Video";
+import { mdxComponents, useMDXComponents } from "@components/mdx-components";
 
 type Filetree = {
   tree: [
     {
       path: string;
-    }
+    },
   ];
 };
 
+type NodeProps = {
+  children: { type: string; value: string }[];
+  properties: {
+    className: string[];
+  };
+};
+
 export async function getPostByName(
-  fileName: string
+  fileName: string,
 ): Promise<BlogPost | undefined> {
   const res = await fetch(
     `https://raw.githubusercontent.com/nucternal18/blogs/main/${fileName}`,
@@ -27,7 +35,7 @@ export async function getPostByName(
         Authorization: `Bearer ${process.env.REPO_TOKEN}`,
         "X-GitHub-Api-Version": "2022-11-28",
       },
-    }
+    },
   );
 
   if (!res.ok) return undefined;
@@ -36,7 +44,7 @@ export async function getPostByName(
 
   if (rawMDX === "404: Not Found") return undefined;
 
-  const components = useMDXComponents(MDXComponents);
+  const components = useMDXComponents(mdxComponents);
 
   const { frontmatter, content } = await compileMDX<Meta>({
     source: rawMDX,
@@ -49,7 +57,6 @@ export async function getPostByName(
       parseFrontmatter: true,
       mdxOptions: {
         rehypePlugins: [
-          rehypeHighlight,
           rehypeSlug,
           [
             rehypeAutolinkHeadings,
@@ -61,17 +68,17 @@ export async function getPostByName(
             rehypePrettyCode,
             {
               theme: "github-dark",
-              onVisitLine(node) {
+              onVisitLine(node: NodeProps) {
                 // Prevent lines from collapsing in `display: grid` mode, and allow empty
                 // lines to be copy/pasted
                 if (node.children.length === 0) {
                   node.children = [{ type: "text", value: " " }];
                 }
               },
-              onVisitHighlightedLine(node) {
+              onVisitHighlightedLine(node: NodeProps) {
                 node.properties.className.push("line--highlighted");
               },
-              onVisitHighlightedWord(node) {
+              onVisitHighlightedWord(node: NodeProps) {
                 node.properties.className = ["word--highlighted"];
               },
             },
@@ -110,7 +117,7 @@ export async function getPostsMeta(): Promise<Meta[] | undefined> {
         Authorization: `Bearer ${process.env.REPO_TOKEN}`,
         "X-GitHub-Api-Version": "2022-11-28",
       },
-    }
+    },
   );
 
   if (!res.ok) return undefined;

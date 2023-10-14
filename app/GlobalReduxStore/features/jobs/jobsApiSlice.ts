@@ -1,6 +1,7 @@
 "use client";
 import { jobsApiSlice } from "app/GlobalReduxStore/api";
-import { JobProps, JobsProps, StatsProps } from "types/types";
+import type { JobsProps, PartialJobProps } from "schema/Job";
+import { type StatsProps } from "types/types";
 
 export const jobsApi = jobsApiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -28,11 +29,14 @@ export const jobsApi = jobsApiSlice.injectEndpoints({
           { type: "Jobs", id: "LIST" },
         ],
     }),
-    getJobById: build.query<JobsProps["jobs"], string>({
+    getJobById: build.query<PartialJobProps, string>({
       query: (id) => `/jobs/${id}`,
-      providesTags: (result) => [{ type: "Jobs", id: result?.[0]?.id }],
+      providesTags: (result) => [{ type: "Jobs", id: result?.id }],
     }),
-    createJob: build.mutation<{ success: boolean; message: string }, JobProps>({
+    createJob: build.mutation<
+      { success: boolean; message: string },
+      PartialJobProps
+    >({
       query: (job) => ({
         url: "/jobs/create-jobs",
         method: "POST",
@@ -40,7 +44,10 @@ export const jobsApi = jobsApiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Jobs", id: "LIST" }],
     }),
-    updateJob: build.mutation({
+    updateJob: build.mutation<
+      { success: boolean; message: string },
+      PartialJobProps
+    >({
       query: (job) => ({
         url: `/jobs/${job.id}`,
         method: "PUT",
@@ -48,7 +55,7 @@ export const jobsApi = jobsApiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Jobs", id: "LIST" }],
     }),
-    deleteJob: build.mutation({
+    deleteJob: build.mutation<{ success: boolean; message: string }, string>({
       query: (id) => ({
         url: `/jobs/${id}`,
         method: "DELETE",

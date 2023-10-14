@@ -1,4 +1,10 @@
-function ErrorMessage({ children, variant }) {
+function ErrorMessage({
+  children,
+  variant,
+}: {
+  children: React.ReactNode;
+  variant: "success" | "danger" | "default";
+}) {
   const color = {
     success: "text-green-500 text-sm",
     danger: "text-red-500 text-sm",

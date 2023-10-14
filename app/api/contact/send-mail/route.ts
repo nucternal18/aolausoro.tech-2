@@ -1,32 +1,22 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from "nodemailer";
 import validateHuman from "lib/validateHuman";
 import { NextResponse } from "next/server";
-import { IMessageData } from "types/types";
+
+import { partialMessageSchema } from "schema/Message";
 
 export async function POST(req: Request) {
-  const { name, email, subject, message, token }: IMessageData =
-    await req.json();
+  const validate = partialMessageSchema.safeParse(await req.json());
+
+  if (!validate.success) {
+    return NextResponse.json(validate.error.errors, { status: 400 });
+  }
+
+  const { name, email, subject, message, token } = await req.json();
 
   const isHuman = await validateHuman(token as string);
   if (!isHuman) {
     return new Response("You are not human. We can't be fooled", {
       status: 401,
-    });
-  }
-
-  if (
-    !email ||
-    !email.includes("@") ||
-    !name ||
-    name.trim() === "" ||
-    !subject ||
-    subject.trim() === "" ||
-    !message ||
-    message.trim() === ""
-  ) {
-    return new Response("Invalid input. Please enter a valid input", {
-      status: 400,
     });
   }
 

@@ -1,10 +1,10 @@
-import { StatsItem } from ".";
 import {
   FaSuitcaseRolling,
   FaCalendarCheck,
   FaBug,
   FaFileContract,
 } from "react-icons/fa";
+import StatsItem from "./StatsItem";
 
 export type DefaultStatsProps = {
   title: string;

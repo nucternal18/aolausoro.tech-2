@@ -1,11 +1,12 @@
 "use client";
 // Components
-import { ChartsContainer, StatsContainer } from "components";
+
 import Loader from "components/Loader";
 
 // redux
 import { useGetStatsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
-import { DefaultStatsProps } from "types/types";
+import { type DefaultStatsProps } from "types/types";
+import StatsContainer from "@components/StatsContainer";
 
 const admin = () => {
   const { data: stats, isFetching } = useGetStatsQuery();

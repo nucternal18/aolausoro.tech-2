@@ -12,6 +12,24 @@ type StatsProps = {
   offer: number;
 };
 
+type MonthlyApplicationDStaProps = {
+  _id: {
+    year: number;
+    month: number;
+  };
+  count: number;
+};
+
+type MonthlyApplicationStatsProps = {
+  date: string;
+  count: number;
+};
+
+/**
+ * @description method to get jobs and stats
+ * @param req
+ * @returns
+ */
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
 
@@ -20,7 +38,7 @@ export async function GET(req: Request) {
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -29,7 +47,7 @@ export async function GET(req: Request) {
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -80,34 +98,36 @@ export async function GET(req: Request) {
       { $limit: 6 },
     ],
   })) as unknown as Prisma.JsonArray;
-  console.log(
-    "🚀 ~ file: route.ts:84 ~ GET ~ monthlyApplications:",
-    monthlyApplications
-  );
+  // console.log(
+  //   "🚀 ~ file: route.ts:84 ~ GET ~ monthlyApplications:",
+  //   monthlyApplications
+  // );
 
   const monthlyApplicationDSta = JSON.parse(
-    JSON.stringify(monthlyApplications)
+    JSON.stringify(monthlyApplications),
   );
-  console.log(
-    "🚀 ~ file: route.ts:88 ~ GET ~ monthlyApplicationDSta:",
-    monthlyApplicationDSta
-  );
+  // console.log(
+  //   "🚀 ~ file: route.ts:88 ~ GET ~ monthlyApplicationDSta:",
+  //   monthlyApplicationDSta
+  // );
 
-  const monthlyApplicationStats = monthlyApplicationDSta.map((item) => {
-    const {
-      _id: { year, month },
-      count,
-    } = item;
-    const date = moment()
-      .month(month - 1)
-      .year(year)
-      .format("MMM YYYY");
-    return { date, count };
-  });
-  console.log(
-    "🚀 ~ file: route.ts:100 ~ monthlyApplicationStats ~ monthlyApplicationStats:",
-    monthlyApplicationStats
+  const monthlyApplicationStats = monthlyApplicationDSta.map(
+    (item: MonthlyApplicationDStaProps) => {
+      const {
+        _id: { year, month },
+        count,
+      } = item;
+      const date = moment()
+        .month(month - 1)
+        .year(year)
+        .format("MMM YYYY");
+      return { date, count };
+    },
   );
+  // console.log(
+  //   "🚀 ~ file: route.ts:100 ~ monthlyApplicationStats ~ monthlyApplicationStats:",
+  //   monthlyApplicationStats
+  // );
 
   if (monthlyApplications) {
     return NextResponse.json({ defaultStats, monthlyApplicationStats });

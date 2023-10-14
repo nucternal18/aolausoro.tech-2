@@ -1,38 +1,30 @@
 "use client";
-import { RootState } from "../../store";
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { type RootState } from "../../store";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { partialJobSchema, type PartialJobProps } from "schema/Job";
+import * as zod from "zod";
 
-import { JobProps } from "types/types";
+const jobSliceSchema = zod.object({
+  jobs: zod.array(partialJobSchema).nullable(),
+  page: zod.number(),
+  jobTypeOptions: zod.array(zod.string()),
+  statusOptions: zod.array(zod.string()),
+  search: zod.string(),
+  searchStatus: zod.string(),
+  searchType: zod.string(),
+  sort: zod.string(),
+  sortOptions: zod.array(zod.string()),
+  message: zod.string(),
+  error: zod.object({ name: zod.string(), message: zod.string() }).nullable(),
+});
 
-interface JobState {
-  jobs: JobProps[] | null;
-  page: number;
-  position: string;
-  company: string;
-  jobLocation: string;
-  jobTypeOptions: string[];
-  jobType: string;
-  statusOptions: string[];
-  status: string;
-  search: string;
-  searchStatus: string;
-  searchType: string;
-  sort: string;
-  sortOptions: string[];
-  message: string;
-  error: { name: string; message: string } | null;
-}
+export type JobSliceProps = zod.infer<typeof jobSliceSchema>;
 
-export const initialState: JobState = {
+export const initialState: JobSliceProps = {
   jobs: null,
-  position: "",
   page: 1,
-  company: "",
-  jobLocation: "London, UK",
   jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
-  jobType: "full-time",
   statusOptions: ["Interviewing", "Declined", "Pending", "Offer"],
-  status: "Pending",
   search: "",
   searchStatus: "all",
   searchType: "all",
@@ -46,7 +38,7 @@ export const jobSlice = createSlice({
   name: "job",
   initialState,
   reducers: {
-    setJobs: (state, { payload }: PayloadAction<JobProps[]>) => {
+    setJobs: (state, { payload }: PayloadAction<PartialJobProps[]>) => {
       state.jobs = payload;
     },
     setPage: (state, { payload }: PayloadAction<number>) => {

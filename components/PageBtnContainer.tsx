@@ -6,12 +6,13 @@ import {
   jobSelector,
   setPage,
 } from "app/GlobalReduxStore/features/jobs/jobsSlice";
+import { Button } from "./ui/button";
 
-const PageBtnContainer = ({ numberOfPages }) => {
+const PageBtnContainer = ({ numberOfPages }: { numberOfPages: number }) => {
   const dispatch = useAppDispatch();
   const state = useAppSelector(jobSelector);
   const pages = Array.from({ length: numberOfPages }, (_, i) => i + 1);
-  const changePage = (page) => {
+  const changePage = (page: number) => {
     dispatch(setPage(page));
   };
   const prevPage = () => {
@@ -32,17 +33,14 @@ const PageBtnContainer = ({ numberOfPages }) => {
   };
   return (
     <div className="font-mono flex flex-row items-center gap-2 ">
-      <button
-        className="flex flex-row p-2 items-center text-white gap-2 bg-teal-500 active:bg-teal-500 hover:bg-teal-600 rounded-l-md shadow-md"
-        onClick={prevPage}
-      >
+      <Button variant="ghost" onClick={prevPage}>
         <HiChevronDoubleLeft fontSize={21} />
         prev
-      </button>
+      </Button>
       <div className="flex flex-row items-center gap-1 bg-teal-300 rounded-md">
         {pages?.map((pageNumber) => {
           return (
-            <button
+            <Button
               type="button"
               className={`${
                 pageNumber === state.page
@@ -53,17 +51,14 @@ const PageBtnContainer = ({ numberOfPages }) => {
               onClick={() => changePage(pageNumber)}
             >
               {pageNumber}
-            </button>
+            </Button>
           );
         })}
       </div>
-      <button
-        className="flex flex-row p-2 items-center text-white gap-2 bg-teal-500 hover:bg-teal-600 rounded-r-md shadow-md"
-        onClick={nextPage}
-      >
+      <Button variant="ghost" onClick={nextPage}>
         next
         <HiChevronDoubleRight fontSize={21} />
-      </button>
+      </Button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { DefaultStatsProps } from "./StatsContainer";
+import { type DefaultStatsProps } from "./StatsContainer";
 
 const StatsItem = ({
   count,

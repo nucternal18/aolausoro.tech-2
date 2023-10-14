@@ -1,6 +1,6 @@
 import { getPostsMeta } from "../../lib/posts";
 
-import BlogItem from "../../components/Blog";
+import BlogItem from "./Blog";
 
 export const revalidate = 86400;
 

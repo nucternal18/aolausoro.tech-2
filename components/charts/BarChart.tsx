@@ -1,4 +1,5 @@
 "use client";
+
 import {
   BarChart,
   Bar,
@@ -8,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
 const BarChartComponent = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height={300}>

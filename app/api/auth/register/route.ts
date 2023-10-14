@@ -1,25 +1,16 @@
-import { NextApiRequest, NextApiResponse } from "next";
-
+import bcrypt from "bcryptjs";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
+import { partialUserSchema } from "schema/User";
 
 export async function POST(request: Request) {
-  const { displayName, password, email, isAdmin, image } = await request.json();
+  const validation = partialUserSchema.safeParse(await request.json());
 
-  if (
-    !displayName ||
-    !password ||
-    password.trim().length < 7 ||
-    !email ||
-    !email.includes("@")
-  ) {
-    return new Response(
-      "Invalid inputs - password should be at least 7 characters",
-      {
-        status: 400,
-      }
-    );
+  if (!validation.success) {
+    return NextResponse.json(validation.error.errors, { status: 400 });
   }
+
+  const { displayName, password, email, isAdmin, image } = await request.json();
 
   const userExist = await prisma.user.findUnique({ where: { email } });
 
@@ -29,8 +20,16 @@ export async function POST(request: Request) {
     });
   }
 
+  const hashedPassword = await bcrypt.hash(password, 12);
+
   const user = await prisma.user.create({
-    data: { name: displayName, email, password, image: image, isAdmin },
+    data: {
+      name: displayName,
+      email,
+      password: hashedPassword,
+      image: image,
+      isAdmin,
+    },
   });
   await prisma.$disconnect();
 

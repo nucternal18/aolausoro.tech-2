@@ -1,11 +1,11 @@
 "use client";
-import { projectApiSlice } from "app/GlobalReduxStore/api";
-import { ProjectProps } from "../../../../types/types";
+import type { PartialProjectProps } from "schema/Project";
+import { projectApiSlice } from "../../api";
 import { setError, setImage } from "./projectsSlice";
 
 export const projectApi = projectApiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getProjects: build.query<ProjectProps[], void>({
+    getProjects: build.query<PartialProjectProps[], void>({
       query: () => "/projects/",
       providesTags: (result) =>
         result
@@ -15,13 +15,16 @@ export const projectApi = projectApiSlice.injectEndpoints({
             ]
           : [{ type: "Project", id: "LIST" }],
     }),
-    getProjectById: build.query({
+    getProjectById: build.query<PartialProjectProps, string>({
       query: (id) => `/projects/${id}`,
       providesTags: (result, error, arg) => [
         { type: "Project", id: result?.id },
       ],
     }),
-    createProject: build.mutation({
+    createProject: build.mutation<
+      { success: boolean; message: string },
+      PartialProjectProps
+    >({
       query: (project) => ({
         url: "/projects/create-project",
         method: "POST",
@@ -31,7 +34,10 @@ export const projectApi = projectApiSlice.injectEndpoints({
         { type: "Project", id: "LIST" },
       ],
     }),
-    updateProject: build.mutation({
+    updateProject: build.mutation<
+      { success: boolean; message: string },
+      PartialProjectProps
+    >({
       query: (project) => ({
         url: `/projects/${project.id}`,
         method: "PUT",
@@ -41,7 +47,10 @@ export const projectApi = projectApiSlice.injectEndpoints({
         { type: "Project", id: "LIST" },
       ],
     }),
-    deleteProject: build.mutation({
+    deleteProject: build.mutation<
+      { success: boolean; message: string },
+      string
+    >({
       query: (id) => ({
         url: `/projects/${id}`,
         method: "DELETE",
@@ -50,31 +59,29 @@ export const projectApi = projectApiSlice.injectEndpoints({
         { type: "Project", id: "LIST" },
       ],
     }),
-    uploadImage: build.mutation<{ image: string }, string | ArrayBuffer | null>(
-      {
-        query: (base64EncodedImage) => ({
-          url: `/photos/upload`,
-          method: "POST",
-          body: { data: base64EncodedImage },
-        }),
-        invalidatesTags: (result, error, arg) => [
-          { type: "Project", id: "LIST" },
-        ],
-        onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
-          try {
-            const { data } = await queryFulfilled;
-            dispatch(setImage(data.image));
-          } catch (error: any) {
-            if (error.response) {
-              dispatch(setError(error.response.data.message));
-            } else {
-              dispatch(setError(error.message));
-            }
-            console.log(error);
+    uploadImage: build.mutation<string, string | ArrayBuffer | null>({
+      query: (base64EncodedImage) => ({
+        url: `/photos/upload`,
+        method: "POST",
+        body: { data: base64EncodedImage },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Project", id: "LIST" },
+      ],
+      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setImage(data));
+        } catch (error: any) {
+          if (error.response) {
+            dispatch(setError(error.response.data.message));
+          } else {
+            dispatch(setError(error.message));
           }
-        },
-      }
-    ),
+          console.log(error);
+        }
+      },
+    }),
   }),
   overrideExisting: true,
 });

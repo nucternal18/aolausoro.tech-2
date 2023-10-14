@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-export default function CategoryLabel({ children }) {
-  const colorKey = {
+export default function CategoryLabel({ variant }: { variant: string }) {
+  const colorKey: { [key: string]: string } = {
     "Web Development": "black",
     JavaScript: "yellow",
     CSS: "blue",
@@ -12,9 +12,9 @@ export default function CategoryLabel({ children }) {
 
   return (
     <div
-      className={`px-2 py-1 bg-${colorKey[children]}-600 text-gray-300 font-bold rounded`}
+      className={`px-2 py-1 bg-${colorKey[variant]}-600 text-gray-300 font-bold rounded`}
     >
-      {children}
+      {variant}
     </div>
   );
 }

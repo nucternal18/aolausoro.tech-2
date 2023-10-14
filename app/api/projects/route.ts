@@ -2,6 +2,11 @@
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 
+/**
+ * @description method to get all projects
+ * @param req
+ * @returns
+ */
 export async function GET(req: Request) {
   const projects = await prisma.project.findMany({});
 

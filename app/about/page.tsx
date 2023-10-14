@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { techSkillsData } from "config/data";
-// import url from 'https://res.cloudinary.com/dus5nxe5w/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1623533235/2C7EB02D-5902-4970-9807-43E09C9D5AED_1_201_a_mwr1ys.jpg'
 
 export const metadata = {
   title: "aolausoro.tech - about",

@@ -13,7 +13,6 @@ const withPWA = require("next-pwa")({
 const nextConfig = {
   // Your existing module.exports
   experimental: {
-    appDir: true,
     mdxRs: true,
     serverComponentsExternalPackages: ["@prisma/client", "bcryptjs"],
   },
@@ -46,6 +45,7 @@ const nextConfig = {
     ],
     formats: ["image/webp"],
   },
+  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   eslint: {
     dirs: ["app", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
   },

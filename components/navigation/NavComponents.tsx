@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect, ReactNode } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaUser } from "react-icons/fa";

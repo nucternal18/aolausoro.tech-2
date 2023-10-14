@@ -21,7 +21,7 @@ function AdminsSidebar() {
   const [collapseShow, setCollapseShow] = useState("hidden");
 
   return (
-    <aside className="z-10  flex flex-initial font-mono px-2 py-4 bg-slate-200 md:h-full dark:bg-slate-900  md:left-0  md:top-0 md:bottom-0   md:overflow-hidden md:w-72 ">
+    <aside className="z-10  flex flex-initial font-mono px-2 py-4  md:h-full  md:left-0  md:top-0 md:bottom-0   md:overflow-hidden md:w-72 ">
       <nav className="flex flex-wrap items-center justify-between min-w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap md:overflow-y-auto">
         {/* Toggler */}
         <div className="flex justify-between items-center w-full">

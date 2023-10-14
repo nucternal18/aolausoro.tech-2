@@ -1,28 +1,44 @@
 import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
-import { Card, CardBody, CardText, CardTitle } from "./Card";
 import { techSkillsData } from "config/data";
-import Button from "./Button";
+import type { PartialProjectProps } from "schema/Project";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Button } from "./ui/button";
 
-function PortfolioCard({ doc }) {
-  // map through the techSkilsData array and return the image url that matches the doc.techStack array.
-  // if the doc.techStack array includes the tech.name.toLowerCase() then return the tech.iconUrl
-  // ensure both the doc.techStack and tech.name.toLowerCase() are in lowercase
+function PortfolioCard({ project }: { project: PartialProjectProps }) {
+  // map through the techSkilsData array and return the image url that matches the project?.techStack array.
+  // if the project?.techStack array includes the tech.name.toLowerCase() then return the tech.iconUrl
+  // ensure both the project?.techStack and tech.name.toLowerCase() are in lowercase
   const tecStackImgUrl = techSkillsData.map((tech) => {
-    if (doc.techStack.includes(tech.name)) {
+    if (project?.techStack?.includes(tech.name)) {
       return tech.iconUrl;
     }
   });
 
   return (
-    <Card imgUrl={doc.url}>
-      <CardBody>
-        <CardTitle className="my-2 text-xl text-center">
-          {doc.projectName}
-        </CardTitle>
-
-        <div className="flex items-center justify-center space-x-4 mx-auto my-4">
-          {tecStackImgUrl.map((iconUrl: string, idx: number) => {
+    <Card className="w-[300px] relative grid grid-cols-1 ">
+      <CardHeader className="col-span-1">
+        <CardTitle className="text-xl">{project?.projectName}</CardTitle>
+      </CardHeader>
+      <CardContent className="col-span-1 space-y-2">
+        <Image
+          src={project.url as string}
+          alt={project.projectName as string}
+          width={300}
+          height={300}
+        />
+        <CardDescription>{project?.description}</CardDescription>
+      </CardContent>
+      <CardFooter className="flex flex-col space-y-1 col-span-1">
+        <div className="flex items-center justify-center space-x-4 mx-auto my-2">
+          {tecStackImgUrl.map((iconUrl: string | undefined, idx: number) => {
             if (iconUrl !== undefined) {
               return (
                 <Image
@@ -37,33 +53,30 @@ function PortfolioCard({ doc }) {
             }
           })}
         </div>
-
-        <CardText>
-          <span className="text-center">{doc.description}</span>
-        </CardText>
-
-        <div className="my-2">
-          <div className="flex items-center justify-between">
-            <Button type="button" color="dark">
-              <a
-                href={doc.address}
-                className="text-xs text-gray-900 dark:text-gray-200 hover:text-gray-200"
-              >
-                Live Preview
-              </a>
-            </Button>
-            <Button type="button" color="dark">
-              <a
-                href={doc.github}
-                className="flex items-center justify-center space-x-1 text-gray-900 dark:text-gray-200 hover:text-gray-200"
-              >
-                <FaGithub className="mr-1" />
-                <span className="text-xs">Source Code</span>
-              </a>
-            </Button>
-          </div>
+        <div className="flex items-center justify-between space-x-2">
+          <Button type="button" asChild>
+            <a
+              href={project?.address}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs "
+            >
+              Live Preview
+            </a>
+          </Button>
+          <Button variant="outline" asChild>
+            <a
+              href={project?.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center space-x-1 text-xs"
+            >
+              <FaGithub className="mr-1" />
+              <span className="text-xs">Source Code</span>
+            </a>
+          </Button>
         </div>
-      </CardBody>
+      </CardFooter>
     </Card>
   );
 }

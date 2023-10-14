@@ -1,25 +1,33 @@
-import NextAuth, { Account, NextAuthOptions, Session, User } from "next-auth";
+import NextAuth from "next-auth";
+import type {
+  Account,
+  DefaultSession,
+  NextAuthOptions,
+  Profile,
+  Session,
+  User,
+} from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import * as z from "zod";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { JWT } from "next-auth/jwt";
-import { AdapterUser } from "next-auth/adapters";
+import { type JWT } from "next-auth/jwt";
+import { type AdapterUser } from "next-auth/adapters";
 import bcrypt from "bcryptjs";
+import prisma from "@lib/prismadb";
 
-const prisma = new PrismaClient();
-
-type CredentialsProps = {
-  email: string;
-  password: string;
-};
-
-type UserProps = {
-  id: string;
-  image: string;
-  name: string;
-  email: string;
-  isAdmin: boolean;
-};
+export const loginSchema = z.object({
+  email: z.string().email({
+    message: "Invalid email address.",
+  }),
+  password: z
+    .string()
+    .min(7)
+    .max(50)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{7,})/, {
+      message:
+        "Password must contain at least 7 characters, one uppercase, one lowercase, one special character and one number.",
+    }),
+});
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -39,16 +47,23 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text", placeholder: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: CredentialsProps) {
-        if (!credentials?.email || !credentials.password) {
+      async authorize(
+        credentials: Record<"email" | "password", string> | undefined,
+      ) {
+        const validate = loginSchema.safeParse(credentials);
+
+        if (!validate.success) {
           return null;
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials?.email as string },
         });
 
-        if (user && bcrypt.compareSync(credentials.password, user.password)) {
+        if (
+          user &&
+          bcrypt.compareSync(credentials?.password as string, user.password)
+        ) {
           return {
             id: user.id,
             image: user.image,
@@ -68,50 +83,47 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET as string,
   callbacks: {
-    /**
-     * @param  {object} session      Session object
-     * @param  {object} token        User object    (if using database sessions)
-     *                               JSON Web Token (if not using database sessions)
-     * @param  {object}  user      User object      (only available on sign in)
-     * @return {object}              Session that will be returned to the client
-     */
     async session({
       session,
       token,
-      trigger,
-      newSession,
       user,
     }: {
       session: Session;
       token: JWT;
       user: AdapterUser;
-      trigger: "update";
-      newSession: any;
-    }): Promise<Session> {
+    } & { newSession: any; trigger: "update" }): Promise<
+      Session | DefaultSession
+    > {
       // Add property to session, like an access_token from a provider.
-      session.user = token.user;
+      session.user = {
+        id: user.id,
+        isAdmin: user.isAdmin,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+      };
       return session;
     },
-    /**
-     * @param  {object}  token     Decrypted JSON Web Token
-     * @param  {object}  user      User object      (only available on sign in)
-     * @param  {object}  account   Provider account (only available on sign in)
-     * @return {object}            JSON Web Token that will be saved
-     */
     async jwt({
       token,
       user,
       account,
+      profile,
     }: {
       token: JWT;
-      user:
-        | (User & { isAdmin: boolean })
-        | (AdapterUser & { isAdmin: boolean });
+      user: User | AdapterUser;
       account: Account | null;
+      profile?: Profile | undefined;
+      trigger?: "signIn" | "update" | "signUp" | undefined;
+      isNewUser?: boolean | undefined;
+      session?: any;
     }) {
-      // Add access_token to the token right after signin
-      user && (token.user = user);
-      token.userRole = "admin";
+      console.log("🚀 ~ file: route.ts:134 ~ oken:", token);
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = user.id;
+        token.user = user;
+      }
       return token;
     },
   },

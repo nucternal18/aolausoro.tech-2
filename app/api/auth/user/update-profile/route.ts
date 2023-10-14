@@ -4,6 +4,7 @@ import { authOptions } from "../../[...nextauth]/route";
 
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
+import { partialUserSchema } from "schema/User";
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
@@ -23,6 +24,12 @@ export async function POST(req: Request) {
 
   if (!user) {
     return new Response("User not found", { status: 404 });
+  }
+
+  const validation = partialUserSchema.safeParse(requestBody);
+
+  if (!validation.success) {
+    return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
   const updatedUser = await prisma.user.update({

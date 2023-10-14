@@ -1,10 +1,10 @@
-import { Navbar } from "components";
-import Footer from "components/Footer";
-
 import { Providers } from "./GlobalReduxStore/providers";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import "highlight.js/styles/github-dark.css";
+
+import Footer from "@components/Footer";
+import Navbar from "@components/navigation/Navbar";
 
 export default function RootLayout({
   children,
@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-slate-100 dark:bg-slate-900">
+      <body className="border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-background">
         <Providers>
           <Navbar textColor="dark:text-yellow-500" />
           <main className="relative h-full flex-grow p-0 overflow-y-auto">
