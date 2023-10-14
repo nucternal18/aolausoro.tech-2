@@ -14,9 +14,6 @@ import { Checkbox } from "@components/ui/checkbox";
 
 import HandleDeleteModal from "@components/HandleDeleteModal/HandleDeleteModal";
 
-// public
-import steppingstonesapplogo from "@public/steppingstonesapplogo.png";
-
 // hooks (Controller)
 import useProjectController from "./use-project-controller";
 import type { PartialProjectProps } from "schema/Project";
@@ -65,7 +62,7 @@ export const columns: ColumnDef<PartialProjectProps>[] = [
         <div className="flex items-center justify-start space-x-2">
           <div className="relative h-10 w-10 overflow-hidden rounded-sm border-2 border-primary-dark-200 p-1">
             <Image
-              src={project.url ?? steppingstonesapplogo}
+              src={project.url as string}
               alt={project.projectName as string}
               fill
               sizes="(min-width: 640px) 100px, 50px"
