@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Nav from "./navigation/NavComponents";
 import { FiLogOut } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
@@ -9,10 +9,6 @@ import Image from "next/image";
 
 const LoginButton = () => {
   const { data: session } = useSession();
-  console.log(
-    "🚀 ~ file: LoginButton.tsx:12 ~ LoginButton ~ session:",
-    session,
-  );
 
   return (
     <>
