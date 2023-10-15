@@ -10,8 +10,6 @@ import {
 
 import { env } from "@lib/env";
 
-const dev = process.env.NODE_ENV !== "production";
-
 interface RefreshResult {
   error?: FetchBaseQueryError | undefined;
   data?:
@@ -35,7 +33,7 @@ const baseQuery: BaseQueryFn<
   Record<string, unknown>,
   FetchBaseQueryMeta
 > = fetchBaseQuery({
-  baseUrl: `${env.NEXTAUTH_URL}/api`,
+  baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/api`,
   credentials: "include",
   prepareHeaders: (headers, api) => {
     headers.set("Content-Type", "application/json");

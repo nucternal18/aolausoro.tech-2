@@ -45,6 +45,7 @@ module.exports = {
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-base-to-string": "off",
+    "@typescript-eslint/no-namespace ": "off",
     "@next/next/link-passhref": "off",
     "react-hooks/rules-of-hooks": "off",
     "react/display-name": "off",

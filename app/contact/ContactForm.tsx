@@ -6,7 +6,6 @@ import { Button } from "@components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -66,7 +65,7 @@ function ContactForm() {
           name="message"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel>Message</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Enter your message"

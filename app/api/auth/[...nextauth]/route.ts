@@ -80,8 +80,9 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/login",
     signOut: "/auth/logout",
+    error: "/error",
   },
-  secret: process.env.NEXTAUTH_SECRET as string,
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({
       session,
@@ -118,7 +119,7 @@ export const authOptions: NextAuthOptions = {
       isNewUser?: boolean | undefined;
       session?: any;
     }) {
-      console.log("🚀 ~ file: route.ts:134 ~ oken:", token);
+      // Add access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
         token.id = user.id;

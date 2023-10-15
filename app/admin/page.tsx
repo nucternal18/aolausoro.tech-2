@@ -25,7 +25,7 @@ const admin = () => {
     <section className="w-full min-h-screen flex flex-col py-4">
       <div className="flex flex-col gap-4 w-full h-full">
         <StatsContainer stats={stats?.defaultStats as DefaultStatsProps} />
-        {stats!.monthlyApplicationStats?.length > 0 && (
+        {stats.monthlyApplicationStats?.length > 0 && (
           <ChartsContainer
             monthlyStats={
               stats?.monthlyApplicationStats as MonthlyApplicationProps[]

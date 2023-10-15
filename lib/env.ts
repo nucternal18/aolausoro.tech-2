@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 import * as zod from "zod";
 
 export const envSchema = zod.object({
@@ -19,14 +18,9 @@ export const envSchema = zod.object({
   RECAPTCHA_SITE_KEY: zod.string(),
   __NEXT_PRIVATE_PREBUNDLED_REACT: zod.string(),
   REPO_TOKEN: zod.string(),
+  NEXT_PUBLIC_API_URL: zod.string(),
 });
 
 export type Env = zod.infer<typeof envSchema>;
 
 export const env = envSchema.parse(process.env);
-
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends Env {}
-  }
-}

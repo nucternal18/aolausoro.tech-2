@@ -29,8 +29,8 @@ export default function useLoginController() {
           email: data.email,
           password: data.password,
         });
-        console.log("🚀 ~ file: useLoginController.tsx:32 ~ result:", result);
-        if (result?.error || result?.url === null) {
+
+        if (result?.error) {
           toast({
             title: "Error",
             description: "Unable to login. Please try again.",
