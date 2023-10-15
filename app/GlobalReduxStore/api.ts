@@ -1,4 +1,5 @@
 "use client";
+
 import {
   createApi,
   fetchBaseQuery,
@@ -7,8 +8,6 @@ import {
   type FetchBaseQueryError,
   type FetchBaseQueryMeta,
 } from "@reduxjs/toolkit/query/react";
-
-import { env } from "@lib/env";
 
 interface RefreshResult {
   error?: FetchBaseQueryError | undefined;

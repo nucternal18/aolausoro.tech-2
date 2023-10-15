@@ -1,7 +1,6 @@
 "use client";
 import { jobsApiSlice } from "app/GlobalReduxStore/api";
-import type { JobsProps, PartialJobProps } from "schema/Job";
-import { type StatsProps } from "types/types";
+import type { JobsProps, PartialJobProps, StatsProps } from "schema/Job";
 
 export const jobsApi = jobsApiSlice.injectEndpoints({
   endpoints: (build) => ({

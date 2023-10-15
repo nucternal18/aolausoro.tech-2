@@ -1,11 +1,7 @@
 "use client";
 import type { PartialMessageProps } from "schema/Message";
-import type { AppDispatch, RootState } from "../../store";
-import {
-  createSlice,
-  type PayloadAction,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
+import type { RootState } from "../../store";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface MessageState {
   messages: PartialMessageProps[] | null;
