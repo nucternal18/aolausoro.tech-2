@@ -144,7 +144,7 @@ export const mdxComponents = {
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
       className={cn(
-        "relative  px-[1rem] py-[0.2rem]  font-mono text-sm",
+        "relative  px-[0.6rem] py-[0.2rem]  font-mono text-sm",
         className,
       )}
       {...props}
