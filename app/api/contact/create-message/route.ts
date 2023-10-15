@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import prisma from "lib/prismadb";
-import { type IMessageData } from "types/types";
+
 import { NextResponse } from "next/server";
 import validateHuman from "lib/validateHuman";
 
@@ -13,8 +13,7 @@ export async function POST(req: Request) {
     return NextResponse.json(validate.error.errors, { status: 400 });
   }
 
-  const { name, email, subject, message, token }: IMessageData =
-    await req.json();
+  const { name, email, subject, message, token } = await req.json();
 
   const isHuman = await validateHuman(token as string);
   if (!isHuman) {
