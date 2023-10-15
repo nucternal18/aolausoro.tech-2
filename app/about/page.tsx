@@ -11,10 +11,10 @@ const url =
 
 const about = () => {
   return (
-    <section className="mx-auto h-full flex-grow max-w-screen-md mb-6">
+    <section className="mx-auto h-full flex-grow max-w-screen-md mb-6 text-primary">
       <section className="max-w-screen-lg px-2 md:px-0 pt-4 md:-pt-8 mx-auto">
-        <div className="flex items-center justify-between px-2  text-gray-800 border-b-2 border-current dark:border-yellow-500 dark:text-gray-100">
-          <h1 className="text-3xl font-bold tracking-wider md:text-5xl mb-2 dark:text-yellow-500">
+        <div className="flex items-center justify-between px-2   border-b-2 border-current dark:border-primary ">
+          <h1 className="text-3xl font-bold tracking-wider md:text-5xl mb-2 ">
             About Me
           </h1>
         </div>
@@ -27,17 +27,17 @@ const about = () => {
           height={200}
           style={{ objectFit: "contain" }}
           quality={75}
-          className="border-4 float-left  border-gray-800 dark:border-yellow-500 drop-shadow-xl shadow-black rounded-full mx-2 mt-8"
+          className="border-4 float-left border-primary drop-shadow-xl shadow-black rounded-full mx-2 mt-8"
         />
 
         <article className="col-span-1 leading-normal tracking-wider text-justify px-2 mb-4 font-light text-block sm:subpixel-antialiased md:antialiased">
-          <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold text-gray-800 dark:text-gray-100">
+          <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold  ">
             I am a software developer with experience in ReactJS, React Native,
             JavaScript, and NodeJS. I enjoy building high-performing and
             responsive web and mobile applications, and I am passionate about
             solving complex problems and collaborating with others.
           </p>
-          <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold text-gray-800 dark:text-gray-100">
+          <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold ">
             In addition to being a developer, I am also a dad, husband, coffee
             lover, anime lover, and technology enthusiast. I have always had a
             love for technology and computing, and I pursued software
@@ -45,7 +45,7 @@ const about = () => {
             then, I have continued to learn and develop my skills, always
             looking for new technologies to master.
           </p>
-          <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold text-gray-800 dark:text-gray-100">
+          <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold  ">
             As a developer, I believe that there is always something new to
             learn. I am seeking a role as a software developer at a company that
             values ongoing training and development, and that offers
@@ -54,8 +54,8 @@ const about = () => {
           </p>
         </article>
         <section className="cols-span-1">
-          <div className="flex items-center justify-between px-2  text-gray-800 border-b-2 border-current dark:border-yellow-500 dark:text-gray-100">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-wider md:text-4xl mb-2 dark:text-yellow-500">
+          <div className="flex items-center justify-between px-2   border-b-2 border-current dark:border-primary">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-wider md:text-4xl mb-2 ">
               Tech Stack and Tools I Use
             </h2>
           </div>

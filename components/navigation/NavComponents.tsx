@@ -3,6 +3,7 @@ import { useRef, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
+import { ModeToggle } from "@components/ModeToggle";
 
 type NavLinkProps = {
   children: ReactNode;
@@ -58,7 +59,7 @@ Nav.Toggler = ({
       aria-disabled={isOpen}
       disabled={isOpen}
       aria-label="Toggle navigation"
-      className={` font-semibold m-0 items-center ml-3  text-4xl text-current md:hidden focus:outline-none focus:shadow-none ${color} text-slate-800 dark:text-yellow-500`}
+      className={` font-semibold m-0 items-center ml-3  text-4xl text-current md:hidden focus:outline-none focus:shadow-none ${color}`}
       onClick={toggle}
     >
       <span>&#8801;</span>
@@ -97,17 +98,7 @@ Nav.SideNav = ({
       ref={ref}
     >
       <div className="flex flex-row items-center justify-between px-4 mb-2">
-        <button
-          type="button"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className=" p-1 mt-2 ml-4 font-medium list-none border-2 rounded-full cursor-pointer dark:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none"
-        >
-          {theme === "light" ? (
-            <FiSun className="font-semibold text-white" />
-          ) : (
-            <FiMoon className="font-semibold text-yellow-500" />
-          )}
-        </button>
+        <ModeToggle />
         <button
           aria-label="Close"
           className="z-50 p-1 text-4xl cursor-pointer top-3 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none"
@@ -148,7 +139,7 @@ Nav.Link = ({ children, href }: { children: ReactNode; href: string }) => (
 );
 
 const className = {
-  default: `lg:hidden flex flex-col h-screen fixed top-0 right-0 transition-all ease-in-out duration-300 text-gray-100 dark:text-yellow-500`,
+  default: `lg:hidden flex flex-col h-screen fixed top-0 right-0 transition-all ease-in-out duration-300`,
   enabled: `w-8/12  bg-gray-800 overflow-y-hidden translate-y-0   text-lg  py-4`,
   disabled: `w-0  bg-gray-800 text-white overflow-x-hidden translate-x-full`,
 };

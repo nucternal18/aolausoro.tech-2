@@ -12,7 +12,7 @@ type NavProps = {
   textColor?: string;
 };
 
-export default function Navbar({ textColor }: NavProps) {
+export default function Navbar({ textColor = "text-primary" }: NavProps) {
   const { theme, setTheme } = useTheme();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -23,13 +23,9 @@ export default function Navbar({ textColor }: NavProps) {
 
   return (
     <Nav bgColor=" drop-shadow-sm">
-      <Nav.Toggler
-        toggle={toggle}
-        isOpen={isOpen}
-        color={textColor as string}
-      />
+      <Nav.Toggler toggle={toggle} isOpen={isOpen} color={textColor} />
       {/* Main navigation */}
-      <Nav.Container textColor={`${textColor} dark:text-yellow-500`}>
+      <Nav.Container textColor={`${textColor} `}>
         <Nav.Brand href="/">
           <img
             src={"/android-chrome-512x512.png"}

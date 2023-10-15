@@ -23,7 +23,7 @@ function PortfolioCard({ project }: { project: PartialProjectProps }) {
   });
 
   return (
-    <Card className="w-[300px] relative grid grid-cols-1 ">
+    <Card className="w-[300px] relative grid grid-cols-1 border-primary">
       <CardHeader className="col-span-1">
         <CardTitle className="text-xl">{project?.projectName}</CardTitle>
       </CardHeader>

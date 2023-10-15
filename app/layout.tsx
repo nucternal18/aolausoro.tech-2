@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-background">
         <Providers>
-          <Navbar textColor="dark:text-yellow-500" />
+          <Navbar />
           <main className="relative h-full flex-grow p-0 overflow-y-auto">
             {children}
           </main>

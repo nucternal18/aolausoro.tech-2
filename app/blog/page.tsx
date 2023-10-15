@@ -9,8 +9,8 @@ export default async function BlogPage() {
 
   if (!posts) {
     return (
-      <section className="max-w-screen-lg h-screen mx-0 md:mx-auto flex-grow px-4 lg:px-0">
-        <h1 className="p-5 text-5xl font-thin border-b border-current lg:mt-6 dark:border-yellow-500 dark:text-yellow-500">
+      <section className="max-w-screen-lg h-screen mx-0 md:mx-auto flex-grow px-4 lg:px-0 text-primary">
+        <h1 className="p-5 text-5xl font-thin border-b border-primary lg:mt-6 ">
           BLOG
         </h1>
 
@@ -20,8 +20,8 @@ export default async function BlogPage() {
   }
 
   return (
-    <section className="max-w-screen-lg h-screen mx-0 md:mx-auto flex-grow px-4 lg:px-0">
-      <h1 className="p-5 text-5xl font-thin border-b border-current lg:mt-6 dark:border-yellow-500 dark:text-yellow-500">
+    <section className="max-w-screen-lg h-screen mx-0 md:mx-auto flex-grow px-4 lg:px-0 text-primary">
+      <h1 className="p-5 text-5xl font-thin border-b border-primary lg:mt-6 ">
         BLOG
       </h1>
 
