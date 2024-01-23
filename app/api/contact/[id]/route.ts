@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "../../auth/[...nextauth]/options";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 
@@ -13,7 +13,7 @@ export async function GET(req: Request, params: { id: string }) {
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -22,7 +22,7 @@ export async function GET(req: Request, params: { id: string }) {
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -46,7 +46,7 @@ export async function DELETE(req: Request, params: { id: string }) {
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -55,7 +55,7 @@ export async function DELETE(req: Request, params: { id: string }) {
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../[...nextauth]/route";
+import { authOptions } from "../../[...nextauth]/options";
 
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";

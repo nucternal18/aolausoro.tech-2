@@ -1,11 +1,11 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "../../auth/[...nextauth]/options";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const session = await getServerSession(authOptions);
 
@@ -14,7 +14,7 @@ export async function GET(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -23,7 +23,7 @@ export async function GET(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
   const id = params.id;
@@ -41,7 +41,7 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const session = await getServerSession(authOptions);
 
@@ -50,7 +50,7 @@ export async function PUT(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -59,7 +59,7 @@ export async function PUT(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -112,7 +112,7 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const session = await getServerSession(authOptions);
 
@@ -121,7 +121,7 @@ export async function DELETE(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -130,7 +130,7 @@ export async function DELETE(
       "Not Authorized. You do not have permission to perform this operation.",
       {
         status: 401,
-      }
+      },
     );
   }
 
