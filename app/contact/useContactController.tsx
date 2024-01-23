@@ -24,6 +24,12 @@ export default function useContactController() {
   const [sendMail] = useSendMailMutation();
   const form = useForm<PartialMessageProps>({
     resolver: zodResolver(partialMessageSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
   });
 
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -32,6 +38,7 @@ export default function useContactController() {
     async (data) => {
       const token = await recaptchaRef.current?.executeAsync();
       recaptchaRef.current?.reset();
+
       const newMessage: PartialMessageProps & { token: string } = {
         name: data.name,
         email: data.email,
@@ -41,7 +48,7 @@ export default function useContactController() {
       };
       try {
         const sendMailResponse = await sendMail(newMessage).unwrap();
-        if (sendMailResponse) {
+        if (sendMailResponse.success) {
           await createMessage(newMessage).unwrap();
           form.reset();
           toast({

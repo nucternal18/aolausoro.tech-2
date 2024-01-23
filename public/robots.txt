@@ -6,4 +6,4 @@ Allow: /
 Host: https://aolausoro.tech
 
 # Sitemaps
-Sitemap: https://aolausoro.tech/sitemap.
+Sitemap: https://aolausoro.tech/sitemap.git 

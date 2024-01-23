@@ -9,6 +9,7 @@ export const messageSchema = z.object({
   subject: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  token: z.string().optional(),
 });
 
 export const partialMessageSchema = messageSchema.partial();

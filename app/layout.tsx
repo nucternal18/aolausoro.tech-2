@@ -1,6 +1,5 @@
 import { Providers } from "./GlobalReduxStore/providers";
 import "./globals.css";
-import "react-toastify/dist/ReactToastify.css";
 import "highlight.js/styles/github-dark.css";
 
 import Footer from "@components/Footer";

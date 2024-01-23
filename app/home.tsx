@@ -8,7 +8,7 @@ const randomImage =
   "https://source.unsplash.com/random/1600x900/?coder-setup,code";
 
 const cvDoc =
-  "https://res.cloudinary.com/dus5nxe5w/image/upload/v1682539569/Adewoyin_Oladipupo-Usoro_CV_fnqnq1.pdf";
+  "https://res.cloudinary.com/dus5nxe5w/image/upload/v1706043458/Adewoyin_Oladipupo-Usoro_CV_c2fn2h.pdf";
 
 const variants = {
   hidden: { opacity: 0 },

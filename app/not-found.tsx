@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Button } from "@components/ui/button";
+
 export default function NotFound() {
   return (
     <section className="min-h-screen">
@@ -7,6 +10,9 @@ export default function NotFound() {
         <p className="mb-5 text-2xl text-gray-500">
           Could not find requested resource
         </p>
+        <Button variant="outline" asChild>
+          <Link href="/">Go Back Home</Link>
+        </Button>
       </section>
     </section>
   );

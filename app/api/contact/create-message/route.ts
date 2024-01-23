@@ -13,22 +13,15 @@ export async function POST(req: Request) {
     return NextResponse.json(validate.error.errors, { status: 400 });
   }
 
-  const { name, email, subject, message, token } = await req.json();
-
-  const isHuman = await validateHuman(token as string);
-  if (!isHuman) {
-    return new Response("You are not human. We can't be fooled", {
-      status: 401,
-    });
-  }
+  const { name, email, subject, message, token } = validate.data;
 
   try {
     const createdMessage = await prisma.message.create({
       data: {
-        name: name,
-        email: email,
-        subject: subject,
-        message: message,
+        name: name as string,
+        email: email as string,
+        subject: subject as string,
+        message: message as string,
       },
     });
 
