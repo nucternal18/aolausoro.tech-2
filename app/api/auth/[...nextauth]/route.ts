@@ -14,20 +14,7 @@ import { type JWT } from "next-auth/jwt";
 import { type AdapterUser } from "next-auth/adapters";
 import bcrypt from "bcryptjs";
 import prisma from "@lib/prismadb";
-
-export const loginSchema = z.object({
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
-  password: z
-    .string()
-    .min(7)
-    .max(50)
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{7,})/, {
-      message:
-        "Password must contain at least 7 characters, one uppercase, one lowercase, one special character and one number.",
-    }),
-});
+import { loginSchema } from "schema/User";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
