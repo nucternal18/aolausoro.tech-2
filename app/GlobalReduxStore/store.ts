@@ -11,6 +11,7 @@ import userReducer from "./features/users/usersSlice";
 import jobsReducer from "./features/jobs/jobsSlice";
 import projectReducer from "./features/projects/projectsSlice";
 import messageReducer from "./features/messages/messagesSlice";
+import globalReducer from "./features/globalSlice";
 
 const reducers = {
   [userApiSlice.reducerPath]: userApiSlice.reducer,
@@ -21,6 +22,7 @@ const reducers = {
   jobs: jobsReducer,
   projects: projectReducer,
   messages: messageReducer,
+  global: globalReducer,
 };
 
 const rootReducer = combineReducers(reducers);

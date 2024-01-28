@@ -23,8 +23,8 @@ export type JobSliceProps = zod.infer<typeof jobSliceSchema>;
 export const initialState: JobSliceProps = {
   jobs: null,
   page: 1,
-  jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
-  statusOptions: ["Interviewing", "Declined", "Pending", "Offer"],
+  jobTypeOptions: ["all", "full-time", "part-time", "remote", "internship"],
+  statusOptions: ["all", "Interviewing", "Declined", "Pending", "Offer"],
   search: "",
   searchStatus: "all",
   searchType: "all",

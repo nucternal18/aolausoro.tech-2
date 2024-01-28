@@ -1,7 +1,5 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/options";
-
 import { NextResponse } from "next/server";
+import { auth } from "auth";
 
 const cloudinary = require("cloudinary").v2;
 
@@ -12,7 +10,7 @@ cloudinary.config({
 });
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const { data } = await req.json();
 
   if (!session) {

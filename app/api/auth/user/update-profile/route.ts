@@ -1,13 +1,11 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../[...nextauth]/options";
-
-import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
+import prisma from "lib/prismadb";
 import { partialUserSchema } from "schema/User";
+import { auth } from "auth";
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const requestBody = await req.json();
   /**
    * @desc check to see if their is a user session
@@ -18,7 +16,7 @@ export async function POST(req: Request) {
 
   const user = await prisma.user.findUnique({
     where: {
-      id: session.user.id as string,
+      id: session.user.id ,
     },
   });
 
@@ -34,7 +32,7 @@ export async function POST(req: Request) {
 
   const updatedUser = await prisma.user.update({
     where: {
-      id: session.user.id as string,
+      id: session.user.id ,
     },
     data: {
       name: requestBody.user.displayName || user.name,

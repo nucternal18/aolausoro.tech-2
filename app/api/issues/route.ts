@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { partialIssueSchema } from "schema/Issue";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]/options";
 import prisma from "@lib/prismadb";
+import { auth } from "auth";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const validation = partialIssueSchema.safeParse(body);
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(
@@ -39,7 +38,7 @@ export async function POST(req: NextRequest) {
         description: body.description,
         user: {
           connect: {
-            id: session.user.id as string,
+            id: session.user.id ,
           },
         },
       },

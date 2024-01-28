@@ -1,9 +1,8 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/options";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import moment from "moment";
+import { auth } from "auth";
 
 type StatsProps = {
   pending: number;
@@ -31,7 +30,7 @@ type MonthlyApplicationStatsProps = {
  * @returns
  */
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(

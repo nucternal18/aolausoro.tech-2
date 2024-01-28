@@ -1,11 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/options";
-import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
+import prisma from "lib/prismadb";
+import { auth } from "auth";
 
 export async function GET(req: Request, params: { id: string }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const id = params.id;
 
   if (!session) {
@@ -38,7 +37,7 @@ export async function GET(req: Request, params: { id: string }) {
 }
 
 export async function DELETE(req: Request, params: { id: string }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const id = params.id;
 
   if (!session) {

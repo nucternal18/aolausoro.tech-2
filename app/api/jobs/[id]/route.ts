@@ -1,13 +1,12 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/options";
-import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
+import prisma from "lib/prismadb";
+import { auth } from "auth";
 
 export async function GET(
   req: Request,
   { params }: { params: { id: string } },
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(
@@ -43,7 +42,7 @@ export async function PUT(
   req: Request,
   { params }: { params: { id: string } },
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(
@@ -97,7 +96,7 @@ export async function PUT(
         status: status,
         jobLocation: jobLocation,
         jobType: jobType,
-        user: { connect: { id: session.user.id as string } },
+        user: { connect: { id: session.user.id  } },
       },
     });
 
@@ -114,7 +113,7 @@ export async function DELETE(
   req: Request,
   { params }: { params: { id: string } },
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(

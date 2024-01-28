@@ -47,6 +47,12 @@ jobs:
           echo NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }} >> .env.local
           echo RECAPTCHA_SITE_KEY=${{ secrets.RECAPTCHA_SITE_KEY }} >> .env.local
           echo REPO_TOKEN=${{ secrets.REPO_TOKEN }} >> .env.local
+          echo RESEND_API_KEY=${{ secrets.RESEND_API_KEY }} >> .env.local
+          echo EMAIL_SERVER_USER=${{ secrets.EMAIL_SERVER_USER }} >> .env.local
+          echo EMAIL_SERVER_PASSWORD=${{ secrets.EMAIL_SERVER_PASSWORD }} >> .env.local
+          echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} >> .env.local
+          echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} >> .env.local
+          echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env.local
           cat .env.local
       - name: Create .sentryclirc file
         run: |

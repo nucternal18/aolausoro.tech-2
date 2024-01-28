@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/options";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 import { partialProjectSchema } from "schema/Project";
+import { auth } from "auth";
 
 const cloudinary = require("cloudinary").v2;
 
@@ -18,7 +17,7 @@ cloudinary.config({
  * @returns
  */
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(
@@ -66,7 +65,7 @@ export async function POST(req: Request) {
       description,
       published,
       url: uploadedResponse.secure_url,
-      user: { connect: { id: session.user.id as string } },
+      user: { connect: { id: session.user.id  } },
     },
   });
 

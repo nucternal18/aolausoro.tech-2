@@ -1,9 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/options";
 import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
 import { partialProjectSchema } from "schema/Project";
+import { auth } from "auth";
 
 /**
  * @description method to get a project by id
@@ -14,7 +13,7 @@ export async function GET(
   req: Request,
   { params }: { params: { id: string } },
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(
@@ -60,7 +59,7 @@ export async function PUT(
   req: Request,
   { params }: { params: { id: string } },
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(
@@ -138,7 +137,7 @@ export async function DELETE(
   req: Request,
   { params }: { params: { id: string } },
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(

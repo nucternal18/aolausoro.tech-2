@@ -1,14 +1,13 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/options";
-import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
+import prisma from "lib/prismadb";
+import { auth } from "auth";
 
 type QueryObjProps = {
   [k: string]: string;
 };
 
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const { searchParams } = new URL(req.url);
 
   const queryItems: QueryObjProps = Object.fromEntries(searchParams.entries());
@@ -34,7 +33,7 @@ export async function GET(req: Request) {
   const { status, jobType, sort, search, page, limit } = queryItems;
 
   const queryObj: QueryObjProps = {
-    createdBy: session.user.id as string,
+    createdBy: session.user.id ,
   };
   if (status && status !== "all") {
     queryObj.status = status;
@@ -66,6 +65,7 @@ export async function GET(req: Request) {
   });
 
   const totalJobs = result.length;
+
   const numberOfPages = Math.ceil(totalJobs / pageLimit);
 
   if (result) {

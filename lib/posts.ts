@@ -1,9 +1,13 @@
+import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
+import rehypePrettyCode, {
+  type Options as PrettyCodeOptions,
+} from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+
 import { compileMDX } from "next-mdx-remote/rsc";
 
-import rehypeSlug from "rehype-slug";
-import rehypePrettyCode from "rehype-pretty-code";
 import type { BlogPost, Meta } from "types/types";
 import CustomImage from "@components/CustomImage";
 import Video from "@components/Video";
@@ -64,8 +68,9 @@ export async function getPostByName(
               behavior: "wrap",
             },
           ],
+          // TODO: Fix this type error. Look into right typing for rehypePrettyCode
           [
-            rehypePrettyCode,
+            rehypePrettyCode as any,
             {
               theme: "github-dark",
               onVisitLine(node: NodeProps) {

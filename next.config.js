@@ -28,7 +28,6 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: ["res.cloudinary.com", "source.unsplash.com", "cdn.jsdelivr.net"],
     remotePatterns: [
       {
         protocol: "https",
@@ -48,13 +47,6 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   eslint: {
     dirs: ["app", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
-  },
-  env: {
-    NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API,
-    NEXT_PUBLIC_APP_ID: process.env.NEXT_PUBLIC_APP_ID,
-    NEXT_PUBLIC_MESSAGING_SENDER_ID:
-      process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
-    NEXT_PUBLIC_SITE_KEY: process.env.NEXT_PUBLIC_SITE_KEY,
   },
 };
 

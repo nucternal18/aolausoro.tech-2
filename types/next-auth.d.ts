@@ -1,20 +1,24 @@
 import type { AdapterUser } from "next-auth/adapters";
 import NextAuth from "next-auth";
-import type { DefaultSession, Session, DefaultUser } from "next-auth";
+import type { DefaultSession, DefaultUser } from "next-auth";
 import "next-auth/jwt";
+
+export type ExtendedUser = DefaultSession["user"] & {
+  id: string | null | undefined;
+  isAdmin: boolean | null | undefined;
+};
+
+export type AdapterUser = DefaultUser & {
+  id: string | null | undefined;
+  isAdmin: boolean | null | undefined;
+};
 
 declare module "next-auth" {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
-  interface Session extends DefaultSession {
-    user: {
-      id: string | null | undefined;
-      isAdmin: boolean | null | undefined;
-      name?: string | null | undefined;
-      email?: string | null | undefined;
-      image?: string | null | undefined;
-    };
+  interface Session {
+    user: ExtendedUser;
   }
 
   interface User extends DefaultUser {
@@ -24,15 +28,11 @@ declare module "next-auth" {
 }
 
 declare module "next-auth/jwt" {
+  /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
   interface JWT {
     /** The user's role. */
-    role: "admin";
     isAdmin: boolean;
-    user: {
-      name?: string | null | undefined;
-      email?: string | null | undefined;
-      image?: string | null | undefined;
-    };
+    id: string;
   }
 }
 

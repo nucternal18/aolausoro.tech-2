@@ -1,10 +1,9 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/options";
-import prisma from "lib/prismadb";
 import { NextResponse } from "next/server";
+import prisma from "lib/prismadb";
+import { auth } from "auth";
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return new Response(
@@ -44,9 +43,9 @@ export async function POST(req: Request) {
     data: {
       company: company,
       position: position,
-      createdBy: session.user.id as string,
+      createdBy: session.user.id ,
       status: status,
-      user: { connect: { id: session.user.id as string } },
+      user: { connect: { id: session.user.id  } },
       jobLocation: jobLocation,
       jobType: jobType,
     },

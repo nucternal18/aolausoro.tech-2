@@ -10,7 +10,7 @@ export const mdxComponents = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <h1
       className={cn(
-        "mt-2 scroll-m-20 text-4xl font-bold tracking-tight",
+        "mt-2 scroll-m-20 text-4xl font-bold tracking-tight text-primary",
         className,
       )}
       {...props}
@@ -19,7 +19,7 @@ export const mdxComponents = {
   h2: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <h2
       className={cn(
-        "mt-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0",
+        "mt-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight text-primary first:mt-0",
         className,
       )}
       {...props}
@@ -28,7 +28,7 @@ export const mdxComponents = {
   h3: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <h3
       className={cn(
-        "mt-8 scroll-m-20 text-2xl font-semibold tracking-tight",
+        "mt-8 scroll-m-20 text-2xl font-semibold tracking-tight text-primary",
         className,
       )}
       {...props}
@@ -37,7 +37,7 @@ export const mdxComponents = {
   h4: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <h4
       className={cn(
-        "mt-8 scroll-m-20 text-xl font-semibold tracking-tight",
+        "mt-8 scroll-m-20 text-xl font-semibold tracking-tight text-primary",
         className,
       )}
       {...props}
@@ -46,7 +46,7 @@ export const mdxComponents = {
   h5: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <h5
       className={cn(
-        "mt-8 scroll-m-20 text-lg font-semibold tracking-tight",
+        "mt-8 scroll-m-20 text-lg font-semibold tracking-tight text-primary",
         className,
       )}
       {...props}
@@ -55,7 +55,7 @@ export const mdxComponents = {
   h6: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <h6
       className={cn(
-        "mt-8 scroll-m-20 text-base font-semibold tracking-tight",
+        "mt-8 scroll-m-20 text-base font-semibold tracking-tight text-primary",
         className,
       )}
       {...props}
@@ -66,21 +66,33 @@ export const mdxComponents = {
     ...props
   }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     <a
-      className={cn("font-medium underline underline-offset-4", className)}
+      className={cn(
+        "font-medium underline underline-offset-4 text-primary",
+        className,
+      )}
       {...props}
     />
   ),
   p: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <p
-      className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
+      className={cn(
+        "leading-7 [&:not(:first-child)]:mt-6 text-primary",
+        className,
+      )}
       {...props}
     />
   ),
   ul: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <ul className={cn("my-6 ml-6 list-disc", className)} {...props} />
+    <ul
+      className={cn("my-6 ml-6 list-disc text-primary", className)}
+      {...props}
+    />
   ),
   ol: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <ol className={cn("my-6 ml-6 list-decimal", className)} {...props} />
+    <ol
+      className={cn("my-6 ml-6 list-decimal text-primary", className)}
+      {...props}
+    />
   ),
   li: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <li className={cn("mt-2 text-sm", className)} {...props} />
