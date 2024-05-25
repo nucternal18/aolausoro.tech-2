@@ -25,7 +25,7 @@ jobs:
       - name: Create .env file
         run: |
           touch .env
-          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
           cat .env
       - name: Create .env.local file
         run: |
@@ -40,9 +40,7 @@ jobs:
           echo SENTRY_AUTH_API=${{ secrets.SENTRY_AUTH_API }} >> .env.local
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.local
           echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env.local
-          echo NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} >> .env.local
-          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env.local
-          echo NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} >> .env.local
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env.local
           echo JWT_SIGNING_PRIVATE_KEY=${{ secrets.JWT_SIGNING_PRIVATE_KEY }} >> .env.local
           echo NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }} >> .env.local
           echo RECAPTCHA_SITE_KEY=${{ secrets.RECAPTCHA_SITE_KEY }} >> .env.local
@@ -57,6 +55,7 @@ jobs:
           echo CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }} >> .env.local
           echo NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }} >> .env.local
           echo CLERK_WEBHOOK_SECRET=${{ secrets.CLERK_WEBHOOK_SECRET }} >> .env.local
+          echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env.local
           cat .env.local
       - name: Create .sentryclirc file
         run: |
@@ -79,6 +78,6 @@ jobs:
       - name: Build
         run: npm run build
       - name: Restart pm2
-        run: pm2 reload client --watch
+        run: pm2 restart client
     env:
       CI: true
