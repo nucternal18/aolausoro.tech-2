@@ -1,11 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import prisma from "lib/prismadb";
-import { auth } from "auth";
+import { getAuth } from "@clerk/nextjs/server";
 
-export async function POST(req: Request) {
-  const session = await auth();
+export async function POST(req: NextRequest) {
+  const { userId } = getAuth(req);
 
-  if (!session) {
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
     return new Response(
       "Not Authorized. You do not have permission to perform this operation.",
       {
@@ -14,14 +22,6 @@ export async function POST(req: Request) {
     );
   }
 
-  if (!session.user.isAdmin) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
-  }
   const { company, position, status, jobLocation, jobType } = await req.json();
 
   if (
@@ -43,9 +43,9 @@ export async function POST(req: Request) {
     data: {
       company: company,
       position: position,
-      createdBy: session.user.id ,
+      createdBy: user.id,
       status: status,
-      user: { connect: { id: session.user.id  } },
+      user: { connect: { id: user.id } },
       jobLocation: jobLocation,
       jobType: jobType,
     },

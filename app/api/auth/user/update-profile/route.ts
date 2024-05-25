@@ -1,23 +1,21 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "lib/prismadb";
 import { partialUserSchema } from "schema/User";
-import { auth } from "auth";
+import { getAuth } from "@clerk/nextjs/server";
 
-export async function POST(req: Request) {
-  const session = await auth();
+export async function POST(req: NextRequest) {
+  const { userId } = getAuth(req);
   const requestBody = await req.json();
   /**
    * @desc check to see if their is a user session
    */
-  if (!session) {
-    return new Response("Not Authorized", { status: 401 });
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
   const user = await prisma.user.findUnique({
-    where: {
-      id: session.user.id ,
-    },
+    where: { clerkId: userId },
   });
 
   if (!user) {
@@ -31,14 +29,11 @@ export async function POST(req: Request) {
   }
 
   const updatedUser = await prisma.user.update({
-    where: {
-      id: session.user.id ,
-    },
+    where: { clerkId: userId },
     data: {
       name: requestBody.user.displayName || user.name,
       image: requestBody.user.image || user.image,
       email: requestBody.user.email || user.email,
-      password: (requestBody.password && requestBody.password) || user.password,
     },
   });
 

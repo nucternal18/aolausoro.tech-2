@@ -68,7 +68,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   issues        Issue[]
-  password  String
+  clerkId  String? @unique
   updatedAt DateTime @updatedAt
 
   @@map("users")

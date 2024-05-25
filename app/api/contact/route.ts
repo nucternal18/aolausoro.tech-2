@@ -1,20 +1,19 @@
-import { NextResponse } from "next/server";
-import { auth } from "auth";
+import { NextRequest, NextResponse } from "next/server";
+import { getAuth } from "@clerk/nextjs/server";
 import prisma from "@lib/prismadb";
 
-export async function GET(request: Request) {
-  const session = await auth();
+export async function GET(request: NextRequest) {
+  const { userId } = getAuth(request);
 
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  if (!session.user.isAdmin) {
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
     return new Response(
       "Not Authorized. You do not have permission to perform this operation.",
       {

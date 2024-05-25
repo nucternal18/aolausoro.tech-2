@@ -1,7 +1,7 @@
 "use client";
 
 // Components
-import Table from "@app/(protected)/admin/projects/ProjectTable";
+import Table from "@app/protected/admin/projects/ProjectTable";
 import Loader from "components/Loader";
 import { AddProjectForm } from "./add-project-form";
 import Header from "@components/header";

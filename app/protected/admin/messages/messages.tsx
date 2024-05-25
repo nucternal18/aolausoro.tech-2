@@ -1,7 +1,7 @@
 "use client";
 
 // components
-import MessageTable from "@app/(protected)/admin/messages/message-table";
+import MessageTable from "@app/protected/admin/messages/message-table";
 import Loader from "@components/Loader";
 
 // controller

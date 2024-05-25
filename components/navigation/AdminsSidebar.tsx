@@ -48,20 +48,20 @@ export function AdminsSidebar() {
           {/* Navigation */}
           <ul className="flex flex-col list-none md:flex-col md:min-w-full md:mb-4 px-1">
             <li>
-              <ActiveLink href="/admin">
+              <ActiveLink href="/protected/admin">
                 <FaHome fontSize={18} className="mr-2 " />
                 <span>Admin Home</span>
               </ActiveLink>
             </li>
 
             <li>
-              <ActiveLink href="/admin/projects">
+              <ActiveLink href="/protected/admin/projects">
                 <FaUserCircle fontSize={18} className="mr-2 " />
                 <span>Manage Projects</span>
               </ActiveLink>
             </li>
             <li>
-              <ActiveLink href="/admin/messages">
+              <ActiveLink href="/protected/admin/messages">
                 <FaMailBulk fontSize={18} className="mr-2 " />
                 <span>Messages</span>
               </ActiveLink>
@@ -83,7 +83,7 @@ export function AdminsSidebar() {
           </h2>
           <ul className="flex flex-col list-none md:flex-col md:min-w-full md:mb-4 px-1">
             <li>
-              <ActiveLink href="/admin/jobs">
+              <ActiveLink href="/protected/admin/jobs">
                 <FaRegCalendarAlt fontSize={18} className="mr-2 " />
                 <span>All Jobs</span>
               </ActiveLink>
@@ -169,13 +169,13 @@ export function MobileAdminSidebar({ height }: { height: number }) {
                 </li>
 
                 <li>
-                  <ActiveLink href="/admin/projects">
+                  <ActiveLink href="/protected/admin/projects">
                     <FaUserCircle fontSize={18} className="mr-2 " />
                     <span>Manage Projects</span>
                   </ActiveLink>
                 </li>
                 <li>
-                  <ActiveLink href="/admin/messages">
+                  <ActiveLink href="/protected/admin/messages">
                     <FaMailBulk fontSize={18} className="mr-2 " />
                     <span>Messages</span>
                   </ActiveLink>
@@ -197,7 +197,7 @@ export function MobileAdminSidebar({ height }: { height: number }) {
               </h2>
               <ul className="flex flex-col list-none md:flex-col md:min-w-full md:mb-4 px-1">
                 <li>
-                  <ActiveLink href="/admin/jobs">
+                  <ActiveLink href="/protected/admin/jobs">
                     <FaRegCalendarAlt fontSize={18} className="mr-2 " />
                     <span>All Jobs</span>
                   </ActiveLink>

@@ -41,6 +41,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn.jsdelivr.net",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      },
     ],
     formats: ["image/webp"],
   },

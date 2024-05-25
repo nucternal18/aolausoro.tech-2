@@ -1,18 +1,17 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
+import { useClerk, useSession } from "@clerk/clerk-react";
 
 export default function Logout() {
-  const { data: session } = useSession();
+  const clerk = useClerk();
+  const { isLoaded, session, isSignedIn } = useSession();
 
   const router = useRouter();
 
   useEffect(() => {
-    if (session) {
-      signOut({
-        callbackUrl: `${window.location.origin}`,
-      });
+    if (isSignedIn) {
+      clerk.signOut();
     }
     router.push("/");
   }, [session]);

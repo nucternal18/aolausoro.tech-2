@@ -1,29 +1,28 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getAuth } from "@clerk/nextjs/server";
 import prisma from "lib/prismadb";
-import { auth } from "auth";
 
-export async function GET(req: Request, params: { id: string }) {
-  const session = await auth();
+export async function GET(req: NextRequest, params: { id: string }) {
+  const { userId } = getAuth(req);
+
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
+    return new Response(
+      "Not Authorized. You do not have permission to perform this operation.",
+      {
+        status: 401,
+      },
+    );
+  }
   const id = params.id;
-
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
-  }
-
-  if (!session.user.isAdmin) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
-  }
 
   const message = await prisma.message.findUnique({
     where: { id: id },
@@ -36,27 +35,26 @@ export async function GET(req: Request, params: { id: string }) {
   }
 }
 
-export async function DELETE(req: Request, params: { id: string }) {
-  const session = await auth();
+export async function DELETE(req: NextRequest, params: { id: string }) {
+  const { userId } = getAuth(req);
+
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
+    return new Response(
+      "Not Authorized. You do not have permission to perform this operation.",
+      {
+        status: 401,
+      },
+    );
+  }
   const id = params.id;
-
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
-  }
-
-  if (!session.user.isAdmin) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
-  }
 
   const message = await prisma.message.delete({
     where: { id: id },

@@ -53,6 +53,9 @@ jobs:
           echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} >> .env.local
           echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} >> .env.local
           echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env.local
+          echo NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }} >> .env.local
+          echo CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }} >> .env.local
+          echo NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }} >> .env.local
           cat .env.local
       - name: Create .sentryclirc file
         run: |

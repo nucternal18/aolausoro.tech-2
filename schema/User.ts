@@ -12,14 +12,7 @@ export const userSchema = z.object({
   }),
   image: z.string().url(),
   isAdmin: z.boolean(),
-  password: z
-    .string()
-    .min(7)
-    .max(50)
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{7,})/, {
-      message:
-        "Password must contain at least 7 characters, one uppercase, one lowercase, one special character and one number.",
-    }),
+  clerkId: z.string(),
   emailVerified: z.string().optional(),
   projects: z.lazy(() => z.array(projectSchema)),
   jobs: z.lazy(() => z.array(jobSchema)),
@@ -32,14 +25,6 @@ export const loginSchema = z.object({
   email: z.string().email({
     message: "Invalid email address.",
   }),
-  password: z
-    .string()
-    .min(7)
-    .max(50)
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{7,})/, {
-      message:
-        "Password must contain at least 7 characters, one uppercase, one lowercase, one special character and one number.",
-    }),
 });
 
 export const partialUserSchema = userSchema.partial();

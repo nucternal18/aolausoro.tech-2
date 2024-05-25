@@ -1,6 +1,6 @@
 // Components
-import SearchForm from "@app/(protected)/admin/jobs/search-form";
-import { JobsContainer } from "@app/(protected)/admin/jobs/Jobs";
+import SearchForm from "@app/protected/admin/jobs/search-form";
+import { JobsContainer } from "@app/protected/admin/jobs/Jobs";
 import AddJobComponent from "./AddJobComponent";
 import Header from "@components/header";
 

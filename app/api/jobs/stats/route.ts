@@ -1,8 +1,8 @@
 import prisma from "lib/prismadb";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import moment from "moment";
-import { auth } from "auth";
+import { getAuth } from "@clerk/nextjs/server";
 
 type StatsProps = {
   pending: number;
@@ -29,19 +29,17 @@ type MonthlyApplicationStatsProps = {
  * @param req
  * @returns
  */
-export async function GET(req: Request) {
-  const session = await auth();
-
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
+export async function GET(req: NextRequest) {
+  const { userId } = getAuth(req);
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  if (!session.user.isAdmin) {
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
     return new Response(
       "Not Authorized. You do not have permission to perform this operation.",
       {
@@ -83,7 +81,7 @@ export async function GET(req: Request) {
 
   const monthlyApplications = (await prisma.job.aggregateRaw({
     pipeline: [
-      { $match: { createdBy: session.user.id } },
+      { $match: { createdBy: user.id } },
       {
         $group: {
           _id: {

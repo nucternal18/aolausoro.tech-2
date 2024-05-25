@@ -1,27 +1,26 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "lib/prismadb";
-import { auth } from "auth";
+import { getAuth } from "@clerk/nextjs/server";
 
 type QueryObjProps = {
   [k: string]: string;
 };
 
-export async function GET(req: Request) {
-  const session = await auth();
+export async function GET(req: NextRequest) {
+  const { userId } = getAuth(req);
   const { searchParams } = new URL(req.url);
 
   const queryItems: QueryObjProps = Object.fromEntries(searchParams.entries());
 
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  if (!session.user.isAdmin) {
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
     return new Response(
       "Not Authorized. You do not have permission to perform this operation.",
       {
@@ -33,7 +32,7 @@ export async function GET(req: Request) {
   const { status, jobType, sort, search, page, limit } = queryItems;
 
   const queryObj: QueryObjProps = {
-    createdBy: session.user.id ,
+    createdBy: user.id,
   };
   if (status && status !== "all") {
     queryObj.status = status;
