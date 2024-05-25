@@ -47,6 +47,7 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-base-to-string": "off",
     "@typescript-eslint/no-namespace ": "off",
+    "@typescript-eslint/no-duplicate-type-constituents": "off",
     "@next/next/link-passhref": "off",
     "react-hooks/rules-of-hooks": "off",
     "react/display-name": "off",

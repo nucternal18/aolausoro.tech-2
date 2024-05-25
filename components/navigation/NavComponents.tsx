@@ -116,10 +116,10 @@ Nav.NavLinks = ({ children, left, right, center }: NavLinkProps) => {
   const className = left
     ? "hidden  pl-0 mb-0 mr-auto md:flex md:items-center md:pl-0 md:mb-0"
     : right
-    ? "hidden  pl-0 mb-0 ml-auto md:flex md:items-center md:pl-0 md:mb-0 "
-    : center
-    ? "hidden  pl-0 mb-0 ml-auto md:flex md:pl-0 md:mb-0 md:mx-auto "
-    : "hidden  pl-0 mb-0 mr-auto md:flex md:pl-0 md:mb-0";
+      ? "hidden  pl-0 mb-0 ml-auto md:flex md:items-center md:pl-0 md:mb-0 "
+      : center
+        ? "hidden  pl-0 mb-0 ml-auto md:flex md:pl-0 md:mb-0 md:mx-auto "
+        : "hidden  pl-0 mb-0 mr-auto md:flex md:pl-0 md:mb-0";
   return <ul className={className}>{children}</ul>;
 };
 
@@ -132,7 +132,7 @@ Nav.Item = ({ children }: { children: ReactNode }) => (
 Nav.Link = ({ children, href }: { children: ReactNode; href: string }) => (
   <Link
     href={href}
-    className="z-50 flex px-2 py-1 mb-1 text-lg font-medium list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1"
+    className="z-50 flex px-2 py-1 mb-1 text-lg font-medium font-mono list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1"
   >
     {children}
   </Link>

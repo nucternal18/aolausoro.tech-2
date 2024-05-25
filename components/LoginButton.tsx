@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useUser } from "@clerk/nextjs";
+import { useUser, SignOutButton, useAuth } from "@clerk/nextjs";
 import Nav from "./navigation/NavComponents";
 import { FiLogOut } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 
 const LoginButton = () => {
   const { isLoaded, isSignedIn, user } = useUser();
+  const { sessionId } = useAuth();
 
   return (
     <>
@@ -50,10 +51,14 @@ const LoginButton = () => {
           </Nav.Item>
 
           <Nav.Item>
-            <Nav.Link href="/auth/logout">
-              <FiLogOut />
-              <span className="block md:hidden text-base ml-2">Logout</span>
-            </Nav.Link>
+            <Button variant={"ghost"}>
+              <SignOutButton
+                redirectUrl="/"
+                signOutOptions={{ sessionId: sessionId as string }}
+              >
+                <FiLogOut className="shadow-md shadow-neutral-500 dark:shadow-orange-500" />
+              </SignOutButton>
+            </Button>
           </Nav.Item>
         </>
       )}

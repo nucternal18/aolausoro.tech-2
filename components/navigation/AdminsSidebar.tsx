@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { FiLogOut } from "react-icons/fi";
+import { SignOutButton, useAuth } from "@clerk/nextjs";
 
 import {
   FaHome,
   FaUserCircle,
   FaMailBulk,
   FaRegCalendarAlt,
-  FaRegCalendarPlus,
+  FaImages,
 } from "react-icons/fa";
+import { GoIssueOpened } from "react-icons/go";
 import { useRouter } from "next/navigation";
 
 // components
@@ -31,10 +32,12 @@ import {
   globalSelector,
   setMobileDrawerOpened,
 } from "@app/GlobalReduxStore/features/globalSlice";
+import { Button } from "@components/ui/button";
 
 export function AdminsSidebar() {
+  const { sessionId, isSignedIn } = useAuth();
   return (
-    <aside className="z-10  flex flex-initial font-mono px-2  bg-background  md:h-full  md:left-0  md:top-0 md:bottom-0   md:overflow-hidden md:w-72 ">
+    <aside className="z-10  flex flex-initial px-2  bg-background  md:h-full  md:left-0  md:top-0 md:bottom-0   md:overflow-hidden md:w-72 ">
       <nav className="flex flex-wrap items-center justify-between min-w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap md:overflow-y-auto">
         {/* Collapse */}
         <div
@@ -66,6 +69,18 @@ export function AdminsSidebar() {
                 <span>Messages</span>
               </ActiveLink>
             </li>
+            <li>
+              <ActiveLink href="/protected/admin/issues">
+                <GoIssueOpened fontSize={18} className="mr-2 " />
+                <span>Issues</span>
+              </ActiveLink>
+            </li>
+            <li>
+              <ActiveLink href="/protected/admin/wiki">
+                <FaImages fontSize={18} className="mr-2 " />
+                <span>Wiki</span>
+              </ActiveLink>
+            </li>
           </ul>
 
           {/* Divider */}
@@ -93,13 +108,11 @@ export function AdminsSidebar() {
           {/* Divider */}
           <Separator className="my-4 " />
           <ul className="flex flex-col list-none md:min-w-full md:mb-4 px-1">
-            <Link
-              href={"/auth/logout"}
-              className="flex items-center text-gray-900 uppercase  hover:text-gray-500 dark:hover:text-yellow-500 dark:text-gray-200"
-            >
-              <FiLogOut fontSize={18} className="mr-2" />
-              <p className="flex flex-row py-3 text-lg ">Logout</p>
-            </Link>
+            {isSignedIn ? (
+              <Button className="shadow-md shadow-neutral-500 dark:shadow-orange-500">
+                <SignOutButton redirectUrl="/" signOutOptions={{ sessionId }} />
+              </Button>
+            ) : null}
           </ul>
         </div>
       </nav>
@@ -108,6 +121,7 @@ export function AdminsSidebar() {
 }
 
 export function MobileAdminSidebar({ height }: { height: number }) {
+  const { sessionId, isSignedIn } = useAuth();
   const SCROLL_AREA_HEIGHT = height - 100;
   const dispatch = useAppDispatch();
   const { mobileDrawerOpened } = useAppSelector(globalSelector);
@@ -122,9 +136,9 @@ export function MobileAdminSidebar({ height }: { height: number }) {
   };
 
   return (
-    <header>
+    <header className="flex items-center justify-between">
       <Sheet open={mobileDrawerOpened} onOpenChange={handleOpenChange}>
-        <SheetTrigger className="navbar-burger flex items-center p-4 text-blue-600">
+        <SheetTrigger className="navbar-burger flex items-center p-4 text-primary">
           <svg
             className="block h-6 w-6 fill-current"
             viewBox="0 0 20 20"
@@ -180,6 +194,18 @@ export function MobileAdminSidebar({ height }: { height: number }) {
                     <span>Messages</span>
                   </ActiveLink>
                 </li>
+                <li>
+                  <ActiveLink href="/protected/admin/issues">
+                    <GoIssueOpened fontSize={18} className="mr-2 " />
+                    <span>Issues</span>
+                  </ActiveLink>
+                </li>
+                <li>
+                  <ActiveLink href="/protected/admin/wiki">
+                    <FaImages fontSize={18} className="mr-2 " />
+                    <span>Wiki</span>
+                  </ActiveLink>
+                </li>
               </ul>
 
               {/* Divider */}
@@ -203,22 +229,15 @@ export function MobileAdminSidebar({ height }: { height: number }) {
                   </ActiveLink>
                 </li>
               </ul>
-
-              {/* Divider */}
-              <Separator className="my-4 " />
-              <ul className="flex flex-col list-none md:min-w-full md:mb-4 px-1">
-                <Link
-                  href={"/auth/logout"}
-                  className="flex items-center text-gray-900 uppercase  hover:text-gray-500 dark:hover:text-yellow-500 dark:text-gray-200"
-                >
-                  <FiLogOut fontSize={18} className="mr-2" />
-                  <p className="flex flex-row py-3 text-lg ">Logout</p>
-                </Link>
-              </ul>
             </div>
           </ScrollArea>
         </SheetContent>
       </Sheet>
+      {isSignedIn ? (
+        <Button className="shadow-md shadow-neutral-500 dark:shadow-orange-500">
+          <SignOutButton redirectUrl="/" signOutOptions={{ sessionId }} />
+        </Button>
+      ) : null}
     </header>
   );
 }
