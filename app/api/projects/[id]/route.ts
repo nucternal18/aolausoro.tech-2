@@ -1,8 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
+import { NextResponse, NextRequest } from "next/server";
+import { getAuth } from "@clerk/nextjs/server";
 import prisma from "lib/prismadb";
-import { NextResponse } from "next/server";
 import { partialProjectSchema } from "schema/Project";
-import { auth } from "auth";
 
 /**
  * @description method to get a project by id
@@ -10,21 +10,20 @@ import { auth } from "auth";
  * @returns
  */
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const session = await auth();
+  const { userId } = getAuth(req);
 
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  if (!session.user.isAdmin) {
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
     return new Response(
       "Not Authorized. You do not have permission to perform this operation.",
       {
@@ -56,21 +55,20 @@ export async function GET(
  * @returns
  */
 export async function PUT(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const session = await auth();
+  const { userId } = getAuth(req);
 
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  if (!session.user.isAdmin) {
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
     return new Response(
       "Not Authorized. You do not have permission to perform this operation.",
       {
@@ -134,21 +132,20 @@ export async function PUT(
  * @returns
  */
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const session = await auth();
+  const { userId } = getAuth(req);
 
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  if (!session.user.isAdmin) {
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
     return new Response(
       "Not Authorized. You do not have permission to perform this operation.",
       {

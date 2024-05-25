@@ -13,7 +13,7 @@ export const userSchema = z.object({
   image: z.string().url(),
   isAdmin: z.boolean(),
   clerkId: z.string(),
-  emailVerified: z.string().optional(),
+  emailVerified: z.date().optional(),
   projects: z.lazy(() => z.array(projectSchema)),
   jobs: z.lazy(() => z.array(jobSchema)),
   issues: z.lazy(() => z.array(issueSchema)),

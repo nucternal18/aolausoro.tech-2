@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
-import { auth } from "auth";
+import { NextResponse, NextRequest } from "next/server";
+import { getAuth } from "@clerk/nextjs/server";
+import prisma from "@lib/prismadb";
 
 const cloudinary = require("cloudinary").v2;
 
@@ -9,20 +10,20 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function POST(req: Request) {
-  const session = await auth();
+export async function POST(req: NextRequest) {
   const { data } = await req.json();
 
-  if (!session) {
-    return new Response(
-      "Not Authorized. You do not have permission to perform this operation.",
-      {
-        status: 401,
-      },
-    );
+  const { userId } = getAuth(req);
+
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  if (!session.user.isAdmin) {
+  const user = await prisma.user.findUnique({
+    where: { clerkId: userId },
+  });
+
+  if (!user?.isAdmin) {
     return new Response(
       "Not Authorized. You do not have permission to perform this operation.",
       {
