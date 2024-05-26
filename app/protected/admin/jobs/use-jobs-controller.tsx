@@ -20,6 +20,13 @@ import { partialJobSchema, type PartialJobProps } from "schema/Job";
 // components
 import { useToast } from "@components/ui/use-toast";
 
+/**
+ * Custom hook for managing jobs data and operations.
+ *
+ * @param id - The ID of the job.
+ * @param setOpen - Optional state setter for controlling the open state of a component.
+ * @returns An object containing jobs data, job data, loading states, form instance, and various handlers.
+ */
 export default function useJobsController(
   id?: string,
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>,
@@ -73,7 +80,14 @@ export default function useJobsController(
   // job mutations
   const [addJob, { isLoading: isCreating }] = useCreateJobMutation();
   const [updateJob, { isLoading: isUpdating }] = useUpdateJobMutation();
+  const [deleteJob, { isLoading: isDeleting }] = useDeleteJobMutation();
 
+  /**
+   * Handles the creation of a job.
+   *
+   * @param {PartialJobProps} data - The data for the job to be created.
+   * @returns {Promise<void>} - A promise that resolves when the job creation is complete.
+   */
   const createJobHandler: SubmitHandler<PartialJobProps> = useCallback(
     async (data) => {
       try {
@@ -97,6 +111,11 @@ export default function useJobsController(
     [],
   );
 
+  /**
+   * Handles the submission of edited job data.
+   *
+   * @param data - The partial job data to be updated.
+   */
   const editJobHandler: SubmitHandler<PartialJobProps> = useCallback(
     async (data) => {
       const jobData = {
@@ -123,6 +142,31 @@ export default function useJobsController(
     [],
   );
 
+  /**
+   * Handles the deletion of a job.
+   *
+   * @param {string} id - The ID of the job to be deleted.
+   * @returns {Promise<void>} - A promise that resolves when the job is successfully deleted.
+   */
+  const deleteJobHandler = useCallback(async (id: string) => {
+    try {
+      const response = await deleteJob(id).unwrap();
+
+      if (response.success) {
+        refetch();
+        toast({
+          title: "Success!! Job deleted.",
+          description: response.message,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error!!",
+        description: "Error deleting job",
+      });
+    }
+  }, []);
+
   return {
     jobs,
     job,
@@ -130,8 +174,10 @@ export default function useJobsController(
     isLoadingJob,
     isCreating,
     isUpdating,
+    isDeleting,
     form,
     createJobHandler,
     editJobHandler,
+    deleteJobHandler,
   };
 }

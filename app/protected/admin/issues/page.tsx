@@ -4,7 +4,7 @@ import { Typography } from "@components/Typography";
 
 export default function IssuePage() {
   return (
-    <section className="p-4">
+    <section className="container flex-grow w-full h-screen p-2 sm:p-6 space-y-4  mx-auto">
       <div className="flex items-center justify-between">
         <div>
           <Typography variant="h2" className="text-primary">

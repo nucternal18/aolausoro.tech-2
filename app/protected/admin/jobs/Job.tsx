@@ -6,10 +6,23 @@ import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 
 import JobInfo from "./JobInfo";
 import type { PartialJobProps } from "schema/Job";
+import { Button } from "@components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@components/ui/card";
+import { cn } from "@lib/utils";
+
+import useJobsController from "./use-jobs-controller";
 
 export function JobCard({ job }: { job: PartialJobProps }) {
   const router = useRouter();
   const date = moment(job.createdAt).format("MMMM Do, YYYY");
+  const { deleteJobHandler, isDeleting } = useJobsController();
 
   const statusColor =
     job.status === "Pending"
@@ -17,63 +30,72 @@ export function JobCard({ job }: { job: PartialJobProps }) {
       : job.status === "Interviewing"
         ? "bg-green-500"
         : "bg-red-500";
+
+  const shadowColor =
+    job.status === "Pending"
+      ? "shadow-yellow-500/50"
+      : job.status === "Interviewing"
+        ? "shadow-green-500/50"
+        : "shadow-red-500/50";
+
   const setEditJob = () => {
-    // dispatch({
-    //   type: ActionType.JOB_EDIT_STATUS,
-    //   payload: true,
-    // });
-    router.push(`/admin/jobs/${job.id}`);
+    router.push(`/protected/admin/jobs/${job.id}`);
   };
+
   return (
-    <div className="px-1 py-2 bg-white dark:bg-gray-900 shadow-xl mt-5 mx-2 md:p-4">
-      <header className="flex gap-4 items-center border-b-2 pb-4">
-        <div className="inline-flex items-center justify-center p-2 bg-teal-500 rounded-md shadow-lg text-white w-12 h-12">
-          {job.company?.charAt(0)}
+    <Card className={cn(" bg-muted shadow-xl", shadowColor)}>
+      <CardHeader>
+        <div className="flex flex-row items-center gap-4">
+          <CardTitle className="inline-flex items-center justify-center p-2 bg-teal-500 rounded-md shadow-lg text-white w-12 h-12">
+            {job.company?.charAt(0)}
+          </CardTitle>
+          <CardDescription>
+            <h5 className="text-lg font-base font-mono capitalize">
+              {job.position}
+            </h5>
+            <p className="text-sm font-base font-mono text-gray-500 capitalize">
+              {job.company}
+            </p>
+          </CardDescription>
         </div>
-        <div>
-          <h5 className="text-lg font-base font-mono capitalize">
-            {job.position}
-          </h5>
-          <p className="text-sm font-base font-mono text-gray-500 capitalize">
-            {job.company}
-          </p>
+      </CardHeader>
+      <CardContent>
+        <div className="my-2 grid grid-cols-2 border-b-2 py-4">
+          <JobInfo
+            icon={<FaLocationArrow fontSize={18} />}
+            text={job.jobLocation as string}
+          />
+          <JobInfo icon={<FaCalendarAlt fontSize={18} />} text={date} />
+          <JobInfo
+            icon={<FaBriefcase fontSize={18} />}
+            text={job.jobType as string}
+          />
+          <div
+            className={`${statusColor} px-2 py-1 font-mono rounded-md shadow-lg text-white w-24`}
+          >
+            {job.status}
+          </div>
         </div>
-      </header>
-      <div className="my-2 grid grid-cols-2 border-b-2 py-4">
-        <JobInfo
-          icon={<FaLocationArrow fontSize={18} />}
-          text={job.jobLocation as string}
-        />
-        <JobInfo icon={<FaCalendarAlt fontSize={18} />} text={date} />
-        <JobInfo
-          icon={<FaBriefcase fontSize={18} />}
-          text={job.jobType as string}
-        />
-        <div
-          className={`${statusColor} px-2 py-1 font-mono rounded-md shadow-lg text-white w-24`}
-        >
-          {job.status}
-        </div>
-      </div>
-      <footer>
+      </CardContent>
+      <CardFooter>
         <div className="flex flex-row items-center gap-2">
-          <button
+          <Button
             type="button"
             className="capitalize text-sm font-base font-mono bg-cyan-500 text-white py-2 px-4 rounded-md shadow-lg"
             onClick={setEditJob}
           >
             edit
-          </button>
+          </Button>
 
-          <button
-            type="button"
-            className="px-4 py-2 bg-red-500 rounded-md shadow-lg capitalize text-sm font-base font-mono text-white"
-            // onClick={() => deleteJob(id as string)}
+          <Button
+            disabled={isDeleting}
+            variant={"destructive"}
+            onClick={() => deleteJobHandler(job.id as string)}
           >
             delete
-          </button>
+          </Button>
         </div>
-      </footer>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

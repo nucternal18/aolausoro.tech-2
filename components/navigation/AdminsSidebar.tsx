@@ -11,20 +11,33 @@ import {
   FaImages,
 } from "react-icons/fa";
 import { GoIssueOpened } from "react-icons/go";
-import { useRouter } from "next/navigation";
 
 // components
 import ActiveLink from "../ActiveLink";
-import { cn } from "@lib/utils";
-import { Separator } from "@components/ui/separator";
+import { Sheet, SheetContent, SheetTrigger } from "@components/ui/sheet";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@components/ui/sheet";
-import { ScrollArea } from "@components/ui/scroll-area";
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "@components/ui/tooltip";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@components/ui/breadcrumb";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@components/ui/dropdown-menu";
+import { ModeToggle } from "@components/ModeToggle";
 
 // redux global state
 import { useAppDispatch, useAppSelector } from "@app/GlobalReduxStore/hooks";
@@ -33,211 +46,276 @@ import {
   setMobileDrawerOpened,
 } from "@app/GlobalReduxStore/features/globalSlice";
 import { Button } from "@components/ui/button";
+import {
+  Home,
+  Settings,
+  LogOutIcon,
+  PanelLeft,
+  Search,
+  type LucideProps,
+} from "lucide-react";
+import { Input } from "@components/ui/input";
+import Image from "next/image";
+import React, { useState } from "react";
+import type { IconType } from "react-icons/lib";
+
+type AdminLink = {
+  id: number;
+  url: string;
+  text: string;
+  Icon: IconType;
+};
+
+const adminLinks: Array<AdminLink> = [
+  {
+    id: 1,
+    url: "/protected/admin",
+    text: "Dashboard",
+    Icon: FaHome,
+  },
+  {
+    id: 2,
+    url: "/protected/admin/jobs",
+    text: "Jobs",
+    Icon: FaRegCalendarAlt,
+  },
+  {
+    id: 3,
+    url: "/protected/admin/projects",
+    text: "Projects",
+    Icon: FaUserCircle,
+  },
+  {
+    id: 4,
+    url: "/protected/admin/messages",
+    text: "Messages",
+    Icon: FaMailBulk,
+  },
+  {
+    id: 5,
+    url: "/protected/admin/issues",
+    text: "Issues",
+    Icon: GoIssueOpened,
+  },
+  {
+    id: 6,
+    url: "/protected/admin/wiki",
+    text: "Scrap Book",
+    Icon: FaImages,
+  },
+];
 
 export function AdminsSidebar() {
   const { sessionId, isSignedIn } = useAuth();
+  const [currentHref, setCurrentHref] = useState<string>("");
   return (
-    <aside className="z-10  flex flex-initial px-2  bg-background  md:h-full  md:left-0  md:top-0 md:bottom-0   md:overflow-hidden md:w-72 ">
-      <nav className="flex flex-wrap items-center justify-between min-w-full px-0 mx-auto md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap md:overflow-y-auto">
-        {/* Collapse */}
-        <div
-          className={cn(
-            "md:flex md:flex-col md:items-stretch md:opacity-100  w-full md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto flex-1 rounded ",
-          )}
-        >
-          {/* Divider */}
-          <Separator className="my-4 " />
-
-          {/* Navigation */}
-          <ul className="flex flex-col list-none md:flex-col md:min-w-full md:mb-4 px-1">
-            <li>
-              <ActiveLink href="/protected/admin">
-                <FaHome fontSize={18} className="mr-2 " />
-                <span>Admin Home</span>
-              </ActiveLink>
-            </li>
-
-            <li>
-              <ActiveLink href="/protected/admin/projects">
-                <FaUserCircle fontSize={18} className="mr-2 " />
-                <span>Manage Projects</span>
-              </ActiveLink>
-            </li>
-            <li>
-              <ActiveLink href="/protected/admin/messages">
-                <FaMailBulk fontSize={18} className="mr-2 " />
-                <span>Messages</span>
-              </ActiveLink>
-            </li>
-            <li>
-              <ActiveLink href="/protected/admin/issues">
-                <GoIssueOpened fontSize={18} className="mr-2 " />
-                <span>Issues</span>
-              </ActiveLink>
-            </li>
-            <li>
-              <ActiveLink href="/protected/admin/wiki">
-                <FaImages fontSize={18} className="mr-2 " />
-                <span>Wiki</span>
-              </ActiveLink>
-            </li>
-          </ul>
-
-          {/* Divider */}
-          <Separator className="my-4 " />
-
-          <h2
-            className="text-base pl-1
-          font-semibold
-          tracking-widest
-          uppercase
-          text-gray-900 dark:text-gray-300 dark:hover:text-yellow-500
-          "
+    <TooltipProvider>
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+        <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+          <ActiveLink
+            href="/"
+            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary-foreground text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+            currentHref={currentHref}
           >
-            Jobs
-          </h2>
-          <ul className="flex flex-col list-none md:flex-col md:min-w-full md:mb-4 px-1">
-            <li>
-              <ActiveLink href="/protected/admin/jobs">
-                <FaRegCalendarAlt fontSize={18} className="mr-2 " />
-                <span>All Jobs</span>
-              </ActiveLink>
-            </li>
-          </ul>
-
-          {/* Divider */}
-          <Separator className="my-4 " />
-          <ul className="flex flex-col list-none md:min-w-full md:mb-4 px-1">
-            {isSignedIn ? (
-              <Button className="shadow-md shadow-neutral-500 dark:shadow-orange-500">
-                <SignOutButton redirectUrl="/" signOutOptions={{ sessionId }} />
+            <img
+              src={"/android-chrome-512x512.png"}
+              alt="logo"
+              className="h-4 w-4 transition-all group-hover:scale-110"
+            />
+            <span className="sr-only">Aolausoro.tech</span>
+          </ActiveLink>
+          {adminLinks.map((link) => {
+            const { Icon } = link;
+            return (
+              <Tooltip key={`${link.id}-${link.text}`}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={"ghost"}
+                    className="p-0"
+                    onClick={() => setCurrentHref(link.url)}
+                  >
+                    <ActiveLink
+                      href={link.url}
+                      className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                      currentHref={currentHref}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span className="sr-only">{link.text}</span>
+                    </ActiveLink>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">{link.text}</TooltipContent>
+              </Tooltip>
+            );
+          })}
+        </nav>
+        <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={"ghost"} className="p-0">
+                <ActiveLink
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                  currentHref={currentHref}
+                >
+                  <Settings className="h-5 w-5" />
+                  <span className="sr-only">Settings</span>
+                </ActiveLink>
               </Button>
-            ) : null}
-          </ul>
-        </div>
-      </nav>
-    </aside>
+            </TooltipTrigger>
+            <TooltipContent side="right">Settings</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <ModeToggle />
+            </TooltipTrigger>
+            <TooltipContent side="right">Settings</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {isSignedIn ? (
+                <Button
+                  variant={"ghost"}
+                  className="shadow-md shadow-neutral-500 dark:shadow-orange-500 flex h-9 w-9 items-center p-0 justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                >
+                  <SignOutButton redirectUrl="/" signOutOptions={{ sessionId }}>
+                    <LogOutIcon className="w-4 h-4" />
+                  </SignOutButton>
+                </Button>
+              ) : null}
+            </TooltipTrigger>
+            <TooltipContent side="right">Logout</TooltipContent>
+          </Tooltip>
+        </nav>
+      </aside>
+    </TooltipProvider>
   );
 }
 
 export function MobileAdminSidebar({ height }: { height: number }) {
+  const [currentHref, setCurrentHref] = useState<string>("");
   const { sessionId, isSignedIn } = useAuth();
   const SCROLL_AREA_HEIGHT = height - 100;
   const dispatch = useAppDispatch();
   const { mobileDrawerOpened } = useAppSelector(globalSelector);
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    router.push(`/auth/logout`);
-  };
 
   const handleOpenChange = (opened: boolean) => {
     dispatch(setMobileDrawerOpened(opened));
   };
 
   return (
-    <header className="flex items-center justify-between">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet open={mobileDrawerOpened} onOpenChange={handleOpenChange}>
-        <SheetTrigger className="navbar-burger flex items-center p-4 text-primary">
-          <svg
-            className="block h-6 w-6 fill-current"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Mobile menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-          </svg>
-          <span hidden>Mobile Menu</span>
+        <SheetTrigger asChild>
+          <Button size="icon" variant="outline" className="sm:hidden">
+            <PanelLeft className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
+          </Button>
         </SheetTrigger>
-        <SheetContent side={"left"} className="w-[240px]">
-          <SheetHeader>
-            <SheetTitle>
-              <div className="flex justify-between w-full">
-                <div className="flex items-center text-gray-900 dark:text-gray-200 hover:text-yellow-500">
-                  <Link
-                    href="/"
-                    className="flex items-center text-xs uppercase whitespace-no-wrap font-bold text-left  md:pb-2"
+        <SheetContent side="left" className="sm:max-w-xs">
+          <nav className="grid gap-6 text-lg font-medium">
+            <ActiveLink
+              href="/"
+              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+              currentHref={currentHref}
+            >
+              <img
+                src={"/android-chrome-512x512.png"}
+                alt="logo"
+                className="h-5 w-5 transition-all group-hover:scale-110"
+              />
+              <span className="sr-only">Aolausoro.tech</span>
+            </ActiveLink>
+            {adminLinks.map((link) => {
+              const { Icon } = link;
+              return (
+                <Button
+                  key={`${link.id}-${link.text}`}
+                  variant={"ghost"}
+                  className="p-0 justify-start"
+                  onClick={() => setCurrentHref(link.url)}
+                  asChild
+                >
+                  <ActiveLink
+                    key={`${link.id}-${link.text}`}
+                    href={link.url}
+                    className="group flex items-center gap-4  text-muted-foreground hover:text-foreground"
+                    currentHref={currentHref}
                   >
-                    <img
-                      src={"/android-chrome-512x512.png"}
-                      alt="logo"
-                      className="h-8 w-8"
-                    />
-                    <span className="ml-1">aolausoro.tech</span>
-                  </Link>
-                </div>
-              </div>
-            </SheetTitle>
-          </SheetHeader>
-          <ScrollArea
-            className={`  py-12`}
-            style={{ height: SCROLL_AREA_HEIGHT }}
-          >
-            <div className="w-full">
-              <ul className="flex flex-col list-none md:flex-col md:min-w-full md:mb-4 px-1">
-                <li>
-                  <ActiveLink href="/admin">
-                    <FaHome fontSize={18} className="mr-2 " />
-                    <span>Admin Home</span>
+                    <Icon className="h-5 w-5 transition-all group-hover:scale-110" />
+                    {link.text}
                   </ActiveLink>
-                </li>
-
-                <li>
-                  <ActiveLink href="/protected/admin/projects">
-                    <FaUserCircle fontSize={18} className="mr-2 " />
-                    <span>Manage Projects</span>
-                  </ActiveLink>
-                </li>
-                <li>
-                  <ActiveLink href="/protected/admin/messages">
-                    <FaMailBulk fontSize={18} className="mr-2 " />
-                    <span>Messages</span>
-                  </ActiveLink>
-                </li>
-                <li>
-                  <ActiveLink href="/protected/admin/issues">
-                    <GoIssueOpened fontSize={18} className="mr-2 " />
-                    <span>Issues</span>
-                  </ActiveLink>
-                </li>
-                <li>
-                  <ActiveLink href="/protected/admin/wiki">
-                    <FaImages fontSize={18} className="mr-2 " />
-                    <span>Wiki</span>
-                  </ActiveLink>
-                </li>
-              </ul>
-
-              {/* Divider */}
-              <Separator className="my-4 " />
-
-              <h2
-                className="text-base pl-1
-          font-semibold
-          tracking-widest
-          uppercase
-          text-gray-900 dark:text-gray-300 dark:hover:text-yellow-500
-          "
-              >
-                Jobs
-              </h2>
-              <ul className="flex flex-col list-none md:flex-col md:min-w-full md:mb-4 px-1">
-                <li>
-                  <ActiveLink href="/protected/admin/jobs">
-                    <FaRegCalendarAlt fontSize={18} className="mr-2 " />
-                    <span>All Jobs</span>
-                  </ActiveLink>
-                </li>
-              </ul>
-            </div>
-          </ScrollArea>
+                </Button>
+              );
+            })}
+          </nav>
         </SheetContent>
       </Sheet>
-      {isSignedIn ? (
-        <Button className="shadow-md shadow-neutral-500 dark:shadow-orange-500">
-          <SignOutButton redirectUrl="/" signOutOptions={{ sessionId }} />
-        </Button>
-      ) : null}
+      <Breadcrumb className="hidden md:flex">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="#">Dashboard</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="#">Orders</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Recent Orders</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="relative ml-auto flex-1 md:grow-0">
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="search"
+          placeholder="Search..."
+          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+        />
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="overflow-hidden rounded-full"
+          >
+            <Image
+              src="/android-chrome-512x512.png"
+              width={36}
+              height={36}
+              alt="Avatar"
+              className="overflow-hidden rounded-full"
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>
+            <ActiveLink
+              href="/protected/admin/user-profile"
+              currentHref={currentHref}
+            >
+              My Account
+            </ActiveLink>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            {isSignedIn ? (
+              <Button variant={"ghost"} className="items-start p-0">
+                <SignOutButton redirectUrl="/" signOutOptions={{ sessionId }} />
+              </Button>
+            ) : null}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </header>
   );
 }

@@ -32,12 +32,12 @@ const SearchForm = () => {
   const { form } = useJobsController();
 
   return (
-    <section className="relative p-2  max-w-screen-xl  bg-white font-mono dark:bg-gray-900 shadow-xl mt-5 mx-2 md:mx-auto md:p-4">
+    <section className="relative p-2  container w-full font-mono bg-muted rounded-md  shadow-xl shadow-primary/70 mt-5 mx-auto md:p-4">
       <h3 className="capitalize text-xl font-semibold  text-gray-900 dark:text-gray-200 mb-4">
         search form
       </h3>
       <Form {...form}>
-        <form className="flex w-full flex-col gap-2 md:flex-row">
+        <form className="flex w-full flex-col gap-2 md:gap-4 items-center md:flex-row">
           <FormField
             control={form.control}
             name="status"
