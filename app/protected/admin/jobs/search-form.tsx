@@ -25,6 +25,7 @@ import { jobSelector } from "@app/GlobalReduxStore/features/jobs/jobsSlice";
 
 // controller
 import useJobsController from "./use-jobs-controller";
+import { Typography } from "@components/Typography";
 
 const SearchForm = () => {
   const state = useAppSelector(jobSelector);
@@ -32,18 +33,18 @@ const SearchForm = () => {
   const { form } = useJobsController();
 
   return (
-    <section className="relative p-2  container w-full font-mono bg-muted rounded-md  shadow-xl shadow-primary/70 mt-5 mx-auto md:p-4">
-      <h3 className="capitalize text-xl font-semibold  text-gray-900 dark:text-gray-200 mb-4">
-        search form
-      </h3>
+    <section className="relative p-2  container w-full font-mono bg-muted rounded-md  gap-4 shadow-xl shadow-primary/70 mt-5 mx-auto md:p-4">
+      <Typography variant="h3" className="text-primary capitalize">
+        Search Jobs
+      </Typography>
       <Form {...form}>
         <form className="flex w-full flex-col gap-2 md:gap-4 items-center md:flex-row">
           <FormField
             control={form.control}
             name="status"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job Status</FormLabel>
+              <FormItem className="w-full md:w-auto">
+                <FormLabel className="text-primary/50">Job Status</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -72,8 +73,8 @@ const SearchForm = () => {
             control={form.control}
             name="jobType"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>aJob Type</FormLabel>
+              <FormItem className="w-full md:w-auto">
+                <FormLabel className="text-primary/50">Job Type</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -102,8 +103,8 @@ const SearchForm = () => {
             control={form.control}
             name="sort"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>SortBy</FormLabel>
+              <FormItem className="w-full md:w-auto">
+                <FormLabel className="text-primary/50">SortBy</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -130,6 +131,7 @@ const SearchForm = () => {
           />
           <Button
             type="button"
+            className="w-full md:w-auto"
             onClick={(e) => {
               e.preventDefault();
               form.reset();

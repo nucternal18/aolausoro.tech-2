@@ -79,6 +79,10 @@ export async function GET(req: NextRequest) {
     offer: offerStats || 0,
   };
 
+  /**
+   * Retrieves the monthly applications statistics for a user.
+   * @returns {Prisma.JsonArray} The aggregated monthly applications statistics.
+   */
   const monthlyApplications = (await prisma.job.aggregateRaw({
     pipeline: [
       { $match: { createdBy: user.id } },
@@ -95,18 +99,18 @@ export async function GET(req: NextRequest) {
       { $limit: 6 },
     ],
   })) as unknown as Prisma.JsonArray;
-  // console.log(
-  //   "🚀 ~ file: route.ts:84 ~ GET ~ monthlyApplications:",
-  //   monthlyApplications
-  // );
+  console.log(
+    "🚀 ~ file: route.ts:84 ~ GET ~ monthlyApplications:",
+    monthlyApplications,
+  );
 
   const monthlyApplicationDSta = JSON.parse(
     JSON.stringify(monthlyApplications),
   );
-  // console.log(
-  //   "🚀 ~ file: route.ts:88 ~ GET ~ monthlyApplicationDSta:",
-  //   monthlyApplicationDSta
-  // );
+  console.log(
+    "🚀 ~ file: route.ts:88 ~ GET ~ monthlyApplicationDSta:",
+    monthlyApplicationDSta,
+  );
 
   const monthlyApplicationStats = monthlyApplicationDSta.map(
     (item: MonthlyApplicationDStaProps) => {
@@ -121,10 +125,10 @@ export async function GET(req: NextRequest) {
       return { date, count };
     },
   );
-  // console.log(
-  //   "🚀 ~ file: route.ts:100 ~ monthlyApplicationStats ~ monthlyApplicationStats:",
-  //   monthlyApplicationStats
-  // );
+  console.log(
+    "🚀 ~ file: route.ts:100 ~ monthlyApplicationStats ~ monthlyApplicationStats:",
+    monthlyApplicationStats,
+  );
 
   if (monthlyApplications) {
     return NextResponse.json({ defaultStats, monthlyApplicationStats });

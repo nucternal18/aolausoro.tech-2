@@ -17,8 +17,7 @@ function ActiveLink({
   className?: string;
 }) {
   const pathName = usePathname();
-  console.log("🚀 ~ pathName:", pathName);
-  console.log("🚀 ~ href:", currentHref);
+
   return (
     <Link
       href={href}
