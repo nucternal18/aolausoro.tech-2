@@ -6,6 +6,7 @@ import {
   messageApiSlice,
   projectApiSlice,
   jobsApiSlice,
+  wikiApiSlice,
 } from "./api";
 import userReducer from "./features/users/usersSlice";
 import jobsReducer from "./features/jobs/jobsSlice";
@@ -18,6 +19,7 @@ const reducers = {
   [messageApiSlice.reducerPath]: messageApiSlice.reducer,
   [projectApiSlice.reducerPath]: projectApiSlice.reducer,
   [jobsApiSlice.reducerPath]: jobsApiSlice.reducer,
+  [wikiApiSlice.reducerPath]: wikiApiSlice.reducer,
   user: userReducer,
   jobs: jobsReducer,
   projects: projectReducer,
@@ -35,6 +37,7 @@ export const store = configureStore({
       messageApiSlice.middleware,
       projectApiSlice.middleware,
       jobsApiSlice.middleware,
+      wikiApiSlice.middleware,
     ]),
   devTools: process.env.NODE_ENV !== "production",
 });

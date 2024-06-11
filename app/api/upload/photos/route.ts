@@ -1,14 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import prisma from "@lib/prismadb";
-
-const cloudinary = require("cloudinary").v2;
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import cloudinary from "@lib/cloudinary";
 
 export async function POST(req: NextRequest) {
   const { data } = await req.json();

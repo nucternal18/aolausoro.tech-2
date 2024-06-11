@@ -99,3 +99,10 @@ export const jobsApiSlice = createApi({
   keepUnusedDataFor: 5000,
   endpoints: (builder) => ({}),
 });
+export const wikiApiSlice = createApi({
+  reducerPath: "Wiki",
+  baseQuery: baseQueryWithReAuth,
+  tagTypes: ["Wiki"],
+  keepUnusedDataFor: 5000,
+  endpoints: (builder) => ({}),
+});
