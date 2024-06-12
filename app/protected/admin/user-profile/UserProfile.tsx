@@ -1,6 +1,7 @@
 "use client";
 import type { PartialUserProps } from "schema/User";
 import { Button } from "@components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -13,6 +14,7 @@ import {
 import { Input } from "@components/ui/input";
 
 import useUserController from "./useUserController";
+import FileUploader from "@components/file-uploader";
 
 interface IUserProfile {
   randomImage: string;
@@ -20,7 +22,8 @@ interface IUserProfile {
 }
 
 function UserProfileComponent({ randomImage, user }: IUserProfile) {
-  const { form, onSubmit } = useUserController();
+  const { form, onSubmit, pdfChangeHandler, progress, isUploading } =
+    useUserController();
   return (
     <section className="relative pb-2 h-full justify-center items-center max-w-screen-lg mx-auto">
       <div className="flex flex-col pb-5">
@@ -39,6 +42,10 @@ function UserProfileComponent({ randomImage, user }: IUserProfile) {
             <h1 className="font-bold text-3xl text-center mt-3">
               {user?.name}
             </h1>
+          </div>
+
+          <div>
+            <FileUploader form={form} progress={progress} onSubmit={onSubmit} />
           </div>
 
           <div className="px-2">
