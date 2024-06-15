@@ -50,7 +50,7 @@ const Portfolio = () => {
       </section>
       <section className="relative max-w-screen-lg mx-auto px-4 lg:px-0 mb-4">
         <Suspense>
-          <div className="grid grid-cols-1 gap-3 px-4 my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0">
+          <div className="grid grid-cols-1 gap-3  my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0">
             {projects &&
               publishedProjects?.map((doc) => (
                 <PortfolioCard key={doc.id} project={doc} />

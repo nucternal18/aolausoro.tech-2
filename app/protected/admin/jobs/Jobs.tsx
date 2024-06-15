@@ -30,16 +30,23 @@ export function JobsContainer() {
   }
 
   return (
-    <section className="mt-5 text-gray-900 dark:text-gray-200 max-w-screen-2xl mx-1 sm:mx-auto ">
+    <section className="mt-5 text-primary mx-1 sm:mx-0 ">
       <Typography variant="h4" className="text-primary">
         {totalJobs} job{jobsArr ? jobsArr?.length > 1 && "s" : null} found
       </Typography>
 
-      <div className=" grid grid-cols-1 sm:grid-cols-2  gap-2 my-5 ">
-        {jobsArr?.map((job) => <JobCard key={job.id} job={job} />)}
-      </div>
-      {numberOfPages > 1 && <PageBtnContainer numberOfPages={numberOfPages} />}
-      <PageBtnContainer numberOfPages={numberOfPages} />
+      {isLoadingJobs ? (
+        <section className="flex items-center justify-center h-full">
+          <Loader classes="w-8 h-8" />
+        </section>
+      ) : (
+        <>
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-2 my-5 ">
+            {jobsArr?.map((job) => <JobCard key={job.id} job={job} />)}
+          </div>
+          <PageBtnContainer numberOfPages={numberOfPages} />
+        </>
+      )}
     </section>
   );
 }

@@ -10,6 +10,7 @@ import LoginButton from "components/LoginButton";
 import { ModeToggle } from "@components/ModeToggle";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -77,20 +78,15 @@ export function Navbar({ textColor = "text-primary" }: NavProps) {
 }
 
 export function MobileNavbar({ height }: { height: number }) {
-  const SCROLL_AREA_HEIGHT = height - 100;
-  const dispatch = useAppDispatch();
-  const { mobileDrawerOpened } = useAppSelector(globalSelector);
-
-  const handleOpenChange = (opened: boolean) => {
-    dispatch(setMobileDrawerOpened(opened));
-  };
+  const SHEET_HEIGHT = height - 200;
+  const SCROLL_AREA_HEIGHT = height - 400;
 
   return (
     <header>
-      <Sheet open={mobileDrawerOpened} onOpenChange={handleOpenChange}>
-        <SheetTrigger className="navbar-burger flex items-center p-4 text-blue-600">
+      <Sheet>
+        <SheetTrigger className="navbar-burger flex items-center p-4 text-primary">
           <svg
-            className="block h-6 w-6 fill-current"
+            className="block h-6 w-6 fill-current text-primary"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -99,35 +95,48 @@ export function MobileNavbar({ height }: { height: number }) {
           </svg>
           <span hidden>Mobile Menu</span>
         </SheetTrigger>
-        <SheetContent side={"left"} className="w-[240px]">
+
+        <SheetContent
+          side={"bottom"}
+          className={`h-[${SHEET_HEIGHT}] shadow shadow-neutral-400`}
+        >
           <SheetHeader>
             <SheetTitle>
               <div className="flex justify-between w-full">
-                <div className="flex items-center text-gray-900 dark:text-gray-200 hover:text-yellow-500">
-                  <Link
-                    href="/"
-                    className="flex items-center text-xs uppercase whitespace-no-wrap font-bold text-left  md:pb-2"
-                  >
-                    <img
-                      src={"/android-chrome-512x512.png"}
-                      alt="logo"
-                      className="h-8 w-8"
-                    />
-                    <span className="ml-1">aolausoro.tech</span>
-                  </Link>
+                <div className="flex items-center text-primary">
+                  <SheetClose asChild>
+                    <Link
+                      href="/"
+                      className="flex items-center text-xs uppercase whitespace-no-wrap font-bold text-left  md:pb-2"
+                    >
+                      <img
+                        src={"/android-chrome-512x512.png"}
+                        alt="logo"
+                        className="h-8 w-8"
+                      />
+                      <span className="ml-1">aolausoro.tech</span>
+                    </Link>
+                  </SheetClose>
                 </div>
               </div>
             </SheetTitle>
           </SheetHeader>
           <ScrollArea
-            className={`  py-12`}
+            className={`text-primary  py-12`}
             style={{ height: SCROLL_AREA_HEIGHT }}
           >
             {links.map((link) => {
               const { id, url, text } = link;
               return (
                 <Nav.Item key={id}>
-                  <Nav.Link href={url}>{text}</Nav.Link>
+                  <SheetClose asChild>
+                    <Link
+                      href={url}
+                      className="z-50 flex px-2 mb-1 text-lg font-medium font-mono list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1"
+                    >
+                      {text}
+                    </Link>
+                  </SheetClose>
                 </Nav.Item>
               );
             })}

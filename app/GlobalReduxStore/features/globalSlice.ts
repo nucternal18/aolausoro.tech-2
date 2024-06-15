@@ -1,6 +1,10 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import type { CvProps } from "schema/cv";
 
 type GlobalState = {
   loading: boolean;
@@ -9,6 +13,7 @@ type GlobalState = {
   drawerOpened: boolean;
   mobileDrawerOpened: boolean;
   isEdit: boolean;
+  cv: Pick<CvProps, "id" | "cvUrl">[];
 };
 
 const initialState: GlobalState = {
@@ -18,7 +23,17 @@ const initialState: GlobalState = {
   drawerOpened: false,
   mobileDrawerOpened: false,
   isEdit: false,
+  cv: [],
 };
+
+export const fetchCV = createAsyncThunk(
+  "global/fetchCV",
+  async (): Promise<Pick<CvProps, "id" | "cvUrl">[]> => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cv`);
+    const data = await res.json();
+    return data.data;
+  },
+);
 
 export const globalSlice = createSlice({
   name: "global",
@@ -42,6 +57,15 @@ export const globalSlice = createSlice({
     setOpenModal: (state, { payload }: PayloadAction<boolean>) => {
       state.openModal = payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCV.fulfilled, (state, { payload }) => {
+      console.log(
+        "🚀 ~ file: globalSlice.ts ~ line 85 ~ builder.addCase ~ payload",
+        payload,
+      );
+      state.cv = payload;
+    });
   },
 });
 

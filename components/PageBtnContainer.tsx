@@ -16,7 +16,6 @@ const PageBtnContainer = ({ numberOfPages }: { numberOfPages: number }) => {
     dispatch(setPage(page));
   };
   const prevPage = () => {
-    console.log("prev page");
     let newPage = state.page - 1;
     if (newPage < 1) {
       newPage = numberOfPages;
@@ -24,7 +23,6 @@ const PageBtnContainer = ({ numberOfPages }: { numberOfPages: number }) => {
     changePage(newPage);
   };
   const nextPage = () => {
-    console.log("next page");
     let newPage = state.page + 1;
     if (newPage > numberOfPages) {
       newPage = 1;
@@ -33,7 +31,7 @@ const PageBtnContainer = ({ numberOfPages }: { numberOfPages: number }) => {
   };
   return (
     <div className="font-mono flex flex-row items-center gap-2 ">
-      <Button variant="ghost" onClick={prevPage}>
+      <Button disabled={!(state.page > 1)} variant="ghost" onClick={prevPage}>
         <HiChevronDoubleLeft fontSize={21} />
         prev
       </Button>
@@ -55,7 +53,7 @@ const PageBtnContainer = ({ numberOfPages }: { numberOfPages: number }) => {
           );
         })}
       </div>
-      <Button variant="ghost" onClick={nextPage}>
+      <Button disabled={!(state.page > 1)} variant="ghost" onClick={nextPage}>
         next
         <HiChevronDoubleRight fontSize={21} />
       </Button>

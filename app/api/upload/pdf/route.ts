@@ -5,6 +5,7 @@ import cloudinary from "@lib/cloudinary";
 
 export async function POST(req: NextRequest) {
   const { data } = await req.json();
+  console.log("🚀 ~ POST ~ data:", data);
 
   const { userId } = getAuth(req);
 
@@ -33,8 +34,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(uploadedResponse.secure_url);
   } catch (error) {
     console.error(error);
-    return new Response("Something went wrong uploading image", {
-      status: 500,
-    });
+    return new Response(
+      "Error Uploading PDF. Please try again. Error: " + error,
+      {
+        status: 500,
+      },
+    );
   }
 }

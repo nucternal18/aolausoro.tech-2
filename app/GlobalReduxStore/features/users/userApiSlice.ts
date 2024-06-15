@@ -4,6 +4,8 @@ import axios, { AxiosError } from "axios";
 import { userApiSlice } from "@app/GlobalReduxStore/api";
 import { setError, setImage, setPDF, setUploadProgress } from "./usersSlice";
 import type { PartialUserProps } from "schema/User";
+import type { UploadApiResponse } from "cloudinary";
+import type { PartialCvProps } from "schema/cv";
 
 export const userApi = userApiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,9 +13,21 @@ export const userApi = userApiSlice.injectEndpoints({
       query: () => `/auth/user`,
       providesTags: (result, error, arg) => [{ type: "User", id: result?.id }],
     }),
-    getCV: builder.query<string, void>({
-      query: () => `/auth/cv`,
-      providesTags: (result, error, arg) => [{ type: "User", id: result }],
+    getCV: builder.query<PartialCvProps[], void>({
+      query: () => `/cv`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...(result?.map(
+                (cv) =>
+                  ({
+                    type: "User",
+                    id: cv?.id,
+                  }) as const,
+              ) ?? []),
+              { type: "User", id: "LIST" },
+            ]
+          : [{ type: "User", id: "LIST" }],
     }),
     createCV: builder.mutation<{ success: boolean; message: string }, string>({
       query: (cvUrl) => ({
@@ -59,18 +73,17 @@ export const userApi = userApiSlice.injectEndpoints({
       },
     }),
     uploadPDFCv: builder.mutation<
-      { pdf: string },
-      { url: string; data: string | ArrayBuffer | null }
+      UploadApiResponse,
+      { url: string; data: FormData }
     >({
-      // query: (base64EncodedImage) => ({
-      //   url: `/upload/pdf`,
-      //   method: "POST",
-      //   body: { data: base64EncodedImage },
-      // }),
       queryFn: async ({ url, data }, api, extraOptions, baseQuery) => {
+        console.log("🚀 ~ file: userApiSlice.ts ~ line 85 ~ data", data);
         try {
           const result = await axios.post(url, data, {
             //...other options like headers here
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
             onUploadProgress: (upload) => {
               //Set the progress value to show the progress bar
               const uploadloadProgress = Math.round(

@@ -27,36 +27,30 @@ const LoginButton = () => {
       ) : (
         <>
           <Nav.Item>
-            <Nav.Link href={`/protected/admin/user-profile/${user?.id}`}>
-              <div className="flex flex-row-reverse md:flex-row gap-2 items-center">
-                <p className="mr-2 capitalize text-base block">
-                  {user.firstName}
-                </p>
-                <Image
-                  src={user.imageUrl || "/android-chrome-192x192.png"}
-                  alt="user-profile"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                  style={{ objectFit: "contain" }}
-                />
-              </div>
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
             <Nav.Link href="/protected/admin">
-              <RiAdminFill fontSize={24} />
-              <span className="block md:hidden text-base ml-2">Admin</span>
+              <Button
+                variant={"outline"}
+                className="text-primary shadow shadow-neutral-500 flex items-center"
+              >
+                <RiAdminFill fontSize={18} />
+                <span className="block text-sm ml-2">Admin</span>
+              </Button>
             </Nav.Link>
           </Nav.Item>
 
           <Nav.Item>
-            <Button variant={"ghost"}>
+            <Button
+              variant={"outline"}
+              className="text-primary shadow shadow-neutral-500"
+            >
               <SignOutButton
                 redirectUrl="/"
                 signOutOptions={{ sessionId: sessionId as string }}
               >
-                <FiLogOut className="shadow-md shadow-neutral-500 dark:shadow-orange-500" />
+                <>
+                  <FiLogOut fontSize={18} />
+                  <span className="block text-sm ml-2">Sign Out</span>
+                </>
               </SignOutButton>
             </Button>
           </Nav.Item>

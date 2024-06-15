@@ -56,6 +56,8 @@ jobs:
           echo NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }} >> .env.local
           echo CLERK_WEBHOOK_SECRET=${{ secrets.CLERK_WEBHOOK_SECRET }} >> .env.local
           echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env.local
+          echo NEXT_PUBLIC_CLOUDINARY_NAME=${{ secrets.NEXT_PUBLIC_CLOUDINARY_NAME }} >> .env.local
+          echo NEXT_PUBLIC_CLOUDINARY_PRESET=${{ secrets.NEXT_PUBLIC_CLOUDINARY_PRESET }} >> .env.local
           cat .env.local
       - name: Create .sentryclirc file
         run: |

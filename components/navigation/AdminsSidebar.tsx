@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { SignOutButton, useAuth } from "@clerk/nextjs";
+import Image from "next/image";
+import React, { useState } from "react";
+import type { IconType } from "react-icons/lib";
 
 import {
   FaHome,
@@ -11,6 +14,15 @@ import {
   FaImages,
 } from "react-icons/fa";
 import { GoIssueOpened } from "react-icons/go";
+import {
+  Home,
+  Settings,
+  LogOutIcon,
+  PanelLeft,
+  Search,
+  User,
+  type LucideProps,
+} from "lucide-react";
 
 // components
 import ActiveLink from "../ActiveLink";
@@ -38,6 +50,8 @@ import {
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
 import { ModeToggle } from "@components/ModeToggle";
+import { Button } from "@components/ui/button";
+import { Input } from "@components/ui/input";
 
 // redux global state
 import { useAppDispatch, useAppSelector } from "@app/GlobalReduxStore/hooks";
@@ -45,19 +59,7 @@ import {
   globalSelector,
   setMobileDrawerOpened,
 } from "@app/GlobalReduxStore/features/globalSlice";
-import { Button } from "@components/ui/button";
-import {
-  Home,
-  Settings,
-  LogOutIcon,
-  PanelLeft,
-  Search,
-  type LucideProps,
-} from "lucide-react";
-import { Input } from "@components/ui/input";
-import Image from "next/image";
-import React, { useState } from "react";
-import type { IconType } from "react-icons/lib";
+import useUserController from "@app/protected/admin/user-profile/useUserController";
 
 type AdminLink = {
   id: number;
@@ -108,6 +110,7 @@ const adminLinks: Array<AdminLink> = [
 export function AdminsSidebar() {
   const { sessionId, isSignedIn } = useAuth();
   const [currentHref, setCurrentHref] = useState<string>("");
+  const { userData } = useUserController();
   return (
     <TooltipProvider>
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -154,6 +157,21 @@ export function AdminsSidebar() {
             <TooltipTrigger asChild>
               <Button variant={"ghost"} className="p-0">
                 <ActiveLink
+                  href={`/protected/admin/user-profile/${userData?.id}`}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                  currentHref={currentHref}
+                >
+                  <User className="h-5 w-5" />
+                  <span className="sr-only">User Profile</span>
+                </ActiveLink>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">User Profile</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant={"ghost"} className="p-0">
+                <ActiveLink
                   href="#"
                   className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                   currentHref={currentHref}
@@ -195,6 +213,7 @@ export function AdminsSidebar() {
 export function MobileAdminSidebar({ height }: { height: number }) {
   const [currentHref, setCurrentHref] = useState<string>("");
   const { sessionId, isSignedIn } = useAuth();
+  const { userData } = useUserController();
   const SCROLL_AREA_HEIGHT = height - 100;
   const dispatch = useAppDispatch();
   const { mobileDrawerOpened } = useAppSelector(globalSelector);
@@ -297,10 +316,10 @@ export function MobileAdminSidebar({ height }: { height: number }) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>
             <ActiveLink
-              href="/protected/admin/user-profile"
+              href={`/protected/admin/user-profile/${userData?.id}`}
               currentHref={currentHref}
             >
-              My Account
+              User Profile
             </ActiveLink>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

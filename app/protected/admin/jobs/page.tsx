@@ -6,13 +6,15 @@ import Header from "@components/header";
 
 function Jobs() {
   return (
-    <section className="container max-w-screen-xl flex-grow w-full px-2 py-4 mx-auto ">
-      <section className="flex items-center justify-between w-full mb-4">
+    <section className="w-full min-h-screen container mx-auto py-4  ">
+      <section className="flex container items-center mx-auto justify-between w-full mb-4">
         <Header title="Jobs" order={1} />
         <AddJobComponent />
       </section>
-      <SearchForm />
-      <JobsContainer />
+      <section className="w-full">
+        <SearchForm />
+        <JobsContainer />
+      </section>
     </section>
   );
 }

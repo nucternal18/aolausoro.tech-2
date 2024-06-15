@@ -5,6 +5,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
 import {
+  useGetUserQuery,
   useUploadPDFCvMutation,
   useCreateCVMutation,
 } from "@app/GlobalReduxStore/features/users/userApiSlice";
@@ -12,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "@app/GlobalReduxStore/hooks";
 import { useToast } from "@components/ui/use-toast";
 import {
   setPDF,
+  setUploadProgress,
   userSelector,
 } from "@app/GlobalReduxStore/features/users/usersSlice";
 import {
@@ -32,6 +34,7 @@ const types = ["application/pdf"];
 
 export default function useUserController() {
   const dispatch = useAppDispatch();
+  const { data: userData, error, isLoading: isLoadingUser } = useGetUserQuery();
   const user = useAppSelector(userSelector);
   const { toast } = useToast();
   const [loading, setLoading] = React.useState(false);
@@ -45,6 +48,8 @@ export default function useUserController() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       cvUrl: "",
+      images: [],
+      pdf: [],
     },
   });
 
@@ -71,56 +76,71 @@ export default function useUserController() {
     }
   };
 
-  const onSubmit: SubmitHandler<FormValues> = useCallback(
-    async (values: z.infer<typeof formSchema>) => {
-      if (values.pdf.length === 0) {
+  const onSubmit: SubmitHandler<FormValues> = useCallback(async (values) => {
+    if (values.pdf.length === 0) {
+      toast({
+        title: "Error",
+        description: "Please select a PDF file.",
+      });
+      return;
+    }
+
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
+    const data = values.pdf[0] as File;
+    const formData = new FormData();
+    formData.append("file", data, data.name);
+    formData.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_CLOUDINARY_PRESET as string,
+    );
+
+    try {
+      const uploadPDFResponse = await uploadPDFCv({
+        url,
+        data: formData,
+      }).unwrap();
+      console.log(
+        "🚀 ~ file: useUserController.tsx ~ line 101 ~ uploadPDFResponse",
+        uploadPDFResponse,
+      );
+      const response = await createCV(uploadPDFResponse.secure_url).unwrap();
+
+      if (response.success) {
+        form.reset();
+        toast({
+          title: "Success!",
+          description: response.message,
+        });
+        dispatch(setUploadProgress(0));
+      }
+    } catch (error) {
+      if (isFetchBaseQueryError(error)) {
+        const errMsg =
+          "error" in error ? error.error : JSON.stringify(error.message);
+        toast({
+          title: "Error!",
+          description:
+            (errMsg as string) || "Unable to upload PDF. Please try again.",
+          action: <ToastAction altText="Retry">Retry</ToastAction>,
+        });
+      }
+      if (isErrorWithMessage(error)) {
         toast({
           title: "Error",
-          description: "Please select a PDF file.",
+          description: error.message,
         });
-        return;
       }
-      console.log("useUserController ~ values", values);
-      // const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
-      // const data = user?.pdf;
-      // try {
-      //   const uploadPDFResponse = await uploadPDFCv({ url, data }).unwrap();
-      //   const response = await createCV(uploadPDFResponse.pdf).unwrap();
-
-      //   if (response.success) {
-      //     form.reset();
-      //     toast({
-      //       title: "Success!",
-      //       description: response.message,
-      //     });
-      //   }
-      // } catch (error) {
-      //   if (isFetchBaseQueryError(error)) {
-      //     const errMsg =
-      //       "error" in error ? error.error : JSON.stringify(error.message);
-      //     toast({
-      //       title: "Error!",
-      //       description:
-      //         (errMsg as string) || "Unable to upload PDF. Please try again.",
-      //       action: <ToastAction altText="Retry">Retry</ToastAction>,
-      //     });
-      //   }
-      //   if (isErrorWithMessage(error)) {
-      //     toast({
-      //       title: "Error",
-      //       description: error.message,
-      //     });
-      //   }
-      // }
-    },
-    [],
-  );
+    }
+  }, []);
 
   return {
     form,
-    onSubmit,
-    pdfChangeHandler,
+    userData,
+    error,
+    isLoadingUser,
     progress: user.uploadProgress,
     isUploading,
+    onSubmit,
+    pdfChangeHandler,
   };
 }

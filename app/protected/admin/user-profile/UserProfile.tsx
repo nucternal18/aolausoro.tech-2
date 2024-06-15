@@ -14,7 +14,9 @@ import {
 import { Input } from "@components/ui/input";
 
 import useUserController from "./useUserController";
-import FileUploader from "@components/file-uploader";
+import FileInput from "@components/file-uploader";
+import { Progress } from "@components/ui/progress";
+import { Typography } from "@components/Typography";
 
 interface IUserProfile {
   randomImage: string;
@@ -24,10 +26,11 @@ interface IUserProfile {
 function UserProfileComponent({ randomImage, user }: IUserProfile) {
   const { form, onSubmit, pdfChangeHandler, progress, isUploading } =
     useUserController();
+
   return (
-    <section className="relative pb-2 h-full justify-center items-center max-w-screen-lg mx-auto">
+    <section className="relative pb-2 h-full justify-center items-center container mx-auto">
       <div className="flex flex-col pb-5">
-        <div className="relative flex-col mb-7">
+        <div className="relative flex-col mb-7 space-y-8">
           <div className="flex flex-col justify-center items-center">
             <img
               className="w-full h-[300px] shadow-lg object-cover"
@@ -44,24 +47,31 @@ function UserProfileComponent({ randomImage, user }: IUserProfile) {
             </h1>
           </div>
 
-          <div>
-            <FileUploader form={form} progress={progress} onSubmit={onSubmit} />
-          </div>
-
-          <div className="px-2">
+          <div className="px-2 space-y-8">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8"
               >
+                <FileInput
+                  multiple
+                  name="pdf"
+                  label="Drop a PDF file here or click to upload"
+                  form={form}
+                />
                 <FormField
                   control={form.control}
                   name="cvUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>CV Url</FormLabel>
+                      <FormLabel className="text-primary/80">CV Url</FormLabel>
                       <FormControl>
-                        <Input placeholder="shadcn" {...field} />
+                        <Input
+                          type="url"
+                          placeholder="enter a URL"
+                          className="text-primary/80"
+                          {...field}
+                        />
                       </FormControl>
                       <FormDescription>
                         This is the url to your CV for employers to view
@@ -70,9 +80,12 @@ function UserProfileComponent({ randomImage, user }: IUserProfile) {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button disabled={isUploading} type="submit">
+                  Submit
+                </Button>
               </form>
             </Form>
+            <Progress value={progress} />
           </div>
         </div>
       </div>

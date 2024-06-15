@@ -3,18 +3,8 @@
  * @see https://v0.dev/t/Jr58ICI47UK
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import {
-  useCallback,
-  useState,
-  type ChangeEventHandler,
-  type FC,
-  type SVGProps,
-} from "react";
-import type { SubmitHandler, UseFormReturn } from "react-hook-form";
-import { useDropzone } from "react-dropzone";
-import type { AxiosProgressEvent, CancelTokenSource } from "axios";
-import { File, FileImage, FolderArchive } from "lucide-react";
-import Dropzone from "react-dropzone";
+import { useCallback, useEffect, type SVGProps } from "react";
+import { type DropzoneOptions, useDropzone, type Accept } from "react-dropzone";
 
 import {
   Card,
@@ -23,34 +13,19 @@ import {
   CardDescription,
   CardContent,
 } from "@components/ui/card";
-import { Button } from "@components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@components/ui/form";
 import { Input } from "@components/ui/input";
-import { Progress } from "@components/ui/progress";
 
-interface FileUploadProgress {
-  progress: number;
-  File: File;
-  source: CancelTokenSource | null;
-}
+import useUserController from "@app/protected/admin/user-profile/useUserController";
+import Image from "next/image";
+import { Typography } from "@components/Typography";
+import { FormField } from "@components/ui/form";
+import type { UseFormReturn } from "react-hook-form";
 
-enum FileTypes {
-  Image = "image",
-  Pdf = "pdf",
-  Audio = "audio",
-  Video = "video",
-  Other = "other",
-}
-
-export type TFileUploader = {
+interface TFileInputProps {
+  label?: string;
+  name: "cvUrl" | "images" | "pdf";
+  mode?: "update" | "append";
+  multiple?: boolean;
   form: UseFormReturn<
     {
       images: File[];
@@ -60,104 +35,103 @@ export type TFileUploader = {
     any,
     undefined
   >;
-  progress: number;
-  onSubmit: SubmitHandler<{
-    images: File[];
-    pdf: File[];
-    cvUrl?: string | undefined;
-  }>;
-};
+}
 
-export default function FileUploader({
-  form,
-  progress,
-  onSubmit,
-}: TFileUploader) {
+export default function FileInput(props: TFileInputProps) {
+  const { form, name, label = "" } = props;
+
+  const files: File[] = form.watch(name) as File[];
+  const onDrop: DropzoneOptions["onDrop"] = useCallback(
+    (droppedFiles: File[]) => {
+      form.setValue(name, droppedFiles);
+    },
+    [form, name],
+  );
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: props.multiple,
+  });
+
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full container mx-auto">
       <CardHeader>
-        <CardTitle>Upload PDF File</CardTitle>
+        <CardTitle>
+          <Typography variant="h3" className="text-primary">
+            Upload PDF File or Enter the URL.
+          </Typography>
+        </CardTitle>
         <CardDescription>
           Drag and drop a PDF file or click to select a file to upload.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div>
+        <FormField
+          control={form.control}
+          name="pdf"
+          render={({ field }) => (
+            <div {...getRootProps()} className="space-y-4">
               <div className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-md p-8 cursor-pointer hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500">
-                <UploadIcon className="w-8 h-8 text-gray-500 dark:text-gray-400" />
-                <span className="text-gray-500 dark:text-gray-400">
-                  Drop a PDF file here or click to upload
-                </span>
+                <label
+                  className="flex items-center text-gray-700 text-sm font-bold space-x-2 mb-2 capitalize"
+                  htmlFor={name}
+                >
+                  <UploadIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <span className="text-gray-500 dark:text-gray-400 text-base">
+                    {label}
+                  </span>
+                </label>
+
+                <Input
+                  type="file"
+                  accept="application/pdf, image/*"
+                  id={name}
+                  {...getInputProps()}
+                />
               </div>
               <div className="sr-only" />
             </div>
-            <FormField
-              control={form.control}
-              name="pdf"
-              render={({ field: { onBlur, onChange }, fieldState }) => (
-                <Dropzone
-                  noClick
-                  onDrop={(acceptedFiles) => {
-                    form.setValue("pdf", acceptedFiles as File[], {
-                      shouldValidate: true,
-                    });
-                  }}
-                >
-                  {({
-                    getRootProps,
-                    getInputProps,
-                    open,
-                    isDragActive,
-                    acceptedFiles,
-                  }) => (
-                    <div>
-                      <div
-                        style={{
-                          borderStyle: "dashed",
-                          backgroundColor: isDragActive
-                            ? `#808080`
-                            : "transparent",
-                        }}
-                        {...getRootProps()}
-                      >
-                        <input
-                          {...getInputProps({
-                            id: "spreadsheet",
-                            onChange,
-                            onBlur,
-                          })}
-                        />
-
-                        <p>
-                          <button type="button" onClick={open}>
-                            Choose a file
-                          </button>{" "}
-                          or drag and drop
-                        </p>
-
-                        {acceptedFiles && acceptedFiles.length > 0
-                          ? acceptedFiles[0]?.name
-                          : "No file selected."}
-
-                        <div>
-                          {fieldState.error && (
-                            <span role="alert">{fieldState.error.message}</span>
-                          )}
-                        </div>
-                      </div>
+          )}
+        />
+        <div
+          className={
+            "w-full p-2 border-2 border-dashed border-gray-300 rounded-md hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500" +
+            (isDragActive ? "hover:bg-neutral-400" : "")
+          }
+        >
+          <p className="text-center my-2">Dropped Files</p>
+          {/* Optionally you may display a preview of the file(s) */}
+          {!!files?.length && (
+            <div className="relative grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-2">
+              {files.map((file) => {
+                if (file.type.includes("image")) {
+                  return (
+                    <div key={file.name} className="relative w-full h-20">
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        layout="fill"
+                        objectFit="cover"
+                      />
                     </div>
-                  )}
-                </Dropzone>
-              )}
-            />
-            <Button type="submit" className="w-full mt-4">
-              Upload
-            </Button>
-          </form>
-        </Form>
-        <Progress value={progress} />
+                  );
+                }
+                return (
+                  <div
+                    key={file.name}
+                    className="flex items-center justify-between w-full p-2 border border-gray-300 rounded-md"
+                  >
+                    <Typography className="text-primary/80">
+                      {file.name}
+                    </Typography>
+                    <Typography className="text-primary/80">
+                      {file.size} bytes
+                    </Typography>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

@@ -23,7 +23,7 @@ function PortfolioCard({ project }: { project: PartialProjectProps }) {
   });
 
   return (
-    <Card className="w-[300px] relative grid grid-cols-1 border-primary">
+    <Card className="md:w-[300px] relative grid grid-cols-1 border-primary">
       <CardHeader className="col-span-1">
         <CardTitle className="text-xl">{project?.projectName}</CardTitle>
       </CardHeader>
@@ -31,19 +31,29 @@ function PortfolioCard({ project }: { project: PartialProjectProps }) {
         <Image
           src={project.url as string}
           alt={project.projectName as string}
+          sizes="100vw"
+          style={{
+            width: "100%",
+            height: "auto",
+          }}
           width={300}
           height={300}
         />
         <CardDescription>{project?.description}</CardDescription>
       </CardContent>
       <CardFooter className="flex flex-col space-y-1 col-span-1">
-        <div className="flex items-center justify-center space-x-4 mx-auto my-2">
+        <div className="flex items-center space-x-4 mx-auto my-2">
           {tecStackImgUrl.map((iconUrl: string | undefined, idx: number) => {
             if (iconUrl !== undefined) {
               return (
                 <Image
                   key={`${idx}-stack`}
                   src={iconUrl}
+                  sizes="100vw"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                  }}
                   width={40}
                   height={40}
                   alt="Stack icon"
@@ -53,17 +63,7 @@ function PortfolioCard({ project }: { project: PartialProjectProps }) {
             }
           })}
         </div>
-        <div className="flex items-center justify-between space-x-2">
-          <Button type="button" asChild>
-            <a
-              href={project?.address}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs "
-            >
-              Live Preview
-            </a>
-          </Button>
+        <div className="flex space-x-2">
           <Button variant="outline" asChild>
             <a
               href={project?.github}

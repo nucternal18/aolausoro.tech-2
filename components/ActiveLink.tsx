@@ -22,10 +22,10 @@ function ActiveLink({
     <Link
       href={href}
       className={cn(
-        "flex items-center flex-row py-3 text-lg font-thin  capitalize",
+        "flex items-center flex-row py-3 text-sm font-thin  capitalize",
         pathName === currentHref
           ? "text-yellow-500"
-          : "text-gray-900 hover:text-yellow-500 dark:text-gray-100",
+          : "text-primary hover:text-yellow-500",
         className,
       )}
     >

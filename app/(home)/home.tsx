@@ -4,11 +4,13 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@components/ui/button";
 
+import { globalSelector } from "@app/GlobalReduxStore/features/globalSlice";
+import { useAppSelector } from "@app/GlobalReduxStore/hooks";
+import { useGetCVQuery } from "@app/GlobalReduxStore/features/users/userApiSlice";
+import Link from "next/link";
+
 const randomImage =
   "https://source.unsplash.com/random/1600x900/?coder-setup,code";
-
-const cvDoc =
-  "https://res.cloudinary.com/dus5nxe5w/image/upload/v1706345328/Adewoyin_Oladipupo-Usoro_CV_v2mg3d.pdf";
 
 const variants = {
   hidden: { opacity: 0 },
@@ -16,6 +18,9 @@ const variants = {
 };
 
 export default function HomeComponent() {
+  const { data, isLoading } = useGetCVQuery();
+  const cvDoc = isLoading ? "" : (data![0]?.cvUrl as string);
+
   return (
     <>
       <div className="absolute top-0 w-full" style={{ height: "100%" }}>
@@ -68,16 +73,16 @@ export default function HomeComponent() {
                   type="button"
                   variant="outline"
                   asChild
-                  className="text-sm font-semibold bg-transparent text-zinc-50 border border-zinc-50"
+                  className="text-sm font-semibold bg-transparent text-zinc-50 border border-zinc-50 cursor-pointer"
                 >
-                  <a
+                  <Link
                     data-testid="cv-button"
                     target="_blank"
                     rel="noopener noreferrer"
                     href={cvDoc}
                   >
                     My Resume
-                  </a>
+                  </Link>
                 </Button>
               </div>
               <div></div>
