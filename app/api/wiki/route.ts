@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import prisma from "@lib/prismadb";
-import { handlePrismaError } from "@utils/prismaErrorHandler";
 
 export async function GET(req: NextRequest) {
   const { userId } = getAuth(req);
@@ -23,10 +22,6 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  try {
-    const wikis = await prisma.wiki.findMany();
-    return NextResponse.json(wikis);
-  } catch (error) {
-    return handlePrismaError(error);
-  }
+  const wikis = await prisma.wiki.findMany();
+  return NextResponse.json(wikis);
 }
