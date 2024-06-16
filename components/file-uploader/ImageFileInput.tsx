@@ -3,7 +3,7 @@
  * @see https://v0.dev/t/Jr58ICI47UK
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { useCallback, useEffect, type SVGProps } from "react";
+import { useCallback, type SVGProps } from "react";
 import { type DropzoneOptions, useDropzone, type Accept } from "react-dropzone";
 
 import {
@@ -15,7 +15,6 @@ import {
 } from "@components/ui/card";
 import { Input } from "@components/ui/input";
 
-import useUserController from "@app/protected/admin/user-profile/useUserController";
 import Image from "next/image";
 import { Typography } from "@components/Typography";
 import { FormField } from "@components/ui/form";
@@ -23,21 +22,22 @@ import type { UseFormReturn } from "react-hook-form";
 
 interface TFileInputProps {
   label?: string;
-  name: "cvUrl" | "images" | "pdf";
+  name: "images" | "title" | "description" | "isImage";
   mode?: "update" | "append";
   multiple?: boolean;
   form: UseFormReturn<
     {
+      title: string;
+      description: string;
+      isImage: boolean;
       images: File[];
-      pdf: File[];
-      cvUrl?: string | undefined;
     },
     any,
     undefined
   >;
 }
 
-export default function FileInput(props: TFileInputProps) {
+export default function ImageFileInput(props: TFileInputProps) {
   const { form, name, label = "" } = props;
 
   const files: File[] = form.watch(name) as File[];
@@ -54,20 +54,10 @@ export default function FileInput(props: TFileInputProps) {
 
   return (
     <Card className="w-full container mx-auto">
-      <CardHeader>
-        <CardTitle>
-          <Typography variant="h3" className="text-primary">
-            Upload PDF File or Enter the URL.
-          </Typography>
-        </CardTitle>
-        <CardDescription>
-          Drag and drop a PDF file or click to select a file to upload.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pt-4">
         <FormField
           control={form.control}
-          name="pdf"
+          name="images"
           render={({ field }) => (
             <div {...getRootProps()} className="space-y-4">
               <div className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-md p-8 cursor-pointer hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500">
@@ -83,7 +73,7 @@ export default function FileInput(props: TFileInputProps) {
 
                 <Input
                   type="file"
-                  accept="application/pdf, image/*"
+                  accept="image/png, image/jpeg"
                   id={name}
                   {...getInputProps()}
                 />
@@ -101,16 +91,19 @@ export default function FileInput(props: TFileInputProps) {
           <p className="text-center my-2">Dropped Files</p>
           {/* Optionally you may display a preview of the file(s) */}
           {!!files?.length && (
-            <div className="relative grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-2">
+            <div className="relative grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-2 ">
               {files.map((file) => {
                 if (file.type.includes("image")) {
                   return (
-                    <div key={file.name} className="relative w-full h-20">
+                    <div key={file.name} className="relative w-full">
                       <Image
                         src={URL.createObjectURL(file)}
                         alt={file.name}
-                        layout="fill"
-                        objectFit="cover"
+                        width={100}
+                        height={100}
+                        style={{
+                          height: "auto",
+                        }}
                       />
                     </div>
                   );

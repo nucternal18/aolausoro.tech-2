@@ -6,8 +6,7 @@ import { z } from "zod";
 
 import {
   useGetUserQuery,
-  useUploadPDFCvMutation,
-  useCreateCVMutation,
+  useUploadUserImageMutation,
 } from "@app/GlobalReduxStore/features/users/userApiSlice";
 import { useAppDispatch, useAppSelector } from "@app/GlobalReduxStore/hooks";
 import { useToast } from "@components/ui/use-toast";
@@ -19,48 +18,82 @@ import {
   isErrorWithMessage,
   isFetchBaseQueryError,
 } from "@app/GlobalReduxStore/helper";
+import {
+  useGetWikisQuery,
+  useCreateWikiMutation,
+} from "@app/GlobalReduxStore/features/wiki/wikiApiSlice";
 import { ToastAction } from "@components/ui/toast";
 
 const formSchema = z.object({
-  cvUrl: z.string().url().optional(),
+  title: z.string(),
+  description: z.string(),
+  isImage: z.boolean(),
   images: z.array(z.instanceof(File)),
-  pdf: z.array(z.instanceof(File)),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
 
-const types = ["application/pdf"];
+const types = ["image/png", "image/jpg", "image/jpeg"];
 
-export default function useUserController() {
+/**
+ * Custom hook for managing wiki functionality.
+ *
+ * @returns An object containing the form, user data, error, loading status, progress, and functions related to wiki management.
+ */
+export default function useWikiController() {
   const dispatch = useAppDispatch();
   const user = useAppSelector(userSelector);
   const { toast } = useToast();
 
   const { data: userData, error, isLoading: isLoadingUser } = useGetUserQuery();
+  const {
+    data: wikis,
+    isLoading: isLoadingWikis,
+    refetch,
+  } = useGetWikisQuery();
 
-  const [uploadPDFCv, { isLoading: isUploading }] = useUploadPDFCvMutation();
-  const [createCV] = useCreateCVMutation();
+  const [uploadUserImage, { isLoading: isUploadingImage }] =
+    useUploadUserImageMutation();
+  const [createWiki] = useCreateWikiMutation();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      cvUrl: "",
+      title: "",
+      description: "",
+      isImage: false,
       images: [],
-      pdf: [],
     },
   });
 
-  const uploadPDF: SubmitHandler<FormValues> = useCallback(async (values) => {
-    if (values.pdf.length === 0) {
+  /**
+   * Uploads an image to the server.
+   *
+   * @param values - The form values containing the image file.
+   */
+  const uploadImage: SubmitHandler<FormValues> = useCallback(async (values) => {
+    if (values.images.length === 0) {
       toast({
         title: "Error",
         description: "Please select a PDF file.",
       });
       return;
     }
+    const validTypes = values.images.every((file) => {
+      console.log(file.type);
+      return types.includes(file.type);
+    });
+
+    if (!validTypes) {
+      toast({
+        title: "Error",
+        description: "Only PNG and JPG files are allowed.",
+      });
+      return;
+    }
 
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
-    const data = values.pdf[0] as File;
+    const data = values.images[0] as File;
     const formData = new FormData();
     formData.append("file", data, data.name);
     formData.append(
@@ -69,12 +102,19 @@ export default function useUserController() {
     );
 
     try {
-      const uploadPDFResponse = await uploadPDFCv({
+      const uploadPDFResponse = await uploadUserImage({
         url,
         data: formData,
       }).unwrap();
 
-      const response = await createCV(uploadPDFResponse.secure_url).unwrap();
+      const data = {
+        title: values.title,
+        description: values.description,
+        isImage: values.isImage,
+        imageUrl: uploadPDFResponse.secure_url,
+      };
+
+      const response = await createWiki(data).unwrap();
 
       if (response.success) {
         form.reset();
@@ -82,6 +122,7 @@ export default function useUserController() {
           title: "Success!",
           description: response.message,
         });
+        refetch();
         dispatch(setUploadProgress(0));
       }
     } catch (error) {
@@ -101,6 +142,7 @@ export default function useUserController() {
           description: error.message,
         });
       }
+      dispatch(setUploadProgress(0));
     }
   }, []);
 
@@ -110,7 +152,9 @@ export default function useUserController() {
     error,
     isLoadingUser,
     progress: user.uploadProgress,
-    isUploading,
-    uploadPDF,
+    isUploadingImage,
+    wikis,
+    isLoadingWikis,
+    uploadImage,
   };
 }

@@ -49,35 +49,10 @@ export const userApi = userApiSlice.injectEndpoints({
       invalidatesTags: (result, error, arg) => [{ type: "User", id: "LIST" }],
     }),
     uploadUserImage: builder.mutation<
-      { image: string },
-      string | ArrayBuffer | null
-    >({
-      query: (base64EncodedImage) => ({
-        url: `/upload/photos`,
-        method: "POST",
-        body: { data: base64EncodedImage },
-      }),
-      invalidatesTags: (result, error, arg) => [{ type: "User", id: "LIST" }],
-      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setImage(data.image));
-        } catch (error: any) {
-          if (error.response) {
-            dispatch(setError(error.response.data.message));
-          } else {
-            dispatch(setError(error.message));
-          }
-          console.log(error);
-        }
-      },
-    }),
-    uploadPDFCv: builder.mutation<
       UploadApiResponse,
       { url: string; data: FormData }
     >({
       queryFn: async ({ url, data }, api, extraOptions, baseQuery) => {
-        console.log("🚀 ~ file: userApiSlice.ts ~ line 85 ~ data", data);
         try {
           const result = await axios.post(url, data, {
             //...other options like headers here
@@ -116,7 +91,61 @@ export const userApi = userApiSlice.injectEndpoints({
       onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setPDF(data.pdf));
+          dispatch(setImage(data.secure_url));
+        } catch (error: any) {
+          if (error.response) {
+            dispatch(setError(error.response.data.message));
+          } else {
+            dispatch(setError(error.message));
+          }
+          console.log(error);
+        }
+      },
+    }),
+    uploadPDFCv: builder.mutation<
+      UploadApiResponse,
+      { url: string; data: FormData }
+    >({
+      queryFn: async ({ url, data }, api, extraOptions, baseQuery) => {
+        try {
+          const result = await axios.post(url, data, {
+            //...other options like headers here
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress: (upload) => {
+              //Set the progress value to show the progress bar
+              const uploadloadProgress = Math.round(
+                (100 * upload.loaded) / (upload.total as number),
+              );
+              api.dispatch(setUploadProgress(uploadloadProgress));
+            },
+          });
+
+          return { data: result.data };
+        } catch (axiosError: any) {
+          if (axiosError instanceof AxiosError) {
+            const err = axiosError;
+            return {
+              error: {
+                status: err.response?.status,
+                data: err.response?.data || err.message,
+              },
+            };
+          }
+          return {
+            error: {
+              status: 500,
+              data: "Something went wrong uploading image",
+            },
+          };
+        }
+      },
+      invalidatesTags: (result, error, arg) => [{ type: "User", id: "LIST" }],
+      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setPDF(data.secure_url));
         } catch (error: any) {
           if (error.response) {
             dispatch(setError(error.response.data.message));

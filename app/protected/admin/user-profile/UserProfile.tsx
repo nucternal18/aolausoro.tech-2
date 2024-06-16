@@ -14,9 +14,8 @@ import {
 import { Input } from "@components/ui/input";
 
 import useUserController from "./useUserController";
-import FileInput from "@components/file-uploader";
+import PDFFileInput from "@components/file-uploader/PDFFileInput";
 import { Progress } from "@components/ui/progress";
-import { Typography } from "@components/Typography";
 
 interface IUserProfile {
   randomImage: string;
@@ -24,8 +23,7 @@ interface IUserProfile {
 }
 
 function UserProfileComponent({ randomImage, user }: IUserProfile) {
-  const { form, onSubmit, pdfChangeHandler, progress, isUploading } =
-    useUserController();
+  const { form, uploadPDF, progress, isUploading } = useUserController();
 
   return (
     <section className="relative pb-2 h-full justify-center items-center container mx-auto">
@@ -50,10 +48,10 @@ function UserProfileComponent({ randomImage, user }: IUserProfile) {
           <div className="px-2 space-y-8">
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(uploadPDF)}
                 className="space-y-8"
               >
-                <FileInput
+                <PDFFileInput
                   multiple
                   name="pdf"
                   label="Drop a PDF file here or click to upload"

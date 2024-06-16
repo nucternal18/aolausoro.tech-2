@@ -1,11 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import prisma from "@lib/prismadb";
-import cloudinary from "@lib/cloudinary";
+import { handlePrismaError } from "@utils/prismaErrorHandler";
 
-export async function POST(req: NextRequest) {
-  const { data } = await req.json();
-
+export async function GET(req: NextRequest) {
   const { userId } = getAuth(req);
 
   if (!userId) {
@@ -26,18 +24,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const uploadedResponse = await cloudinary.uploader.upload(data, {
-      upload_preset: "aolausoro_portfolio_docs",
-      resource_type: "auto",
-    });
-    return NextResponse.json(uploadedResponse.secure_url);
+    const wikis = await prisma.wiki.findMany();
+    return NextResponse.json(wikis);
   } catch (error) {
-    console.error(error);
-    return new Response(
-      "Error Uploading PDF. Please try again. Error: " + error,
-      {
-        status: 500,
-      },
-    );
+    return handlePrismaError(error);
   }
 }
