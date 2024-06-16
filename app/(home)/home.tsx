@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@components/ui/button";
 
-import { globalSelector } from "@app/GlobalReduxStore/features/globalSlice";
-import { useAppSelector } from "@app/GlobalReduxStore/hooks";
 import { useGetCVQuery } from "@app/GlobalReduxStore/features/users/userApiSlice";
 import Link from "next/link";
+import { getLatestCV } from "@lib/utils";
+import type { PartialCvProps } from "schema/cv";
 
 const randomImage =
   "https://source.unsplash.com/random/1600x900/?coder-setup,code";
@@ -19,7 +19,7 @@ const variants = {
 
 export default function HomeComponent() {
   const { data, isLoading } = useGetCVQuery();
-  const cvDoc = isLoading ? "" : (data![0]?.cvUrl as string);
+  const cvDoc = isLoading ? "" : getLatestCV(data as PartialCvProps[]);
 
   return (
     <>
@@ -79,7 +79,7 @@ export default function HomeComponent() {
                     data-testid="cv-button"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={cvDoc}
+                    href={cvDoc as string}
                   >
                     My Resume
                   </Link>

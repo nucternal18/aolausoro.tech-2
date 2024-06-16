@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import React from "react";
+import type { PartialCvProps } from "schema/cv";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -60,3 +61,18 @@ export function composeEventHandlers<E>(
     }
   };
 }
+
+/**
+ * Retrieves the latest CV URL from the given array of CV objects.
+ *
+ * @param data - An array of CV objects.
+ * @returns The URL of the latest CV.
+ */
+export const getLatestCV = (data: PartialCvProps[]) => {
+  const latestCV = data.reduce((prev, current) =>
+    new Date(prev.createdAt as string) > new Date(current.createdAt as string)
+      ? prev
+      : current,
+  );
+  return latestCV.cvUrl;
+};

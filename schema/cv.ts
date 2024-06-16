@@ -4,8 +4,8 @@ import type { Prettify } from "./helpers";
 export const cvSchema = z.object({
   id: z.string(),
   cvUrl: z.string().url(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
   userId: z.string(),
 });
 
