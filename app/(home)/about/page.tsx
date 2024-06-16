@@ -32,13 +32,13 @@ const about = () => {
 
         <article className="col-span-1 leading-normal tracking-wider text-justify px-2 mb-4 space-y-4 font-light text-block sm:subpixel-antialiased md:antialiased">
           <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold  ">
-            🎓 Recent Computing and IT (Software) Graduate | 2.1 BSc Hons |
-            Software Developer 🚀
+            🎓 Computing and IT (Software) Graduate | 2.1 BSc Hons | Software
+            Developer 🚀 | Security Engineer
           </p>
           <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold  ">
-            Hello, and thank you for visiting my portfolio!👋 I am a recent
-            graduate with a passion for creating innovative solutions through
-            software development. Armed with a solid foundation from my
+            Hello, and thank you for visiting my portfolio!👋 I am a Software
+            Developer 🚀 with a passion for creating innovative solutions
+            through software development. Armed with a solid foundation from my
             Bachelor's degree in Computing and IT (Software), I am eager to
             contribute my skills and knowledge to the dynamic field of
             technology.
@@ -52,7 +52,8 @@ const about = () => {
             </li>
             <li>💻 2 years of hands-on experience in software development.</li>
             <li>
-              🚀 Proficient in ReactJS, React Native, JavaScript, and NodeJS.
+              🚀 Experienced in ReactJS, React Native, JavaScript, TypeScript
+              and NodeJS.
             </li>
           </ul>
           <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold  ">
