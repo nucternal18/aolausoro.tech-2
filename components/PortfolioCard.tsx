@@ -49,11 +49,6 @@ function PortfolioCard({ project }: { project: PartialProjectProps }) {
                 <Image
                   key={`${idx}-stack`}
                   src={iconUrl}
-                  sizes="100vw"
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                  }}
                   width={40}
                   height={40}
                   alt="Stack icon"
