@@ -14,7 +14,7 @@ import {
 import { Input } from "@components/ui/input";
 
 import useUserController from "./useUserController";
-import PDFFileInput from "@components/file-uploader/PDFFileInput";
+import PDFFileInput from "@components/file-uploader/pdf-file-input";
 import { Progress } from "@components/ui/progress";
 
 interface IUserProfile {

@@ -9,7 +9,7 @@ import { enGB } from "date-fns/locale";
 import { Button } from "@components/ui/button";
 import { Checkbox } from "@components/ui/checkbox";
 
-import HandleDeleteModal from "@components/handle-delete-modal/HandleDeleteModal";
+import HandleDeleteModal from "@components/handle-delete-modal/handle-delete-modal";
 
 // hooks (Controller)
 import { useMessagesController } from "./use-messages-controller";

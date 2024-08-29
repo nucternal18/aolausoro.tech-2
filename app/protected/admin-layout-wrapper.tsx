@@ -4,7 +4,7 @@ import React from "react";
 import {
   AdminsSidebar,
   MobileAdminSidebar,
-} from "@components/navigation/AdminsSidebar";
+} from "@components/navigation/admin-sidebar";
 
 import { useWindowSize } from "@hooks/useWindowSize";
 import { Navbar } from "@components/navigation/navbar";
