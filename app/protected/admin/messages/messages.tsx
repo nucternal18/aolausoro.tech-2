@@ -2,7 +2,7 @@
 
 // components
 import MessageTable from "@app/protected/admin/messages/message-table";
-import Loader from "@components/loader";
+import Loader from "../../../../components/loader";
 
 // controller
 import { useMessagesController } from "./use-messages-controller";

@@ -2,7 +2,7 @@
 import { Suspense } from "react";
 import { FaGithub, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
-import Loader from "@components/loader";
+import Loader from "../../../components/loader";
 
 // redux
 import { useGetProjectsQuery } from "@app/global-redux-store/features/projects/projectApiSlice";
