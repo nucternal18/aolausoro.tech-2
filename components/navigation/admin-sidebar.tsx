@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 
 // components
-import ActiveLink from "../ActiveLink";
+import ActiveLink from "../active-link";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui/sheet";
 import {
   Tooltip,
@@ -49,7 +49,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
-import { ModeToggle } from "@components/ModeToggle";
+import { ModeToggle } from "@components/mode-toggle";
 import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 

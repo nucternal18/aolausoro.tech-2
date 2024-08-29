@@ -3,7 +3,7 @@ import { useRef, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { ModeToggle } from "@components/ModeToggle";
+import { ModeToggle } from "@components/mode-toggle";
 
 type NavLinkProps = {
   children: ReactNode;

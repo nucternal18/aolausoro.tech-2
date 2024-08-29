@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Header from "@components/header";
 import EditJobComponent from "./EditJobComponent";
 import { Button } from "@components/ui/button";
-import Loader from "components/Loader";
+import Loader from "@components/loader";
 
 // redux
 import { useGetJobByIdQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";

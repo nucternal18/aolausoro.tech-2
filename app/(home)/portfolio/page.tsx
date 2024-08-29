@@ -2,13 +2,13 @@
 import { Suspense } from "react";
 import { FaGithub, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
-import Loader from "components/Loader";
+import Loader from "@components/loader";
 
 // redux
 import { useGetProjectsQuery } from "../../GlobalReduxStore/features/projects/projectApiSlice";
 
 // components
-import PortfolioCard from "@components/PortfolioCard";
+import PortfolioCard from "@components/portfolio-card";
 import { Button } from "@components/ui/button";
 
 const Portfolio = () => {

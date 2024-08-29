@@ -48,7 +48,7 @@ export default function HandleDeleteModal({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => deleteHandler(id )}>
+          <AlertDialogAction onClick={() => deleteHandler(id)}>
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

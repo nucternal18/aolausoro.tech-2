@@ -2,7 +2,7 @@
 
 // Components
 import Table from "@app/protected/admin/projects/ProjectTable";
-import Loader from "components/Loader";
+import Loader from "@components/loader";
 import { AddProjectForm } from "./add-project-form";
 import Header from "@components/header";
 

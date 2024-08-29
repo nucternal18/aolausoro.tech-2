@@ -2,8 +2,8 @@
 
 // components
 import { JobCard } from "./Job";
-import PageBtnContainer from "@components/PageBtnContainer";
-import Loader from "@components/Loader";
+import PageBtnContainer from "@components/page-btn-container";
+import Loader from "@components/loader";
 
 // zod schema
 import type { PartialJobProps } from "schema/Job";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import CategoryLabel from "../../../../components/CategoryLabel";
+import CategoryLabel from "../../../../components/category-label";
 import { getPostsMeta, getPostByName } from "../../../../lib/posts";
 import Date from "../../../../components/date";
 import { notFound } from "next/navigation";

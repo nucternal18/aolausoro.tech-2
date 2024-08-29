@@ -1,14 +1,14 @@
 "use client";
 // Components
 
-import Loader from "components/Loader";
+import Loader from "@components/loader";
 
 // redux
 import { useGetStatsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
 
 // components
-import StatsContainer from "@components/StatsContainer";
-import ChartsContainer from "@components/ChartsContainer";
+import StatsContainer from "@components/stats-container";
+import ChartsContainer from "@components/charts-container";
 
 // zod schema
 import type { DefaultStatsProps, MonthlyApplicationProps } from "schema/Job";

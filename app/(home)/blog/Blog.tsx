@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import CategoryLabel from "../../../components/CategoryLabel";
+import CategoryLabel from "../../../components/category-label";
 import { type BlogPost } from "types/types";
 import getFormattedDateString from "lib/getFormattedDateString";
 

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 // Components
-import Loader from "components/Loader";
+import Loader from "@components/loader";
 import { Button } from "@components/ui/button";
 import { EditProjectForm } from "../edit-project-form";
 

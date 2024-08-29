@@ -29,7 +29,7 @@ import { ScrollArea } from "@components/ui/scroll-area";
 
 // controller
 import useProjectController from "./use-project-controller";
-import UploadForm from "@components/forms/UploadForm";
+import UploadForm from "@components/forms/upload-form";
 
 export function AddProjectForm() {
   const [open, setOpen] = React.useState(false);

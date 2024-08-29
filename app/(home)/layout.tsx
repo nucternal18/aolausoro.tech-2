@@ -4,7 +4,7 @@ import "highlight.js/styles/github-dark.css";
 
 import { cn } from "../../lib/utils";
 
-import Footer from "@components/Footer";
+import Footer from "@components/footer";
 import LayoutWrapper from "./layout-wrapper";
 
 export default function RootLayout({

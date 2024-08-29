@@ -1,5 +1,5 @@
 import React from "react";
-import { type DefaultStatsProps } from "./StatsContainer";
+import { type DefaultStatsProps } from "./stats-container";
 
 import {
   Card,

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 // components
 import Header from "@components/header";
 import { MessagesComponent } from "./messages";
-import Loader from "@components/Loader";
+import Loader from "@components/loader";
 
 export default function Page() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Navbar, MobileNavbar } from "@components/navigation/Navbar";
+import { Navbar, MobileNavbar } from "@components/navigation/navbar";
 import { useWindowSize } from "@hooks/useWindowSize";
 
 export default function LayoutWrapper({
