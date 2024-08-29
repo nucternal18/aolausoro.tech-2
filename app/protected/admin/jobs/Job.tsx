@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 
-import JobInfo from "./JobInfo";
+import JobInfo from "./job-info";
 import type { PartialJobProps } from "schema/Job";
 import { Button } from "@components/ui/button";
 import {

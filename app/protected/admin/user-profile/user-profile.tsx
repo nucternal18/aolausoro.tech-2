@@ -13,7 +13,7 @@ import {
 } from "@components/ui/form";
 import { Input } from "@components/ui/input";
 
-import useUserController from "./useUserController";
+import useUserController from "./use-user-controller";
 import PDFFileInput from "@components/file-uploader/pdf-file-input";
 import { Progress } from "@components/ui/progress";
 

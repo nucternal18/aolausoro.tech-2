@@ -14,7 +14,7 @@ import {
 import { Textarea } from "@components/ui/textarea";
 import { Input } from "@components/ui/input";
 
-import useContactController from "./useContactController";
+import useContactController from "./use-contact-controller";
 
 function ContactForm() {
   const { form, recaptchaRef, handleSubmit } = useContactController();

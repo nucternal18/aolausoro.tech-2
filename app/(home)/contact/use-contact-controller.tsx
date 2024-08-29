@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useState, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
 
 // redux

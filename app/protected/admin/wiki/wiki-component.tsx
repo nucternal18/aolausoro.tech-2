@@ -2,12 +2,12 @@
 
 import React from "react";
 
-import { Typography } from "@components/Typography";
+import { Typography } from "@components/typography";
 import { UploadImageModal } from "./upload-image-modal";
 import { Progress } from "@components/ui/progress";
 
-import useWikiController from "./useWikiController";
-import WikiCard from "@components/WikiCard";
+import useWikiController from "./use-wiki-controller";
+import WikiCard from "@components/wiki-card";
 
 export function WikiComponent() {
   const { wikis, isLoadingWikis, progress } = useWikiController();

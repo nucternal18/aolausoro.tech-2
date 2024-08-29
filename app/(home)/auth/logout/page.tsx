@@ -5,7 +5,7 @@ import { useClerk, useSession } from "@clerk/clerk-react";
 
 export default function Logout() {
   const clerk = useClerk();
-  const { isLoaded, session, isSignedIn } = useSession();
+  const { session, isSignedIn } = useSession();
 
   const router = useRouter();
 

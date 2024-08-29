@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useUser, SignOutButton, useAuth } from "@clerk/nextjs";
-import Nav from "./navigation/NavComponents";
+import Nav from "./navigation/nav-components";
 import { FiLogOut } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";

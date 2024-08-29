@@ -5,7 +5,7 @@ import Link from "next/link";
 import { links, social } from "../../data";
 
 // components
-import Nav from "./NavComponents";
+import Nav from "./nav-components";
 import LoginButton from "@components/login-button";
 import { ModeToggle } from "@components/mode-toggle";
 import {

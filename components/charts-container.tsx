@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import BarChartComponent from "./charts/BarChart";
-import AreaChartComponent from "./charts/AreaChart";
+import BarChartComponent from "./charts/bar-chart";
+import AreaChartComponent from "./charts/area-chart";
 import type { MonthlyApplicationProps } from "schema/Job";
 import { Button } from "./ui/button";
-import { Typography } from "./Typography";
+import { Typography } from "./typography";
 
 const ChartsContainer = ({
   monthlyStats,

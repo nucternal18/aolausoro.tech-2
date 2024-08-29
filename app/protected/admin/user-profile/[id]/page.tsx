@@ -1,6 +1,6 @@
 import React from "react";
 import { auth } from "@clerk/nextjs/server";
-import UserProfileComponent from "../UserProfile";
+import UserProfileComponent from "../user-profile";
 
 import type { PartialUserProps } from "schema/User";
 import { getUser } from "@lib/actions/user";
