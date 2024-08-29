@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { PartialWikiProps } from "schema/Wiki";
-import { Typography } from "./Typography";
+import { Typography } from "./typography";
 
 export default function WikiCard({
   wiki: { title, description, imageUrl },
