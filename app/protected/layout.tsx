@@ -6,7 +6,7 @@ import "highlight.js/styles/github-dark.css";
 import { AdminLayoutWrapper } from "./admin-layout-wrapper";
 
 // redux global state
-import { Providers } from "@app/GlobalReduxStore/providers";
+import { Providers } from "@app/global-redux-store/providers";
 
 export default async function AdminLayout({
   children, // will be a page or nested layout

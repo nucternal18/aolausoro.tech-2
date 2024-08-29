@@ -54,12 +54,12 @@ import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 
 // redux global state
-import { useAppDispatch, useAppSelector } from "@app/GlobalReduxStore/hooks";
+import { useAppDispatch, useAppSelector } from "@app/global-redux-store/hooks";
 import {
   globalSelector,
   setMobileDrawerOpened,
-} from "@app/GlobalReduxStore/features/globalSlice";
-import useUserController from "@app/protected/admin/user-profile/useUserController";
+} from "@app/global-redux-store/features/globalSlice";
+import useUserController from "@app/protected/admin/user-profile/use-user-controller";
 
 type AdminLink = {
   id: number;

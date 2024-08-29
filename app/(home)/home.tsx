@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@components/ui/button";
 
-import { useGetCVQuery } from "@app/GlobalReduxStore/features/users/userApiSlice";
+import { useGetCVQuery } from "@app/global-redux-store/features/users/userApiSlice";
 import Link from "next/link";
 import { getLatestCV } from "@lib/utils";
 import type { PartialCvProps } from "schema/cv";

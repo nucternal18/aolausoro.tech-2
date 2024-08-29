@@ -13,12 +13,12 @@ import {
   useUploadImageMutation,
   useCreateProjectMutation,
   useDeleteProjectMutation,
-} from "@app/GlobalReduxStore/features/projects/projectApiSlice";
-import { useAppDispatch, useAppSelector } from "app/GlobalReduxStore/hooks";
+} from "@app/global-redux-store/features/projects/projectApiSlice";
+import { useAppDispatch, useAppSelector } from "app/global-redux-store/hooks";
 import {
   setImage,
   projectSelector,
-} from "app/GlobalReduxStore/features/projects/projectsSlice";
+} from "app/global-redux-store/features/projects/projectsSlice";
 
 // components
 import { useToast } from "@components/ui/use-toast";

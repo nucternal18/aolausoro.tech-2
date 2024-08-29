@@ -1,4 +1,4 @@
-import { wikiApiSlice } from "@app/GlobalReduxStore/api";
+import { wikiApiSlice } from "@app/global-redux-store/api";
 import type { WikiProps } from "schema/Wiki";
 
 export const wikiApi = wikiApiSlice.injectEndpoints({

@@ -1,7 +1,5 @@
-"use client";
-
 import axios, { AxiosError } from "axios";
-import { userApiSlice } from "@app/GlobalReduxStore/api";
+import { userApiSlice } from "@app/global-redux-store/api";
 import { setError, setImage, setPDF, setUploadProgress } from "./usersSlice";
 import type { PartialUserProps } from "schema/User";
 import type { UploadApiResponse } from "cloudinary";

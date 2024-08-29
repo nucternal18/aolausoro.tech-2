@@ -8,7 +8,7 @@ import { Button } from "@components/ui/button";
 import Loader from "@components/loader";
 
 // redux
-import { useGetJobByIdQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
+import { useGetJobByIdQuery } from "app/global-redux-store/features/jobs/jobsApiSlice";
 
 // zod schema
 import type { PartialJobProps } from "schema/Job";

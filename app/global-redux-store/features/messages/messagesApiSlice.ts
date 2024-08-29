@@ -1,5 +1,4 @@
-"use client";
-import { messageApiSlice } from "app/GlobalReduxStore/api";
+import { messageApiSlice } from "app/global-redux-store/api";
 import type { PartialMessageProps } from "schema/Message";
 
 export const messagesApi = messageApiSlice.injectEndpoints({

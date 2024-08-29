@@ -18,13 +18,6 @@ import {
 } from "@components/ui/sheet";
 import { ScrollArea } from "@components/ui/scroll-area";
 
-// redux global state
-import { useAppDispatch, useAppSelector } from "@app/GlobalReduxStore/hooks";
-import {
-  globalSelector,
-  setMobileDrawerOpened,
-} from "@app/GlobalReduxStore/features/globalSlice";
-
 type NavProps = {
   textColor?: string;
 };

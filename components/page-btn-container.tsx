@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
-import { useAppSelector, useAppDispatch } from "app/GlobalReduxStore/hooks";
+import { useAppSelector, useAppDispatch } from "app/global-redux-store/hooks";
 import {
   jobSelector,
   setPage,
-} from "app/GlobalReduxStore/features/jobs/jobsSlice";
+} from "app/global-redux-store/features/jobs/jobsSlice";
 import { Button } from "./ui/button";
 
 const PageBtnContainer = ({ numberOfPages }: { numberOfPages: number }) => {

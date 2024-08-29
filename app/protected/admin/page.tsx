@@ -4,7 +4,7 @@
 import Loader from "@components/loader";
 
 // redux
-import { useGetStatsQuery } from "app/GlobalReduxStore/features/jobs/jobsApiSlice";
+import { useGetStatsQuery } from "app/global-redux-store/features/jobs/jobsApiSlice";
 
 // components
 import StatsContainer from "@components/stats-container";
@@ -12,7 +12,7 @@ import ChartsContainer from "@components/charts-container";
 
 // zod schema
 import type { DefaultStatsProps, MonthlyApplicationProps } from "schema/Job";
-import { Typography } from "@components/Typography";
+import { Typography } from "@components/typography";
 
 const admin = () => {
   const { data: stats, isFetching } = useGetStatsQuery();

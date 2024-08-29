@@ -5,7 +5,7 @@ import Link from "next/link";
 import Loader from "@components/loader";
 
 // redux
-import { useGetProjectsQuery } from "../../GlobalReduxStore/features/projects/projectApiSlice";
+import { useGetProjectsQuery } from "@app/global-redux-store/features/projects/projectApiSlice";
 
 // components
 import PortfolioCard from "@components/portfolio-card";

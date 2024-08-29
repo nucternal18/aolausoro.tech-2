@@ -1,4 +1,4 @@
-import { Providers } from "@app/GlobalReduxStore/providers";
+import { Providers } from "@app/global-redux-store/providers";
 import "../globals.css";
 import "highlight.js/styles/github-dark.css";
 

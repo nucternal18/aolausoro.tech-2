@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 // redux
-import { useAppSelector } from "@app/GlobalReduxStore/hooks";
-import { jobSelector } from "@app/GlobalReduxStore/features/jobs/jobsSlice";
+import { useAppSelector } from "@app/global-redux-store/hooks";
+import { jobSelector } from "@app/global-redux-store/features/jobs/jobsSlice";
 
 // components
 import {

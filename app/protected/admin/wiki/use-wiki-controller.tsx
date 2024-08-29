@@ -7,21 +7,21 @@ import { z } from "zod";
 import {
   useGetUserQuery,
   useUploadUserImageMutation,
-} from "@app/GlobalReduxStore/features/users/userApiSlice";
-import { useAppDispatch, useAppSelector } from "@app/GlobalReduxStore/hooks";
+} from "@app/global-redux-store/features/users/userApiSlice";
+import { useAppDispatch, useAppSelector } from "@app/global-redux-store/hooks";
 import { useToast } from "@components/ui/use-toast";
 import {
   setUploadProgress,
   userSelector,
-} from "@app/GlobalReduxStore/features/users/usersSlice";
+} from "@app/global-redux-store/features/users/usersSlice";
 import {
   isErrorWithMessage,
   isFetchBaseQueryError,
-} from "@app/GlobalReduxStore/helper";
+} from "@app/global-redux-store/helper";
 import {
   useGetWikisQuery,
   useCreateWikiMutation,
-} from "@app/GlobalReduxStore/features/wiki/wikiApiSlice";
+} from "@app/global-redux-store/features/wiki/wikiApiSlice";
 import { ToastAction } from "@components/ui/toast";
 
 const formSchema = z.object({

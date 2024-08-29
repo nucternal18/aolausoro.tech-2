@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MdOutlineDashboard } from "react-icons/md";
 
-import { currentUserSelector } from "app/GlobalReduxStore/features/users/usersSlice";
-import { useAppSelector } from "app/GlobalReduxStore/hooks";
+import { currentUserSelector } from "app/global-redux-store/features/users/usersSlice";
+import { useAppSelector } from "app/global-redux-store/hooks";
 
 const AdminNavBar = () => {
   const router = useRouter();

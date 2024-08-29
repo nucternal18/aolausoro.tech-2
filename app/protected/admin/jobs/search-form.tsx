@@ -18,12 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
-import { Typography } from "@components/Typography";
+import { Typography } from "@components/typography";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 
 // redux
-import { useAppSelector } from "@app/GlobalReduxStore/hooks";
-import { jobSelector } from "@app/GlobalReduxStore/features/jobs/jobsSlice";
+import { useAppSelector } from "@app/global-redux-store/hooks";
+import { jobSelector } from "@app/global-redux-store/features/jobs/jobsSlice";
 
 // controller
 import useJobsController from "./use-jobs-controller";

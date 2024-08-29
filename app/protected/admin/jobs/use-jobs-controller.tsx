@@ -6,15 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
 // redux
-import { useAppSelector } from "@app/GlobalReduxStore/hooks";
-import { jobSelector } from "@app/GlobalReduxStore/features/jobs/jobsSlice";
+import { useAppSelector } from "@app/global-redux-store/hooks";
+import { jobSelector } from "@app/global-redux-store/features/jobs/jobsSlice";
 import {
   useGetJobsQuery,
   useGetJobByIdQuery,
   useCreateJobMutation,
   useUpdateJobMutation,
   useDeleteJobMutation,
-} from "@app/GlobalReduxStore/features/jobs/jobsApiSlice";
+} from "@app/global-redux-store/features/jobs/jobsApiSlice";
 import { partialJobSchema, type PartialJobProps } from "schema/Job";
 
 // components

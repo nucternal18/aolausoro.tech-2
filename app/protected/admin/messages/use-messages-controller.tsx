@@ -8,7 +8,7 @@ import {
   useDeleteMessageMutation,
   useGetMessagesQuery,
   useGetMessageQuery,
-} from "@app/GlobalReduxStore/features/messages/messagesApiSlice";
+} from "@app/global-redux-store/features/messages/messagesApiSlice";
 
 // components
 import { useToast } from "@components/ui/use-toast";
