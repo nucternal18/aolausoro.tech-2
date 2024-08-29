@@ -10,7 +10,7 @@ import type { PartialJobProps } from "schema/Job";
 
 // controller
 import useJobsController from "./use-jobs-controller";
-import { Typography } from "@components/Typography";
+import { Typography } from "@components/typography";
 
 export function JobsContainer() {
   const { jobs, isLoadingJobs } = useJobsController();

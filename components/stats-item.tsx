@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@components/ui/card";
-import { Typography } from "./Typography";
+import { Typography } from "./typography";
 
 const StatsItem = ({
   count,

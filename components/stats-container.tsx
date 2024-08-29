@@ -4,7 +4,7 @@ import {
   FaBug,
   FaFileContract,
 } from "react-icons/fa";
-import StatsItem from "./StatsItem";
+import StatsItem from "./stats-item";
 
 export type DefaultStatsProps = {
   title: string;

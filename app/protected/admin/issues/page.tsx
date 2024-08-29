@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@components/ui/button";
-import { Typography } from "@components/Typography";
+import { Typography } from "@components/typography";
 
 export default function IssuePage() {
   return (
