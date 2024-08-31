@@ -6,9 +6,9 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 
 import { cn } from "utils/utils";
-import type { DialogPortalProps } from "@radix-ui/react-alert-dialog";
+import type { AlertDialogPortalProps } from "@radix-ui/react-alert-dialog";
 
-interface SheetProps extends DialogPortalProps {
+interface SheetProps extends AlertDialogPortalProps {
   className?: string;
 }
 

@@ -8,9 +8,7 @@ import { useGetCVQuery } from "@app/global-redux-store/features/users/userApiSli
 import Link from "next/link";
 import { getLatestCV } from "@lib/utils";
 import type { PartialCvProps } from "schema/cv";
-
-const randomImage =
-  "https://source.unsplash.com/random/1600x900/?coder-setup,code";
+import { Typography } from "@components/typography";
 
 const variants = {
   hidden: { opacity: 0 },
@@ -22,10 +20,10 @@ export default function HomeComponent() {
   const cvDoc = isLoading ? "" : getLatestCV(data as PartialCvProps[]);
 
   return (
-    <>
+    <section className="h-full w-full">
       <div className="absolute top-0 w-full" style={{ height: "100%" }}>
         <Image
-          src={randomImage}
+          src={"/images/rahul-mishra-unsplash.jpg"}
           alt="home background image"
           quality={75}
           fill
@@ -41,55 +39,60 @@ export default function HomeComponent() {
           className="absolute w-full h-full bg-black opacity-75"
         ></span>
       </div>
-      <div className="container relative mx-auto">
-        <div className="flex flex-wrap items-center justify-center ">
-          <motion.div
-            className="p-8 opacity-75 "
-            initial="hidden"
-            animate="visible"
-            variants={variants}
-            transition={{ duration: 2.0 }}
-          >
-            <div className="flex flex-col md:flex-row gap-2 max-w-screen-lg md:max-w-screen-md">
-              <div className="p-2 sm:w-2/3">
-                <div className="mx-auto mb-1 text-left w-full">
-                  <div>
-                    <h1 className="grid grid-cols- mb-4 text-lg sm:text-3xl gap-2 font-thin text-gray-300 md:text-4xl text-justify ">
-                      <span>Hi 👋, I'm Woyin.</span>
-                      <span>
-                        A Full-Stack developer who enjoys developing real world
-                        application from web to mobile to backend systems.
-                      </span>
-                    </h1>
-                    <div className="border-b-2 border-yellow-400  "></div>
-                  </div>
-                </div>
-                <div className="w-full">
-                  <h1 className="mb-4 text-2xl font-thin text-gray-300 md:text-5xl ">
-                    Welcome to My Portfolio!
-                  </h1>
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  asChild
-                  className="text-sm font-semibold bg-transparent text-zinc-50 border border-zinc-50 cursor-pointer"
-                >
-                  <Link
-                    data-testid="cv-button"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={cvDoc as string}
+      <div className=" relative w-full h-full">
+        <motion.div
+          className="p-8 opacity-75 container mx-auto max-w-screen-xl h-full"
+          initial="hidden"
+          animate="visible"
+          variants={variants}
+          transition={{ duration: 2.0 }}
+        >
+          <div className="flex flex-col md:flex-row items-center h-full gap-2 w-full">
+            <div className="p-2 sm:w-2/3">
+              <div className="mx-auto mb-1 text-left w-full">
+                <div className="grid grid-cols-1 text-white mb-4 gap-2 text-justify ">
+                  <Typography
+                    variant="h1"
+                    className="grid grid-cols-1 text-white mb-4 gap-2 text-justify "
                   >
-                    My Resume
-                  </Link>
-                </Button>
+                    <span>Hi 👋, I'm Woyin.</span>
+                  </Typography>
+                  <Typography variant="h3" className="font-thin">
+                    <span>
+                      A Full-Stack developer who enjoys developing real world
+                      application from web to mobile to backend systems.
+                    </span>
+                  </Typography>
+                  <div className="border-b-2 border-yellow-400  "></div>
+                </div>
               </div>
-              <div></div>
+              <div className="w-full">
+                <Typography
+                  variant="h1"
+                  className="mb-4 text-gray-300 text-3xl "
+                >
+                  Welcome to My Portfolio!
+                </Typography>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                asChild
+                className="text-sm font-semibold bg-transparent text-zinc-50 border border-zinc-50 cursor-pointer"
+              >
+                <Link
+                  data-testid="cv-button"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={cvDoc as string}
+                >
+                  My Resume
+                </Link>
+              </Button>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
-    </>
+    </section>
   );
 }

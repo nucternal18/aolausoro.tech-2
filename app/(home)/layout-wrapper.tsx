@@ -11,16 +11,11 @@ export default function LayoutWrapper({
 }) {
   const { windowSize } = useWindowSize();
   return (
-    <>
-      <div className="hidden md:block">
-        <Navbar />
-      </div>
+    <main>
       <div className="block md:hidden">
         <MobileNavbar height={windowSize?.innerHeight as number} />
       </div>
-      <main className="relative h-full flex-grow p-0 overflow-y-auto">
-        {children}
-      </main>
-    </>
+      <main>{children}</main>
+    </main>
   );
 }

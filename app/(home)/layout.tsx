@@ -6,6 +6,7 @@ import { cn } from "../../lib/utils";
 
 import Footer from "@components/footer";
 import LayoutWrapper from "./layout-wrapper";
+import { Navbar } from "@components/navigation/navbar";
 
 export default function RootLayout({
   children,
@@ -19,10 +20,13 @@ export default function RootLayout({
           "border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-background font-mono antialiased min-h-[100dvh]",
         )}
       >
-        <Providers>
-          <LayoutWrapper>{children}</LayoutWrapper>
-        </Providers>
-        <Footer />
+        <div className="grid min-h-[100dvh] grid-rows-[auto_1fr_auto]">
+          <Providers>
+            <Navbar />
+            <LayoutWrapper>{children}</LayoutWrapper>
+            <Footer />
+          </Providers>
+        </div>
       </body>
     </html>
   );

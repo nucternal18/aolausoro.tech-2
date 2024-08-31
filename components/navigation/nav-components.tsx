@@ -18,7 +18,11 @@ const Nav = ({
 }: {
   bgColor: string;
   children: ReactNode;
-}) => <nav className={`${bgColor} md:px-6 md:py-1 z-50`}>{children}</nav>;
+}) => (
+  <nav className={`${bgColor} md:px-6 md:py-1 z-50 hidden md:block`}>
+    {children}
+  </nav>
+);
 
 Nav.Container = ({
   children,
