@@ -57,5 +57,6 @@ module.exports = {
     "@typescript-eslint/no-var-requires": "off",
     "testing-library/no-render-in-setup": "off",
     "jest/expect-expect": "off",
+    "@typescript-eslint/unbound-method": "off",
   },
 };
