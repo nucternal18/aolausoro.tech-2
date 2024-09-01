@@ -6,8 +6,8 @@ import type {
   asType,
   className,
   children,
-} from "../types/typography.d.ts";
-import { cn } from "../lib/utils";
+} from "../types/typography.js";
+import { cn } from "../lib/utils.js";
 type Props<T extends keyof JSX.IntrinsicElements> = React.ComponentProps<T>;
 type BaseTypographyProps = Props<"p"> &
   Props<"h1"> &

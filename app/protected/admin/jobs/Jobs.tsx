@@ -3,7 +3,7 @@
 // components
 import { JobCard } from "./job";
 import PageBtnContainer from "@components/page-btn-container";
-import Loader from "@components/loader";
+import Loader from "@components/Loader";
 
 // zod schema
 import type { PartialJobProps } from "schema/Job";

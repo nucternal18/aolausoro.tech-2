@@ -1,7 +1,7 @@
 "use client";
 // Components
 
-import Loader from "@components/loader";
+import Loader from "@components/Loader";
 
 // redux
 import { useGetStatsQuery } from "app/global-redux-store/features/jobs/jobsApiSlice";
