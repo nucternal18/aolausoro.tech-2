@@ -1,0 +1,35 @@
+services:
+  portfolio-image:
+    container_name: aolausoro.tech
+    build: .
+
+    # Set environment variables directly in the docker-compose file
+    # environment:
+    #   NODE_ENV: ${NODE_ENV}
+    #   PORT: ${PORT}
+    #   NEXT_PUBLIC_CLOUDINARY_NAME: ${NEXT_PUBLIC_CLOUDINARY_NAME}
+    #   NEXT_PUBLIC_CLOUDINARY_PRESET: ${NEXT_PUBLIC_CLOUDINARY_PRESET}
+    #   NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+    #   NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    #   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    #   NEXT_PUBLIC_CLERK_SIGN_IN_URL: ${NEXT_PUBLIC_CLERK_SIGN_IN_URL}
+
+    # Set environment variables based on the .env file
+    env_file:
+      - .env
+      - .env.local
+    volumes:
+      - ./:/app/
+      - ./public:/app/public
+    restart: always
+    ports:
+      - 3000:3000
+    # networks:
+    #   - my_network
+
+  # Add more containers below (nginx, postgres, etc.)
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+# networks:
+#   my_network:
+#     external: true
