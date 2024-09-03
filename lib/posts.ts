@@ -1,6 +1,6 @@
-import { defineDocumentType, makeSource } from "contentlayer/source-files";
+// import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeHighlight from "rehype-highlight";
+// import rehypeHighlight from "rehype-highlight";
 import rehypePrettyCode, {
   type Options as PrettyCodeOptions,
 } from "rehype-pretty-code";
@@ -10,7 +10,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 
 import type { BlogPost, Meta } from "types/types";
 import CustomImage from "@components/custom-image";
-import Video from "@components/video";
+import Video from "@components/Video";
 import { mdxComponents, useMDXComponents } from "@components/mdx-components";
 
 type Filetree = {

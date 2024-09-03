@@ -1,7 +1,7 @@
 "use client";
 
 // components
-import { JobCard } from "./job";
+import { JobCard } from "./Job";
 import PageBtnContainer from "@components/page-btn-container";
 import Loader from "@components/Loader";
 
