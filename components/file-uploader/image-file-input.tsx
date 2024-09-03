@@ -16,7 +16,7 @@ import {
 import { Input } from "@components/ui/input";
 
 import Image from "next/image";
-import { Typography } from "@components/typography";
+import { Typography } from "@components/Typography";
 import { FormField } from "@components/ui/form";
 import type { UseFormReturn } from "react-hook-form";
 

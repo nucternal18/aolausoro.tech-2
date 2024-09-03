@@ -26,7 +26,7 @@ import { Textarea } from "@components/ui/textarea";
 import { Checkbox } from "@components/ui/checkbox";
 import { DialogClose } from "@radix-ui/react-dialog";
 import useWikiController from "./use-wiki-controller";
-import { Typography } from "@components/typography";
+import { Typography } from "@components/Typography";
 
 export function UploadImageModal() {
   const { form, uploadImage } = useWikiController();

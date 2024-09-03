@@ -12,7 +12,7 @@ import ChartsContainer from "@components/charts-container";
 
 // zod schema
 import type { DefaultStatsProps, MonthlyApplicationProps } from "schema/Job";
-import { Typography } from "@components/typography";
+import { Typography } from "@components/Typography";
 
 const admin = () => {
   const { data: stats, isFetching } = useGetStatsQuery();

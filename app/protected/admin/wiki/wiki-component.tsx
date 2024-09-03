@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { Typography } from "@components/typography";
+import { Typography } from "@components/Typography";
 import { UploadImageModal } from "./upload-image-modal";
 import { Progress } from "@components/ui/progress";
 

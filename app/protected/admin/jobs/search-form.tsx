@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
-import { Typography } from "../../../../components/typography";
+import { Typography } from "../../../../components/Typography";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 
 // redux

@@ -4,7 +4,7 @@ import BarChartComponent from "./charts/bar-chart";
 import AreaChartComponent from "./charts/area-chart";
 import type { MonthlyApplicationProps } from "schema/Job";
 import { Button } from "./ui/button";
-import { Typography } from "./typography";
+import { Typography } from "./Typography";
 
 const ChartsContainer = ({
   monthlyStats,

@@ -8,7 +8,7 @@ import { useGetCVQuery } from "@app/global-redux-store/features/users/userApiSli
 import Link from "next/link";
 import { getLatestCV } from "@lib/utils";
 import type { PartialCvProps } from "schema/cv";
-import { Typography } from "@components/typography";
+import { Typography } from "@components/Typography";
 
 const variants = {
   hidden: { opacity: 0 },
