@@ -52,7 +52,7 @@ const nextConfig = {
   eslint: {
     dirs: ["app", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
   },
-  output: "standalone",
+  // output: "standalone",
 };
 
 const withMDX = require("@next/mdx")();
