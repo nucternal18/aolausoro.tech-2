@@ -4,9 +4,9 @@ import "highlight.js/styles/github-dark.css";
 
 import { cn } from "../../lib/utils";
 
-import Footer from "@components/footer";
+import Footer from "@components/Footer";
 import LayoutWrapper from "./layout-wrapper";
-import { Navbar } from "@components/navigation/navbar";
+import { Navbar } from "@components/navigation/Navbar";
 
 export default function RootLayout({
   children,

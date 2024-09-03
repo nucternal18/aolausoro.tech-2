@@ -7,7 +7,7 @@ import {
 } from "@components/navigation/admin-sidebar";
 
 import { useWindowSize } from "@hooks/useWindowSize";
-import { Navbar } from "@components/navigation/navbar";
+import { Navbar } from "@components/navigation/Navbar";
 
 export function AdminLayoutWrapper({
   children, // will be a page or nested layout
