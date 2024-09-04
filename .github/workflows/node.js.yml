@@ -87,10 +87,10 @@ jobs:
         run: npm run generate
       - name: Build
         run: npm run build
-      - name: Start pm2
-        run: pm2 start "npm run start" --name "portfolio-client"
-      # - name: Restart pm2
-      #   run: pm2 restart portfolio-client
+      # - name: Start pm2
+      #   run: pm2 start "npm run start" --name "portfolio-client"
+      - name: Restart pm2
+        run: pm2 restart portfolio-client
       # - name: Build the docker-compose stack
       #   run: docker compose up -d
     env:
