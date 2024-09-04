@@ -16,7 +16,7 @@ const variants = {
 };
 
 export default function HomeComponent() {
-  const { data, isLoading } = useGetCVQuery();
+  const { data = [], isLoading } = useGetCVQuery();
   const cvDoc = isLoading ? "" : getLatestCV(data as PartialCvProps[]);
 
   return (
