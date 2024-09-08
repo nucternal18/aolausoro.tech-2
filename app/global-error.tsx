@@ -1,5 +1,7 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
+import Error from "next/error";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
@@ -10,13 +12,15 @@ export default function GlobalError({
   error,
   reset,
 }: {
-  error: Error;
+  error: string;
   reset: () => void;
 }) {
+  const serializedError = JSON.stringify(error);
   const router = useRouter();
 
   useEffect(() => {
     console.error(error);
+    Sentry.captureException(error);
   }, [error]);
 
   return (

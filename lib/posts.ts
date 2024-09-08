@@ -8,7 +8,7 @@ import rehypeSlug from "rehype-slug";
 
 import { compileMDX } from "next-mdx-remote/rsc";
 
-import type { BlogPost, Meta } from "types/types";
+import type { BlogPost, Meta } from "types";
 import CustomImage from "@components/custom-image";
 import Video from "@components/Video";
 import { mdxComponents, useMDXComponents } from "@components/mdx-components";

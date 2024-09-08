@@ -12,12 +12,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
   return (
     <>
-      <NextThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
+      <NextThemeProvider>
         <ClerkProvider>
           <ReduxProviders>
             <TooltipProvider>{children}</TooltipProvider>

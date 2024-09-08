@@ -38,7 +38,6 @@ jobs:
           echo CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} >> .env.local
           echo CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} >> .env.local
           echo NEXT_TELEMETRY_DISABLED=${{ secrets.NEXT_TELEMETRY_DISABLED }} >> .env.local
-          echo SENTRY_AUTH_API=${{ secrets.SENTRY_AUTH_API }} >> .env.local
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.local
           echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env.local
           echo JWT_SIGNING_PRIVATE_KEY=${{ secrets.JWT_SIGNING_PRIVATE_KEY }} >> .env.local
@@ -58,13 +57,13 @@ jobs:
           echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env.local
           echo NEXT_PUBLIC_CLOUDINARY_NAME=${{ secrets.NEXT_PUBLIC_CLOUDINARY_NAME }} >> .env.local
           echo NEXT_PUBLIC_CLOUDINARY_PRESET=${{ secrets.NEXT_PUBLIC_CLOUDINARY_PRESET }} >> .env.local
+          echo SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} >> .env.local
           cat .env.local
-      - name: Create .sentryclirc file
+      - name: Create .env.sentry-build-plugin file
         run: |
-          touch .sentryclirc
-          echo [auth] >> .sentryclirc
-          echo token=${{ secrets.SENTRY_AUTH_API }} >> .sentryclirc
-          cat .sentryclirc
+          touch .env.sentry-build-plugin
+          echo SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} >> .env 
+          cat .env
       - name: Get npm cache directory
         id: npm-cache-dir
         shell: bash

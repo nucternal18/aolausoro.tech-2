@@ -1,5 +1,4 @@
-"use client";
-import type { PartialMessageProps } from "schema/Message";
+import type { PartialMessageProps } from "@src/entities/models/Message";
 import type { RootState } from "../../store";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 

@@ -49,7 +49,8 @@
     ".next/types/**/*.ts",
     "tailwind.config.js",
     "postcss.config.js",
-    "next-sitemap.config.js"
+    "next-sitemap.config.js",
+    "types/**/*.d.ts"
   ],
   "exclude": ["node_modules"],
   "typeRoots": ["node_modules/@types", "./types/**.d.ts"]

@@ -63,3 +63,6 @@ next.config.original.js
 
 # Sentry
 next.config.wizardcopy.js
+
+# Sentry Config File
+.env.sentry-build-plugin

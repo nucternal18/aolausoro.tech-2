@@ -1,7 +1,10 @@
-"use client";
 import { type RootState } from "../../store";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { partialJobSchema, type PartialJobProps } from "schema/Job";
+import {
+  partialJobSchema,
+  type PartialJobProps,
+} from "@src/entities/models/Job";
+
 import * as zod from "zod";
 
 const jobSliceSchema = zod.object({

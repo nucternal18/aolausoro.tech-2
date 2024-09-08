@@ -4,7 +4,7 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import type { CvProps } from "schema/cv";
+import type { CvProps } from "@src/entities/models/cv";
 
 type GlobalState = {
   loading: boolean;

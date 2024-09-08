@@ -1,5 +1,4 @@
-"use client";
-import type { PartialUserProps } from "schema/User";
+import type { PartialUserProps } from "@src/entities/models/User";
 import type { RootState } from "../../store";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 

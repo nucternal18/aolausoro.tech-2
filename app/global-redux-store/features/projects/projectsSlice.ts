@@ -1,7 +1,6 @@
-"use client";
+import type { PartialProjectProps } from "@src/entities/models/Project";
 import { type RootState } from "../../store";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { PartialProjectProps } from "schema/Project";
 
 interface ProjectState {
   projects: PartialProjectProps[] | null;

@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import UserProfileComponent from "../user-profile";
 
 import type { PartialUserProps } from "schema/User";
-import { getUser } from "@lib/actions/user";
+import { getUser } from "@app/actions/user";
 
 const randomImage =
   "https://source.unsplash.com/random/1600x900/?coder-setup,code";

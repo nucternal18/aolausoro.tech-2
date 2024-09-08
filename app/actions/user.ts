@@ -40,7 +40,7 @@ export async function updateUser(requestBody: PartialUserProps) {
     throw new Error(JSON.stringify(validation.error.errors));
   }
 
-  const updatedUser = await prisma.user.update({
+  await prisma.user.update({
     where: { clerkId: userId },
     data: {
       name: requestBody.displayName,
