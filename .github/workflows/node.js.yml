@@ -38,7 +38,6 @@ jobs:
           echo CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} >> .env.local
           echo CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} >> .env.local
           echo NEXT_TELEMETRY_DISABLED=${{ secrets.NEXT_TELEMETRY_DISABLED }} >> .env.local
-          echo SENTRY_DSN=${{ secrets.SENTRY_DSN }} >> .env.local
           echo SENTRY_AUTH_API=${{ secrets.SENTRY_AUTH_API }} >> .env.local
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.local
           echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env.local

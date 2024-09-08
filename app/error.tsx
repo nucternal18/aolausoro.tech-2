@@ -4,9 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@components/ui/button";
-import Link from "next/link";
 
-export default function GlobalError({
+export default function Error({
   error,
   reset,
 }: {
@@ -21,21 +20,17 @@ export default function GlobalError({
 
   return (
     <section className="flex h-screen flex-col items-center justify-center">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center space-y-4">
         <Image
           src={"/android-chrome-512x512.png"}
           alt="My Logo"
           width={200}
           height={200}
         />
-        <h1 className="my-5 text-6xl">500</h1>
-        <h2 className="mb-3 text-3xl">internal Server Error!</h2>
+        <h1 className="my-5 text-6xl">Whoops!</h1>
+        <h2 className="mb-3 text-3xl">Something went wrong!</h2>
+        <p>{JSON.stringify(error.message)}</p>
         <div className="flex gap-4 items-center justify-center">
-          <div className="flex justify-center">
-            <Button type="button" asChild>
-              <Link href={"/"}>Home</Link>
-            </Button>
-          </div>
           <div className="flex justify-center">
             <Button type="button" onClick={() => reset()}>
               Try again
