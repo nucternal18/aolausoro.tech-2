@@ -33,7 +33,8 @@
       "@app/*": ["app/*"],
       "@types/*": ["types/*"],
       "@public/*": ["public/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@src/*": ["src/*"]
     },
     "strictNullChecks": true
   },

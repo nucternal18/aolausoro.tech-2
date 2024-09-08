@@ -7,6 +7,7 @@ import * as z from "zod";
 export const userSchema = z.object({
   id: z.string(),
   name: z.string().min(2).max(50),
+  displayName: z.string().min(2).max(50),
   email: z.string().email({
     message: "Invalid email address.",
   }),
