@@ -6,6 +6,8 @@ export type ResponseProps = {
 };
 
 export interface IMessageRepository {
-  //   getUser(id: string): Promise<PartialUserProps | undefined>;
-  //   updateUser(requestBody: PartialUserProps): Promise<ResponseProps | undefined>;
+  getMessages(): Promise<PartialMessageProps[] | undefined>;
+  getMessageById(id: string): Promise<PartialMessageProps | undefined>;
+  createMessage(input: PartialMessageProps): Promise<ResponseProps>;
+  deleteMessage(id: string): Promise<ResponseProps>;
 }

@@ -1,4 +1,5 @@
 "use server";
+
 import prisma from "@lib/prismadb";
 import { auth } from "@clerk/nextjs/server";
 
@@ -95,6 +96,14 @@ export async function createCV(requestBody: PartialCvProps) {
   return { success: true, message: "CV created successfully" };
 }
 
+/**
+ * Uploads a user image to the specified URL.
+ *
+ * @param url - The URL to upload the image to.
+ * @param data - The FormData containing the image data.
+ * @returns An object containing the upload progress and the response data, or an error object if an error occurred.
+ * @throws Error if the user is not signed in or is not authorized to perform the operation.
+ */
 export async function uploadUserImage(url: string, data: FormData) {
   const { userId } = auth();
 

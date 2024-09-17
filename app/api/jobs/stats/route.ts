@@ -11,7 +11,7 @@ type StatsProps = {
   offer: number;
 };
 
-type MonthlyApplicationDStaProps = {
+type MonthlyApplicationStatProps = {
   _id: {
     year: number;
     month: number;
@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
   );
 
   const monthlyApplicationStats = monthlyApplicationDSta.map(
-    (item: MonthlyApplicationDStaProps) => {
+    (item: MonthlyApplicationStatProps) => {
       const {
         _id: { year, month },
         count,

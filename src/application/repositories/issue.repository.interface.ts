@@ -6,6 +6,9 @@ export type ResponseProps = {
 };
 
 export interface IIssuesRepository {
-  //   getUser(id: string): Promise<PartialUserProps | undefined>;
-  //   updateUser(requestBody: PartialUserProps): Promise<ResponseProps | undefined>;
+  getIssues(): Promise<PartialIssueProps[] | undefined>;
+  getIssueById(id: string): Promise<PartialIssueProps | undefined>;
+  createIssue(userId: string, input: PartialIssueProps): Promise<ResponseProps>;
+  updateIssue(input: PartialIssueProps): Promise<ResponseProps>;
+  deleteIssue(id: string): Promise<ResponseProps>;
 }

@@ -6,6 +6,9 @@ export type ResponseProps = {
 };
 
 export interface IProjectRepository {
-  //   getUser(id: string): Promise<PartialUserProps | undefined>;
-  //   updateUser(requestBody: PartialUserProps): Promise<ResponseProps | undefined>;
+  getProjects(): Promise<PartialProjectProps[] | undefined>;
+  getProjectById(id: string): Promise<PartialProjectProps | undefined>;
+  createProject(input: PartialProjectProps): Promise<ResponseProps>;
+  updateProject(input: PartialProjectProps): Promise<ResponseProps>;
+  deleteProject(id: string): Promise<ResponseProps>;
 }

@@ -8,4 +8,42 @@ import type { PartialCvProps } from "@src/entities/models/cv";
 import type { ICVRepository } from "@src/application/repositories/cv.repository.interface";
 
 @injectable()
-export class CVRepository implements ICVRepository {}
+export class CVRepository implements ICVRepository {
+  async getCvs(): Promise<PartialCvProps[]> {
+    return await startSpan({ name: "CVRepository -> getCVs" }, async () => {
+      try {
+        const cvs = await prisma.cV.findMany({
+          select: {
+            id: true,
+            cvUrl: true,
+            createdAt: true,
+          },
+        });
+        return cvs;
+      } catch (error) {
+        captureException(error);
+        throw PrismaErrorHandler.handle(error);
+      }
+    });
+  }
+
+  async createCv(
+    userId: string,
+    input: PartialCvProps,
+  ): Promise<ResponseProps> {
+    return await startSpan({ name: "CVRepository -> createCV" }, async () => {
+      try {
+        await prisma.cV.create({
+          data: {
+            cvUrl: input.cvUrl as string,
+            user: { connect: { id: userId } },
+          },
+        });
+        return { success: true, message: "CV created successfully" };
+      } catch (error) {
+        captureException(error);
+        throw PrismaErrorHandler.handle(error);
+      }
+    });
+  }
+}

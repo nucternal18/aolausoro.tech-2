@@ -6,6 +6,9 @@ export type ResponseProps = {
 };
 
 export interface ICVRepository {
-  //   getUser(id: string): Promise<PartialUserProps | undefined>;
-  //   updateUser(requestBody: PartialUserProps): Promise<ResponseProps | undefined>;
+  getCvs(): Promise<PartialCvProps[] | undefined>;
+  createCv(
+    userId: string,
+    requestBody: PartialCvProps,
+  ): Promise<ResponseProps | undefined>;
 }

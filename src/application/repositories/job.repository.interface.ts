@@ -1,4 +1,4 @@
-import type { PartialJobProps } from "@src/entities/models/Job";
+import type { PartialJobProps, StatsProps } from "@src/entities/models/Job";
 
 export type ResponseProps = {
   success: boolean;
@@ -6,6 +6,10 @@ export type ResponseProps = {
 };
 
 export interface IJobsRepository {
-  //   getUser(id: string): Promise<PartialUserProps | undefined>;
-  //   updateUser(requestBody: PartialUserProps): Promise<ResponseProps | undefined>;
+  getStats(id: string): Promise<StatsProps | undefined>;
+  getJobs(): Promise<PartialJobProps[] | undefined>;
+  getJobById(id: string): Promise<PartialJobProps | undefined>;
+  createJob(userId: string, input: PartialJobProps): Promise<ResponseProps>;
+  updateJob(input: PartialJobProps): Promise<ResponseProps>;
+  deleteJob(id: string): Promise<ResponseProps>;
 }

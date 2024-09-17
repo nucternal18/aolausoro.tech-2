@@ -6,6 +6,9 @@ export type ResponseProps = {
 };
 
 export interface IWikiRepository {
-  //   getUser(id: string): Promise<PartialUserProps | undefined>;
-  //   updateUser(requestBody: PartialUserProps): Promise<ResponseProps | undefined>;
+  getWiki(): Promise<PartialWikiProps[] | undefined>;
+  getWikiById(id: string): Promise<PartialWikiProps | undefined>;
+  createWiki(input: PartialWikiProps): Promise<ResponseProps>;
+  updateWiki(input: PartialWikiProps): Promise<ResponseProps>;
+  deleteWiki(id: string): Promise<ResponseProps>;
 }
