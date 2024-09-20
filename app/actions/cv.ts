@@ -1,5 +1,3 @@
-"use server";
-
 import { auth } from "@clerk/nextjs/server";
 
 import {
@@ -11,19 +9,17 @@ import { revalidatePath } from "next/cache";
 import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { InputParseError } from "@src/entities/errors/common";
 import {
-  updateUserController,
-  getUserController,
-} from "@src/interface-adapters/controllers/user";
+  createCvController,
+  getCvsController,
+} from "@src/interface-adapters/controllers/cv";
 
-export async function getUser() {
+export async function getCV() {
   return await withServerActionInstrumentation(
-    "getUser",
+    "getCV",
     { recordResponse: false },
     async () => {
-      const { userId } = auth();
-
       try {
-        const response = await getUserController(userId as string);
+        const response = await getCvsController();
         return response;
       } catch (err) {
         captureException(err);
@@ -36,15 +32,15 @@ export async function getUser() {
   );
 }
 
-export async function updateUser(requestBody: FormData) {
+export async function createCV(requestBody: FormData) {
   return await withServerActionInstrumentation(
-    "createTodo",
+    "createCV",
     { recordResponse: true },
     async () => {
       const { userId } = auth();
       try {
         const data = Object.fromEntries(requestBody.entries());
-        const response = await updateUserController(data, userId as string);
+        const response = await createCvController(data, userId as string);
         if (response.success) {
           revalidatePath("/");
         }

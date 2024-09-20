@@ -1,9 +1,5 @@
 import type { PartialJobProps, StatsProps } from "@src/entities/models/Job";
-
-export type ResponseProps = {
-  success: boolean;
-  message: string;
-};
+import type { ResponseProps } from "types/global";
 
 export interface IJobsRepository {
   getStats(id: string): Promise<StatsProps | undefined>;

@@ -34,7 +34,8 @@
       "@types/*": ["types/*"],
       "@public/*": ["public/*"],
       "@utils/*": ["utils/*"],
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@di/*": ["di/*"]
     },
     "strictNullChecks": true
   },

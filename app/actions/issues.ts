@@ -1,24 +1,176 @@
 "use server";
 
-import prisma from "@lib/prismadb";
-import type { PartialIssueProps } from "@src/entities/models/Issue";
+import {
+  withServerActionInstrumentation,
+  captureException,
+} from "@sentry/nextjs";
+import { revalidatePath } from "next/cache";
+
+import { UnauthenticatedError } from "@src/entities/errors/auth";
+import { InputParseError, NotFoundError } from "@src/entities/errors/common";
+import {
+  getIssuesController,
+  getIssueByIdController,
+  createIssueController,
+  updateIssueController,
+  deleteIssueController,
+} from "@src/interface-adapters/controllers/issues";
+import { auth } from "@clerk/nextjs/server";
 
 export async function getIssues() {
-  // TODO: Implement this function
+  return await withServerActionInstrumentation(
+    "getIssues",
+    { recordResponse: true },
+    async () => {
+      const { userId } = auth();
+      try {
+        const response = await getIssuesController(userId as string);
+        return response;
+      } catch (error) {
+        if (error instanceof InputParseError) {
+          return { success: false, message: error.message };
+        }
+        if (error instanceof UnauthenticatedError) {
+          return { success: false, message: "Must be logged in to get issues" };
+        }
+        captureException(error);
+        return {
+          success: false,
+          message:
+            "An error happened while getting issues. The developers have been notified. Please try again later.",
+        };
+      }
+    },
+  );
 }
 
 export async function getIssueById(id: string) {
-  // TODO: Implement this function
+  return await withServerActionInstrumentation(
+    "getIssueById",
+    { recordResponse: true },
+    async () => {
+      const { userId } = auth();
+      try {
+        const response = await getIssueByIdController(id, userId as string);
+        return response;
+      } catch (error) {
+        if (error instanceof InputParseError) {
+          return { success: false, message: error.message };
+        }
+        if (error instanceof UnauthenticatedError) {
+          return {
+            success: false,
+            message: "Must be logged in to get an issue",
+          };
+        }
+        captureException(error);
+        return {
+          success: false,
+          message:
+            "An error happened while getting an issue. The developers have been notified. Please try again later.",
+        };
+      }
+    },
+  );
 }
 
-export async function createIssue(input: PartialIssueProps) {
-  // TODO: Implement this function
+export async function createIssue(input: FormData) {
+  return await withServerActionInstrumentation(
+    "createIssue",
+    { recordResponse: true },
+    async () => {
+      const { userId } = auth();
+      try {
+        const data = Object.fromEntries(input.entries());
+        const response = await createIssueController(data, userId as string);
+        if (response.success) {
+          revalidatePath("/");
+        }
+        return response;
+      } catch (error) {
+        if (error instanceof InputParseError) {
+          return { success: false, message: error.message };
+        }
+        if (error instanceof UnauthenticatedError) {
+          return {
+            success: false,
+            message: "Must be logged in to create an issue",
+          };
+        }
+        captureException(error);
+        return {
+          success: false,
+          message:
+            "An error happened while creating an issue. The developers have been notified. Please try again later.",
+        };
+      }
+    },
+  );
 }
 
-export async function updateIssue(input: PartialIssueProps) {
-  // TODO: Implement this function
+export async function updateIssue(input: FormData) {
+  return await withServerActionInstrumentation(
+    "updateIssue",
+    { recordResponse: true },
+    async () => {
+      const { userId } = auth();
+      try {
+        const data = Object.fromEntries(input.entries());
+        const response = await updateIssueController(data, userId as string);
+        if (response.success) {
+          revalidatePath("/");
+        }
+        return response;
+      } catch (error) {
+        if (error instanceof InputParseError) {
+          return { success: false, message: error.message };
+        }
+        if (error instanceof UnauthenticatedError) {
+          return {
+            success: false,
+            message: "Must be logged in to update an issue",
+          };
+        }
+        captureException(error);
+        return {
+          success: false,
+          message:
+            "An error happened while updating an issue. The developers have been notified. Please try again later.",
+        };
+      }
+    },
+  );
 }
 
 export async function deleteIssue(id: string) {
-  // TODO: Implement this function
+  return await withServerActionInstrumentation(
+    "deleteIssue",
+    { recordResponse: true },
+    async () => {
+      const { userId } = auth();
+      try {
+        const response = await deleteIssueController(id, userId as string);
+        if (response.success) {
+          revalidatePath("/");
+        }
+        return response;
+      } catch (error) {
+        if (error instanceof InputParseError) {
+          return { success: false, message: error.message };
+        }
+        if (error instanceof UnauthenticatedError) {
+          return {
+            success: false,
+            message: "Must be logged in to delete an issue",
+          };
+        }
+        captureException(error);
+        return {
+          success: false,
+          message:
+            "An error happened while deleting an issue. The developers have been notified. Please try again later.",
+        };
+      }
+    },
+  );
 }

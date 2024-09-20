@@ -1,9 +1,5 @@
 import type { PartialIssueProps } from "@src/entities/models/Issue";
-
-export type ResponseProps = {
-  success: boolean;
-  message: string;
-};
+import type { ResponseProps } from "types/global";
 
 export interface IIssuesRepository {
   getIssues(): Promise<PartialIssueProps[] | undefined>;

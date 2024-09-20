@@ -18,7 +18,7 @@ function presenter(response: ResponseProps) {
   });
 }
 
-export async function getUserController(
+export async function updateUserController(
   input: PartialUserProps,
   sessionId: string | undefined,
 ): Promise<ReturnType<typeof presenter>> {
