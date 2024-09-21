@@ -9,6 +9,7 @@ import type { ICVRepository } from "@src/application/repositories/cv.repository.
 
 @injectable()
 export class CVRepository implements ICVRepository {
+  constructor() {}
   async getCvs(): Promise<PartialCvProps[]> {
     return await startSpan({ name: "CVRepository -> getCVs" }, async () => {
       try {

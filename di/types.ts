@@ -6,11 +6,13 @@ import type { ICVRepository } from "@src/application/repositories/cv.repository.
 import type { IProjectRepository } from "@src/application/repositories/project.repository.interface";
 import type { IWikiRepository } from "@src/application/repositories/wiki.repository.interface";
 import type { IUsersRepository } from "@src/application/repositories/user.repository.interface";
+import type { IAuthService } from "@src/application/services/auth.service.interface";
 
 export const DI_SYMBOLS = {
   // Services
   //   IAuthenticationService: Symbol.for("IAuthenticationService"),
   IEmailService: Symbol.for("IEmailService"),
+  IAuthService: Symbol.for("IAuthService"),
 
   // Repositories
   IUsersRepository: Symbol.for("IUsersRepository"),
@@ -26,7 +28,7 @@ export interface DI_RETURN_TYPES {
   // Services
   //   IAuthenticationService: IAuthenticationService;
   IEmailService: IEmailService;
-
+  IAuthService: IAuthService;
   // Repositories
   IUsersRepository: IUsersRepository;
   IWikiRepository: IWikiRepository;

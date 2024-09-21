@@ -9,6 +9,7 @@ import type { IWikiRepository } from "@src/application/repositories/wiki.reposit
 
 @injectable()
 export class WikiRepository implements IWikiRepository {
+  constructor() {}
   async getWiki(): Promise<PartialWikiProps[] | undefined> {
     return await startSpan({ name: "WikiRepository > getWiki" }, async () => {
       try {

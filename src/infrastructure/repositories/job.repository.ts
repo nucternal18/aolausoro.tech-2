@@ -23,6 +23,7 @@ type MonthlyApplicationStatProps = {
 
 @injectable()
 export class JobRepository implements IJobsRepository {
+  constructor() {}
   async getStats(id: string): Promise<StatsProps | undefined> {
     return await startSpan({ name: "JobRepository -> Get Stats" }, async () => {
       try {

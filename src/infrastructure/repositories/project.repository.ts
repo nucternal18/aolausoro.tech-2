@@ -9,6 +9,7 @@ import type { IProjectRepository } from "@src/application/repositories/project.r
 
 @injectable()
 export class ProjectRepository implements IProjectRepository {
+  constructor() {}
   async getProjects(): Promise<PartialProjectProps[] | undefined> {
     return await startSpan(
       { name: "ProjectRepository > getProject" },

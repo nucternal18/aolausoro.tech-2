@@ -9,6 +9,8 @@ import { MessagesModule } from "./modules/messages.module";
 import { JobsModule } from "./modules/jobs.module";
 import { CVModule } from "./modules/cv.module";
 import { IssueModule } from "./modules/issues.module";
+import { EmailModule } from "./modules/email.module";
+import { AuthModule } from "./modules/auth.module";
 
 const ApplicationContainer = new Container({
   defaultScope: "Singleton",
@@ -22,6 +24,8 @@ export const initializeContainer = () => {
   ApplicationContainer.load(ProjectsModule);
   ApplicationContainer.load(WikiModule);
   ApplicationContainer.load(MessagesModule);
+  ApplicationContainer.load(EmailModule);
+  ApplicationContainer.load(AuthModule);
 };
 
 export const destroyContainer = () => {
@@ -32,6 +36,8 @@ export const destroyContainer = () => {
   ApplicationContainer.unload(ProjectsModule);
   ApplicationContainer.unload(WikiModule);
   ApplicationContainer.unload(MessagesModule);
+  ApplicationContainer.unload(EmailModule);
+  ApplicationContainer.unload(AuthModule);
 };
 
 if (process.env.NODE_ENV !== "test") {

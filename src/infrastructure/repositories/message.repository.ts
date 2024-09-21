@@ -9,6 +9,7 @@ import type { IMessageRepository } from "@src/application/repositories/message.r
 
 @injectable()
 export class MessageRepository implements IMessageRepository {
+  constructor() {}
   async getMessages(): Promise<PartialMessageProps[] | undefined> {
     return await startSpan(
       { name: "MessageRepository > getMessages" },

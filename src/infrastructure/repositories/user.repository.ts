@@ -9,6 +9,7 @@ import type { PartialUserProps } from "@src/entities/models/User";
 
 @injectable()
 export class UsersRepository implements IUsersRepository {
+  constructor() {}
   async getUser(id: string): Promise<PartialUserProps | undefined> {
     return await startSpan({ name: "UsersRepository > getUser" }, async () => {
       try {

@@ -4,20 +4,19 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@components/ui/button";
 
-import { useGetCVQuery } from "@app/global-redux-store/features/users/userApiSlice";
 import Link from "next/link";
 import { getLatestCV } from "@lib/utils";
-import type { PartialCvProps } from "schema/cv";
+
 import { Typography } from "@components/Typography";
+import type { PartialCvProps } from "@src/entities/models/cv";
 
 const variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
 
-export default function HomeComponent() {
-  const { data = [], isLoading } = useGetCVQuery();
-  const cvDoc = isLoading ? "" : getLatestCV(data as PartialCvProps[]);
+export default function HomeComponent(data: PartialCvProps[]) {
+  const cvDoc = getLatestCV(data);
 
   return (
     <section className="h-full w-full">

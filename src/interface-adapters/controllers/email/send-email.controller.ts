@@ -1,5 +1,4 @@
 import { startSpan } from "@sentry/nextjs";
-import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { InputParseError } from "@src/entities/errors/common";
 import type { ResponseProps } from "types/global";
 import { sendEmailUseCase } from "@src/application/use-cases/email/send-email.use-case";

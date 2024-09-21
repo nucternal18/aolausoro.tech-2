@@ -9,6 +9,7 @@ import type { IIssuesRepository } from "@src/application/repositories/issue.repo
 
 @injectable()
 export class IssueRepository implements IIssuesRepository {
+  constructor() {}
   async getIssueById(id: string): Promise<PartialIssueProps | undefined> {
     return await startSpan(
       { name: "IssueRepository -> getIssueById" },

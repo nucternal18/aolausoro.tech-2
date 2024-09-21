@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 
+const webpack = require("webpack");
 const runtimeCaching = require("next-pwa/cache");
 const withPWA = require("next-pwa")({
   dest: "public",
@@ -22,6 +23,15 @@ const nextConfig = {
       config.resolve.fallback = {
         fs: false,
       };
+    }
+    if (isServer) {
+      config.plugins.push(
+        new webpack.BannerPlugin({
+          banner: 'require("reflect-metadata");',
+          raw: true,
+          entryOnly: true,
+        }),
+      );
     }
 
     return config;

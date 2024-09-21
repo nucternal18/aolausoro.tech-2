@@ -1,9 +1,8 @@
 import type { IEmailService } from "./../../application/services/email.service.interface";
-import { DI_SYMBOLS } from "./../../../di/types";
+
 import { captureException, startSpan } from "@sentry/nextjs";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import resend from "@lib/resend";
-import type { IMessageRepository } from "@src/application/repositories/message.repository.interface";
 import type { ResponseProps } from "types/global";
 import type { PartialMessageProps } from "@src/entities/models/Message";
 import type { Resend } from "resend";
