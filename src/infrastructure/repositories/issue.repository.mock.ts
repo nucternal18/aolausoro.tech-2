@@ -7,7 +7,6 @@ import type {
   Status,
 } from "@src/entities/models/Issue";
 
-@injectable()
 export class MockIssueRepository implements IIssuesRepository {
   private _issues: PartialIssueProps[];
 

@@ -5,7 +5,7 @@ import { injectable } from "inversify";
 import type { IProjectRepository } from "@src/application/repositories/project.repository.interface";
 import type { PartialProjectProps } from "@src/entities/models/Project";
 
-@injectable()
+// @injectable()
 export class MockProjectsRepository implements IProjectRepository {
   private _projects: PartialProjectProps[];
 

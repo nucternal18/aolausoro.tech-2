@@ -7,7 +7,7 @@ import { PrismaErrorHandler } from "@src/entities/errors/common";
 import type { PartialWikiProps } from "@src/entities/models/Wiki";
 import type { IWikiRepository } from "@src/application/repositories/wiki.repository.interface";
 
-@injectable()
+// @injectable()
 export class WikiRepository implements IWikiRepository {
   constructor() {}
   async getWiki(): Promise<PartialWikiProps[] | undefined> {

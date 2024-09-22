@@ -3,7 +3,7 @@ import type { ResponseProps } from "types/global";
 import type { IWikiRepository } from "@src/application/repositories/wiki.repository.interface";
 import type { PartialWikiProps } from "@src/entities/models/Wiki";
 
-@injectable()
+// @injectable()
 export class MockWikiRepository implements IWikiRepository {
   private _wikis: PartialWikiProps[];
 

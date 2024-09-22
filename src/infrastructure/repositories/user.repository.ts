@@ -7,7 +7,7 @@ import type { IUsersRepository } from "@src/application/repositories/user.reposi
 import { PrismaErrorHandler } from "@src/entities/errors/common";
 import type { PartialUserProps } from "@src/entities/models/User";
 
-@injectable()
+// @injectable()
 export class UsersRepository implements IUsersRepository {
   constructor() {}
   async getUser(id: string): Promise<PartialUserProps | undefined> {

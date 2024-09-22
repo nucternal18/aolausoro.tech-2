@@ -21,7 +21,6 @@ type MonthlyApplicationStatProps = {
   count: number;
 };
 
-@injectable()
 export class JobRepository implements IJobsRepository {
   constructor() {}
   async getStats(id: string): Promise<StatsProps | undefined> {

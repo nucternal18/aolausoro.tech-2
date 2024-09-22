@@ -37,10 +37,7 @@
       "@src/*": ["src/*"],
       "@di/*": ["di/*"]
     },
-    "strictNullChecks": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "types": ["reflect-metadata"]
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",

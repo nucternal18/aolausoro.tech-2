@@ -3,7 +3,7 @@ import type { PartialUserProps } from "@src/entities/models/User";
 import type { ResponseProps } from "types/global";
 import { injectable } from "inversify";
 
-@injectable()
+// @injectable()
 export class MockUsersRepository implements IUsersRepository {
   private _users: PartialUserProps[];
 

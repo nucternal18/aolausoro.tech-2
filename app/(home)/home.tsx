@@ -15,7 +15,7 @@ const variants = {
   visible: { opacity: 1 },
 };
 
-export default function HomeComponent(data: PartialCvProps[]) {
+export default function HomeComponent({ data }: { data: PartialCvProps[] }) {
   const cvDoc = getLatestCV(data);
 
   return (

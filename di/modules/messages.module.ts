@@ -4,17 +4,17 @@ import { DI_SYMBOLS } from "../types";
 import type { IMessageRepository } from "@src/application/repositories/message.repository.interface";
 import { MockMessageRepository } from "@src/infrastructure/repositories/message.repository.mock";
 import { MessageRepository } from "@src/infrastructure/repositories/message.repository";
+import type { SimpleContainer } from "@di/container";
 
-const initializeModule = (bind: interfaces.Bind) => {
-  if (process.env.NODE_ENV === "test") {
-    bind<IMessageRepository>(DI_SYMBOLS.IMessageRepository).to(
-      MockMessageRepository,
-    );
-  } else {
-    bind<IMessageRepository>(DI_SYMBOLS.IMessageRepository).to(
-      MessageRepository,
-    );
-  }
+export const MessagesModule = {
+  init: (container: SimpleContainer) => {
+    if (process.env.NODE_ENV === "test") {
+      container.bind(
+        DI_SYMBOLS.IMessageRepository,
+        new MockMessageRepository(),
+      );
+    } else {
+      container.bind(DI_SYMBOLS.IMessageRepository, new MessageRepository());
+    }
+  },
 };
-
-export const MessagesModule = new ContainerModule(initializeModule);

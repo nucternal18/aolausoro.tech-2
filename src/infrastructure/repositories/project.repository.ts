@@ -7,7 +7,7 @@ import { PrismaErrorHandler } from "@src/entities/errors/common";
 import type { PartialProjectProps } from "@src/entities/models/Project";
 import type { IProjectRepository } from "@src/application/repositories/project.repository.interface";
 
-@injectable()
+// @injectable()
 export class ProjectRepository implements IProjectRepository {
   constructor() {}
   async getProjects(): Promise<PartialProjectProps[] | undefined> {

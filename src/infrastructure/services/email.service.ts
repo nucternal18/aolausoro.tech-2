@@ -7,7 +7,7 @@ import type { ResponseProps } from "types/global";
 import type { PartialMessageProps } from "@src/entities/models/Message";
 import type { Resend } from "resend";
 
-@injectable()
+// @injectable()
 export class EmailService implements IEmailService {
   private _emailClient: Resend;
 

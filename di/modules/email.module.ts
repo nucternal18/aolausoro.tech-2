@@ -4,13 +4,14 @@ import { DI_SYMBOLS } from "../types";
 import type { IEmailService } from "@src/application/services/email.service.interface";
 import { MockEmailService } from "@src/infrastructure/services/email.service.mock";
 import { EmailService } from "@src/infrastructure/services/email.service";
+import type { SimpleContainer } from "@di/container";
 
-const initializeModule = (bind: interfaces.Bind) => {
-  if (process.env.NODE_ENV === "test") {
-    bind<IEmailService>(DI_SYMBOLS.IEmailService).to(MockEmailService);
-  } else {
-    bind<IEmailService>(DI_SYMBOLS.IEmailService).to(EmailService);
-  }
+export const EmailModule = {
+  init: (container: SimpleContainer) => {
+    if (process.env.NODE_ENV === "test") {
+      container.bind(DI_SYMBOLS.IEmailService, new MockEmailService());
+    } else {
+      container.bind(DI_SYMBOLS.IEmailService, new EmailService());
+    }
+  },
 };
-
-export const EmailModule = new ContainerModule(initializeModule);

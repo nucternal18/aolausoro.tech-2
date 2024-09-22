@@ -23,7 +23,6 @@ export const DI_SYMBOLS = {
   IJobsRepository: Symbol.for("IJobsRepository"),
   IMessageRepository: Symbol.for("IMessageRepository"),
 };
-
 export interface DI_RETURN_TYPES {
   // Services
   //   IAuthenticationService: IAuthenticationService;

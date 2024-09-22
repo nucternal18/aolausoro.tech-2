@@ -1,3 +1,5 @@
+"use server";
+
 import { auth } from "@clerk/nextjs/server";
 
 import {
@@ -20,12 +22,15 @@ export async function getCV() {
     async () => {
       try {
         const response = await getCvsController();
+        console.log("🚀 ~ response:", response);
         return response;
       } catch (err) {
         captureException(err);
         return {
-          error:
-            "An error happened while creating a todo. The developers have been notified. Please try again later.",
+          success: false,
+          message:
+            "An error happened while getting the CVs. The developers have been notified. Please try again later.",
+          error: err,
         };
       }
     },

@@ -1,16 +1,14 @@
-import { ContainerModule, type interfaces } from "inversify";
-
-import { DI_SYMBOLS } from "../types";
 import { UsersRepository } from "@src/infrastructure/repositories/user.repository";
+import { SimpleContainer } from "../container";
+import { DI_SYMBOLS } from "../types";
 import { MockUsersRepository } from "@src/infrastructure/repositories/user.repository.mock";
-import type { IUsersRepository } from "@src/application/repositories/user.repository.interface";
 
-const initializeModule = (bind: interfaces.Bind) => {
-  if (process.env.NODE_ENV === "test") {
-    bind<IUsersRepository>(DI_SYMBOLS.IUsersRepository).to(MockUsersRepository);
-  } else {
-    bind<IUsersRepository>(DI_SYMBOLS.IUsersRepository).to(UsersRepository);
-  }
+export const UsersModule = {
+  init: (container: SimpleContainer) => {
+    if (process.env.NODE_ENV === "test") {
+      container.bind(DI_SYMBOLS.IUsersRepository, new MockUsersRepository());
+    } else {
+      container.bind(DI_SYMBOLS.IUsersRepository, new UsersRepository());
+    }
+  },
 };
-
-export const UsersModule = new ContainerModule(initializeModule);

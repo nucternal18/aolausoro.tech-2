@@ -7,7 +7,6 @@ import { PrismaErrorHandler } from "@src/entities/errors/common";
 import type { PartialIssueProps } from "@src/entities/models/Issue";
 import type { IIssuesRepository } from "@src/application/repositories/issue.repository.interface";
 
-@injectable()
 export class IssueRepository implements IIssuesRepository {
   constructor() {}
   async getIssueById(id: string): Promise<PartialIssueProps | undefined> {

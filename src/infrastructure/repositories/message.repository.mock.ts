@@ -1,11 +1,9 @@
-import type { IUsersRepository } from "@src/application/repositories/user.repository.interface";
-import type { PartialUserProps } from "@src/entities/models/User";
 import type { ResponseProps } from "types/global";
 import { injectable } from "inversify";
 import type { IMessageRepository } from "@src/application/repositories/message.repository.interface";
 import type { PartialMessageProps } from "@src/entities/models/Message";
 
-@injectable()
+// @injectable()
 export class MockMessageRepository implements IMessageRepository {
   private _messages: PartialMessageProps[];
 

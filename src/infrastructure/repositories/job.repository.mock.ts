@@ -1,11 +1,8 @@
-import type { IUsersRepository } from "@src/application/repositories/user.repository.interface";
-
 import type { ResponseProps } from "types/global";
 import { injectable } from "inversify";
 import type { IJobsRepository } from "@src/application/repositories/job.repository.interface";
 import type { PartialJobProps, StatsProps } from "@src/entities/models/Job";
 
-@injectable()
 export class MockJobRepository implements IJobsRepository {
   private _jobs: PartialJobProps[];
 
