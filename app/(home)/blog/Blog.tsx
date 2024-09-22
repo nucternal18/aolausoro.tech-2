@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import CategoryLabel from "../../../components/category-label";
-import { type BlogPost } from "types/types";
+
 import getFormattedDateString from "lib/getFormattedDateString";
+import type { BlogPost } from "types/index";
 
 export default function BlogItem({ post }: { post: BlogPost["meta"] }) {
   const formattedDate = getFormattedDateString(post.date);

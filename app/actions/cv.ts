@@ -22,7 +22,6 @@ export async function getCV() {
     async () => {
       try {
         const response = await getCvsController();
-        console.log("🚀 ~ response:", response);
         return response;
       } catch (err) {
         captureException(err);

@@ -9,18 +9,14 @@ function presenter(projects: PartialProjectProps[]) {
   });
 }
 
-export async function getProjectsController(
-  sessionId: string | undefined,
-): Promise<ReturnType<typeof presenter>> {
+export async function getProjectsController(): Promise<
+  ReturnType<typeof presenter>
+> {
   return await startSpan(
     {
       name: "getProjects Controller",
     },
     async () => {
-      if (!sessionId) {
-        throw new UnauthenticatedError("Must be logged in to get projects");
-      }
-
       const projects = await getProjectsUseCase();
 
       return presenter(projects);

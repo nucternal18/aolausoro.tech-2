@@ -5,22 +5,20 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ReCAPTCHA from "react-google-recaptcha";
 
-// redux
-import {
-  useCreateMessageMutation,
-  useSendMailMutation,
-} from "app/global-redux-store/features/messages/messagesApiSlice";
-
 // components
 import { useToast } from "@components/ui/use-toast";
 
 // zod schemas
-import { partialMessageSchema, type PartialMessageProps } from "schema/Message";
+
+import { createMessage, sendMail } from "@app/actions/messages";
+import {
+  partialMessageSchema,
+  type PartialMessageProps,
+} from "@src/entities/models/Message";
 
 export default function useContactController() {
   const { toast } = useToast();
-  const [createMessage] = useCreateMessageMutation();
-  const [sendMail] = useSendMailMutation();
+
   const form = useForm<PartialMessageProps>({
     resolver: zodResolver(partialMessageSchema),
     defaultValues: {
@@ -45,16 +43,21 @@ export default function useContactController() {
         message: data.message,
         token: token as string,
       };
-      console.log("🚀 ~ newMessage:", newMessage);
+      const formData = new FormData();
+      formData.append("name", newMessage.name as string);
+      formData.append("email", newMessage.email as string);
+      formData.append("subject", newMessage.subject as string);
+      formData.append("message", newMessage.message as string);
+      formData.append("token", newMessage.token);
       try {
-        const sendMailResponse = await sendMail(newMessage).unwrap();
+        const sendMailResponse = await sendMail(formData);
         if (sendMailResponse.success) {
-          await createMessage(newMessage).unwrap();
-          form.reset();
+          await createMessage(formData);
           toast({
             title: "Success",
             description: "Message sent successfully",
           });
+          form.reset();
         }
       } catch (error) {
         console.error(error);

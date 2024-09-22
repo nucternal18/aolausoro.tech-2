@@ -38,10 +38,10 @@ const about = () => {
           <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold  ">
             Hello, and thank you for visiting my portfolio!👋 I am a Software
             Developer 🚀 with a passion for creating innovative solutions
-            through software development. Armed with a solid foundation from my
-            Bachelor's degree in Computing and IT (Software), I am eager to
-            contribute my skills and knowledge to the dynamic field of
-            technology.
+            through software development. Armed with over 2 years experience as
+            a fullstack developer and a solid foundation from a Bachelor's
+            degree in Computing and IT (Software), I am eager to contribute my
+            skills and knowledge to the dynamic field of technology.
           </p>
           <p className="mb-2 text-lg md:text-xl space-y-2 font-semibold  ">
             🌟 Key Highlights:

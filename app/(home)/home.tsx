@@ -2,13 +2,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Button } from "@components/ui/button";
 
 import Link from "next/link";
 import { getLatestCV } from "@lib/utils";
 
 import { Typography } from "@components/Typography";
 import type { PartialCvProps } from "@src/entities/models/cv";
+import { NetworkAnimation } from "@components/animations/network-animations";
+import { MatrixRainAnimation } from "@components/animations";
 
 const variants = {
   hidden: { opacity: 0 },
@@ -38,46 +39,46 @@ export default function HomeComponent({ data }: { data: PartialCvProps[] }) {
           className="absolute w-full h-full bg-black opacity-75"
         ></span>
       </div>
-      <div className=" relative w-full h-full">
-        <motion.div
-          className="p-8 opacity-75 container mx-auto max-w-screen-xl h-full"
-          initial="hidden"
-          animate="visible"
-          variants={variants}
-          transition={{ duration: 2.0 }}
-        >
-          <div className="flex flex-col md:flex-row items-center h-full gap-2 w-full">
-            <div className="p-2 sm:w-2/3">
-              <div className="mx-auto mb-1 text-left w-full">
-                <div className="grid grid-cols-1 text-white mb-4 gap-2 text-justify ">
-                  <Typography
-                    variant="h1"
-                    className="grid grid-cols-1 text-white mb-4 gap-2 text-justify "
-                  >
-                    <span>Hi 👋, I'm Woyin.</span>
-                  </Typography>
-                  <Typography variant="h3" className="font-thin">
-                    <span>
-                      A Full-Stack developer who enjoys developing real world
-                      application from web to mobile to backend systems.
-                    </span>
-                  </Typography>
-                  <div className="border-b-2 border-yellow-400  "></div>
-                </div>
-              </div>
-              <div className="w-full">
-                <Typography
-                  variant="h1"
-                  className="mb-4 text-gray-300 text-3xl "
+      <div className=" relative w-full h-full flex justify-center items-center">
+        <div className="container mx-auto px-4 py-16 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center place-content-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Typography
+                variant="h1"
+                className=" text-white mb-4 gap-2 text-justify "
+              >
+                Hi{" "}
+                <motion.span
+                  className="inline-block mx-2"
+                  animate={{ rotate: [0, 14, -8, 14, -4, 10, 0] }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    repeatDelay: 1,
+                  }}
                 >
-                  Welcome to My Portfolio!
-                </Typography>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                asChild
-                className="text-sm font-semibold bg-transparent text-zinc-50 border border-zinc-50 cursor-pointer"
+                  👋
+                </motion.span>
+                , I'm Woyin.
+              </Typography>
+
+              <Typography variant="h3" className="font-thin text-white">
+                <span>
+                  A Full-Stack developer who enjoys developing real world
+                  application from web to mobile to backend systems.
+                </span>
+              </Typography>
+              <Typography variant="h2" className="mb-4 text-gray-300 text-3xl ">
+                Welcome to My Portfolio!
+              </Typography>
+              <motion.button
+                className="bg-white text-black px-6 py-2 rounded-full font-semibold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Link
                   data-testid="cv-button"
@@ -87,10 +88,15 @@ export default function HomeComponent({ data }: { data: PartialCvProps[] }) {
                 >
                   My Resume
                 </Link>
-              </Button>
-            </div>
+              </motion.button>
+            </motion.div>
+            <MatrixRainAnimation />
+            {/* <NetworkAnimation /> */}
+            {/* <div className="w-full h-64 md:h-96">
+              <CodeAnimation />
+            </div> */}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

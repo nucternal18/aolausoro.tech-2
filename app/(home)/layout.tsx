@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-background font-mono antialiased min-h-[100dvh]",
+          "border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-background font-mono antialiased",
         )}
       >
         <div className="grid min-h-[100dvh] grid-rows-[auto_1fr_auto]">

@@ -27,7 +27,7 @@ export async function getProjects(): Promise<
       const { userId } = auth();
 
       try {
-        const response = await getProjectsController(userId as string);
+        const response = await getProjectsController();
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {

@@ -72,7 +72,6 @@ export function composeEventHandlers<E>(
  * @returns The URL of the latest CV.
  */
 export const getLatestCV = (data: PartialCvProps[]) => {
-  console.log("🚀 ~ getLatestCV ~ data:", data);
   const latestCV = data.reduce((prev, current) =>
     new Date(prev.createdAt as unknown as string) >
     new Date(current.createdAt as unknown as string)
