@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@components/ui/alert-dialog";
 import { Button } from "@components/ui/button";
-import type { PartialMessageProps } from "schema/Message";
+import type { PartialMessageProps } from "@src/entities/models/Message";
 import { Card } from "@components/ui/card";
 import { Separator } from "@components/ui/separator";
 

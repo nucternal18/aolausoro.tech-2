@@ -16,8 +16,9 @@ import HandleDeleteModal from "@components/handle-delete-modal/handle-delete-mod
 
 // hooks (Controller)
 import useProjectController from "./use-project-controller";
-import type { PartialProjectProps } from "schema/Project";
+
 import { DataTableRowActions } from "@components/data-table/data-table-row-actions";
+import type { PartialProjectProps } from "@src/entities/models/Project";
 
 export const columns: ColumnDef<PartialProjectProps>[] = [
   {
@@ -142,7 +143,9 @@ export const columns: ColumnDef<PartialProjectProps>[] = [
           editItem={
             <Button
               variant="ghost"
-              onClick={() => router.push(`admin/projects/${project.id}`)}
+              onClick={() =>
+                router.push(`/protected/admin/projects/${project.id}`)
+              }
             >
               <Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               Edit

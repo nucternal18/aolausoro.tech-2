@@ -8,9 +8,9 @@ export const jobSchema = z.object({
   jobLocation: z.string(),
   jobType: z.string(),
   position: z.string(),
-  status: z.string(),
-  sort: z.string(),
-  search: z.string(),
+  status: z.string().optional(),
+  sort: z.string().optional(),
+  search: z.string().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

@@ -3,6 +3,7 @@ import { UnauthenticatedError } from "@src/entities/errors/auth";
 
 import type { ResponseProps } from "types/global";
 import { deleteProjectUseCase } from "@src/application/use-cases/projects/delete-projects.use-case";
+import { getInjection } from "@di/container";
 
 function presenter(project: ResponseProps) {
   return startSpan({ name: "deleteProject Presenter", op: "serialize" }, () => {
@@ -21,6 +22,13 @@ export async function deleteProjectController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to delete a project");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to delete a project");
       }
 
       const deletedProject = await deleteProjectUseCase(id);

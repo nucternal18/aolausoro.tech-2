@@ -1,15 +1,22 @@
 import { startSpan } from "@sentry/nextjs";
 import { getInjection } from "@di/container";
 
-import type { PartialJobProps } from "@src/entities/models/Job";
+import type { JobsProps } from "@src/entities/models/Job";
 
-export function getJobsUseCase(): Promise<PartialJobProps[]> {
+type QueryObjProps = {
+  [k: string]: string;
+};
+
+export function getJobsUseCase(
+  queryItems: QueryObjProps,
+  userId: string,
+): Promise<JobsProps> {
   return startSpan(
     { name: "getJobs UseCase", op: "function" },
     async (span) => {
       const jobsRepository = getInjection("IJobsRepository");
 
-      return (await jobsRepository.getJobs()) as PartialJobProps[];
+      return (await jobsRepository.getJobs(queryItems, userId)) as JobsProps;
     },
   );
 }

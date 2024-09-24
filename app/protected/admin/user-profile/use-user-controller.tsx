@@ -1,14 +1,9 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
-import {
-  useGetUserQuery,
-  useUploadPDFCvMutation,
-  useCreateCVMutation,
-} from "@app/global-redux-store/features/users/userApiSlice";
 import { useAppDispatch, useAppSelector } from "@app/global-redux-store/hooks";
 import { useToast } from "@components/ui/use-toast";
 import {
@@ -20,6 +15,11 @@ import {
   isFetchBaseQueryError,
 } from "@app/global-redux-store/helper";
 import { ToastAction } from "@components/ui/toast";
+import { getUser } from "@app/actions/user";
+import { uploadPDFCv } from "@app/actions/upload";
+import { createCV } from "@app/actions/cv";
+import type { ResponseProps } from "types/global";
+import type { PartialUserProps } from "@src/entities/models/User";
 
 const formSchema = z.object({
   cvUrl: z.string().url().optional(),
@@ -35,11 +35,6 @@ export default function useUserController() {
   const dispatch = useAppDispatch();
   const user = useAppSelector(userSelector);
   const { toast } = useToast();
-
-  const { data: userData, error, isLoading: isLoadingUser } = useGetUserQuery();
-
-  const [uploadPDFCv, { isLoading: isUploading }] = useUploadPDFCvMutation();
-  const [createCV] = useCreateCVMutation();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -69,12 +64,23 @@ export default function useUserController() {
     );
 
     try {
-      const uploadPDFResponse = await uploadPDFCv({
-        url,
-        data: formData,
-      }).unwrap();
+      const { data, error, progress } = await uploadPDFCv(url, formData);
+      if (progress && progress > 0) {
+        dispatch(setUploadProgress(progress));
+      }
 
-      const response = await createCV(uploadPDFResponse.secure_url).unwrap();
+      if (error) {
+        toast({
+          title: "Error!",
+          description: error as string,
+        });
+        return;
+      }
+
+      const cvFormData = new FormData();
+      cvFormData.append("cvUrl", data?.secure_url as string);
+
+      const response = (await createCV(cvFormData)) as ResponseProps;
 
       if (response.success) {
         form.reset();
@@ -106,11 +112,7 @@ export default function useUserController() {
 
   return {
     form,
-    userData,
-    error,
-    isLoadingUser,
     progress: user.uploadProgress,
-    isUploading,
     uploadPDF,
   };
 }

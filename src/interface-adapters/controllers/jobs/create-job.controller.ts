@@ -5,6 +5,7 @@ import type { ResponseProps } from "types/global";
 import { jobSchema, type PartialJobProps } from "@src/entities/models/Job";
 import { InputParseError } from "@src/entities/errors/common";
 import { createJobUseCase } from "@src/application/use-cases/jobs/create-job.use-case";
+import { getInjection } from "@di/container";
 
 function presenter(job: ResponseProps) {
   return startSpan({ name: "createJob Presenter", op: "serialize" }, () => {
@@ -23,6 +24,13 @@ export async function createJobController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to create a job");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to create a job");
       }
 
       const { data, error: inputParseError } = jobSchema.safeParse(input);

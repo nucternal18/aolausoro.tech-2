@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 
 import JobInfo from "./job-info";
-import type { PartialJobProps } from "schema/Job";
 import { Button } from "@components/ui/button";
 import {
   Card,
@@ -18,11 +17,12 @@ import {
 import { cn } from "@lib/utils";
 
 import useJobsController from "./use-jobs-controller";
+import type { PartialJobProps } from "@src/entities/models/Job";
 
 export function JobCard({ job }: { job: PartialJobProps }) {
   const router = useRouter();
   const date = moment(job.createdAt).format("MMMM Do, YYYY");
-  const { deleteJobHandler, isDeleting } = useJobsController();
+  const { deleteJobHandler } = useJobsController();
 
   const statusColor =
     job.status === "Pending"
@@ -88,7 +88,6 @@ export function JobCard({ job }: { job: PartialJobProps }) {
           </Button>
 
           <Button
-            disabled={isDeleting}
             variant={"destructive"}
             onClick={() => deleteJobHandler(job.id as string)}
           >

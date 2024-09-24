@@ -5,6 +5,7 @@ import type { ResponseProps } from "types/global";
 import { InputParseError } from "@src/entities/errors/common";
 import { wikiSchema, type PartialWikiProps } from "@src/entities/models/Wiki";
 import { createWikiUseCase } from "@src/application/use-cases/wiki/create-wiki.use-case";
+import { getInjection } from "@di/container";
 
 function presenter(wiki: ResponseProps) {
   return startSpan({ name: "createWiki Presenter", op: "serialize" }, () => {
@@ -23,6 +24,13 @@ export async function createWikiController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to create a wiki");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to create a wiki");
       }
 
       const { data, error: parsedWikiError } = wikiSchema.safeParse(input);

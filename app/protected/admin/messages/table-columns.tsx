@@ -14,7 +14,7 @@ import HandleDeleteModal from "@components/handle-delete-modal/handle-delete-mod
 // hooks (Controller)
 import { useMessagesController } from "./use-messages-controller";
 import { DataTableRowActions } from "@components/data-table/data-table-row-actions";
-import type { PartialMessageProps } from "schema/Message";
+import type { PartialMessageProps } from "@src/entities/models/Message";
 import ViewMessageComponents from "./view-message";
 
 export const columns: ColumnDef<PartialMessageProps>[] = [

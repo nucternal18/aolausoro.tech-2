@@ -1,5 +1,9 @@
 "use server";
-import type { PartialJobProps, StatsProps } from "@src/entities/models/Job";
+import type {
+  JobsProps,
+  PartialJobProps,
+  StatsProps,
+} from "@src/entities/models/Job";
 import {
   withServerActionInstrumentation,
   captureException,
@@ -18,6 +22,10 @@ import {
 } from "@src/interface-adapters/controllers/jobs";
 import { auth } from "@clerk/nextjs/server";
 
+type QueryItemsProps = {
+  [key: string]: string;
+};
+
 export async function getStats(): Promise<
   StatsProps | { success: boolean; message: string }
 > {
@@ -30,9 +38,6 @@ export async function getStats(): Promise<
         const response = await getStatsController(userId as string);
         return response as StatsProps;
       } catch (error) {
-        if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
-        }
         if (error instanceof UnauthenticatedError) {
           return { success: false, message: "Must be logged in to get stats" };
         }
@@ -47,21 +52,18 @@ export async function getStats(): Promise<
   );
 }
 
-export async function getJobs(): Promise<
-  PartialJobProps[] | { success: boolean; message: string }
-> {
+export async function getJobs(
+  queryItems: QueryItemsProps,
+): Promise<JobsProps | { success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "getJobs",
     { recordResponse: true },
     async () => {
       const { userId } = auth();
       try {
-        const response = await getJobsController(userId as string);
+        const response = await getJobsController(queryItems, userId as string);
         return response;
       } catch (error) {
-        if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
-        }
         if (error instanceof UnauthenticatedError) {
           return { success: false, message: "Must be logged in to get jobs" };
         }

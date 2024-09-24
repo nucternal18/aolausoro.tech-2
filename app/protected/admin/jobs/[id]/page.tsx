@@ -1,31 +1,17 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { Suspense } from "react";
 // component
 import Header from "@components/header";
 import EditJobComponent from "./EditJobComponent";
 import { Button } from "@components/ui/button";
 import Loader from "../../../../../components/Loader";
+import type { PartialJobProps } from "@src/entities/models/Job";
+import { getJobById } from "@app/actions/jobs";
 
 // redux
-import { useGetJobByIdQuery } from "app/global-redux-store/features/jobs/jobsApiSlice";
 
-// zod schema
-import type { PartialJobProps } from "schema/Job";
-
-function Job({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const router = useRouter();
-  const { data: job, isLoading } = useGetJobByIdQuery(id);
-
-  if (isLoading) {
-    return (
-      <section className="flex items-center justify-center w-full h-full">
-        <Loader classes="w-8 h-8" />
-      </section>
-    );
-  }
-
+  const job = await getJobById(id);
   return (
     <section className="w-full p-4 min-h-screen container mx-auto">
       <section className="flex items-center justify-between mb-4 w-full">
@@ -33,15 +19,21 @@ function Job({ params }: { params: { id: string } }) {
         <Button
           variant={"outline"}
           className="w-ful sm:w-1/3 md:w-1/4 text-primary border-primary"
-          onClick={() => router.back()}
         >
           Go Back
         </Button>
       </section>
-
-      <EditJobComponent job={job as PartialJobProps} />
+      <Suspense fallback={<Loader classes="w-8 h-8" />}>
+        {"message" in job ? (
+          <div className="flex items-center justify-center h-full text-center">
+            <div className="text-lg font-semibold">
+              {job.message ?? "No job found"}
+            </div>
+          </div>
+        ) : (
+          <EditJobComponent job={job} />
+        )}
+      </Suspense>
     </section>
   );
 }
-
-export default Job;

@@ -8,6 +8,7 @@ import {
   projectSchema,
 } from "@src/entities/models/Project";
 import { updateProjectUseCase } from "@src/application/use-cases/projects/update-projects.use-case";
+import { getInjection } from "@di/container";
 
 function presenter(project: ResponseProps) {
   return startSpan({ name: "updateProject Presenter", op: "serialize" }, () => {
@@ -26,6 +27,13 @@ export async function updateProjectController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to update a project");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to update a project");
       }
 
       const { data, error: projectParseError } =

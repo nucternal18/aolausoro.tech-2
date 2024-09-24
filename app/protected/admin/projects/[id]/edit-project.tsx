@@ -9,19 +9,10 @@ import { EditProjectForm } from "../edit-project-form";
 
 // controller
 import useProjectController from "../use-project-controller";
-import type { PartialProjectProps } from "schema/Project";
+import type { PartialProjectProps } from "@src/entities/models/Project";
 
-export function EditProject({ id }: { id: string }) {
+export function EditProject({ project }: { project: PartialProjectProps }) {
   const router = useRouter();
-  const { project, isLoadingProject } = useProjectController(id);
-
-  if (isLoadingProject) {
-    return (
-      <section className="w-full h-full flex items-center justify-center">
-        <Loader classes="w-8 h-8" />
-      </section>
-    );
-  }
 
   return (
     <section className="flex items-center w-full p-4">
@@ -34,7 +25,7 @@ export function EditProject({ id }: { id: string }) {
             Go back
           </Button>
         </div>
-        <EditProjectForm project={project as PartialProjectProps} />
+        <EditProjectForm project={project} />
       </div>
     </section>
   );

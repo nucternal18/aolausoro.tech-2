@@ -8,6 +8,7 @@ import {
 } from "@src/entities/models/Message";
 import { InputParseError } from "@src/entities/errors/common";
 import { createMessageUseCase } from "@src/application/use-cases/messages/create-message.use-case";
+import { getInjection } from "@di/container";
 
 function presenter(message: ResponseProps) {
   return startSpan({ name: "createMessage Presenter", op: "serialize" }, () => {
@@ -26,6 +27,13 @@ export async function createMessageController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to create a message");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to create a message");
       }
 
       const { data, error: messageParseError } = messageSchema.safeParse(msg);

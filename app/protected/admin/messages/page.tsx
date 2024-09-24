@@ -4,8 +4,10 @@ import { Suspense } from "react";
 import Header from "@components/header";
 import { MessagesComponent } from "./messages";
 import Loader from "@components/Loader";
+import { getMessages } from "@app/actions/messages";
 
-export default function Page() {
+export default async function Page() {
+  const messages = await getMessages();
   return (
     <section className=" container flex-grow w-full h-screen p-2 sm:p-6 space-y-4  mx-auto">
       <Header title="Messages" order={1} />
@@ -16,7 +18,15 @@ export default function Page() {
           </section>
         }
       >
-        <MessagesComponent />
+        {"message" in messages ? (
+          <div className="flex items-center justify-center h-full text-center">
+            <div className="text-lg font-semibold">
+              {messages.message ?? "No messages found"}
+            </div>
+          </div>
+        ) : (
+          <MessagesComponent messages={messages} />
+        )}
       </Suspense>
     </section>
   );

@@ -27,9 +27,6 @@ export async function getIssues() {
         const response = await getIssuesController(userId as string);
         return response;
       } catch (error) {
-        if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
-        }
         if (error instanceof UnauthenticatedError) {
           return { success: false, message: "Must be logged in to get issues" };
         }
@@ -54,9 +51,6 @@ export async function getIssueById(id: string) {
         const response = await getIssueByIdController(id, userId as string);
         return response;
       } catch (error) {
-        if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
-        }
         if (error instanceof UnauthenticatedError) {
           return {
             success: false,
@@ -155,9 +149,6 @@ export async function deleteIssue(id: string) {
         }
         return response;
       } catch (error) {
-        if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
-        }
         if (error instanceof UnauthenticatedError) {
           return {
             success: false,

@@ -9,6 +9,7 @@ import {
   type PartialIssueProps,
 } from "@src/entities/models/Issue";
 import { deleteIssueUseCase } from "@src/application/use-cases/issues/delete-issue.use-case";
+import { getInjection } from "@di/container";
 
 function presenter(issue: ResponseProps) {
   return startSpan({ name: "deleteIssue Presenter", op: "serialize" }, () => {
@@ -27,6 +28,13 @@ export async function deleteIssueController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to delete an issue");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to delete an issue");
       }
 
       const issue = await deleteIssueUseCase(id);

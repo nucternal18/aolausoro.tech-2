@@ -8,6 +8,7 @@ import {
 import { InputParseError } from "@src/entities/errors/common";
 import { updateUserUseCase } from "@src/application/use-cases/users/update-user.use-case";
 import type { ResponseProps } from "types/global";
+import { getInjection } from "@di/container";
 
 function presenter(response: ResponseProps) {
   return startSpan({ name: "updateUser Presenter", op: "serialize" }, () => {
@@ -31,6 +32,13 @@ export async function updateUserController(
         throw new UnauthenticatedError("Must be logged in to get USER det");
       }
 
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to get a user");
+      }
+
       const { data, error: inputParseError } =
         partialUserSchema.safeParse(input);
 
@@ -38,9 +46,9 @@ export async function updateUserController(
         throw new InputParseError("Invalid data", { cause: inputParseError });
       }
 
-      const user = await updateUserUseCase(input);
+      const updatedUser = await updateUserUseCase(input);
 
-      return presenter(user as ResponseProps);
+      return presenter(updatedUser as ResponseProps);
     },
   );
 }

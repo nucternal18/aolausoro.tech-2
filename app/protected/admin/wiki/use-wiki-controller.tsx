@@ -1,13 +1,9 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
-import {
-  useGetUserQuery,
-  useUploadUserImageMutation,
-} from "@app/global-redux-store/features/users/userApiSlice";
 import { useAppDispatch, useAppSelector } from "@app/global-redux-store/hooks";
 import { useToast } from "@components/ui/use-toast";
 import {
@@ -18,11 +14,10 @@ import {
   isErrorWithMessage,
   isFetchBaseQueryError,
 } from "@app/global-redux-store/helper";
-import {
-  useGetWikisQuery,
-  useCreateWikiMutation,
-} from "@app/global-redux-store/features/wiki/wikiApiSlice";
+
 import { ToastAction } from "@components/ui/toast";
+import { createWiki, getWiki } from "@app/actions/wiki";
+import { uploadUserImage } from "@app/actions/upload";
 
 const formSchema = z.object({
   title: z.string(),
@@ -44,17 +39,6 @@ export default function useWikiController() {
   const dispatch = useAppDispatch();
   const user = useAppSelector(userSelector);
   const { toast } = useToast();
-
-  const { data: userData, error, isLoading: isLoadingUser } = useGetUserQuery();
-  const {
-    data: wikis,
-    isLoading: isLoadingWikis,
-    refetch,
-  } = useGetWikisQuery();
-
-  const [uploadUserImage, { isLoading: isUploadingImage }] =
-    useUploadUserImageMutation();
-  const [createWiki] = useCreateWikiMutation();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -102,19 +86,29 @@ export default function useWikiController() {
     );
 
     try {
-      const uploadPDFResponse = await uploadUserImage({
-        url,
-        data: formData,
-      }).unwrap();
+      const {
+        data: uploadPDFResponse,
+        error,
+        progress,
+      } = await uploadUserImage(url, formData);
 
-      const data = {
-        title: values.title,
-        description: values.description,
-        isImage: values.isImage,
-        imageUrl: uploadPDFResponse.secure_url,
-      };
+      const wikiFormData = new FormData();
+      wikiFormData.append("title", values.title);
+      wikiFormData.append("description", values.description);
+      wikiFormData.append("isImage", values.isImage.toString());
+      wikiFormData.append("imageUrl", uploadPDFResponse?.secure_url || "");
 
-      const response = await createWiki(data).unwrap();
+      if (progress && progress > 0) {
+        dispatch(setUploadProgress(progress));
+      }
+
+      if (error) {
+        toast({
+          title: "Error!",
+          description: error as string,
+        });
+      }
+      const response = await createWiki(wikiFormData);
 
       if (response.success) {
         form.reset();
@@ -122,7 +116,7 @@ export default function useWikiController() {
           title: "Success!",
           description: response.message,
         });
-        refetch();
+
         dispatch(setUploadProgress(0));
       }
     } catch (error) {
@@ -148,13 +142,7 @@ export default function useWikiController() {
 
   return {
     form,
-    userData,
-    error,
-    isLoadingUser,
     progress: user.uploadProgress,
-    isUploadingImage,
-    wikis,
-    isLoadingWikis,
     uploadImage,
   };
 }

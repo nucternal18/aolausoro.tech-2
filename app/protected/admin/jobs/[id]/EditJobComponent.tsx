@@ -26,7 +26,7 @@ import { Input } from "@components/ui/input";
 import { Button } from "@components/ui/button";
 
 // zod schema
-import type { PartialJobProps } from "schema/Job";
+import type { PartialJobProps } from "@src/entities/models/Job";
 
 // controller
 import useJobsController from "../use-jobs-controller";

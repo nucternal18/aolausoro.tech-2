@@ -3,6 +3,7 @@ import { UnauthenticatedError } from "@src/entities/errors/auth";
 
 import type { ResponseProps } from "types/global";
 import { deleteWikiUseCase } from "@src/application/use-cases/wiki/delete-wiki.use-case";
+import { getInjection } from "@di/container";
 
 function presenter(wiki: ResponseProps) {
   return startSpan({ name: "deleteWiki Presenter", op: "serialize" }, () => {
@@ -21,6 +22,13 @@ export async function deleteWikiController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to delete a wiki");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to delete a wiki");
       }
 
       const wiki = await deleteWikiUseCase(id);

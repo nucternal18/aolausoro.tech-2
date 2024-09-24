@@ -60,6 +60,7 @@ import {
   setMobileDrawerOpened,
 } from "@app/global-redux-store/features/globalSlice";
 import useUserController from "@app/protected/admin/user-profile/use-user-controller";
+import type { PartialUserProps } from "@src/entities/models/User";
 
 type AdminLink = {
   id: number;
@@ -107,10 +108,10 @@ const adminLinks: Array<AdminLink> = [
   },
 ];
 
-export function AdminsSidebar() {
+export function AdminsSidebar({ user }: { user: PartialUserProps }) {
   const { sessionId, isSignedIn } = useAuth();
   const [currentHref, setCurrentHref] = useState<string>("");
-  const { userData } = useUserController();
+
   return (
     <TooltipProvider>
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -157,7 +158,7 @@ export function AdminsSidebar() {
             <TooltipTrigger asChild>
               <Button variant={"ghost"} className="p-0">
                 <ActiveLink
-                  href={`/protected/admin/user-profile/${userData?.id}`}
+                  href={`/protected/admin/user-profile/${user?.id}`}
                   className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                   currentHref={currentHref}
                 >
@@ -210,11 +211,10 @@ export function AdminsSidebar() {
   );
 }
 
-export function MobileAdminSidebar({ height }: { height: number }) {
+export function MobileAdminSidebar({ user }: { user: PartialUserProps }) {
   const [currentHref, setCurrentHref] = useState<string>("");
   const { sessionId, isSignedIn } = useAuth();
-  const { userData } = useUserController();
-  const SCROLL_AREA_HEIGHT = height - 100;
+
   const dispatch = useAppDispatch();
   const { mobileDrawerOpened } = useAppSelector(globalSelector);
 
@@ -316,7 +316,7 @@ export function MobileAdminSidebar({ height }: { height: number }) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>
             <ActiveLink
-              href={`/protected/admin/user-profile/${userData?.id}`}
+              href={`/protected/admin/user-profile/${user?.id}`}
               currentHref={currentHref}
             >
               User Profile

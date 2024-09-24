@@ -39,7 +39,7 @@ export function AddProjectForm() {
     projectImage,
     imageChangeHandler,
     createProjectHandler,
-  } = useProjectController(undefined, setOpen);
+  } = useProjectController(setOpen);
 
   return (
     <>

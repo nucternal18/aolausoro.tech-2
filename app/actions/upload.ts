@@ -3,11 +3,10 @@ import {
   withServerActionInstrumentation,
   captureException,
 } from "@sentry/nextjs";
-import { revalidatePath } from "next/cache";
 import prisma from "@lib/prismadb";
 
 import { UnauthenticatedError } from "@src/entities/errors/auth";
-import { InputParseError, NotFoundError } from "@src/entities/errors/common";
+import { InputParseError } from "@src/entities/errors/common";
 import { auth } from "@clerk/nextjs/server";
 import type { UploadApiResponse } from "cloudinary";
 import axios, { AxiosError } from "axios";

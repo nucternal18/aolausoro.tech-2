@@ -8,17 +8,14 @@ import { useRouter } from "next/navigation";
 // redux
 import { useAppSelector } from "@app/global-redux-store/hooks";
 import { jobSelector } from "@app/global-redux-store/features/jobs/jobsSlice";
-import {
-  useGetJobsQuery,
-  useGetJobByIdQuery,
-  useCreateJobMutation,
-  useUpdateJobMutation,
-  useDeleteJobMutation,
-} from "@app/global-redux-store/features/jobs/jobsApiSlice";
-import { partialJobSchema, type PartialJobProps } from "schema/Job";
 
 // components
 import { useToast } from "@components/ui/use-toast";
+import {
+  partialJobSchema,
+  type PartialJobProps,
+} from "@src/entities/models/Job";
+import { createJob, deleteJob, updateJob } from "@app/actions/jobs";
 
 /**
  * Custom hook for managing jobs data and operations.
@@ -28,7 +25,7 @@ import { useToast } from "@components/ui/use-toast";
  * @returns An object containing jobs data, job data, loading states, form instance, and various handlers.
  */
 export default function useJobsController(
-  id?: string,
+  jobId?: string,
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   const router = useRouter();
@@ -50,38 +47,6 @@ export default function useJobsController(
 
   const { search, status, jobType, sort } = form.watch();
 
-  // get jobs
-  const {
-    data: jobs,
-    isLoading: isLoadingJobs,
-    refetch,
-  } = useGetJobsQuery({
-    status: status,
-    page: state.page.toString(),
-    sort: sort,
-    jobType: jobType,
-    search: search,
-  });
-
-  useEffect(() => {
-    if (status) {
-      refetch();
-    }
-  }, [search, status, jobType, sort]);
-
-  // get job by id
-  const { data: job, isLoading: isLoadingJob } = useGetJobByIdQuery(
-    id as string,
-    {
-      skip: !id,
-    },
-  );
-
-  // job mutations
-  const [addJob, { isLoading: isCreating }] = useCreateJobMutation();
-  const [updateJob, { isLoading: isUpdating }] = useUpdateJobMutation();
-  const [deleteJob, { isLoading: isDeleting }] = useDeleteJobMutation();
-
   /**
    * Handles the creation of a job.
    *
@@ -90,12 +55,20 @@ export default function useJobsController(
    */
   const createJobHandler: SubmitHandler<PartialJobProps> = useCallback(
     async (data) => {
+      const jobFormData = new FormData();
+      jobFormData.append("position", data.position as string);
+      jobFormData.append("company", data.company as string);
+      jobFormData.append("jobLocation", data.jobLocation as string);
+      jobFormData.append("jobType", data.jobType as string);
+      jobFormData.append("status", data.status as string);
+      jobFormData.append("search", data.search as string);
+      jobFormData.append("sort", data.sort as string);
+
       try {
-        const response = await addJob(data).unwrap();
+        const response = await createJob(jobFormData);
 
         if (response.success) {
           setOpen && setOpen(false);
-          refetch();
           toast({
             title: "Success!!",
             description: response.message,
@@ -118,12 +91,18 @@ export default function useJobsController(
    */
   const editJobHandler: SubmitHandler<PartialJobProps> = useCallback(
     async (data) => {
-      const jobData = {
-        id: job?.id,
-        ...data,
-      };
+      const jobFormData = new FormData();
+      jobFormData.append("id", jobId as string);
+      jobFormData.append("position", data.position as string);
+      jobFormData.append("company", data.company as string);
+      jobFormData.append("jobLocation", data.jobLocation as string);
+      jobFormData.append("jobType", data.jobType as string);
+      jobFormData.append("status", data.status as string);
+      jobFormData.append("search", data.search as string);
+      jobFormData.append("sort", data.sort as string);
+
       try {
-        const response = await updateJob(jobData).unwrap();
+        const response = await updateJob(jobFormData);
 
         if (response.success) {
           toast({
@@ -139,7 +118,7 @@ export default function useJobsController(
         });
       }
     },
-    [],
+    [jobId],
   );
 
   /**
@@ -150,10 +129,9 @@ export default function useJobsController(
    */
   const deleteJobHandler = useCallback(async (id: string) => {
     try {
-      const response = await deleteJob(id).unwrap();
+      const response = await deleteJob(id);
 
       if (response.success) {
-        refetch();
         toast({
           title: "Success!! Job deleted.",
           description: response.message,
@@ -168,13 +146,6 @@ export default function useJobsController(
   }, []);
 
   return {
-    jobs,
-    job,
-    isLoadingJobs,
-    isLoadingJob,
-    isCreating,
-    isUpdating,
-    isDeleting,
     form,
     createJobHandler,
     editJobHandler,

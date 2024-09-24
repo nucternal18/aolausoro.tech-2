@@ -8,6 +8,7 @@ import type {
   PartialJobProps,
   DefaultStatsProps,
   StatsProps,
+  JobsProps,
 } from "@src/entities/models/Job";
 import type { IJobsRepository } from "@src/application/repositories/job.repository.interface";
 import type { Prisma } from "@prisma/client";
@@ -19,6 +20,10 @@ type MonthlyApplicationStatProps = {
     month: number;
   };
   count: number;
+};
+
+type QueryObjProps = {
+  [k: string]: string;
 };
 
 export class JobRepository implements IJobsRepository {
@@ -107,12 +112,55 @@ export class JobRepository implements IJobsRepository {
     });
   }
 
-  async getJobs(): Promise<PartialJobProps[] | undefined> {
+  async getJobs(
+    queryItems: QueryObjProps,
+    userId: string,
+  ): Promise<JobsProps | undefined> {
     return await startSpan({ name: "JobRepository -> Get Jobs" }, async () => {
       try {
-        const jobs = await prisma.job.findMany();
+        const { status, jobType, sort, page, limit } = queryItems;
 
-        return jobs;
+        const queryObj: QueryObjProps = {
+          createdBy: userId,
+        };
+        if (status && status !== "all") {
+          queryObj.status = status;
+        }
+        if (jobType && jobType !== "all") {
+          queryObj.jobType = jobType;
+        }
+
+        let currentPage: number;
+        if (Number(page) > 1) {
+          currentPage = Number(page);
+        } else {
+          currentPage = 1;
+        }
+        const pageLimit = Number(limit) || 10;
+        const skip = (currentPage - 1) * pageLimit;
+
+        const result = await prisma.job.findMany({
+          where: {
+            createdBy: queryObj.createdBy,
+            status: queryObj.status,
+            jobType: queryObj.jobType,
+          },
+          orderBy: {
+            createdAt: sort === "latest" ? "asc" : "desc",
+          },
+          skip: skip,
+          take: pageLimit,
+        });
+
+        const totalJobs = result.length;
+
+        const numberOfPages = Math.ceil(totalJobs / pageLimit);
+
+        return {
+          jobs: result,
+          totalJobs,
+          numberOfPages,
+        };
       } catch (error) {
         captureException(error);
 

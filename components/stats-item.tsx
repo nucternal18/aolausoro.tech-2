@@ -32,7 +32,7 @@ const StatsItem = ({
           </div>
         </CardTitle>
         <CardDescription>
-          <Typography className="text-sm text-primary">{count}</Typography>
+          <span className="text-sm text-primary">{count}</span>
         </CardDescription>
       </CardHeader>
       <CardContent>

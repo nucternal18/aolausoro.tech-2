@@ -2,6 +2,7 @@ import { startSpan } from "@sentry/nextjs";
 import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { type PartialMessageProps } from "@src/entities/models/Message";
 import { getMessageByIdUseCase } from "@src/application/use-cases/messages/get-message-by-id.use-case";
+import { getInjection } from "@di/container";
 
 function presenter(message: PartialMessageProps) {
   return startSpan(
@@ -23,6 +24,13 @@ export async function getMessageByIdController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to get a message");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to get a message");
       }
 
       const message = await getMessageByIdUseCase(id);

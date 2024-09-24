@@ -1,19 +1,10 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useForm, type SubmitHandler, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
-// redux
-import {
-  useGetProjectsQuery,
-  useGetProjectByIdQuery,
-  useUpdateProjectMutation,
-  useUploadImageMutation,
-  useCreateProjectMutation,
-  useDeleteProjectMutation,
-} from "@app/global-redux-store/features/projects/projectApiSlice";
 import { useAppDispatch, useAppSelector } from "app/global-redux-store/hooks";
 import {
   setImage,
@@ -22,12 +13,19 @@ import {
 
 // components
 import { useToast } from "@components/ui/use-toast";
-import { type PartialProjectProps, partialProjectSchema } from "schema/Project";
+import {
+  createProject,
+  deleteProject,
+  updateProject,
+} from "@app/actions/projects";
+import {
+  partialProjectSchema,
+  type PartialProjectProps,
+} from "@src/entities/models/Project";
 
 const types = ["image/png", "image/jpeg", "image/jpg"];
 
 export default function useProjectController(
-  id?: string,
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   const { toast } = useToast();
@@ -35,37 +33,7 @@ export default function useProjectController(
   const dispatch = useAppDispatch();
   const state = useAppSelector(projectSelector);
 
-  // get projects
-  const {
-    data: projects,
-    isLoading,
-    refetch,
-  } = useGetProjectsQuery(undefined, {
-    skip: id ? true : false,
-  });
-
-  // get project by id
-  const { data: project, isLoading: isLoadingProject } = useGetProjectByIdQuery(
-    id as string,
-    {
-      skip: !id,
-    },
-  );
-
-  // project mutations
-  const [updateProject, { isLoading: isUpdating }] = useUpdateProjectMutation();
-  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
-  const [createProject, { isLoading: isCreating }] = useCreateProjectMutation();
-  const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation();
-
-  // filter current tech stack for form field
-  const techStacks = project?.techStack?.map((stack: string) => {
-    return {
-      content: stack,
-    };
-  });
-
-  const projectImage = state.image ? state.image : project?.url;
+  const projectImage = state.image;
 
   const form = useForm<PartialProjectProps>({
     resolver: zodResolver(partialProjectSchema),
@@ -113,24 +81,22 @@ export default function useProjectController(
         return stack.content;
       });
 
-      const newProjectData = {
-        projectName: data.projectName,
-        github: data.github,
-        address: data.address,
-        techStacks: updateTechStacks,
-        description: data.description,
-        published: data.published,
-        url: state.image ? state.image : "",
-      };
+      const formData = new FormData();
+      formData.append("projectName", data.projectName as string);
+      formData.append("github", data.github as string);
+      formData.append("address", data.address as string);
+      formData.append("techStacks", JSON.stringify(updateTechStacks));
+      formData.append("description", data.description as string);
+      formData.append("published", data.published!.toString());
+      formData.append("url", state.image as string);
 
       try {
-        const response = await createProject(newProjectData).unwrap();
+        const response = await createProject(formData);
         if (response.success) {
           toast({
             title: "Success",
             description: response.message,
           });
-          refetch();
           setOpen!(false);
           form.reset();
           dispatch(setImage(""));
@@ -142,7 +108,7 @@ export default function useProjectController(
         });
       }
     },
-    [state.image, project],
+    [state.image],
   );
 
   const updateProjectHandler: SubmitHandler<PartialProjectProps> = useCallback(
@@ -151,19 +117,17 @@ export default function useProjectController(
         return stack.content;
       });
 
-      const newProjectData = {
-        projectName: data.projectName,
-        github: data.github,
-        address: data.address,
-        techStacks: updateTechStacks,
-        description: data.description,
-        published: data.published,
-        id: project?.id,
-        url: state.image ? state.image : project?.url,
-      };
+      const formData = new FormData();
+      formData.append("projectName", data.projectName as string);
+      formData.append("github", data.github as string);
+      formData.append("address", data.address as string);
+      formData.append("techStacks", JSON.stringify(updateTechStacks));
+      formData.append("description", data.description as string);
+      formData.append("published", data.published!.toString());
+      formData.append("url", state.image as string);
 
       try {
-        const response = await updateProject(newProjectData).unwrap();
+        const response = await updateProject(formData);
         if (response.success) {
           toast({
             title: "Success",
@@ -180,18 +144,17 @@ export default function useProjectController(
         });
       }
     },
-    [state.image, project],
+    [state.image],
   );
 
   const deleteProjectHandler = useCallback(async (id: string) => {
     try {
-      const response = await deleteProject(id).unwrap();
+      const response = await deleteProject(id);
       if (response.success) {
         toast({
           title: "Success",
           description: response.message,
         });
-        refetch();
       }
     } catch (error) {
       toast({
@@ -202,17 +165,8 @@ export default function useProjectController(
   }, []);
 
   return {
-    projects,
-    project,
-    isLoading,
-    isLoadingProject,
-    isUpdating,
-    isUploading,
-    isCreating,
-    isDeleting,
     form,
     formField,
-    techStacks,
     projectImage,
     imageChangeHandler,
     createProjectHandler,

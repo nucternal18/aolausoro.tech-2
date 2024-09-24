@@ -8,6 +8,7 @@ import {
   issueSchema,
   type PartialIssueProps,
 } from "@src/entities/models/Issue";
+import { getInjection } from "@di/container";
 
 function presenter(cv: ResponseProps) {
   return startSpan({ name: "updateIssue Presenter", op: "serialize" }, () => {
@@ -26,6 +27,13 @@ export async function updateIssueController(
     async () => {
       if (!sessionId) {
         throw new UnauthenticatedError("Must be logged in to create an issue");
+      }
+
+      const authenticationService = getInjection("IAuthService");
+      const user = await authenticationService.checkIfUserExists(sessionId);
+
+      if (!user!.isAdmin) {
+        throw new UnauthenticatedError("Must be an admin to update an issue");
       }
 
       const { data, error: inputParseError } = issueSchema.safeParse(input);

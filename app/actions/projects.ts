@@ -58,6 +58,7 @@ export async function getProjectById(
 
       try {
         const response = await getProjectByIdController(id, userId as string);
+
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {

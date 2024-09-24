@@ -21,9 +21,7 @@ import UploadForm from "@components/forms/upload-form";
 
 // controller
 import useProjectController from "./use-project-controller";
-
-// zod schema
-import type { PartialProjectProps } from "schema/Project";
+import type { PartialProjectProps } from "@src/entities/models/Project";
 
 export function EditProjectForm({ project }: { project: PartialProjectProps }) {
   const controlledTechStack = project?.techStack?.map((stack: string) => {

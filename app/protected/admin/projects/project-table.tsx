@@ -1,9 +1,7 @@
 // components
 import { DataTable } from "@components/data-table/data-table";
 import { columns } from "./table-columns";
-
-// zod schema
-import type { PartialProjectProps } from "schema/Project";
+import type { PartialProjectProps } from "@src/entities/models/Project";
 
 function Table({ projects }: { projects: PartialProjectProps[] }) {
   return (

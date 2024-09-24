@@ -1,12 +1,29 @@
+import { Suspense } from "react";
+import { getProjects } from "@app/actions/projects";
 import { ProjectsComponent } from "./projects";
-import Header from "@components/header";
+import Loader from "@components/Loader";
 
-function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getProjects();
   return (
     <section className="container flex-grow w-full h-screen p-2 sm:p-6 space-y-4  mx-auto">
-      <ProjectsComponent />
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center h-full">
+            <Loader classes="w-8 h-8" />
+          </div>
+        }
+      >
+        {Array.isArray(projects) ? (
+          <ProjectsComponent projects={projects} />
+        ) : (
+          <div className="flex items-center justify-center h-full text-center">
+            <div className="text-lg font-semibold">
+              {projects.message ?? "No projects found"}
+            </div>
+          </div>
+        )}
+      </Suspense>
     </section>
   );
 }
-
-export default ProjectsPage;

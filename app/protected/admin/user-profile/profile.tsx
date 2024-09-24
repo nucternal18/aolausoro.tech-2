@@ -1,5 +1,5 @@
 "use client";
-import type { PartialUserProps } from "schema/User";
+
 import { Button } from "@components/ui/button";
 
 import {
@@ -16,14 +16,14 @@ import { Input } from "@components/ui/input";
 import useUserController from "./use-user-controller";
 import PDFFileInput from "@components/file-uploader/pdf-file-input";
 import { Progress } from "@components/ui/progress";
+import type { PartialUserProps } from "@src/entities/models/User";
 
 interface IUserProfile {
-  randomImage: string;
   user: PartialUserProps;
 }
 
-function UserProfileComponent({ randomImage, user }: IUserProfile) {
-  const { form, uploadPDF, progress, isUploading } = useUserController();
+export function ProfileComponent({ user }: IUserProfile) {
+  const { form, uploadPDF, progress } = useUserController();
 
   return (
     <section className="relative pb-2 h-full justify-center items-center container mx-auto">
@@ -32,7 +32,7 @@ function UserProfileComponent({ randomImage, user }: IUserProfile) {
           <div className="flex flex-col justify-center items-center">
             <img
               className="w-full h-[300px] shadow-lg object-cover"
-              src={randomImage}
+              src={"/images/rahul-mishra-unsplash.jpg"}
               alt="banner-pic"
             />
             <img
@@ -78,9 +78,7 @@ function UserProfileComponent({ randomImage, user }: IUserProfile) {
                     </FormItem>
                   )}
                 />
-                <Button disabled={isUploading} type="submit">
-                  Submit
-                </Button>
+                <Button type="submit">Submit</Button>
               </form>
             </Form>
             <Progress value={progress} />
@@ -90,5 +88,3 @@ function UserProfileComponent({ randomImage, user }: IUserProfile) {
     </section>
   );
 }
-
-export default UserProfileComponent;

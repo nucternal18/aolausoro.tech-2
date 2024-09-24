@@ -8,9 +8,10 @@ import { Progress } from "@components/ui/progress";
 
 import useWikiController from "./use-wiki-controller";
 import WikiCard from "@components/wiki-card";
+import type { PartialWikiProps } from "@src/entities/models/Wiki";
 
-export function WikiComponent() {
-  const { wikis, isLoadingWikis, progress } = useWikiController();
+export function WikiComponent({ wikis }: { wikis: PartialWikiProps[] }) {
+  const { progress } = useWikiController();
   return (
     <section className="space-y-8">
       <section className="flex items-center justify-between">
@@ -21,9 +22,7 @@ export function WikiComponent() {
         <UploadImageModal />
       </section>
       <section className="py-10">
-        {isLoadingWikis ? (
-          <></>
-        ) : (
+        {Array.isArray(wikis) && wikis.length > 0 ? (
           <ul className="masonry sm:masonry-sm md:masonry-md">
             {wikis?.map((wiki) => (
               <li key={wiki.id} className="p-4">
@@ -31,6 +30,12 @@ export function WikiComponent() {
               </li>
             ))}
           </ul>
+        ) : (
+          <>
+            <Typography variant="h2" className="text-primary">
+              No wikis found
+            </Typography>
+          </>
         )}
       </section>
     </section>

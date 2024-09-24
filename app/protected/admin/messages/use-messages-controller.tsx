@@ -3,31 +3,17 @@
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-// redux
-import {
-  useDeleteMessageMutation,
-  useGetMessagesQuery,
-  useGetMessageQuery,
-} from "@app/global-redux-store/features/messages/messagesApiSlice";
-
 // components
 import { useToast } from "@components/ui/use-toast";
+import { deleteMessage } from "@app/actions/messages";
 
 export function useMessagesController() {
   const router = useRouter();
   const { toast } = useToast();
 
-  // get messages
-  const { data: messages = [], isLoading: isLoadingMessages } =
-    useGetMessagesQuery();
-
-  // delete message
-  const [deleteMessage, { isLoading: isDeletingMessages }] =
-    useDeleteMessageMutation();
-
   const deleteMessageHandler = useCallback(async (id: string) => {
     try {
-      const response = await deleteMessage(id).unwrap();
+      const response = await deleteMessage(id);
       if (response.success) {
         toast({
           title: "Message deleted",
@@ -44,9 +30,6 @@ export function useMessagesController() {
   }, []);
 
   return {
-    messages,
-    isLoadingMessages,
-    isDeletingMessages,
     deleteMessageHandler,
   };
 }
