@@ -28,14 +28,10 @@ export async function getIssues() {
         return response;
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
-          return { success: false, message: "Must be logged in to get issues" };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while getting issues. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
@@ -52,17 +48,10 @@ export async function getIssueById(id: string) {
         return response;
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to get an issue",
-          };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while getting an issue. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
@@ -83,20 +72,13 @@ export async function createIssue(input: FormData) {
         return response;
       } catch (error) {
         if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
+          throw error;
         }
         if (error instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to create an issue",
-          };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while creating an issue. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
@@ -117,20 +99,13 @@ export async function updateIssue(input: FormData) {
         return response;
       } catch (error) {
         if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
+          throw error;
         }
         if (error instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to update an issue",
-          };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while updating an issue. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
@@ -150,17 +125,10 @@ export async function deleteIssue(id: string) {
         return response;
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to delete an issue",
-          };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while deleting an issue. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );

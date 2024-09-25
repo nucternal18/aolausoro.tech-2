@@ -8,15 +8,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <section className="flex items-center w-full h-screen py-4 overflow-y-auto px-11  ">
       <Suspense fallback={<Loader classes="w-8 h-8" />}>
-        {"message" in project ? (
-          <div className="flex items-center justify-center h-full text-center">
-            <div className="text-lg font-semibold">
-              {project.message ?? "No project found"}
-            </div>
-          </div>
-        ) : (
-          <EditProject project={project} />
-        )}
+        <EditProject project={project} />
       </Suspense>
     </section>
   );

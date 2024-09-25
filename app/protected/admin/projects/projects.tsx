@@ -16,7 +16,7 @@ export function ProjectsComponent({
   projects: PartialProjectProps[];
 }) {
   return (
-    <section className="w-full p-4">
+    <section className="w-full py-4 sm:pl-11">
       <div className="items-center flex justify-between w-full mb-4 overflow-hidden">
         <Header title="Projects" order={1} />
         <AddProjectForm />

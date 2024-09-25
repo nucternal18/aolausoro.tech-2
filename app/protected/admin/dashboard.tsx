@@ -1,6 +1,6 @@
 "use client";
 
-import { isServer, useSuspenseQuery } from "@tanstack/react-query";
+import { isServer, useSuspenseQuery, useQuery } from "@tanstack/react-query";
 // components
 import StatsContainer from "@components/stats-container";
 import ChartsContainer from "@components/charts-container";
@@ -25,22 +25,31 @@ function useStats() {
   return { data, isLoading, error };
 }
 
-export function Dashboard() {
-  const stats = useStats();
+export function Dashboard({ statsData }: { statsData: StatsProps }) {
+  const {
+    data: stats,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["stats"],
+    queryFn: getStats,
+    initialData: statsData,
+    refetchOnMount: false,
+  });
 
-  if ("message" in stats && stats.error) {
+  if (error) {
     return (
       <section className="min-h-screen w-full">
-        <div>Error: {stats.error?.message}</div>
+        <div>Error: {error?.message}</div>
       </section>
     );
   }
 
   return (
     <section className="w-full min-h-screen container mx-auto flex flex-col py-4">
-      <Typography variant="h2" className="text-primary">
+      <h2 className="text-primary scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Dashboard
-      </Typography>
+      </h2>
       <div className="flex flex-col gap-4 w-full h-full">
         <Suspense
           fallback={
@@ -49,24 +58,12 @@ export function Dashboard() {
             </div>
           }
         >
-          <StatsContainer
-            stats={
-              stats.data && "defaultStats" in stats.data
-                ? stats.data.defaultStats
-                : {
-                    pending: 0,
-                    interviewing: 0,
-                    declined: 0,
-                    offer: 0,
-                  }
-            }
-          />
-          {stats.data && (
+          <StatsContainer stats={stats?.defaultStats as DefaultStatsProps} />
+          {stats && (
             <ChartsContainer
               monthlyStats={
-                "monthlyApplicationStats" in stats.data
-                  ? (stats.data
-                      .monthlyApplicationStats as MonthlyApplicationProps[])
+                "monthlyApplicationStats" in stats
+                  ? (stats.monthlyApplicationStats as MonthlyApplicationProps[])
                   : []
               }
             />

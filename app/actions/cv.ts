@@ -25,12 +25,7 @@ export async function getCV() {
         return response;
       } catch (err) {
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while getting the CVs. The developers have been notified. Please try again later.",
-          error: err,
-        };
+        throw err;
       }
     },
   );
@@ -51,16 +46,13 @@ export async function createCV(requestBody: FormData) {
         return response;
       } catch (err) {
         if (err instanceof InputParseError) {
-          return { error: err.message };
+          throw err;
         }
         if (err instanceof UnauthenticatedError) {
-          return { error: "Must be logged in to create a todo" };
+          throw err;
         }
         captureException(err);
-        return {
-          error:
-            "An error happened while creating a todo. The developers have been notified. Please try again later.",
-        };
+        throw err;
       }
     },
   );

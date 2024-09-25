@@ -36,7 +36,7 @@ export class CVRepository implements ICVRepository {
         await prisma.cV.create({
           data: {
             cvUrl: input.cvUrl as string,
-            user: { connect: { id: userId } },
+            userId,
           },
         });
         return { success: true, message: "CV created successfully" };

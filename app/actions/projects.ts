@@ -17,39 +17,26 @@ import {
 } from "@src/interface-adapters/controllers/projects";
 import { auth } from "@clerk/nextjs/server";
 
-export async function getProjects(): Promise<
-  PartialProjectProps[] | { success: boolean; message: string }
-> {
+export async function getProjects(): Promise<PartialProjectProps[]> {
   return await withServerActionInstrumentation(
     "getProjects",
     { recordResponse: false },
     async () => {
-      const { userId } = auth();
-
       try {
         const response = await getProjectsController();
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to get projects",
-          };
+          throw err;
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while getting projects. The developers have been notified. Please try again later.",
-        };
+        throw err;
       }
     },
   );
 }
 
-export async function getProjectById(
-  id: string,
-): Promise<PartialProjectProps | { success: boolean; message: string }> {
+export async function getProjectById(id: string): Promise<PartialProjectProps> {
   return await withServerActionInstrumentation(
     "getProjectById",
     { recordResponse: false },
@@ -62,17 +49,10 @@ export async function getProjectById(
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to get a project",
-          };
+          throw err;
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while getting a project. The developers have been notified. Please try again later.",
-        };
+        throw err;
       }
     },
   );
@@ -96,20 +76,13 @@ export async function createProject(
         return response;
       } catch (err) {
         if (err instanceof InputParseError) {
-          return { success: false, message: err.message };
+          throw err;
         }
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to create a project",
-          };
+          throw err;
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while creating a project. The developers have been notified. Please try again later.",
-        };
+        throw err;
       }
     },
   );
@@ -133,20 +106,13 @@ export async function updateProject(
         return response;
       } catch (err) {
         if (err instanceof InputParseError) {
-          return { success: false, message: err.message };
+          throw err;
         }
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to update a project",
-          };
+          throw err;
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while updating a project. The developers have been notified. Please try again later.",
-        };
+        throw err;
       }
     },
   );
@@ -169,20 +135,13 @@ export async function deleteProject(
         return response;
       } catch (err) {
         if (err instanceof InputParseError) {
-          return { success: false, message: err.message };
+          throw err;
         }
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to delete a project",
-          };
+          throw err;
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while deleting a project. The developers have been notified. Please try again later.",
-        };
+        throw err;
       }
     },
   );

@@ -11,7 +11,7 @@ import Loader from "@components/Loader";
 export default async function Jobs() {
   const jobs = await getJobs({});
   return (
-    <section className="w-full min-h-screen container mx-auto py-4  ">
+    <section className="w-full min-h-screen container mx-auto py-4 sm:pl-11 ">
       <section className="flex container items-center mx-auto justify-between w-full mb-4">
         <Header title="Jobs" order={1} />
         <AddJobComponent />
@@ -25,15 +25,7 @@ export default async function Jobs() {
             </div>
           }
         >
-          {Array.isArray(jobs) ? (
-            <JobsContainer jobs={jobs as JobsProps} />
-          ) : (
-            <div className="flex items-center justify-center h-full text-center">
-              <div className="text-lg font-semibold">
-                {"message" in jobs ? jobs.message : "No jobs found"}
-              </div>
-            </div>
-          )}
+          <JobsContainer jobs={jobs} />
         </Suspense>
       </section>
     </section>

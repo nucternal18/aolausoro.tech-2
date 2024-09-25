@@ -53,7 +53,7 @@ export default function useUserController() {
       });
       return;
     }
-
+    console.log(values);
     const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`;
     const data = values.pdf[0] as File;
     const formData = new FormData();
@@ -65,6 +65,7 @@ export default function useUserController() {
 
     try {
       const { data, error, progress } = await uploadPDFCv(url, formData);
+      console.log(progress);
       if (progress && progress > 0) {
         dispatch(setUploadProgress(progress));
       }
@@ -76,11 +77,15 @@ export default function useUserController() {
         });
         return;
       }
-
+      console.log(data?.secure_url);
       const cvFormData = new FormData();
       cvFormData.append("cvUrl", data?.secure_url as string);
 
-      const response = (await createCV(cvFormData)) as ResponseProps;
+      const response = await createCV(cvFormData);
+      console.log(
+        "🚀 ~ constuploadPDF:SubmitHandler<FormValues>=useCallback ~ response:",
+        response,
+      );
 
       if (response.success) {
         form.reset();

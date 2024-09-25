@@ -26,9 +26,7 @@ type QueryItemsProps = {
   [key: string]: string;
 };
 
-export async function getStats(): Promise<
-  StatsProps | { success: boolean; message: string }
-> {
+export async function getStats(): Promise<StatsProps> {
   return await withServerActionInstrumentation(
     "getStats",
     { recordResponse: true },
@@ -39,22 +37,16 @@ export async function getStats(): Promise<
         return response as StatsProps;
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
-          return { success: false, message: "Must be logged in to get stats" };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while getting stats. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
 }
 
-export async function getJobs(
-  queryItems: QueryItemsProps,
-): Promise<JobsProps | { success: boolean; message: string }> {
+export async function getJobs(queryItems: QueryItemsProps): Promise<JobsProps> {
   return await withServerActionInstrumentation(
     "getJobs",
     { recordResponse: true },
@@ -62,25 +54,20 @@ export async function getJobs(
       const { userId } = auth();
       try {
         const response = await getJobsController(queryItems, userId as string);
+        console.log("🚀 ~ response:", response);
         return response;
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
-          return { success: false, message: "Must be logged in to get jobs" };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while getting jobs. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
 }
 
-export async function getJobById(
-  id: string,
-): Promise<PartialJobProps | { success: boolean; message: string }> {
+export async function getJobById(id: string): Promise<PartialJobProps> {
   return await withServerActionInstrumentation(
     "getJobById",
     { recordResponse: true },
@@ -91,17 +78,13 @@ export async function getJobById(
         return response;
       } catch (error) {
         if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
+          throw error;
         }
         if (error instanceof UnauthenticatedError) {
-          return { success: false, message: "Must be logged in to get a job" };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while getting a job. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
@@ -124,20 +107,13 @@ export async function createJob(
         return response;
       } catch (error) {
         if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
+          throw error;
         }
         if (error instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to create a job",
-          };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while creating a job. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
@@ -160,20 +136,13 @@ export async function updateJob(
         return response;
       } catch (error) {
         if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
+          throw error;
         }
         if (error instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to update a job",
-          };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while updating a job. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );
@@ -195,20 +164,13 @@ export async function deleteJob(
         return response;
       } catch (error) {
         if (error instanceof InputParseError) {
-          return { success: false, message: error.message };
+          throw error;
         }
         if (error instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to delete a job",
-          };
+          throw error;
         }
         captureException(error);
-        return {
-          success: false,
-          message:
-            "An error happened while deleting a job. The developers have been notified. Please try again later.",
-        };
+        throw error;
       }
     },
   );

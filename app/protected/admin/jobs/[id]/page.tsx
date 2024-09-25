@@ -24,15 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </Button>
       </section>
       <Suspense fallback={<Loader classes="w-8 h-8" />}>
-        {"message" in job ? (
-          <div className="flex items-center justify-center h-full text-center">
-            <div className="text-lg font-semibold">
-              {job.message ?? "No job found"}
-            </div>
-          </div>
-        ) : (
-          <EditJobComponent job={job} />
-        )}
+        <EditJobComponent job={job} />
       </Suspense>
     </section>
   );

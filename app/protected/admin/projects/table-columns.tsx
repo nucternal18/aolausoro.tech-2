@@ -43,6 +43,26 @@ export const columns: ColumnDef<PartialProjectProps>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+    header: ({ column }) => {
+      return (
+        <div className="flex items-center justify-start">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            ID
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const project = row.original;
+      return <div>{project.id}</div>;
+    },
+  },
+  {
     accessorKey: "projectName",
     header: ({ column }) => {
       return (
@@ -129,6 +149,7 @@ export const columns: ColumnDef<PartialProjectProps>[] = [
       );
     },
   },
+  { id: "projects" },
   {
     id: "action",
     cell: ({ row }) => {

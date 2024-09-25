@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { startSpan } from "@sentry/nextjs";
-import { cvSchema, type PartialCvProps } from "@src/entities/models/cv";
+import { partialCvSchema, type PartialCvProps } from "@src/entities/models/cv";
 import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { InputParseError } from "@src/entities/errors/common";
 
@@ -33,13 +33,13 @@ export async function createCvController(
         throw new UnauthenticatedError("Must be logged in to create a todo");
       }
 
-      const { data, error: inputParseError } = cvSchema.safeParse(input);
+      const { data, error: inputParseError } = partialCvSchema.safeParse(input);
 
       if (inputParseError) {
         throw new InputParseError("Invalid data", { cause: inputParseError });
       }
 
-      const cv = await createCvUseCase(sessionId, data);
+      const cv = await createCvUseCase(user!.id, data);
 
       return presenter(cv);
     },
