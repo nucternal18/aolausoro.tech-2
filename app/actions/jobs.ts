@@ -54,7 +54,6 @@ export async function getJobs(queryItems: QueryItemsProps): Promise<JobsProps> {
       const { userId } = auth();
       try {
         const response = await getJobsController(queryItems, userId as string);
-        console.log("🚀 ~ response:", response);
         return response;
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
