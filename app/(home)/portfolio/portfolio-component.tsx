@@ -1,5 +1,4 @@
 import React from "react";
-import { Suspense } from "react";
 import { FaGithub, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
 import Loader from "../../../components/Loader";
@@ -39,14 +38,12 @@ export default function PortfolioComponent({
         </h2>
       </section>
       <section className="relative max-w-screen-lg mx-auto px-4 lg:px-0 mb-4">
-        <Suspense>
-          <div className="grid grid-cols-1 gap-3  my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0">
-            {publishedProjects &&
-              publishedProjects?.map((doc) => (
-                <PortfolioCard key={doc.id} project={doc} />
-              ))}
-          </div>
-        </Suspense>
+        <div className="grid grid-cols-1 gap-3  my-4 sm:grid-cols-2 md:grid-cols-3 sm:px-0">
+          {publishedProjects &&
+            publishedProjects?.map((doc) => (
+              <PortfolioCard key={doc.id} project={doc} />
+            ))}
+        </div>
       </section>
     </>
   );
