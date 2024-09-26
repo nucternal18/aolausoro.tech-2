@@ -6,9 +6,13 @@ import {
   type PartialMessageProps,
   messageSchema,
 } from "@src/entities/models/Message";
-import { InputParseError } from "@src/entities/errors/common";
+import {
+  HumanValidationFailedError,
+  InputParseError,
+} from "@src/entities/errors/common";
 import { createMessageUseCase } from "@src/application/use-cases/messages/create-message.use-case";
 import { getInjection } from "@di/container";
+import validateHuman from "@lib/validateHuman";
 
 function presenter(message: ResponseProps) {
   return startSpan({ name: "createMessage Presenter", op: "serialize" }, () => {
@@ -37,6 +41,12 @@ export async function createMessageController(
       }
 
       const { data, error: messageParseError } = messageSchema.safeParse(msg);
+
+      const response = await validateHuman(data!.token as string);
+
+      if (!response) {
+        throw new HumanValidationFailedError("Unable to validate human");
+      }
 
       if (messageParseError) {
         throw new InputParseError(messageParseError.message);

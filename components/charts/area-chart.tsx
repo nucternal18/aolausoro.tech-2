@@ -1,5 +1,6 @@
 "use client";
 
+import type { MonthlyApplicationProps } from "@src/entities/models/Job";
 import * as React from "react";
 import {
   AreaChart,
@@ -12,7 +13,6 @@ import {
 } from "recharts";
 
 // zod schema
-import type { MonthlyApplicationProps } from "schema/Job";
 
 const AreaChartComponent = ({ data }: { data: MonthlyApplicationProps[] }) => {
   return (

@@ -18,15 +18,7 @@ export default async function Page() {
           </section>
         }
       >
-        {"message" in messages ? (
-          <div className="flex items-center justify-center h-full text-center">
-            <div className="text-lg font-semibold">
-              {messages.message ?? "No messages found"}
-            </div>
-          </div>
-        ) : (
-          <MessagesComponent messages={messages} />
-        )}
+        <MessagesComponent messages={messages} />
       </Suspense>
     </section>
   );

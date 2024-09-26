@@ -5,6 +5,12 @@ interface ErrorResponse {
   message: string;
 }
 
+export class HumanValidationFailedError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+  }
+}
+
 export class DatabaseOperationError extends Error {
   constructor(message: string, options?: ErrorOptions) {
     super(message, options);

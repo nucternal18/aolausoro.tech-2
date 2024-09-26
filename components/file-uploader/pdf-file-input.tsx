@@ -1,10 +1,5 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/Jr58ICI47UK
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import { useCallback, type SVGProps } from "react";
-import { type DropzoneOptions, useDropzone, type Accept } from "react-dropzone";
+import { type DropzoneOptions, useDropzone } from "react-dropzone";
 
 import {
   Card,

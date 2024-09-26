@@ -5,11 +5,10 @@ import Nav from "./navigation/nav-components";
 import { FiLogOut } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
-import Image from "next/image";
 import { Button } from "./ui/button";
 
 const LoginButton = () => {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isLoaded, isSignedIn } = useUser();
   const { sessionId } = useAuth();
 
   return (

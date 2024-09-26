@@ -2,7 +2,7 @@
 import { useState } from "react";
 import BarChartComponent from "./charts/bar-chart";
 import AreaChartComponent from "./charts/area-chart";
-import type { MonthlyApplicationProps } from "schema/Job";
+import type { MonthlyApplicationProps } from "@src/entities/models/Job";
 import { Button } from "./ui/button";
 import { Typography } from "./Typography";
 

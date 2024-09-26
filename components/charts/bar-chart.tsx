@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 // zod schema
-import type { MonthlyApplicationProps } from "schema/Job";
+import type { MonthlyApplicationProps } from "@src/entities/models/Job";
 
 const BarChartComponent = ({ data }: { data: MonthlyApplicationProps[] }) => {
   return (

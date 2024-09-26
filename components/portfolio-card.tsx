@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
 import { techSkillsData } from "config/data";
-import type { PartialProjectProps } from "schema/Project";
+
 import {
   Card,
   CardContent,
@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
+import type { PartialProjectProps } from "@src/entities/models/Project";
 
 function PortfolioCard({ project }: { project: PartialProjectProps }) {
   // map through the techSkilsData array and return the image url that matches the project?.techStack array.

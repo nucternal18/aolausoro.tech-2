@@ -1,4 +1,4 @@
-import type { PartialProjectProps } from "schema/Project";
+import type { PartialProjectProps } from "@src/entities/models/Project";
 
 export const GithubRepoCard = ({
   project,

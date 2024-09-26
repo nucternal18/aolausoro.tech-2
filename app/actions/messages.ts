@@ -17,9 +17,7 @@ import {
 import { sendEmailController } from "@src/interface-adapters/controllers/email";
 import { auth } from "@clerk/nextjs/server";
 
-export async function getMessages(): Promise<
-  PartialMessageProps[] | { success: boolean; message: string }
-> {
+export async function getMessages(): Promise<PartialMessageProps[]> {
   return await withServerActionInstrumentation(
     "getMessages",
     { recordResponse: false },
@@ -31,17 +29,12 @@ export async function getMessages(): Promise<
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to get messages",
-          };
+          throw new Error("Must be logged in to get messages");
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while getting messages. The developers have been notified. Please try again later.",
-        };
+        throw new Error(
+          "An error happened while getting messages. The developers have been notified. Please try again later.",
+        );
       }
     },
   );
@@ -61,17 +54,12 @@ export async function getMessageById(
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to get a message",
-          };
+          throw new Error("Must be logged in to get a message");
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while getting a message. The developers have been notified. Please try again later.",
-        };
+        throw new Error(
+          "An error happened while getting a message. The developers have been notified. Please try again later.",
+        );
       }
     },
   );
@@ -98,20 +86,15 @@ export async function createMessage(
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to create a message",
-          };
+          throw new Error("Must be logged in to create a message");
         }
         if (err instanceof InputParseError) {
           return { success: false, message: "Invalid input" };
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while creating a message. The developers have been notified. Please try again later.",
-        };
+        throw new Error(
+          "An error happened while creating a message. The developers have been notified. Please try again later.",
+        );
       }
     },
   );
@@ -134,17 +117,12 @@ export async function deleteMessage(
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to delete a message",
-          };
+          throw new Error("Must be logged in to delete a message");
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while deleting a message. The developers have been notified. Please try again later.",
-        };
+        throw new Error(
+          "An error happened while deleting a message. The developers have been notified. Please try again later.",
+        );
       }
     },
   );
@@ -166,17 +144,12 @@ export async function sendMail(
         return response;
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          return {
-            success: false,
-            message: "Must be logged in to send a mail",
-          };
+          throw new Error("Must be logged in to send a mail");
         }
         captureException(err);
-        return {
-          success: false,
-          message:
-            "An error happened while sending a mail. The developers have been notified. Please try again later.",
-        };
+        throw new Error(
+          "An error happened while sending a mail. The developers have been notified. Please try again later.",
+        );
       }
     },
   );
