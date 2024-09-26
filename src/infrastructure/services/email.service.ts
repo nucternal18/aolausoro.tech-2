@@ -1,7 +1,5 @@
-import type { IEmailService } from "./../../application/services/email.service.interface";
-
+import type { IEmailService } from "@src/application/services/email.service.interface";
 import { captureException, startSpan } from "@sentry/nextjs";
-import { injectable } from "inversify";
 import resend from "@lib/resend";
 import type { ResponseProps } from "types/global";
 import type { PartialMessageProps } from "@src/entities/models/Message";

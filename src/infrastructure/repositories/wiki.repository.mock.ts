@@ -1,4 +1,3 @@
-import { injectable } from "inversify";
 import type { ResponseProps } from "types/global";
 import type { IWikiRepository } from "@src/application/repositories/wiki.repository.interface";
 import type { PartialWikiProps } from "@src/entities/models/Wiki";

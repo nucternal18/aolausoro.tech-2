@@ -1,4 +1,3 @@
-import { injectable } from "inversify";
 import { startSpan, captureException } from "@sentry/nextjs";
 
 import prisma from "@lib/prismadb";

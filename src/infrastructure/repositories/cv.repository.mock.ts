@@ -1,5 +1,4 @@
 import type { ResponseProps } from "types/global";
-import { injectable } from "inversify";
 import type { ICVRepository } from "@src/application/repositories/cv.repository.interface";
 import type { PartialCvProps } from "@src/entities/models/cv";
 

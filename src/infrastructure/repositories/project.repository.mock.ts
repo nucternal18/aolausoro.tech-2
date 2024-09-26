@@ -1,7 +1,4 @@
-import type { IUsersRepository } from "@src/application/repositories/user.repository.interface";
-
 import type { ResponseProps } from "types/global";
-import { injectable } from "inversify";
 import type { IProjectRepository } from "@src/application/repositories/project.repository.interface";
 import type { PartialProjectProps } from "@src/entities/models/Project";
 

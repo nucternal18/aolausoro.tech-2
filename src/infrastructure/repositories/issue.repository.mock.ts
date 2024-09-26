@@ -1,11 +1,6 @@
 import type { ResponseProps } from "types/global";
-import { injectable } from "inversify";
 import type { IIssuesRepository } from "@src/application/repositories/issue.repository.interface";
-import type {
-  IssueProps,
-  PartialIssueProps,
-  Status,
-} from "@src/entities/models/Issue";
+import type { PartialIssueProps, Status } from "@src/entities/models/Issue";
 
 export class MockIssueRepository implements IIssuesRepository {
   private _issues: PartialIssueProps[];

@@ -1,7 +1,6 @@
 import type { IUsersRepository } from "@src/application/repositories/user.repository.interface";
 import type { PartialUserProps } from "@src/entities/models/User";
 import type { ResponseProps } from "types/global";
-import { injectable } from "inversify";
 
 // @injectable()
 export class MockUsersRepository implements IUsersRepository {

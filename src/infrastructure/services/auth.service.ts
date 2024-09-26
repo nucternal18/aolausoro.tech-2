@@ -1,4 +1,3 @@
-import { injectable } from "inversify";
 import { captureException, startSpan } from "@sentry/nextjs";
 import type { IAuthService } from "@src/application/services/auth.service.interface";
 import type { UserProps } from "@src/entities/models/User";

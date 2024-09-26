@@ -1,7 +1,15 @@
 import type { ResponseProps } from "types/global";
 import { injectable } from "inversify";
 import type { IJobsRepository } from "@src/application/repositories/job.repository.interface";
-import type { PartialJobProps, StatsProps } from "@src/entities/models/Job";
+import type {
+  JobsProps,
+  PartialJobProps,
+  StatsProps,
+} from "@src/entities/models/Job";
+
+type QueryObjProps = {
+  [k: string]: string;
+};
 
 export class MockJobRepository implements IJobsRepository {
   private _jobs: PartialJobProps[];
@@ -46,8 +54,11 @@ export class MockJobRepository implements IJobsRepository {
     return { success: true, message: "Job updated successfully" };
   }
 
-  async getJobs(): Promise<PartialJobProps[]> {
-    return this._jobs;
+  async getJobs(queryItems: QueryObjProps, userId: string): Promise<JobsProps> {
+    const jobs = this._jobs.filter((job) => job.createdBy === userId);
+    const totalJobs = jobs.length;
+    const numberOfPages = Math.ceil(totalJobs / 10);
+    return { jobs, totalJobs, numberOfPages } as JobsProps;
   }
 
   async createJob(

@@ -1,5 +1,4 @@
 import type { ResponseProps } from "types/global";
-import { injectable } from "inversify";
 import type { IMessageRepository } from "@src/application/repositories/message.repository.interface";
 import type { PartialMessageProps } from "@src/entities/models/Message";
 

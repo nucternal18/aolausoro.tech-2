@@ -1,5 +1,3 @@
-import { inject, injectable } from "inversify";
-
 import type { IEmailService } from "@src/application/services/email.service.interface";
 import type { PartialMessageProps } from "@src/entities/models/Message";
 import type { Resend } from "resend";
