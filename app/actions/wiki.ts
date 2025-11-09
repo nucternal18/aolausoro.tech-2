@@ -25,10 +25,9 @@ export async function getWiki(): Promise<
     "getWiki",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
-        const response = await getWikiController(userId as string);
-        return response;
+        return await getWikiController(userId as string);
       } catch (error) {
         if (error instanceof InputParseError) {
           return { success: false, message: error.message };
@@ -43,18 +42,18 @@ export async function getWiki(): Promise<
             "An error happened while getting wikis. The developers have been notified. Please try again later.",
         };
       }
-    },
+    }
   );
 }
 
 export async function getWikiById(
-  id: string,
+  id: string
 ): Promise<PartialWikiProps | { success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "getWikiById",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const response = await getWikiByIdController(id, userId as string);
         return response;
@@ -72,18 +71,18 @@ export async function getWikiById(
             "An error happened while getting a wiki. The developers have been notified. Please try again later.",
         };
       }
-    },
+    }
   );
 }
 
 export async function createWiki(
-  input: FormData,
+  input: FormData
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "createWiki",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const formData = Object.fromEntries(input.entries());
         const response = await createWikiController(formData, userId as string);
@@ -108,18 +107,18 @@ export async function createWiki(
             "An error happened while creating a wiki. The developers have been notified. Please try again later.",
         };
       }
-    },
+    }
   );
 }
 
 export async function updateWiki(
-  input: FormData,
+  input: FormData
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "updateWiki",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const formData = Object.fromEntries(input.entries());
         const response = await updateWikiController(formData, userId as string);
@@ -144,18 +143,18 @@ export async function updateWiki(
             "An error happened while updating a wiki. The developers have been notified. Please try again later.",
         };
       }
-    },
+    }
   );
 }
 
 export async function deleteWiki(
-  id: string,
+  id: string
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "deleteWiki",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const response = await deleteWikiController(id, userId as string);
         if (response.success) {
@@ -179,6 +178,6 @@ export async function deleteWiki(
             "An error happened while deleting a wiki. The developers have been notified. Please try again later.",
         };
       }
-    },
+    }
   );
 }

@@ -13,10 +13,10 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  auth().protect();
+  (await auth()).protect();
   return (
     <html lang="en">
-      <body className="border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-background">
+      <body className="flex flex-col p-0 m-0 text-gray-800 border-box scroll-smooth bg-background">
         <Providers>
           <AdminLayoutWrapper>{children}</AdminLayoutWrapper>
         </Providers>

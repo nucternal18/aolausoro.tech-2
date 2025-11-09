@@ -1,7 +1,7 @@
 "use client";
 
 // components
-import MessageTable from "@app/protected/admin/messages/message-table";
+import MessageTable from "@app/(protected)/admin/messages/message-table";
 
 // zod schemas
 import type { PartialMessageProps } from "@src/entities/models/Message";

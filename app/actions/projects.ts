@@ -23,8 +23,7 @@ export async function getProjects(): Promise<PartialProjectProps[]> {
     { recordResponse: false },
     async () => {
       try {
-        const response = await getProjectsController();
-        return response;
+        return await getProjectsController();
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
           throw err;
@@ -32,7 +31,7 @@ export async function getProjects(): Promise<PartialProjectProps[]> {
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }
 
@@ -41,12 +40,10 @@ export async function getProjectById(id: string): Promise<PartialProjectProps> {
     "getProjectById",
     { recordResponse: false },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
-        const response = await getProjectByIdController(id, userId as string);
-
-        return response;
+        return await getProjectByIdController(id, userId as string);
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
           throw err;
@@ -54,18 +51,18 @@ export async function getProjectById(id: string): Promise<PartialProjectProps> {
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }
 
 export async function createProject(
-  input: FormData,
+  input: FormData
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "createProject",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
         const data = Object.fromEntries(input.entries());
@@ -84,18 +81,18 @@ export async function createProject(
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }
 
 export async function updateProject(
-  input: FormData,
+  input: FormData
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "updateProject",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
         const data = Object.fromEntries(input.entries());
@@ -114,18 +111,18 @@ export async function updateProject(
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }
 
 export async function deleteProject(
-  id: string,
+  id: string
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "deleteProject",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
         const response = await deleteProjectController(id, userId as string);
@@ -143,6 +140,6 @@ export async function deleteProject(
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }

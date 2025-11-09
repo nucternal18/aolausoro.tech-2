@@ -14,7 +14,7 @@ import {
 import { Textarea } from "@components/ui/textarea";
 import { Input } from "@components/ui/input";
 
-import useContactController from "./use-contact-controller";
+import useContactController from "../hooks/use-contact-controller";
 
 function ContactForm() {
   const { form, recaptchaRef, handleSubmit } = useContactController();
@@ -69,7 +69,7 @@ function ContactForm() {
               <FormControl>
                 <Textarea
                   placeholder="Enter your message"
-                  className="resize-y h-24"
+                  className="h-24 resize-y"
                   {...field}
                 />
               </FormControl>

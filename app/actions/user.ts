@@ -20,16 +20,15 @@ export async function getUser() {
     "getUser",
     { recordResponse: false },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
-        const response = await getUserController(userId as string);
-        return response;
+        return await getUserController(userId as string);
       } catch (err) {
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }
 
@@ -38,7 +37,7 @@ export async function updateUser(requestBody: FormData) {
     "createTodo",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const data = Object.fromEntries(requestBody.entries());
         const response = await updateUserController(data, userId as string);
@@ -56,6 +55,6 @@ export async function updateUser(requestBody: FormData) {
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }

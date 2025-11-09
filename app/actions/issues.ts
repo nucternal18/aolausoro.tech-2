@@ -22,10 +22,9 @@ export async function getIssues() {
     "getIssues",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
-        const response = await getIssuesController(userId as string);
-        return response;
+        return await getIssuesController(userId as string);
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
           throw error;
@@ -33,7 +32,7 @@ export async function getIssues() {
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
@@ -42,10 +41,9 @@ export async function getIssueById(id: string) {
     "getIssueById",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
-        const response = await getIssueByIdController(id, userId as string);
-        return response;
+        return await getIssueByIdController(id, userId as string);
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
           throw error;
@@ -53,7 +51,7 @@ export async function getIssueById(id: string) {
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
@@ -62,7 +60,7 @@ export async function createIssue(input: FormData) {
     "createIssue",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const data = Object.fromEntries(input.entries());
         const response = await createIssueController(data, userId as string);
@@ -80,7 +78,7 @@ export async function createIssue(input: FormData) {
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
@@ -89,7 +87,7 @@ export async function updateIssue(input: FormData) {
     "updateIssue",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const data = Object.fromEntries(input.entries());
         const response = await updateIssueController(data, userId as string);
@@ -107,7 +105,7 @@ export async function updateIssue(input: FormData) {
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
@@ -116,7 +114,7 @@ export async function deleteIssue(id: string) {
     "deleteIssue",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const response = await deleteIssueController(id, userId as string);
         if (response.success) {
@@ -130,6 +128,6 @@ export async function deleteIssue(id: string) {
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }

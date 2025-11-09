@@ -19,7 +19,9 @@ const Nav = ({
   bgColor: string;
   children: ReactNode;
 }) => (
-  <nav className={`${bgColor} md:px-6 md:py-1 z-50 hidden md:block`}>
+  <nav
+    className={`fixed top-0 z-50 w-full border-b backdrop-blur bg-background/95 border-border ${bgColor} md:px-6 md:py-1 md:block`}
+  >
     {children}
   </nav>
 );
@@ -32,7 +34,7 @@ Nav.Container = ({
   children: ReactNode;
 }) => (
   <div
-    className={` ${textColor} container mx-auto font-semibold md:relative md:flex m-0  md:items-center sm:px-1 md:px-0 md:flex-row md:justify-between sm:max-w-screen-xl z-50`}
+    className={`container z-50 m-0 mx-auto font-semibold ${textColor} md:relative md:flex md:items-center sm:px-1 md:px-0 md:flex-row md:justify-between sm:max-w-screen-xl`}
   >
     {children}
   </div>
@@ -56,14 +58,14 @@ Nav.Toggler = ({
   isOpen: boolean;
   color: string;
 }) => (
-  <div className="text-current ">
+  <div className="text-current">
     <button
       type="button"
       aria-expanded="false"
       aria-disabled={isOpen}
       disabled={isOpen}
       aria-label="Toggle navigation"
-      className={` font-semibold m-0 items-center ml-3  text-4xl text-current md:hidden focus:outline-none focus:shadow-none ${color}`}
+      className={`items-center m-0 ml-3 text-4xl font-semibold text-current md:hidden focus:outline-none focus:shadow-none ${color}`}
       onClick={toggle}
     >
       <span>&#8801;</span>
@@ -101,17 +103,17 @@ Nav.SideNav = ({
       }
       ref={ref}
     >
-      <div className="flex flex-row items-center justify-between px-4 mb-2">
+      <div className="flex flex-row justify-between items-center px-4 mb-2">
         <ModeToggle />
         <button
           aria-label="Close"
-          className="z-50 p-1 text-4xl text-primary cursor-pointer top-3 focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none"
+          className="top-3 z-50 p-1 text-4xl cursor-pointer text-primary focus:outline-none focus:ring-2 focus:ring-current dark:focus:ring-yellow-500 focus:border-transparent focus:shadow-none"
           onClick={() => toggle(false)}
         >
           &times;
         </button>
       </div>
-      <div className=" px-4 mb-2 space-y-2">{children}</div>
+      <div className="px-4 mb-2 space-y-2">{children}</div>
     </aside>
   );
 };
@@ -128,7 +130,7 @@ Nav.NavLinks = ({ children, left, right, center }: NavLinkProps) => {
 };
 
 Nav.Item = ({ children }: { children: ReactNode }) => (
-  <li className="z-50 flex px-2 py-1 mb-1 text-sm font-medium list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1">
+  <li className="flex z-50 px-2 py-1 mb-1 text-sm font-medium list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1">
     {children}
   </li>
 );
@@ -136,16 +138,16 @@ Nav.Item = ({ children }: { children: ReactNode }) => (
 Nav.Link = ({ children, href }: { children: ReactNode; href: string }) => (
   <Link
     href={href}
-    className="z-50 flex px-2 py-1 mb-1 text-lg font-medium font-mono list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1"
+    className="flex z-50 px-2 py-1 mb-1 font-mono text-sm font-medium list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1"
   >
     {children}
   </Link>
 );
 
 const className = {
-  default: `lg:hidden flex flex-col h-screen fixed top-0 right-0 transition-all ease-in-out duration-300`,
-  enabled: `w-8/12  bg-gray-800 overflow-y-hidden translate-y-0   text-lg  py-4`,
-  disabled: `w-0  bg-gray-800 text-primary-foreground overflow-x-hidden translate-x-full`,
+  default: `flex fixed top-0 right-0 flex-col h-screen transition-all duration-300 ease-in-out lg:hidden`,
+  enabled: `overflow-y-hidden py-4 w-8/12 text-lg bg-gray-800 translate-y-0`,
+  disabled: `overflow-x-hidden w-0 bg-gray-800 translate-x-full text-primary-foreground`,
 };
 
 export default Nav;

@@ -31,10 +31,9 @@ export async function getStats(): Promise<StatsProps> {
     "getStats",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
-        const response = await getStatsController(userId as string);
-        return response as StatsProps;
+        return await getStatsController(userId as string);
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
           throw error;
@@ -42,7 +41,7 @@ export async function getStats(): Promise<StatsProps> {
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
@@ -51,10 +50,9 @@ export async function getJobs(queryItems: QueryItemsProps): Promise<JobsProps> {
     "getJobs",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
-        const response = await getJobsController(queryItems, userId as string);
-        return response;
+        return await getJobsController(queryItems, userId as string);
       } catch (error) {
         if (error instanceof UnauthenticatedError) {
           throw error;
@@ -62,7 +60,7 @@ export async function getJobs(queryItems: QueryItemsProps): Promise<JobsProps> {
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
@@ -71,10 +69,9 @@ export async function getJobById(id: string): Promise<PartialJobProps> {
     "getJobById",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
-        const response = await getJobByIdController(id, userId as string);
-        return response;
+        return await getJobByIdController(id, userId as string);
       } catch (error) {
         if (error instanceof InputParseError) {
           throw error;
@@ -85,18 +82,18 @@ export async function getJobById(id: string): Promise<PartialJobProps> {
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
 export async function createJob(
-  input: FormData,
+  input: FormData
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "createJob",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const formData = Object.fromEntries(input.entries());
         const response = await createJobController(formData, userId as string);
@@ -114,18 +111,18 @@ export async function createJob(
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
 export async function updateJob(
-  input: FormData,
+  input: FormData
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "updateJob",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const formData = Object.fromEntries(input.entries());
         const response = await updateJobController(formData, userId as string);
@@ -143,18 +140,18 @@ export async function updateJob(
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }
 
 export async function deleteJob(
-  id: string,
+  id: string
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "deleteJob",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const response = await deleteJobController(id, userId as string);
         if (response.success) {
@@ -171,6 +168,6 @@ export async function deleteJob(
         captureException(error);
         throw error;
       }
-    },
+    }
   );
 }

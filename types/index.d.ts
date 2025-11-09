@@ -17,6 +17,7 @@ export type Meta = {
   author: string;
   author_image: string;
   tags: string[];
+  readTime?: string;
 };
 
 export type BlogPost = {

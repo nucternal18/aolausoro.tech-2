@@ -38,10 +38,10 @@ export function Navbar({ textColor = "text-primary" }: NavProps) {
           <img
             src={"/android-chrome-512x512.png"}
             alt="logo"
-            className="h-8 w-8"
+            className="w-8 h-8"
           />
         </Nav.Brand>
-        <Nav.NavLinks left>
+        <Nav.NavLinks right>
           {links.map((link) => {
             const { id, url, text } = link;
             return (
@@ -77,9 +77,9 @@ export function MobileNavbar({ height }: { height: number }) {
   return (
     <header>
       <Sheet>
-        <SheetTrigger className="navbar-burger flex items-center p-4 text-primary">
+        <SheetTrigger className="flex items-center p-4 navbar-burger text-primary">
           <svg
-            className="block h-6 w-6 fill-current text-primary"
+            className="block w-6 h-6 fill-current text-primary"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -91,7 +91,7 @@ export function MobileNavbar({ height }: { height: number }) {
 
         <SheetContent
           side={"bottom"}
-          className={`h-[${SHEET_HEIGHT}] shadow shadow-neutral-400`}
+          className={`shadow h-[${SHEET_HEIGHT}] shadow-neutral-400`}
         >
           <SheetHeader>
             <SheetTitle>
@@ -100,12 +100,12 @@ export function MobileNavbar({ height }: { height: number }) {
                   <SheetClose asChild>
                     <Link
                       href="/"
-                      className="flex items-center text-xs uppercase whitespace-no-wrap font-bold text-left  md:pb-2"
+                      className="flex items-center text-xs font-bold text-left uppercase whitespace-no-wrap md:pb-2"
                     >
                       <img
                         src={"/android-chrome-512x512.png"}
                         alt="logo"
-                        className="h-8 w-8"
+                        className="w-8 h-8"
                       />
                       <span className="ml-1">aolausoro.tech</span>
                     </Link>
@@ -115,7 +115,7 @@ export function MobileNavbar({ height }: { height: number }) {
             </SheetTitle>
           </SheetHeader>
           <ScrollArea
-            className={`text-primary  py-12`}
+            className={`py-12 text-primary`}
             style={{ height: SCROLL_AREA_HEIGHT }}
           >
             {links.map((link) => {
@@ -125,7 +125,7 @@ export function MobileNavbar({ height }: { height: number }) {
                   <SheetClose asChild>
                     <Link
                       href={url}
-                      className="z-50 flex px-2 mb-1 text-lg font-medium font-mono list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1"
+                      className="flex z-50 px-2 mb-1 font-mono text-lg font-medium list-none cursor-pointer sm:block md:ml-0 md:mb-0 md:py-1 md:px-1"
                     >
                       {text}
                     </Link>
@@ -134,7 +134,7 @@ export function MobileNavbar({ height }: { height: number }) {
               );
             })}
             <div
-              className={`absolute flex bottom-0 items-center justify-center mb-2`}
+              className={`flex absolute bottom-0 justify-center items-center mb-2`}
             >
               {social.map((link) => {
                 const { id, url, icon } = link;

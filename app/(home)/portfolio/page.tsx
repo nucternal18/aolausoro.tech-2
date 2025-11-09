@@ -1,6 +1,6 @@
 import { getProjects } from "@app/actions/projects";
 import Loader from "@components/Loader";
-import PortfolioComponent from "./portfolio-component";
+import PortfolioComponent from "../../../components/portfolio-component";
 import { Suspense } from "react";
 
 export default async function Page() {

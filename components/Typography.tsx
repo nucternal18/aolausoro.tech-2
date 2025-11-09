@@ -8,7 +8,8 @@ import type {
   children,
 } from "../types/typography";
 import { cn } from "@lib/utils";
-type Props<T extends keyof JSX.IntrinsicElements> = React.ComponentProps<T>;
+type Props<T extends keyof React.JSX.IntrinsicElements> =
+  React.ComponentProps<T>;
 type BaseTypographyProps = Props<"p"> &
   Props<"h1"> &
   Props<"h2"> &
@@ -40,8 +41,8 @@ export const Typography = ({
       return (
         <h1
           className={cn(
-            "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
-            className,
+            "text-4xl font-extrabold tracking-tight scroll-m-20 lg:text-5xl",
+            className
           )}
         >
           {children}
@@ -51,8 +52,8 @@ export const Typography = ({
       return (
         <h2
           className={cn(
-            "scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0",
-            className,
+            "pb-2 text-3xl font-semibold tracking-tight scroll-m-20 first:mt-0",
+            className
           )}
         >
           {children}
@@ -62,8 +63,8 @@ export const Typography = ({
       return (
         <h3
           className={cn(
-            "scroll-m-20 text-2xl font-semibold tracking-tight",
-            className,
+            "text-2xl font-semibold tracking-tight scroll-m-20",
+            className
           )}
           {...props}
         >
@@ -74,8 +75,8 @@ export const Typography = ({
       return (
         <h4
           className={cn(
-            "scroll-m-20 text-xl font-semibold tracking-tight",
-            className,
+            "text-xl font-semibold tracking-tight scroll-m-20",
+            className
           )}
           {...props}
         >
@@ -86,8 +87,8 @@ export const Typography = ({
       return (
         <h5
           className={cn(
-            "scroll-m-20 text-lg font-semibold tracking-tight",
-            className,
+            "text-lg font-semibold tracking-tight scroll-m-20",
+            className
           )}
           {...props}
         >
@@ -98,8 +99,8 @@ export const Typography = ({
       return (
         <h6
           className={cn(
-            "scroll-m-20 text-base font-semibold tracking-tight",
-            className,
+            "text-base font-semibold tracking-tight scroll-m-20",
+            className
           )}
           {...props}
         >
@@ -108,7 +109,7 @@ export const Typography = ({
       );
     case "blockquote":
       return (
-        <blockquote className={cn("mt-6 border-l-2 pl-6 italic", className)}>
+        <blockquote className={cn("pl-6 mt-6 italic border-l-2", className)}>
           {children}
         </blockquote>
       );

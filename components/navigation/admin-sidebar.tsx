@@ -59,7 +59,7 @@ import {
   globalSelector,
   setMobileDrawerOpened,
 } from "@app/global-redux-store/features/globalSlice";
-import useUserController from "@app/protected/admin/user-profile/use-user-controller";
+import useUserController from "@app/(protected)/admin/user-profile/use-user-controller";
 import type { PartialUserProps } from "@src/entities/models/User";
 
 type AdminLink = {

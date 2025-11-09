@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useClerk, useSession } from "@clerk/clerk-react";
+import { useClerk, useSession } from "@clerk/nextjs";
 
 export default function Logout() {
   const clerk = useClerk();
@@ -17,8 +17,8 @@ export default function Logout() {
   }, [session]);
 
   return (
-    <section className="relative flex justify-center items-center w-full min-h-screen">
-      <h1 className="text-3xl font-mono font-medium dark:text-yellow-500">
+    <section className="flex relative justify-center items-center w-full min-h-screen">
+      <h1 className="font-mono text-3xl font-medium dark:text-yellow-500">
         Logging out.......
       </h1>
     </section>
