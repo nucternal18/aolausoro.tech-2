@@ -1,12 +1,11 @@
 "use client";
 
-import { isServer, useSuspenseQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 // components
 import StatsContainer from "@components/stats-container";
 import ChartsContainer from "@components/charts-container";
 
 // zod schema
-import { Typography } from "@components/Typography";
 import { getStats } from "@app/actions/jobs";
 import type {
   DefaultStatsProps,
@@ -16,14 +15,6 @@ import type {
 import { Suspense } from "react";
 import Loader from "@components/Loader";
 
-function useStats() {
-  const { data, isLoading, error } = useSuspenseQuery({
-    queryKey: ["stats"],
-    queryFn: getStats,
-  });
-
-  return { data, isLoading, error };
-}
 
 export function Dashboard({ statsData }: { statsData: StatsProps }) {
   const {
@@ -39,15 +30,15 @@ export function Dashboard({ statsData }: { statsData: StatsProps }) {
 
   if (error) {
     return (
-      <section className="min-h-screen w-full">
+      <section className="w-full min-h-screen">
         <div>Error: {error?.message}</div>
       </section>
     );
   }
 
   return (
-    <section className="w-full min-h-screen container mx-auto flex flex-col py-4">
-      <h2 className="text-primary scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+    <section className="container flex flex-col py-4 mx-auto w-full min-h-screen">
+      <h2 className="pb-2 text-3xl font-semibold tracking-tight text-primary scroll-m-20 first:mt-0">
         Dashboard
       </h2>
       <div className="flex flex-col gap-4 w-full h-full">

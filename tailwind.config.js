@@ -76,6 +76,10 @@ module.exports = {
       fontFamily: {
         mono: ["var(--font-mono)", ...fontFamily.mono],
       },
+      gridTemplateColumns: {
+        autofit: "repeat(auto-fit, minmax(200px, 1fr))",
+        autofill: "repeat(auto-fill, minmax(200px, 1fr))",
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

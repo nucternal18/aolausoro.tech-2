@@ -9,7 +9,7 @@ export default function Error({
   error,
   reset,
 }: {
-  error: Error;
+  error: Error & { digest?: string };
   reset: () => void;
 }) {
   const router = useRouter();
@@ -19,8 +19,8 @@ export default function Error({
   }, [error]);
 
   return (
-    <section className="flex h-screen flex-col items-center justify-center">
-      <div className="flex flex-col items-center space-y-4">
+    <section className="flex flex-col justify-center items-center h-screen">
+      <div className="flex flex-col items-center space-y-4 h-full">
         <Image
           src={"/android-chrome-512x512.png"}
           alt="My Logo"
@@ -30,7 +30,7 @@ export default function Error({
         <h1 className="my-5 text-6xl">Whoops!</h1>
         <h2 className="mb-3 text-3xl">Something went wrong!</h2>
         <p>{JSON.stringify(error.message)}</p>
-        <div className="flex gap-4 items-center justify-center">
+        <div className="flex gap-4 justify-center items-center">
           <div className="flex justify-center">
             <Button type="button" onClick={() => reset()}>
               Try again

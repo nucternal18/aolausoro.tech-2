@@ -17,7 +17,7 @@ const LoginButton = () => {
         <>
           <Nav.Item>
             <Nav.Link href="/auth/sign-in">
-              <Button variant={"ghost"}>
+              <Button variant={"ghost"} className="flex items-center p-0">
                 <FaUser />
               </Button>
             </Nav.Link>
@@ -26,32 +26,20 @@ const LoginButton = () => {
       ) : (
         <>
           <Nav.Item>
-            <Nav.Link href="/protected/admin">
-              <Button
-                variant={"outline"}
-                className="text-primary shadow shadow-neutral-500 flex items-center"
-              >
+            <Nav.Link href="/admin">
+              <Button variant={"ghost"} className="flex items-center p-0">
                 <RiAdminFill fontSize={18} />
-                <span className="block text-sm ml-2">Admin</span>
               </Button>
             </Nav.Link>
           </Nav.Item>
 
           <Nav.Item>
-            <Button
-              variant={"outline"}
-              className="text-primary shadow shadow-neutral-500"
+            <SignOutButton
+              redirectUrl="/"
+              signOutOptions={{ sessionId: sessionId as string }}
             >
-              <SignOutButton
-                redirectUrl="/"
-                signOutOptions={{ sessionId: sessionId as string }}
-              >
-                <>
-                  <FiLogOut fontSize={18} />
-                  <span className="block text-sm ml-2">Sign Out</span>
-                </>
-              </SignOutButton>
-            </Button>
+              <FiLogOut fontSize={18} />
+            </SignOutButton>
           </Nav.Item>
         </>
       )}

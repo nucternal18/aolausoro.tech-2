@@ -3,6 +3,7 @@ import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { type PartialUserProps } from "@src/entities/models/User";
 
 import { getUserUseCase } from "@src/application/use-cases/users/get-user.use-case";
+import { NotFoundError } from "@src/entities/errors/common";
 
 function presenter(user: PartialUserProps) {
   return startSpan({ name: "getUser Presenter", op: "serialize" }, () => {
@@ -16,7 +17,7 @@ function presenter(user: PartialUserProps) {
 }
 
 export async function getUserController(
-  sessionId: string | undefined,
+  sessionId: string | undefined
 ): Promise<ReturnType<typeof presenter>> {
   return await startSpan(
     {
@@ -29,7 +30,11 @@ export async function getUserController(
 
       const user = await getUserUseCase(sessionId);
 
+        if (!user) {
+          throw new NotFoundError("User not found");
+        }
+
       return presenter(user as PartialUserProps);
-    },
+    }
   );
 }
