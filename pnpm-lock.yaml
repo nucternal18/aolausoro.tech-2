@@ -221,6 +221,9 @@ importers:
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
+      import-in-the-middle:
+        specifier: ^2.0.0
+        version: 2.0.0
       inversify:
         specifier: ^6.0.2
         version: 6.2.2(reflect-metadata@0.2.2)
@@ -317,6 +320,9 @@ importers:
       remove:
         specifier: ^0.1.5
         version: 0.1.5
+      require-in-the-middle:
+        specifier: ^8.0.1
+        version: 8.0.1
       resend:
         specifier: ^4.0.0
         version: 4.8.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -438,6 +444,9 @@ importers:
       babel-jest:
         specifier: ^30.2.0
         version: 30.2.0(@babel/core@7.28.5)
+      baseline-browser-mapping:
+        specifier: ^2.8.32
+        version: 2.8.32
       cypress:
         specifier: ^15.5.0
         version: 15.7.0
@@ -5431,8 +5440,8 @@ packages:
     resolution: {integrity: sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==}
     engines: {node: ^4.5.0 || >= 5.9}
 
-  baseline-browser-mapping@2.8.31:
-    resolution: {integrity: sha512-a28v2eWrrRWPpJSzxc+mKwm0ZtVx/G8SepdQZDArnXYU/XS+IF6mp8aB/4E+hH1tyGCoDo3KlUCdlSxGDsRkAw==}
+  baseline-browser-mapping@2.8.32:
+    resolution: {integrity: sha512-OPz5aBThlyLFgxyhdwf/s2+8ab3OvT7AdTNvKHBwpXomIYeXqpUUuT8LrdtxZSsWJ4R4CU1un4XGh5Ez3nlTpw==}
     hasBin: true
 
   bcrypt-pbkdf@1.0.2:
@@ -17059,7 +17068,7 @@ snapshots:
 
   base64id@2.0.0: {}
 
-  baseline-browser-mapping@2.8.31: {}
+  baseline-browser-mapping@2.8.32: {}
 
   bcrypt-pbkdf@1.0.2:
     dependencies:
@@ -17096,7 +17105,7 @@ snapshots:
 
   browserslist@4.28.0:
     dependencies:
-      baseline-browser-mapping: 2.8.31
+      baseline-browser-mapping: 2.8.32
       caniuse-lite: 1.0.30001757
       electron-to-chromium: 1.5.260
       node-releases: 2.0.27
