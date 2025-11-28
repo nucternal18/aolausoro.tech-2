@@ -28,8 +28,55 @@ type NodeProps = {
   };
 };
 
+/**
+ * Calculates the estimated reading time for a given text content
+ * @param content - The raw MDX content string
+ * @returns Formatted read time string (e.g., "5 min read" or "1 min read")
+ */
+function calculateReadTime(content: string): string {
+  // Remove frontmatter (content between --- markers)
+  const withoutFrontmatter = content.replace(/^---[\s\S]*?---\s*/, "");
+
+  // Remove markdown syntax:
+  // - Headers (# ## ###)
+  // - Links [text](url)
+  // - Images ![alt](url)
+  // - Code blocks (```code```)
+  // - Inline code (`code`)
+  // - Bold/italic (**text** *text*)
+  // - Lists (- item, * item, 1. item)
+  // - Blockquotes (> text)
+  // - Horizontal rules (---)
+  const textOnly = withoutFrontmatter
+    .replace(/^#{1,6}\s+/gm, "") // Headers
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Links, keep text
+    .replace(/!\[([^\]]*)\]\([^\)]+\)/g, "") // Images
+    .replace(/```[\s\S]*?```/g, "") // Code blocks
+    .replace(/`[^`]+`/g, "") // Inline code
+    .replace(/\*\*([^\*]+)\*\*/g, "$1") // Bold
+    .replace(/\*([^\*]+)\*/g, "$1") // Italic
+    .replace(/^[-*+]\s+/gm, "") // Unordered list items
+    .replace(/^\d+\.\s+/gm, "") // Ordered list items
+    .replace(/^>\s+/gm, "") // Blockquotes
+    .replace(/^---+$/gm, "") // Horizontal rules
+    .replace(/\n+/g, " ") // Replace newlines with spaces
+    .trim();
+
+  // Count words (split by whitespace and filter out empty strings)
+  const wordCount = textOnly
+    .split(/\s+/)
+    .filter((word) => word.length > 0).length;
+
+  // Average reading speed: 200 words per minute
+  const wordsPerMinute = 200;
+  const minutes = Math.ceil(wordCount / wordsPerMinute);
+
+  // Format: "X min read" or "1 min read" for less than 1 minute
+  return `${Math.max(1, minutes)} min read`;
+}
+
 export async function getPostByName(
-  fileName: string,
+  fileName: string
 ): Promise<BlogPost | undefined> {
   const res = await fetch(
     `https://raw.githubusercontent.com/nucternal18/blogs/main/${fileName}`,
@@ -39,8 +86,10 @@ export async function getPostByName(
         Authorization: `Bearer ${process.env.REPO_TOKEN}`,
         "X-GitHub-Api-Version": "2022-11-28",
       },
-    },
+      next: { revalidate: 60 },
+    }
   );
+
 
   if (!res.ok) return undefined;
 
@@ -95,6 +144,9 @@ export async function getPostByName(
 
   const id = fileName.replace(/\.mdx$/, "");
 
+  // Calculate read time from the raw MDX content
+  const readTime = calculateReadTime(rawMDX);
+
   const blogPostObj: BlogPost = {
     meta: {
       id,
@@ -106,6 +158,7 @@ export async function getPostByName(
       category: frontmatter.category,
       author: frontmatter.author,
       author_image: frontmatter.author_image,
+      readTime,
     },
     contentHtml: content,
   };
@@ -122,7 +175,8 @@ export async function getPostsMeta(): Promise<Meta[] | undefined> {
         Authorization: `Bearer ${process.env.REPO_TOKEN}`,
         "X-GitHub-Api-Version": "2022-11-28",
       },
-    },
+      next: { revalidate: 60 },
+    }
   );
 
   if (!res.ok) return undefined;

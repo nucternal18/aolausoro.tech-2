@@ -16,11 +16,11 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <main className="relative min-h-screen  max-w-lg py-1 px-4 flex-grow overflow-y-auto">
+    <main className="overflow-y-auto relative px-4 py-1 max-w-lg min-h-screen grow">
       <h2 className="my-4 text-2xl font-bold">Something went wrong!</h2>
       <Button
         onClick={() => reset()}
-        className="mb-4 bg-red-500 text-white hover:bg-red-600"
+        className="mb-4 text-white bg-red-500 hover:bg-red-600"
       >
         Try again
       </Button>

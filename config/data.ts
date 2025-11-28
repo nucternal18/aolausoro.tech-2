@@ -127,7 +127,7 @@ export const techSkillsData: TechSkillProps[] = [
   {
     name: "Figma",
     iconUrl:
-      " https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
+      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
   },
   {
     name: "AndroidStudio",

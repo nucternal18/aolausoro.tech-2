@@ -8,11 +8,29 @@ import { cn, composeEventHandlers } from "@lib/utils";
 import {
   Button,
   buttonVariants,
-  type ButtonProps,
 } from "@components/ui/button";
 
-interface LoadingButtonProps extends ButtonProps {
+interface LoadingButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   action: "create" | "update" | "delete";
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link"
+    | null
+    | undefined;
+  size?:
+    | "default"
+    | "sm"
+    | "lg"
+    | "icon"
+    | "icon-sm"
+    | "icon-lg"
+    | null
+    | undefined;
 }
 
 const LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(
@@ -35,7 +53,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(
         })}
       >
         {buttonAction === action && pending && (
-          <ReloadIcon className="mr-2 size-4 animate-spin" aria-hidden="true" />
+          <ReloadIcon className="mr-2 animate-spin size-4" aria-hidden="true" />
         )}
 
         {children}

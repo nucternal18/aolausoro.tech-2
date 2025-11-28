@@ -3,8 +3,9 @@ const { fontFamily } = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
+  // Content paths are now defined in CSS using @source directive
+  // Keeping this for backward compatibility with plugins
   content: [
-    "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
@@ -74,6 +75,10 @@ module.exports = {
       },
       fontFamily: {
         mono: ["var(--font-mono)", ...fontFamily.mono],
+      },
+      gridTemplateColumns: {
+        autofit: "repeat(auto-fit, minmax(200px, 1fr))",
+        autofill: "repeat(auto-fill, minmax(200px, 1fr))",
       },
     },
   },

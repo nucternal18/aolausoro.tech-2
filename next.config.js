@@ -1,21 +1,10 @@
 /** @type {import('next').NextConfig} */
-const webpack = require("webpack");
-const runtimeCaching = require("next-pwa/cache");
-const withPWA = require("next-pwa")({
-  dest: "public",
-  register: true,
-  skipWaiting: true,
-  runtimeCaching,
-  disable: process.env.NODE_ENV === "development",
-  buildExcludes: [/middleware-manifest\.json$/],
-});
 
 const nextConfig = {
-  // Your existing module.exports
   experimental: {
     mdxRs: true,
-    serverComponentsExternalPackages: ["@prisma/client", "bcryptjs"],
   },
+  serverExternalPackages: ["@prisma/client", "bcryptjs"],
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // don't resolve 'fs' module on the client to prevent this error on build --> Error: Can't resolve 'fs'
@@ -49,20 +38,34 @@ const nextConfig = {
     formats: ["image/webp"],
   },
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
-  eslint: {
-    dirs: ["app", "utils", "components"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
-  },
   // output: "standalone",
 };
 
 const withMDX = require("@next/mdx")();
-module.exports = withPWA(withMDX(nextConfig));
 
 // Injected content via Sentry wizard below
-
 const { withSentryConfig } = require("@sentry/nextjs");
 
-module.exports = withSentryConfig(module.exports, {
+// PWA temporarily disabled due to compatibility issues with Next.js 16
+// The next-pwa package has a known issue with pify.bind() error
+// TODO: Re-enable when next-pwa is updated or replaced with a compatible alternative
+let config = withMDX(nextConfig);
+
+// Uncomment the following code when next-pwa compatibility is fixed:
+// if (process.env.NODE_ENV !== "development") {
+//   const runtimeCaching = require("next-pwa/cache");
+//   const withPWA = require("next-pwa")({
+//     dest: "public",
+//     register: true,
+//     skipWaiting: true,
+//     runtimeCaching,
+//     disable: false,
+//     buildExcludes: [/middleware-manifest\.json$/],
+//   });
+//   config = withPWA(config);
+// }
+
+module.exports = withSentryConfig(config, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 

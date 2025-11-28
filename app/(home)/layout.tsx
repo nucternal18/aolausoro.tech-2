@@ -1,12 +1,17 @@
+import localFont from "next/font/local";
 import { Providers } from "@app/global-redux-store/providers";
 import "../globals.css";
 import "highlight.js/styles/github-dark.css";
 
 import { cn } from "../../lib/utils";
 
-import Footer from "@components/Footer";
 import LayoutWrapper from "./layout-wrapper";
-import { Navbar } from "@components/navigation/Navbar";
+
+
+const bebasNeue = localFont({
+  src: "../../fonts/BebasNeue-Regular.ttf",
+  variable: "--font-bebas-neue",
+});
 
 export default function RootLayout({
   children,
@@ -14,17 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "border-box scroll-smooth flex flex-col p-0 m-0 text-gray-800 bg-background font-mono antialiased",
+          "flex flex-col p-0 m-0 font-bebas-neue antialiased text-primary border-box scroll-smooth bg-background",
+          bebasNeue.variable
         )}
       >
-        <div className="grid min-h-[100dvh] grid-rows-[auto_1fr_auto]">
+        <div className="grid min-h-dvh grid-rows-[auto_1fr_auto]">
           <Providers>
-            <Navbar />
             <LayoutWrapper>{children}</LayoutWrapper>
-            <Footer />
           </Providers>
         </div>
       </body>

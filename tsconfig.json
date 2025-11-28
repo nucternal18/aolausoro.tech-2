@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "ES2022",
     "baseUrl": ".",
-    "lib": ["dom", "dom.iterable", "ES2022"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "ES2022"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,7 +19,7 @@
     "moduleDetection": "force",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "plugins": [
@@ -24,18 +28,42 @@
       }
     ],
     "paths": {
-      "@components/*": ["components/*"],
-      "@hooks/*": ["hooks/*"],
-      "@lib/*": ["lib/*"],
-      "@context/*": ["context/*"],
-      "@models/*": ["models/*"],
-      "@config/*": ["config/*"],
-      "@app/*": ["app/*"],
-      "@types/*": ["types/*"],
-      "@public/*": ["public/*"],
-      "@utils/*": ["utils/*"],
-      "@src/*": ["src/*"],
-      "@di/*": ["di/*"]
+      "@components/*": [
+        "components/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@context/*": [
+        "context/*"
+      ],
+      "@models/*": [
+        "models/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@app/*": [
+        "app/*"
+      ],
+      "@types/*": [
+        "types/*"
+      ],
+      "@public/*": [
+        "public/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@src/*": [
+        "src/*"
+      ],
+      "@di/*": [
+        "di/*"
+      ]
     },
     "strictNullChecks": true
   },
@@ -52,8 +80,14 @@
     "postcss.config.js",
     "next-sitemap.config.js",
     "types/**/*.d.ts",
-    "di/modules"
+    "di/modules",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"],
-  "typeRoots": ["node_modules/@types", "./types/**.d.ts"]
+  "exclude": [
+    "node_modules"
+  ],
+  "typeRoots": [
+    "node_modules/@types",
+    "./types/**.d.ts"
+  ]
 }

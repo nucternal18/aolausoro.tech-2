@@ -27,7 +27,7 @@ export async function getCV() {
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }
 
@@ -36,7 +36,7 @@ export async function createCV(requestBody: FormData) {
     "createCV",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
       try {
         const data = Object.fromEntries(requestBody.entries());
         const response = await createCvController(data, userId as string);
@@ -54,6 +54,6 @@ export async function createCV(requestBody: FormData) {
         captureException(err);
         throw err;
       }
-    },
+    }
   );
 }

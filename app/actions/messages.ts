@@ -22,32 +22,31 @@ export async function getMessages(): Promise<PartialMessageProps[]> {
     "getMessages",
     { recordResponse: false },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
-        const response = await getMessagesController(userId as string);
-        return response;
+        return await getMessagesController(userId as string);
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
           throw new Error("Must be logged in to get messages");
         }
         captureException(err);
         throw new Error(
-          "An error happened while getting messages. The developers have been notified. Please try again later.",
+          "An error happened while getting messages. The developers have been notified. Please try again later."
         );
       }
-    },
+    }
   );
 }
 
 export async function getMessageById(
-  id: string,
+  id: string
 ): Promise<PartialMessageProps | undefined> {
   return await withServerActionInstrumentation(
     "getMessageById",
     { recordResponse: false },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
         const response = await getMessageByIdController(id, userId as string);
@@ -58,27 +57,27 @@ export async function getMessageById(
         }
         captureException(err);
         throw new Error(
-          "An error happened while getting a message. The developers have been notified. Please try again later.",
+          "An error happened while getting a message. The developers have been notified. Please try again later."
         );
       }
-    },
+    }
   );
 }
 
 export async function createMessage(
-  input: FormData,
+  input: FormData
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "createMessage",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
         const formData = Object.fromEntries(input.entries());
         const response = await createMessageController(
           formData,
-          userId as string,
+          userId as string
         );
         if (response.success) {
           revalidatePath("/");
@@ -93,21 +92,21 @@ export async function createMessage(
         }
         captureException(err);
         throw new Error(
-          "An error happened while creating a message. The developers have been notified. Please try again later.",
+          "An error happened while creating a message. The developers have been notified. Please try again later."
         );
       }
-    },
+    }
   );
 }
 
 export async function deleteMessage(
-  id: string,
+  id: string
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "deleteMessage",
     { recordResponse: true },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       try {
         const response = await deleteMessageController(id, userId as string);
@@ -121,15 +120,15 @@ export async function deleteMessage(
         }
         captureException(err);
         throw new Error(
-          "An error happened while deleting a message. The developers have been notified. Please try again later.",
+          "An error happened while deleting a message. The developers have been notified. Please try again later."
         );
       }
-    },
+    }
   );
 }
 
 export async function sendMail(
-  input: FormData,
+  input: FormData
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
     "sendMail",
@@ -148,9 +147,9 @@ export async function sendMail(
         }
         captureException(err);
         throw new Error(
-          "An error happened while sending a mail. The developers have been notified. Please try again later.",
+          "An error happened while sending a mail. The developers have been notified. Please try again later."
         );
       }
-    },
+    }
   );
 }

@@ -1,4 +1,4 @@
-import { isRedirectError } from "next/dist/client/components/redirect";
+import { redirect } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -11,9 +11,12 @@ export function getErrorMessage(err: unknown) {
     });
     return errors.join("\n");
   } else if (err instanceof Error) {
+    // Check if it's a redirect error by checking the error message
+    // In Next.js 16, redirect() throws a NEXT_REDIRECT error
+    if (err.message.includes("NEXT_REDIRECT")) {
+      throw err;
+    }
     return err.message;
-  } else if (isRedirectError(err)) {
-    throw err;
   } else {
     return unknownError;
   }

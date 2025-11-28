@@ -24,7 +24,7 @@ export async function uploadUserImage(url: string, data: FormData) {
     "uploadUserImage",
     { recordResponse: false },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       if (!userId) {
         throw new Error("You must be signed in to add an item to your cart");
@@ -48,7 +48,7 @@ export async function uploadUserImage(url: string, data: FormData) {
           onUploadProgress: (upload) => {
             //Set the progress value to show the progress bar
             const uploadloadProgress = Math.round(
-              (100 * upload.loaded) / (upload.total as number),
+              (100 * upload.loaded) / (upload.total as number)
             );
             progress = uploadloadProgress;
           },
@@ -79,7 +79,7 @@ export async function uploadUserImage(url: string, data: FormData) {
           },
         };
       }
-    },
+    }
   );
 }
 
@@ -88,7 +88,7 @@ export async function uploadPDFCv(url: string, data: FormData) {
     "uploadPDFCv",
     { recordResponse: false },
     async () => {
-      const { userId } = auth();
+      const { userId } = await auth();
 
       if (!userId) {
         throw new Error("You must be signed in to add an item to your cart");
@@ -112,7 +112,7 @@ export async function uploadPDFCv(url: string, data: FormData) {
           onUploadProgress: (upload) => {
             //Set the progress value to show the progress bar
             const uploadloadProgress = Math.round(
-              (100 * upload.loaded) / (upload.total as number),
+              (100 * upload.loaded) / (upload.total as number)
             );
             if (uploadloadProgress < 100) {
               progress = uploadloadProgress;
@@ -145,6 +145,6 @@ export async function uploadPDFCv(url: string, data: FormData) {
           },
         };
       }
-    },
+    }
   );
 }

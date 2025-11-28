@@ -13,22 +13,22 @@ export const links = [
   },
   {
     id: 2,
-    url: "/about",
-    text: "ABOUT",
+    url: "#projects",
+    text: "PROJECTS",
   },
   {
     id: 3,
-    url: "/portfolio",
-    text: "PORTFOLIO",
+    url: "#skills",
+    text: "SKILLS",
   },
   {
     id: 4,
-    url: "/blog",
+    url: "#blog",
     text: "BLOG",
   },
   {
     id: 5,
-    url: "/contact",
+    url: "#contact",
     text: "CONTACT",
   },
 ];
@@ -42,18 +42,12 @@ export const social = [
   },
   {
     id: 2,
-    url: "https://twitter.com/woy_in",
-    icon: <FaTwitter />,
-    color: "text-blue-500",
-  },
-  {
-    id: 3,
     url: "https://www.linkedin.com/in/adewoyin-oladipupo-usoro-267291100/",
     icon: <FaLinkedin />,
     color: "text-blue-500",
   },
   {
-    id: 4,
+    id: 3,
     url: "https://stackoverflow.com/users/11582232/aolausoro",
     icon: <FaStackOverflow />,
     color: "text-red-700",

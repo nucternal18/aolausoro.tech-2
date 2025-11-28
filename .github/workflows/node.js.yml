@@ -24,6 +24,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Remove lock file
+        run: |
+          rm -rf pnpm-lock.yaml
       - name: Create .env file
         run: |
           touch .env
@@ -32,38 +36,46 @@ jobs:
       - name: Create .env.local file
         run: |
           touch .env.local
-          echo USER_EMAIL=${{ secrets.USER_EMAIL }} >> .env.local
-          echo USER_PASS=${{ secrets.USER_PASS }} >> .env.local
-          echo CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }} >> .env.local
-          echo CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} >> .env.local
-          echo CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} >> .env.local
-          echo NEXT_TELEMETRY_DISABLED=${{ secrets.NEXT_TELEMETRY_DISABLED }} >> .env.local
-          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.local
-          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env.local
-          echo JWT_SIGNING_PRIVATE_KEY=${{ secrets.JWT_SIGNING_PRIVATE_KEY }} >> .env.local
-          echo NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }} >> .env.local
-          echo RECAPTCHA_SITE_KEY=${{ secrets.RECAPTCHA_SITE_KEY }} >> .env.local
-          echo REPO_TOKEN=${{ secrets.REPO_TOKEN }} >> .env.local
-          echo RESEND_API_KEY=${{ secrets.RESEND_API_KEY }} >> .env.local
-          echo EMAIL_SERVER_USER=${{ secrets.EMAIL_SERVER_USER }} >> .env.local
-          echo EMAIL_SERVER_PASSWORD=${{ secrets.EMAIL_SERVER_PASSWORD }} >> .env.local
-          echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} >> .env.local
-          echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} >> .env.local
-          echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env.local
-          echo NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }} >> .env.local
-          echo CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }} >> .env.local
-          echo NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }} >> .env.local
-          echo CLERK_WEBHOOK_SECRET=${{ secrets.CLERK_WEBHOOK_SECRET }} >> .env.local
-          echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env.local
-          echo NEXT_PUBLIC_CLOUDINARY_NAME=${{ secrets.NEXT_PUBLIC_CLOUDINARY_NAME }} >> .env.local
-          echo NEXT_PUBLIC_CLOUDINARY_PRESET=${{ secrets.NEXT_PUBLIC_CLOUDINARY_PRESET }} >> .env.local
-          echo SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} >> .env.local
+          echo "CLOUDINARY_NAME=$CLOUDINARY_NAME" >> .env.local
+          echo "CLOUDINARY_API_KEY=$CLOUDINARY_API_KEY" >> .env.local
+          echo "CLOUDINARY_API_SECRET=$CLOUDINARY_API_SECRET" >> .env.local
+          echo "NEXT_TELEMETRY_DISABLED=$NEXT_TELEMETRY_DISABLED" >> .env.local
+          echo "NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$NEXT_PUBLIC_RECAPTCHA_SITE_KEY" >> .env.local
+          echo "RECAPTCHA_SITE_KEY=$RECAPTCHA_SITE_KEY" >> .env.local
+          echo "REPO_TOKEN=$REPO_TOKEN" >> .env.local
+          echo "RESEND_API_KEY=$RESEND_API_KEY" >> .env.local
+          echo "CLERK_SECRET_KEY=$CLERK_SECRET_KEY" >> .env.local
+          echo "NEXT_PUBLIC_CLERK_SIGN_IN_URL=$NEXT_PUBLIC_CLERK_SIGN_IN_URL" >> .env.local
+          echo "CLERK_WEBHOOK_SECRET=$CLERK_WEBHOOK_SECRET" >> .env.local
+          echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.local
+          echo "NEXT_PUBLIC_CLOUDINARY_NAME=$NEXT_PUBLIC_CLOUDINARY_NAME" >> .env.local
+          echo "NEXT_PUBLIC_CLOUDINARY_PRESET=$NEXT_PUBLIC_CLOUDINARY_PRESET" >> .env.local
+          echo "SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" >> .env.local
           cat .env.local
+        env:
+          CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          NEXT_TELEMETRY_DISABLED: ${{ secrets.NEXT_TELEMETRY_DISABLED }}
+          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+          RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          NEXT_PUBLIC_CLERK_SIGN_IN_URL: ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
+          CLERK_WEBHOOK_SECRET: ${{ secrets.CLERK_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_CLOUDINARY_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_NAME }}
+          NEXT_PUBLIC_CLOUDINARY_PRESET: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_PRESET }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Create .env.sentry-build-plugin file
         run: |
           touch .env.sentry-build-plugin
-          echo SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} >> .env 
+          echo "SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" >> .env.sentry-build-plugin
           cat .env
+
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Get npm cache directory
         id: npm-cache-dir
         shell: bash

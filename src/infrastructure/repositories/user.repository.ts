@@ -1,4 +1,8 @@
-import { startSpan, captureException } from "@sentry/nextjs";
+import {
+  startSpan,
+  captureException,
+  withServerActionInstrumentation,
+} from "@sentry/nextjs";
 
 import prisma from "@lib/prismadb";
 import type { ResponseProps } from "types/global";
@@ -11,20 +15,13 @@ export class UsersRepository implements IUsersRepository {
   constructor() {}
   async getUser(id: string): Promise<PartialUserProps | undefined> {
     return await startSpan({ name: "UsersRepository > getUser" }, async () => {
-      try {
-        const user = prisma.user.findUnique({
-          where: { clerkId: id },
-        });
-
-        return user as Promise<PartialUserProps | undefined>;
-      } catch (err) {
-        captureException(err);
-        throw PrismaErrorHandler.handle(err);
-      }
+      return (await prisma.user.findUnique({
+        where: { clerkId: id },
+      })) as PartialUserProps | undefined;
     });
   }
   async updateUser(
-    input: PartialUserProps,
+    input: PartialUserProps
   ): Promise<ResponseProps | undefined> {
     return await startSpan(
       { name: "UsersRepository > updateUser" },
@@ -44,7 +41,7 @@ export class UsersRepository implements IUsersRepository {
           captureException(err);
           throw PrismaErrorHandler.handle(err);
         }
-      },
+      }
     );
   }
 }

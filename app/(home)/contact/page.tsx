@@ -2,7 +2,7 @@ import { MdEmail } from "react-icons/md";
 import Link from "next/link";
 
 // components
-import ContactForm from "./contact-form";
+import ContactForm from "../../../components/contact-form";
 import { social } from "../../../data";
 import {
   Card,

@@ -1,7 +1,6 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import Error from "next/error";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
@@ -24,7 +23,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <section className="flex h-screen flex-col items-center justify-center">
+    <section className="flex flex-col justify-center items-center h-screen">
       <div className="flex flex-col items-center">
         <Image
           src={"/android-chrome-512x512.png"}
@@ -34,7 +33,8 @@ export default function GlobalError({
         />
         <h1 className="my-5 text-6xl">500</h1>
         <h2 className="mb-3 text-3xl">internal Server Error!</h2>
-        <div className="flex gap-4 items-center justify-center">
+        <p className="text-red-500">{serializedError}</p>
+        <div className="flex gap-4 justify-center items-center">
           <div className="flex justify-center">
             <Button type="button" asChild>
               <Link href={"/"}>Home</Link>
