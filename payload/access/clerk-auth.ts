@@ -1,6 +1,6 @@
 import type { PayloadRequest } from 'payload'
 import { auth } from '@clerk/nextjs/server'
-import { captureException } from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import { getPayload } from 'payload'
 import config from '../../payload.config'
 
@@ -62,7 +62,7 @@ export async function authenticateWithClerk(req: PayloadRequest): Promise<{ user
     }
   } catch (error) {
     console.error('Clerk authentication error:', error)
-    captureException(error)
+    Sentry.captureException(error)
     return { user: null }
   }
 }
