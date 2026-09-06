@@ -1,0 +1,21 @@
+# Production runtime stack. Deployed via .github/workflows/deploy-production.yml,
+# which runs on a self-hosted GitHub Actions runner registered on this droplet.
+# The .env file in this directory is generated fresh on every deploy from
+# GitHub Actions secrets — do not hand-edit it, it will be overwritten.
+# The image is built and pushed by CI; this file only ever pulls it.
+services:
+  app:
+    image: ghcr.io/nucternal18/aolausoro.tech-2:production
+    container_name: aolausoro-production
+    restart: unless-stopped
+    # Loopback only — Nginx is the sole entry point.
+    ports:
+      - '127.0.0.1:3000:3000'
+    env_file:
+      - .env
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
