@@ -1,15 +1,12 @@
-import { startSpan } from "@sentry/nextjs";
-import { getInjection } from "@src/di/container";
+import { startSpan } from '@sentry/nextjs'
+import { getInjection } from '@src/di/container'
 
-import type { StatsProps } from "@src/entities/models/Job";
+import type { StatsProps } from '@src/entities/models/Job'
 
 export function getStatsUseCase(id: string): Promise<StatsProps> {
-  return startSpan(
-    { name: "getStats UseCase", op: "function" },
-    async (span) => {
-      const jobsRepository = getInjection("IJobsRepository");
+  return startSpan({ name: 'getStats UseCase', op: 'function' }, async (span) => {
+    const jobsRepository = getInjection('IJobsRepository')
 
-      return (await jobsRepository.getStats(id)) as StatsProps;
-    },
-  );
+    return (await jobsRepository.getStats(id)) as StatsProps
+  })
 }

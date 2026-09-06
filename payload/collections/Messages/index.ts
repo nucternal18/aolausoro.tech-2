@@ -1,11 +1,11 @@
-import type { CollectionConfig } from "payload";
-import { authenticated, authenticatedAndAdmin } from "@src/access/authenticated";
+import type { CollectionConfig } from 'payload'
+import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
 
 const Messages: CollectionConfig<'messages'> = {
-  slug: "messages",
+  slug: 'messages',
   admin: {
-    useAsTitle: "subject",
-    defaultColumns: ["subject", "name", "email", "createdAt"],
+    useAsTitle: 'subject',
+    defaultColumns: ['subject', 'name', 'email', 'createdAt'],
   },
   access: {
     read: authenticatedAndAdmin,
@@ -15,27 +15,27 @@ const Messages: CollectionConfig<'messages'> = {
   },
   fields: [
     {
-      name: "name",
-      type: "text",
+      name: 'name',
+      type: 'text',
       required: true,
     },
     {
-      name: "email",
-      type: "email",
+      name: 'email',
+      type: 'email',
       required: true,
     },
     {
-      name: "subject",
-      type: "text",
+      name: 'subject',
+      type: 'text',
       required: true,
     },
     {
-      name: "message",
-      type: "textarea",
+      name: 'message',
+      type: 'textarea',
       required: true,
     },
   ],
   timestamps: true,
-};
+}
 
-export default Messages;
+export default Messages

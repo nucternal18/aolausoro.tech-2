@@ -1,6 +1,6 @@
 type Props = {
-  id: string;
-};
+  id: string
+}
 
 export default function Video({ id }: Props) {
   return (
@@ -11,5 +11,5 @@ export default function Video({ id }: Props) {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       />
     </div>
-  );
+  )
 }

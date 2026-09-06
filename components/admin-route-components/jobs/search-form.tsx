@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
 // components
-import { Button } from "@components/ui/button";
+import { Button } from '@components/ui/button'
 import {
   Form,
   FormControl,
@@ -10,31 +10,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@components/ui/form";
+} from '@components/ui/form'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@components/ui/select";
-import { Typography } from "../../../../components/Typography";
-import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
+} from '@components/ui/select'
+import { Typography } from '../../../../components/Typography'
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card'
 
 // redux
-import { useAppSelector } from "@components/admin-route-components/global-redux-store/hooks";
-import { jobSelector } from "@components/admin-route-components/global-redux-store/features/jobs/jobsSlice";
+import { useAppSelector } from '@components/admin-route-components/global-redux-store/hooks'
+import { jobSelector } from '@components/admin-route-components/global-redux-store/features/jobs/jobsSlice'
 
 // controller
-import useJobsController from "./use-jobs-controller";
+import useJobsController from './use-jobs-controller'
 
 const SearchForm = () => {
-  const state = useAppSelector(jobSelector);
+  const state = useAppSelector(jobSelector)
 
-  const { form } = useJobsController();
+  const { form } = useJobsController()
 
   return (
-    <Card className="w-full sm:mx-0 container md:max-w-screen-md mx-1">
+    <Card className="container mx-1 w-full sm:mx-0 md:max-w-screen-md">
       <CardTitle>
         <CardHeader>
           <Typography variant="h3" className="text-primary capitalize">
@@ -44,17 +44,14 @@ const SearchForm = () => {
       </CardTitle>
       <CardContent>
         <Form {...form}>
-          <form className="flex flex-col gap-2 md:gap-4 ">
+          <form className="flex flex-col gap-2 md:gap-4">
             <FormField
               control={form.control}
               name="status"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-primary/50">Job Status</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="text-primary">
                         <SelectValue placeholder="Select a Job status" />
@@ -81,10 +78,7 @@ const SearchForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-primary/50">Job Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="text-primary">
                         <SelectValue placeholder="Select a Job type" />
@@ -98,9 +92,7 @@ const SearchForm = () => {
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormDescription>
-                    This is the type of job you applied for
-                  </FormDescription>
+                  <FormDescription>This is the type of job you applied for</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -111,10 +103,7 @@ const SearchForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-primary/50">SortBy</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="text-primary">
                         <SelectValue placeholder="Select a Job type" />
@@ -128,9 +117,7 @@ const SearchForm = () => {
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormDescription>
-                    This is the type of job you applied for
-                  </FormDescription>
+                  <FormDescription>This is the type of job you applied for</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -139,8 +126,8 @@ const SearchForm = () => {
               type="button"
               className="w-full md:w-auto"
               onClick={(e) => {
-                e.preventDefault();
-                form.reset();
+                e.preventDefault()
+                form.reset()
               }}
             >
               Reset
@@ -149,7 +136,7 @@ const SearchForm = () => {
         </Form>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default SearchForm;
+export default SearchForm

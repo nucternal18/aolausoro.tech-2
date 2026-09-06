@@ -1,13 +1,13 @@
-import { startSpan } from "@sentry/nextjs";
-import { UnauthenticatedError } from "@src/entities/errors/auth";
-import type { ResponseProps } from "types/global";
-import { deleteIssueUseCase } from "@src/application/use-cases/issues/delete-issue.use-case";
-import { getInjection } from "@src/di/container";
+import { startSpan } from '@sentry/nextjs'
+import { UnauthenticatedError } from '@src/entities/errors/auth'
+import type { ResponseProps } from 'types/global'
+import { deleteIssueUseCase } from '@src/application/use-cases/issues/delete-issue.use-case'
+import { getInjection } from '@src/di/container'
 
 function presenter(issue: ResponseProps) {
-  return startSpan({ name: "deleteIssue Presenter", op: "serialize" }, () => {
-    return issue;
-  });
+  return startSpan({ name: 'deleteIssue Presenter', op: 'serialize' }, () => {
+    return issue
+  })
 }
 
 export async function deleteIssueController(
@@ -16,23 +16,23 @@ export async function deleteIssueController(
 ): Promise<ReturnType<typeof presenter>> {
   return await startSpan(
     {
-      name: "deleteIssue Controller",
+      name: 'deleteIssue Controller',
     },
     async () => {
       if (!sessionId) {
-        throw new UnauthenticatedError("Must be logged in to delete an issue");
+        throw new UnauthenticatedError('Must be logged in to delete an issue')
       }
 
-      const authenticationService = getInjection("IAuthService");
-      const user = await authenticationService.checkIfUserExists(sessionId);
+      const authenticationService = getInjection('IAuthService')
+      const user = await authenticationService.checkIfUserExists(sessionId)
 
       if (!user!.isAdmin) {
-        throw new UnauthenticatedError("Must be an admin to delete an issue");
+        throw new UnauthenticatedError('Must be an admin to delete an issue')
       }
 
-      const issue = await deleteIssueUseCase(id);
+      const issue = await deleteIssueUseCase(id)
 
-      return presenter(issue);
+      return presenter(issue)
     },
-  );
+  )
 }

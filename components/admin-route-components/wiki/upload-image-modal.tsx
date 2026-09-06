@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React from "react";
+import React from 'react'
 import {
   Dialog,
   DialogContent,
@@ -8,9 +8,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@components/ui/dialog";
-import ImageFileInput from "@components/file-uploader/image-file-input";
-import { Button } from "@components/ui/button";
+} from '@components/ui/dialog'
+import ImageFileInput from '@components/file-uploader/image-file-input'
+import { Button } from '@components/ui/button'
 import {
   Form,
   FormControl,
@@ -19,17 +19,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@components/ui/form";
-import { ScrollArea } from "@components/ui/scroll-area";
-import { Input } from "@components/ui/input";
-import { Textarea } from "@components/ui/textarea";
-import { Checkbox } from "@components/ui/checkbox";
-import { DialogClose } from "@radix-ui/react-dialog";
-import useWikiController from "./use-wiki-controller";
-import { Typography } from "@components/Typography";
+} from '@components/ui/form'
+import { ScrollArea } from '@components/ui/scroll-area'
+import { Input } from '@components/ui/input'
+import { Textarea } from '@components/ui/textarea'
+import { Checkbox } from '@components/ui/checkbox'
+import { DialogClose } from '@radix-ui/react-dialog'
+import useWikiController from './use-wiki-controller'
+import { Typography } from '@components/Typography'
 
 export function UploadImageModal() {
-  const { form, uploadImage } = useWikiController();
+  const { form, uploadImage } = useWikiController()
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -37,7 +37,7 @@ export function UploadImageModal() {
           Upload Image
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[60%] overflow-y-auto">
+      <DialogContent className="overflow-y-auto sm:max-w-[60%]">
         <DialogHeader>
           <DialogTitle>
             <Typography variant="h3" className="text-primary">
@@ -50,10 +50,7 @@ export function UploadImageModal() {
         </DialogHeader>
         <ScrollArea>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(uploadImage)}
-              className="space-y-8"
-            >
+            <form onSubmit={form.handleSubmit(uploadImage)} className="space-y-8">
               <ImageFileInput
                 multiple
                 name="images"
@@ -67,11 +64,7 @@ export function UploadImageModal() {
                   <FormItem>
                     <FormLabel className="text-primary/70">Title</FormLabel>
                     <FormControl>
-                      <Input
-                        className="text-primary/80"
-                        placeholder="enter a title"
-                        {...field}
-                      />
+                      <Input className="text-primary/80" placeholder="enter a title" {...field} />
                     </FormControl>
                     <FormDescription>The title of the wiki.</FormDescription>
                     <FormMessage />
@@ -84,19 +77,15 @@ export function UploadImageModal() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-primary/70">
-                      Description
-                    </FormLabel>
+                    <FormLabel className="text-primary/70">Description</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="enter a brief description"
-                        className="resize-none text-primary/80"
+                        className="text-primary/80 resize-none"
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      A brief description of the wiki.
-                    </FormDescription>
+                    <FormDescription>A brief description of the wiki.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -106,20 +95,13 @@ export function UploadImageModal() {
                 control={form.control}
                 name="isImage"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormItem className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
                     <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel className="text-primary/80">
-                        Is this an image?
-                      </FormLabel>
-                      <FormDescription>
-                        Check this box if the file is an image.
-                      </FormDescription>
+                      <FormLabel className="text-primary/80">Is this an image?</FormLabel>
+                      <FormDescription>Check this box if the file is an image.</FormDescription>
                     </div>
                   </FormItem>
                 )}
@@ -132,5 +114,5 @@ export function UploadImageModal() {
         </ScrollArea>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

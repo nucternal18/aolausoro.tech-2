@@ -1,16 +1,16 @@
-import { startSpan } from "@sentry/nextjs";
-import { UnauthenticatedError } from "@src/entities/errors/auth";
+import { startSpan } from '@sentry/nextjs'
+import { UnauthenticatedError } from '@src/entities/errors/auth'
 
-import type { ResponseProps } from "types/global";
-import { jobSchema, type PartialJobProps } from "@src/entities/models/Job";
-import { InputParseError } from "@src/entities/errors/common";
-import { createJobUseCase } from "@src/application/use-cases/jobs/create-job.use-case";
-import { getInjection } from "@src/di/container";
+import type { ResponseProps } from 'types/global'
+import { jobSchema, type PartialJobProps } from '@src/entities/models/Job'
+import { InputParseError } from '@src/entities/errors/common'
+import { createJobUseCase } from '@src/application/use-cases/jobs/create-job.use-case'
+import { getInjection } from '@src/di/container'
 
 function presenter(job: ResponseProps) {
-  return startSpan({ name: "createJob Presenter", op: "serialize" }, () => {
-    return job;
-  });
+  return startSpan({ name: 'createJob Presenter', op: 'serialize' }, () => {
+    return job
+  })
 }
 
 export async function createJobController(
@@ -19,29 +19,29 @@ export async function createJobController(
 ): Promise<ReturnType<typeof presenter>> {
   return await startSpan(
     {
-      name: "createJob Controller",
+      name: 'createJob Controller',
     },
     async () => {
       if (!sessionId) {
-        throw new UnauthenticatedError("Must be logged in to create a job");
+        throw new UnauthenticatedError('Must be logged in to create a job')
       }
 
-      const authenticationService = getInjection("IAuthService");
-      const user = await authenticationService.checkIfUserExists(sessionId);
+      const authenticationService = getInjection('IAuthService')
+      const user = await authenticationService.checkIfUserExists(sessionId)
 
       if (!user!.isAdmin) {
-        throw new UnauthenticatedError("Must be an admin to create a job");
+        throw new UnauthenticatedError('Must be an admin to create a job')
       }
 
-      const { data, error: inputParseError } = jobSchema.safeParse(input);
+      const { data, error: inputParseError } = jobSchema.safeParse(input)
 
       if (inputParseError) {
-        throw new InputParseError("Invalid data", { cause: inputParseError });
+        throw new InputParseError('Invalid data', { cause: inputParseError })
       }
 
-      const job = await createJobUseCase(sessionId, data);
+      const job = await createJobUseCase(sessionId, data)
 
-      return presenter(job);
+      return presenter(job)
     },
-  );
+  )
 }

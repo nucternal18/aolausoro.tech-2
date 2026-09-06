@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import type { MonthlyApplicationProps } from "@src/entities/models/Job";
-import * as React from "react";
+import type { MonthlyApplicationProps } from '@src/entities/models/Job'
+import * as React from 'react'
 import {
   AreaChart,
   Area,
@@ -10,7 +10,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts'
 
 // zod schema
 
@@ -25,7 +25,7 @@ const AreaChartComponent = ({ data }: { data: MonthlyApplicationProps[] }) => {
         <Area dataKey="count" type="monotone" fill="#bef8fd" stroke="#2cb1bc" />
       </AreaChart>
     </ResponsiveContainer>
-  );
-};
+  )
+}
 
-export default AreaChartComponent;
+export default AreaChartComponent

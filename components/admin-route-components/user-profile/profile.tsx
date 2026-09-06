@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { Button } from "@components/ui/button";
+import { Button } from '@components/ui/button'
 
 import {
   Form,
@@ -10,47 +10,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@components/ui/form";
-import { Input } from "@components/ui/input";
+} from '@components/ui/form'
+import { Input } from '@components/ui/input'
 
-import useUserController from "./use-user-controller";
-import PDFFileInput from "@components/file-uploader/pdf-file-input";
-import { Progress } from "@components/ui/progress";
-import type { PartialUserProps } from "@src/entities/models/User";
+import useUserController from './use-user-controller'
+import PDFFileInput from '@components/file-uploader/pdf-file-input'
+import { Progress } from '@components/ui/progress'
+import type { PartialUserProps } from '@src/entities/models/User'
 
 interface IUserProfile {
-  user: PartialUserProps;
+  user: PartialUserProps
 }
 
 export function ProfileComponent({ user }: IUserProfile) {
-  const { form, uploadPDF, progress } = useUserController();
+  const { form, uploadPDF, progress } = useUserController()
 
   return (
-    <section className="relative pb-2 h-full justify-center items-center container mx-auto">
+    <section className="relative container mx-auto h-full items-center justify-center pb-2">
       <div className="flex flex-col pb-5">
-        <div className="relative flex-col mb-7 space-y-8">
-          <div className="flex flex-col justify-center items-center">
+        <div className="relative mb-7 flex-col space-y-8">
+          <div className="flex flex-col items-center justify-center">
             <img
-              className="w-full h-[300px] shadow-lg object-cover"
-              src={"/images/rahul-mishra-unsplash.jpg"}
+              className="h-[300px] w-full object-cover shadow-lg"
+              src={'/images/rahul-mishra-unsplash.jpg'}
               alt="banner-pic"
             />
             <img
               src={user?.image}
               alt="user-pic"
-              className="rounded-full w-20 h-20 -mt-10 shadow-xl object-cover"
+              className="-mt-10 h-20 w-20 rounded-full object-cover shadow-xl"
             />
-            <h1 className="font-bold text-3xl text-center mt-3">
-              {user?.name}
-            </h1>
+            <h1 className="mt-3 text-center text-3xl font-bold">{user?.name}</h1>
           </div>
 
-          <div className="px-2 space-y-8">
+          <div className="space-y-8 px-2">
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(uploadPDF)}
-                className="space-y-8"
-              >
+              <form onSubmit={form.handleSubmit(uploadPDF)} className="space-y-8">
                 <PDFFileInput
                   multiple
                   name="pdf"
@@ -86,5 +81,5 @@ export function ProfileComponent({ user }: IUserProfile) {
         </div>
       </div>
     </section>
-  );
+  )
 }

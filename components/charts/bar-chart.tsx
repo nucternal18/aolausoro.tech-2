@@ -1,17 +1,9 @@
-"use client";
+'use client'
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 // zod schema
-import type { MonthlyApplicationProps } from "@src/entities/models/Job";
+import type { MonthlyApplicationProps } from '@src/entities/models/Job'
 
 const BarChartComponent = ({ data }: { data: MonthlyApplicationProps[] }) => {
   return (
@@ -24,7 +16,7 @@ const BarChartComponent = ({ data }: { data: MonthlyApplicationProps[] }) => {
         <Bar dataKey="count" fill="#2cb1bc" barSize={75} />
       </BarChart>
     </ResponsiveContainer>
-  );
-};
+  )
+}
 
-export default BarChartComponent;
+export default BarChartComponent

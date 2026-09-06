@@ -1,20 +1,20 @@
-import { startSpan } from "@sentry/nextjs";
-import { UnauthenticatedError } from "@src/entities/errors/auth";
+import { startSpan } from '@sentry/nextjs'
+import { UnauthenticatedError } from '@src/entities/errors/auth'
 
-import { type PartialIssueProps } from "@src/entities/models/Issue";
-import { getIssuesUseCase } from "@src/application/use-cases/issues/get-issues.use-case";
-import { getInjection } from "@src/di/container";
+import { type PartialIssueProps } from '@src/entities/models/Issue'
+import { getIssuesUseCase } from '@src/application/use-cases/issues/get-issues.use-case'
+import { getInjection } from '@src/di/container'
 
 function presenter(issues: PartialIssueProps[]) {
-  return startSpan({ name: "getIssues Presenter", op: "serialize" }, () => {
+  return startSpan({ name: 'getIssues Presenter', op: 'serialize' }, () => {
     return issues.map((issue) => ({
       id: issue.id,
       title: issue.title,
       description: issue.description,
       status: issue.status,
       createdAt: issue.createdAt,
-    }));
-  });
+    }))
+  })
 }
 
 export async function getIssuesController(
@@ -22,23 +22,23 @@ export async function getIssuesController(
 ): Promise<ReturnType<typeof presenter>> {
   return await startSpan(
     {
-      name: "getIssues Controller",
+      name: 'getIssues Controller',
     },
     async () => {
       if (!sessionId) {
-        throw new UnauthenticatedError("Must be logged in to get issues");
+        throw new UnauthenticatedError('Must be logged in to get issues')
       }
 
-      const authenticationService = getInjection("IAuthService");
-      const user = await authenticationService.checkIfUserExists(sessionId);
+      const authenticationService = getInjection('IAuthService')
+      const user = await authenticationService.checkIfUserExists(sessionId)
 
       if (!user!.isAdmin) {
-        throw new UnauthenticatedError("Must be an admin to get issues");
+        throw new UnauthenticatedError('Must be an admin to get issues')
       }
 
-      const issues = await getIssuesUseCase();
+      const issues = await getIssuesUseCase()
 
-      return presenter(issues);
+      return presenter(issues)
     },
-  );
+  )
 }

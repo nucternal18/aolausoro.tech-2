@@ -1,11 +1,11 @@
-import type { CollectionConfig } from "payload";
-import { authenticated, authenticatedAndAdmin } from "@src/access/authenticated";
+import type { CollectionConfig } from 'payload'
+import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
 
-const Projects: CollectionConfig<"projects"> = {
-  slug: "projects",
+const Projects: CollectionConfig<'projects'> = {
+  slug: 'projects',
   admin: {
-    useAsTitle: "projectName",
-    defaultColumns: ["projectName", "published", "createdAt"],
+    useAsTitle: 'projectName',
+    defaultColumns: ['projectName', 'published', 'createdAt'],
   },
   access: {
     read: () => true, // Public read access
@@ -15,50 +15,50 @@ const Projects: CollectionConfig<"projects"> = {
   },
   fields: [
     {
-      name: "projectName",
-      type: "text",
+      name: 'projectName',
+      type: 'text',
       required: true,
     },
     {
-      name: "description",
-      type: "textarea",
+      name: 'description',
+      type: 'textarea',
       required: true,
     },
     {
-      name: "address",
-      type: "text",
+      name: 'address',
+      type: 'text',
     },
     {
-      name: "url",
-      type: "text",
+      name: 'url',
+      type: 'text',
     },
     {
-      name: "github",
-      type: "text",
+      name: 'github',
+      type: 'text',
     },
     {
-      name: "techStack",
-      type: "array",
+      name: 'techStack',
+      type: 'array',
       fields: [
         {
-          name: "technology",
-          type: "text",
+          name: 'technology',
+          type: 'text',
         },
       ],
     },
     {
-      name: "published",
-      type: "checkbox",
+      name: 'published',
+      type: 'checkbox',
       defaultValue: false,
     },
     {
-      name: "user",
-      type: "relationship",
-      relationTo: "users",
+      name: 'user',
+      type: 'relationship',
+      relationTo: 'users',
       required: true,
     },
   ],
   timestamps: true,
-};
+}
 
-export default Projects;
+export default Projects

@@ -1,15 +1,12 @@
-import { startSpan } from "@sentry/nextjs";
-import { getInjection } from "@src/di/container";
+import { startSpan } from '@sentry/nextjs'
+import { getInjection } from '@src/di/container'
 
-import type { UserProps } from "@src/entities/models/User";
+import type { UserProps } from '@src/entities/models/User'
 
 export function checkUserExistsUseCase(clerkId: string): Promise<UserProps> {
-  return startSpan(
-    { name: "checkUserExists UseCase", op: "function" },
-    async (span) => {
-      const authService = getInjection("IAuthService");
+  return startSpan({ name: 'checkUserExists UseCase', op: 'function' }, async (span) => {
+    const authService = getInjection('IAuthService')
 
-      return (await authService.checkIfUserExists(clerkId)) as UserProps;
-    },
-  );
+    return (await authService.checkIfUserExists(clerkId)) as UserProps
+  })
 }

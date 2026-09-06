@@ -1,5 +1,5 @@
-import React from "react";
-import { type DefaultStatsProps } from "./stats-container";
+import React from 'react'
+import { type DefaultStatsProps } from './stats-container'
 
 import {
   Card,
@@ -8,31 +8,24 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@components/ui/card";
-import { Typography } from "./Typography";
+} from '@components/ui/card'
+import { Typography } from './Typography'
 
-const StatsItem = ({
-  count,
-  title,
-  icon,
-  textColor,
-  borderColor,
-  bcg,
-}: DefaultStatsProps) => {
+const StatsItem = ({ count, title, icon, textColor, borderColor, bcg }: DefaultStatsProps) => {
   return (
     <Card
-      className={`p-2 bg-white $ dark:bg-gray-900 shadow-xl mt-5 mx-2 md:p-4 border-b-4 rounded-md ${borderColor}`}
+      className={`$ mx-2 mt-5 rounded-md border-b-4 bg-white p-2 shadow-xl md:p-4 dark:bg-gray-900 ${borderColor}`}
     >
       <CardHeader className="gap-4">
         <CardTitle>
           <div
-            className={`inline-flex items-center justify-center p-2 ${bcg} rounded-md shadow-lg  w-12 h-12`}
+            className={`inline-flex items-center justify-center p-2 ${bcg} h-12 w-12 rounded-md shadow-lg`}
           >
             {icon}
           </div>
         </CardTitle>
         <CardDescription>
-          <span className="text-sm text-primary">{count}</span>
+          <span className="text-primary text-sm">{count}</span>
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -41,7 +34,7 @@ const StatsItem = ({
         </Typography>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default StatsItem;
+export default StatsItem

@@ -1,69 +1,69 @@
-import type { CollectionConfig, PayloadRequest } from "payload";
-import { authenticateWithClerk } from "../../access/clerk-auth";
-import { authenticatedAndAdmin } from "@src/access/authenticated";
+import type { CollectionConfig, PayloadRequest } from 'payload'
+import { authenticateWithClerk } from '../../access/clerk-auth'
+import { authenticatedAndAdmin } from '@src/access/authenticated'
 
 const Users: CollectionConfig<'users'> = {
-  slug: "users",
+  slug: 'users',
   auth: {
     strategies: [
       {
-        name: "clerk",
+        name: 'clerk',
         authenticate: async ({ headers }: { headers: any }) => {
           // Create a mock request object
           const req = {
             headers: headers || {},
-          } as PayloadRequest;
+          } as PayloadRequest
 
-          return await authenticateWithClerk(req);
+          return await authenticateWithClerk(req)
         },
       },
     ],
   },
   admin: {
-    useAsTitle: "name",
-    defaultColumns: ["name", "email", "isAdmin", "createdAt"],
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'email', 'isAdmin', 'createdAt'],
   },
   access: {
     read: ({ req: { user } }) => {
-      if (user?.isAdmin) return true;
-      return { id: { equals: user?.id } };
+      if (user?.isAdmin) return true
+      return { id: { equals: user?.id } }
     },
     update: ({ req: { user } }) => {
-      if (user?.isAdmin) return true;
-      return { id: { equals: user?.id } };
+      if (user?.isAdmin) return true
+      return { id: { equals: user?.id } }
     },
-    delete: authenticatedAndAdmin
+    delete: authenticatedAndAdmin,
   },
   fields: [
     {
-      name: "name",
-      type: "text",
+      name: 'name',
+      type: 'text',
       required: true,
     },
     {
-      name: "email",
-      type: "email",
+      name: 'email',
+      type: 'email',
       required: true,
       unique: true,
     },
     {
-      name: "image",
-      type: "text",
+      name: 'image',
+      type: 'text',
     },
     {
-      name: "isAdmin",
-      type: "checkbox",
+      name: 'isAdmin',
+      type: 'checkbox',
       defaultValue: false,
     },
     {
-      name: "clerkId",
-      type: "text",
+      name: 'clerkId',
+      type: 'text',
       unique: true,
       index: true,
     },
     {
-      name: "emailVerified",
-      type: "date",
+      name: 'emailVerified',
+      type: 'date',
     },
     // {
     //   name: "cvUrl",
@@ -73,6 +73,6 @@ const Users: CollectionConfig<'users'> = {
     // },
   ],
   timestamps: true,
-};
+}
 
-export default Users;
+export default Users

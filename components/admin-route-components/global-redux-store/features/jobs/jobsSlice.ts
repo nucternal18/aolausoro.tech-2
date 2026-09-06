@@ -1,11 +1,8 @@
-import { type RootState } from "../../store";
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import {
-  partialJobSchema,
-  type PartialJobProps,
-} from "@src/entities/models/Job";
+import { type RootState } from '../../store'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { partialJobSchema, type PartialJobProps } from '@src/entities/models/Job'
 
-import * as zod from "zod";
+import * as zod from 'zod'
 
 const jobSliceSchema = zod.object({
   jobs: zod.array(partialJobSchema).nullable(),
@@ -19,42 +16,42 @@ const jobSliceSchema = zod.object({
   sortOptions: zod.array(zod.string()),
   message: zod.string(),
   error: zod.object({ name: zod.string(), message: zod.string() }).nullable(),
-});
+})
 
-export type JobSliceProps = zod.infer<typeof jobSliceSchema>;
+export type JobSliceProps = zod.infer<typeof jobSliceSchema>
 
 export const initialState: JobSliceProps = {
   jobs: null,
   page: 1,
-  jobTypeOptions: ["all", "full-time", "part-time", "remote", "internship"],
-  statusOptions: ["all", "Interviewing", "Declined", "Pending", "Offer"],
-  search: "",
-  searchStatus: "all",
-  searchType: "all",
-  sort: "latest",
-  sortOptions: ["latest", "oldest", "a-z", "z-a"],
-  message: "",
+  jobTypeOptions: ['all', 'full-time', 'part-time', 'remote', 'internship'],
+  statusOptions: ['all', 'Interviewing', 'Declined', 'Pending', 'Offer'],
+  search: '',
+  searchStatus: 'all',
+  searchType: 'all',
+  sort: 'latest',
+  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  message: '',
   error: null,
-};
+}
 
 export const jobSlice = createSlice({
-  name: "job",
+  name: 'job',
   initialState,
   reducers: {
     setJobs: (state, { payload }: PayloadAction<PartialJobProps[]>) => {
-      state.jobs = payload;
+      state.jobs = payload
     },
     setPage: (state, { payload }: PayloadAction<number>) => {
-      state.page = payload;
+      state.page = payload
     },
     setError: (state, { payload }: PayloadAction<Error>) => {
-      state.error = payload;
+      state.error = payload
     },
   },
-});
+})
 
-export const { setJobs, setPage, setError } = jobSlice.actions;
+export const { setJobs, setPage, setError } = jobSlice.actions
 
-export const jobSelector = (state: RootState) => state.jobs;
+export const jobSelector = (state: RootState) => state.jobs
 
-export default jobSlice.reducer;
+export default jobSlice.reducer

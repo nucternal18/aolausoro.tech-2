@@ -1,9 +1,9 @@
-"use client";
-import React from "react";
+'use client'
+import React from 'react'
 
 // redux
-import { useAppSelector } from "@components/admin-route-components/global-redux-store/hooks";
-import { jobSelector } from "@components/admin-route-components/global-redux-store/features/jobs/jobsSlice";
+import { useAppSelector } from '@components/admin-route-components/global-redux-store/hooks'
+import { jobSelector } from '@components/admin-route-components/global-redux-store/features/jobs/jobsSlice'
 
 // components
 import {
@@ -14,25 +14,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@components/ui/form";
+} from '@components/ui/form'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@components/ui/select";
-import { Input } from "@components/ui/input";
-import { Button } from "@components/ui/button";
+} from '@components/ui/select'
+import { Input } from '@components/ui/input'
+import { Button } from '@components/ui/button'
 
 // zod schema
-import type { PartialJobProps } from "@src/entities/models/Job";
+import type { PartialJobProps } from '@src/entities/models/Job'
 
 // controller
-import useJobsController from "../use-jobs-controller";
+import useJobsController from '../use-jobs-controller'
 
 const EditJobComponent = ({ job }: { job: PartialJobProps }) => {
-  const state = useAppSelector(jobSelector);
+  const state = useAppSelector(jobSelector)
 
   const defaultValues = {
     position: job?.position,
@@ -40,13 +40,13 @@ const EditJobComponent = ({ job }: { job: PartialJobProps }) => {
     jobLocation: job?.jobLocation,
     jobType: job?.jobType,
     status: job?.status,
-  };
+  }
 
-  const { form, editJobHandler } = useJobsController();
+  const { form, editJobHandler } = useJobsController()
 
   React.useEffect(() => {
-    form.reset({ ...defaultValues });
-  }, [job]);
+    form.reset({ ...defaultValues })
+  }, [job])
 
   return (
     <Form {...form}>
@@ -58,15 +58,9 @@ const EditJobComponent = ({ job }: { job: PartialJobProps }) => {
             <FormItem>
               <FormLabel className="text-primary">Username</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter a position"
-                  className="text-primary"
-                  {...field}
-                />
+                <Input placeholder="Enter a position" className="text-primary" {...field} />
               </FormControl>
-              <FormDescription>
-                This is the position you applied for
-              </FormDescription>
+              <FormDescription>This is the position you applied for</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -78,15 +72,9 @@ const EditJobComponent = ({ job }: { job: PartialJobProps }) => {
             <FormItem>
               <FormLabel className="text-primary">Company</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter a company name"
-                  className="text-primary"
-                  {...field}
-                />
+                <Input placeholder="Enter a company name" className="text-primary" {...field} />
               </FormControl>
-              <FormDescription>
-                This is the company you applied to
-              </FormDescription>
+              <FormDescription>This is the company you applied to</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -98,11 +86,7 @@ const EditJobComponent = ({ job }: { job: PartialJobProps }) => {
             <FormItem>
               <FormLabel className="text-primary">Job Location</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter a position"
-                  className="text-primary"
-                  {...field}
-                />
+                <Input placeholder="Enter a position" className="text-primary" {...field} />
               </FormControl>
               <FormDescription>This is the location of the job</FormDescription>
               <FormMessage />
@@ -129,9 +113,7 @@ const EditJobComponent = ({ job }: { job: PartialJobProps }) => {
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription>
-                This is the current status of the job application
-              </FormDescription>
+              <FormDescription>This is the current status of the job application</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -156,9 +138,7 @@ const EditJobComponent = ({ job }: { job: PartialJobProps }) => {
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription>
-                This is the type of job you applied for
-              </FormDescription>
+              <FormDescription>This is the type of job you applied for</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -166,7 +146,7 @@ const EditJobComponent = ({ job }: { job: PartialJobProps }) => {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  );
-};
+  )
+}
 
-export default EditJobComponent;
+export default EditJobComponent

@@ -1,65 +1,59 @@
-import sharp from "sharp";
-import { mongooseAdapter } from "@payloadcms/db-mongodb";
-import { buildConfig } from "payload";
-import path from "path";
-import { fileURLToPath } from "url";
+import sharp from 'sharp'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { buildConfig } from 'payload'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 // Collections
-import Projects from "./payload/collections/Projects";
-import Jobs from "./payload/collections/Jobs";
-import Messages from "./payload/collections/Messages";
-import Wiki from "./payload/collections/Wiki";
-import Issues from "./payload/collections/Issues";
-import Users from "./payload/collections/Users";
-import { Media } from "./payload/collections/Media";
-import { Posts } from "./payload/collections/Posts";
-import { plugins } from "./plugins";
-import { defaultLexical } from "@fields/defaultLexical";
-import { getServerSideURL } from "@utils/getURL";
+import Projects from './payload/collections/Projects'
+import Jobs from './payload/collections/Jobs'
+import Messages from './payload/collections/Messages'
+import Wiki from './payload/collections/Wiki'
+import Issues from './payload/collections/Issues'
+import Users from './payload/collections/Users'
+import { Media } from './payload/collections/Media'
+import { Posts } from './payload/collections/Posts'
+import { plugins } from './plugins'
+import { defaultLexical } from '@fields/defaultLexical'
+import { getServerSideURL } from '@utils/getURL'
 
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 export default buildConfig({
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || "http://localhost:3000",
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
 
   admin: {
-    user: "users",
+    user: 'users',
     meta: {
-      titleSuffix: "- Admin",
+      titleSuffix: '- Admin',
     },
     components: {
       graphics: {
-        Logo: "/public/android-chrome-512x512.png", // Uncomment and create logo.png when available
+        Logo: '/public/android-chrome-512x512.png', // Uncomment and create logo.png when available
       },
     },
     importMap: {
       baseDir: path.resolve(dirname),
-      importMapFile: path.resolve(
-        dirname,
-        "app",
-        "(protected)",
-        "admin",
-        "importMap.js"
-      ),
+      importMapFile: path.resolve(dirname, 'app', '(protected)', 'admin', 'importMap.js'),
     },
     livePreview: {
       breakpoints: [
         {
-          label: "Mobile",
-          name: "mobile",
+          label: 'Mobile',
+          name: 'mobile',
           width: 375,
           height: 667,
         },
         {
-          label: "Tablet",
-          name: "tablet",
+          label: 'Tablet',
+          name: 'tablet',
           width: 768,
           height: 1024,
         },
         {
-          label: "Desktop",
-          name: "desktop",
+          label: 'Desktop',
+          name: 'desktop',
           width: 1440,
           height: 900,
         },
@@ -68,7 +62,7 @@ export default buildConfig({
   },
   editor: defaultLexical,
   collections: [Posts, Projects, Jobs, Messages, Wiki, Issues, Users, Media],
-  secret: process.env.PAYLOAD_SECRET || "",
+  secret: process.env.PAYLOAD_SECRET || '',
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
@@ -77,11 +71,11 @@ export default buildConfig({
     url: process.env.DATABASE_URL!,
   }),
   typescript: {
-    outputFile: path.resolve(dirname, "payload-types.ts"),
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   graphQL: {
-    schemaOutputFile: path.resolve(dirname, "generated-schema.graphql"),
+    schemaOutputFile: path.resolve(dirname, 'generated-schema.graphql'),
   },
   debug: true,
   sharp,
-});
+})

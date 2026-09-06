@@ -1,23 +1,16 @@
-"use client";
-import React, { useRef, useCallback } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+'use client'
+import React, { useRef, useCallback } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
-import { Button } from "@components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@components/ui/form";
-import { Textarea } from "@components/ui/textarea";
-import { Input } from "@components/ui/input";
+import { Button } from '@components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/ui/form'
+import { Textarea } from '@components/ui/textarea'
+import { Input } from '@components/ui/input'
 
-import useContactController from "../hooks/use-contact-controller";
+import useContactController from '../hooks/use-contact-controller'
 
 function ContactForm() {
-  const { form, recaptchaRef, handleSubmit } = useContactController();
+  const { form, recaptchaRef, handleSubmit } = useContactController()
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
@@ -67,11 +60,7 @@ function ContactForm() {
             <FormItem>
               <FormLabel>Message</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Enter your message"
-                  className="h-24 resize-y"
-                  {...field}
-                />
+                <Textarea placeholder="Enter your message" className="h-24 resize-y" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -85,7 +74,7 @@ function ContactForm() {
         sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
       />
     </Form>
-  );
+  )
 }
 
-export default ContactForm;
+export default ContactForm

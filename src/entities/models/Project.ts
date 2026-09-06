@@ -1,5 +1,5 @@
-import * as z from "zod";
-import type { Prettify } from "./helpers";
+import * as z from 'zod'
+import type { Prettify } from './helpers'
 
 export const projectSchema = z.object({
   id: z.string(),
@@ -13,12 +13,10 @@ export const projectSchema = z.object({
   url: z.string().url(),
   createdAt: z.date(),
   updatedAt: z.date(),
-});
+})
 
-export const partialProjectSchema = projectSchema.partial();
+export const partialProjectSchema = projectSchema.partial()
 
-export type ProjectProps = Prettify<z.infer<typeof projectSchema>>;
+export type ProjectProps = Prettify<z.infer<typeof projectSchema>>
 
-export type PartialProjectProps = Prettify<
-  z.infer<typeof partialProjectSchema>
->;
+export type PartialProjectProps = Prettify<z.infer<typeof partialProjectSchema>>

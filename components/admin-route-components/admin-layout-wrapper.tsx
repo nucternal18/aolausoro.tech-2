@@ -1,15 +1,11 @@
-import React from "react";
+import React from 'react'
 
-import { getUser } from "@components/admin-route-components/actions/user";
-import type { PartialUserProps } from "@src/entities/models/User";
-import { captureException } from "@sentry/nextjs";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@components/ui/sidebar";
-import { AppSidebar } from "@components/navigation/app-sidebar";
-import { Separator } from "@components/ui/separator";
+import { getUser } from '@components/admin-route-components/actions/user'
+import type { PartialUserProps } from '@src/entities/models/User'
+import { captureException } from '@sentry/nextjs'
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@components/ui/sidebar'
+import { AppSidebar } from '@components/navigation/app-sidebar'
+import { Separator } from '@components/ui/separator'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,27 +13,27 @@ import {
   BreadcrumbSeparator,
   BreadcrumbList,
   BreadcrumbLink,
-} from "@components/ui/breadcrumb";
+} from '@components/ui/breadcrumb'
 
 export async function AdminLayoutWrapper({
   children, // will be a page or nested layout
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  let user: PartialUserProps | null = null;
+  let user: PartialUserProps | null = null
 
   try {
-    user = await getUser();
+    user = await getUser()
   } catch (error) {
-    console.error("Failed to get user:", error);
-    captureException(error);
+    console.error('Failed to get user:', error)
+    captureException(error)
   }
 
   if (!user) {
     return (
       <SidebarProvider>
         <AppSidebar />
-        <main className="flex justify-center items-center min-h-screen">
+        <main className="flex min-h-screen items-center justify-center">
           <SidebarTrigger />
           <div className="text-center">
             <h1 className="mb-4 text-2xl font-bold">User not found</h1>
@@ -45,22 +41,20 @@ export async function AdminLayoutWrapper({
           </div>
         </main>
       </SidebarProvider>
-    );
+    )
   }
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex gap-2 items-center px-4">
+          <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="#">Building Your Application</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -70,8 +64,8 @@ export async function AdminLayoutWrapper({
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-col flex-1 gap-4 p-4 pt-0">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
-  );
+  )
 }

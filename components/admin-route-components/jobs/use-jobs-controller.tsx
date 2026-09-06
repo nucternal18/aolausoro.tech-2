@@ -1,25 +1,18 @@
-"use client";
+'use client'
 
-import { use, useCallback, useEffect } from "react";
-import { useForm, type SubmitHandler, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { use, useCallback, useEffect } from 'react'
+import { useForm, type SubmitHandler, useFieldArray } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 
 // redux
-import { useAppSelector } from "@components/admin-route-components/global-redux-store/hooks";
-import { jobSelector } from "@components/admin-route-components/global-redux-store/features/jobs/jobsSlice";
+import { useAppSelector } from '@components/admin-route-components/global-redux-store/hooks'
+import { jobSelector } from '@components/admin-route-components/global-redux-store/features/jobs/jobsSlice'
 
 // components
-import { useToast } from "@components/ui/use-toast";
-import {
-  partialJobSchema,
-  type PartialJobProps,
-} from "@src/entities/models/Job";
-import {
-  createJob,
-  deleteJob,
-  updateJob,
-} from "@components/admin-route-components/actions/jobs";
+import { useToast } from '@components/ui/use-toast'
+import { partialJobSchema, type PartialJobProps } from '@src/entities/models/Job'
+import { createJob, deleteJob, updateJob } from '@components/admin-route-components/actions/jobs'
 
 /**
  * Custom hook for managing jobs data and operations.
@@ -30,26 +23,26 @@ import {
  */
 export default function useJobsController(
   jobId?: string,
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
-  const router = useRouter();
-  const state = useAppSelector(jobSelector);
-  const { toast } = useToast();
+  const router = useRouter()
+  const state = useAppSelector(jobSelector)
+  const { toast } = useToast()
 
   const form = useForm<PartialJobProps>({
     resolver: zodResolver(partialJobSchema),
     defaultValues: {
-      position: "",
-      company: "",
-      jobLocation: "",
-      jobType: "all",
-      status: "all",
-      search: "",
-      sort: "asc",
+      position: '',
+      company: '',
+      jobLocation: '',
+      jobType: 'all',
+      status: 'all',
+      search: '',
+      sort: 'asc',
     },
-  });
+  })
 
-  const { search, status, jobType, sort } = form.watch();
+  const { search, status, jobType, sort } = form.watch()
 
   /**
    * Handles the creation of a job.
@@ -57,36 +50,33 @@ export default function useJobsController(
    * @param {PartialJobProps} data - The data for the job to be created.
    * @returns {Promise<void>} - A promise that resolves when the job creation is complete.
    */
-  const createJobHandler: SubmitHandler<PartialJobProps> = useCallback(
-    async (data) => {
-      const jobFormData = new FormData();
-      jobFormData.append("position", data.position as string);
-      jobFormData.append("company", data.company as string);
-      jobFormData.append("jobLocation", data.jobLocation as string);
-      jobFormData.append("jobType", data.jobType as string);
-      jobFormData.append("status", data.status as string);
-      jobFormData.append("search", data.search as string);
-      jobFormData.append("sort", data.sort as string);
+  const createJobHandler: SubmitHandler<PartialJobProps> = useCallback(async (data) => {
+    const jobFormData = new FormData()
+    jobFormData.append('position', data.position as string)
+    jobFormData.append('company', data.company as string)
+    jobFormData.append('jobLocation', data.jobLocation as string)
+    jobFormData.append('jobType', data.jobType as string)
+    jobFormData.append('status', data.status as string)
+    jobFormData.append('search', data.search as string)
+    jobFormData.append('sort', data.sort as string)
 
-      try {
-        const response = await createJob(jobFormData);
+    try {
+      const response = await createJob(jobFormData)
 
-        if (response.success) {
-          setOpen && setOpen(false);
-          toast({
-            title: "Success!!",
-            description: response.message,
-          });
-        }
-      } catch (error) {
+      if (response.success) {
+        setOpen && setOpen(false)
         toast({
-          title: "Error!!",
-          description: "Error creating job",
-        });
+          title: 'Success!!',
+          description: response.message,
+        })
       }
-    },
-    []
-  );
+    } catch (error) {
+      toast({
+        title: 'Error!!',
+        description: 'Error creating job',
+      })
+    }
+  }, [])
 
   /**
    * Handles the submission of edited job data.
@@ -95,35 +85,35 @@ export default function useJobsController(
    */
   const editJobHandler: SubmitHandler<PartialJobProps> = useCallback(
     async (data) => {
-      const jobFormData = new FormData();
-      jobFormData.append("id", jobId as string);
-      jobFormData.append("position", data.position as string);
-      jobFormData.append("company", data.company as string);
-      jobFormData.append("jobLocation", data.jobLocation as string);
-      jobFormData.append("jobType", data.jobType as string);
-      jobFormData.append("status", data.status as string);
-      jobFormData.append("search", data.search as string);
-      jobFormData.append("sort", data.sort as string);
+      const jobFormData = new FormData()
+      jobFormData.append('id', jobId as string)
+      jobFormData.append('position', data.position as string)
+      jobFormData.append('company', data.company as string)
+      jobFormData.append('jobLocation', data.jobLocation as string)
+      jobFormData.append('jobType', data.jobType as string)
+      jobFormData.append('status', data.status as string)
+      jobFormData.append('search', data.search as string)
+      jobFormData.append('sort', data.sort as string)
 
       try {
-        const response = await updateJob(jobFormData);
+        const response = await updateJob(jobFormData)
 
         if (response.success) {
           toast({
-            title: "Success!!",
+            title: 'Success!!',
             description: response.message,
-          });
-          router.push("/admin/jobs");
+          })
+          router.push('/admin/jobs')
         }
       } catch (error) {
         toast({
-          title: "Error!!",
-          description: "Error updating job",
-        });
+          title: 'Error!!',
+          description: 'Error updating job',
+        })
       }
     },
-    [jobId]
-  );
+    [jobId],
+  )
 
   /**
    * Handles the deletion of a job.
@@ -133,26 +123,26 @@ export default function useJobsController(
    */
   const deleteJobHandler = useCallback(async (id: string) => {
     try {
-      const response = await deleteJob(id);
+      const response = await deleteJob(id)
 
       if (response.success) {
         toast({
-          title: "Success!! Job deleted.",
+          title: 'Success!! Job deleted.',
           description: response.message,
-        });
+        })
       }
     } catch (error) {
       toast({
-        title: "Error!!",
-        description: "Error deleting job",
-      });
+        title: 'Error!!',
+        description: 'Error deleting job',
+      })
     }
-  }, []);
+  }, [])
 
   return {
     form,
     createJobHandler,
     editJobHandler,
     deleteJobHandler,
-  };
+  }
 }

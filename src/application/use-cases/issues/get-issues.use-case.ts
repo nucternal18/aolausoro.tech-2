@@ -1,16 +1,13 @@
-import { startSpan } from "@sentry/nextjs";
-import { getInjection } from "@src/di/container";
+import { startSpan } from '@sentry/nextjs'
+import { getInjection } from '@src/di/container'
 
-import type { ResponseProps } from "types/global";
-import type { PartialIssueProps } from "@src/entities/models/Issue";
+import type { ResponseProps } from 'types/global'
+import type { PartialIssueProps } from '@src/entities/models/Issue'
 
 export function getIssuesUseCase(): Promise<PartialIssueProps[]> {
-  return startSpan(
-    { name: "getIssues UseCase", op: "function" },
-    async (span) => {
-      const issuesRepository = getInjection("IIssuesRepository");
+  return startSpan({ name: 'getIssues UseCase', op: 'function' }, async (span) => {
+    const issuesRepository = getInjection('IIssuesRepository')
 
-      return (await issuesRepository.getIssues()) as PartialIssueProps[];
-    },
-  );
+    return (await issuesRepository.getIssues()) as PartialIssueProps[]
+  })
 }

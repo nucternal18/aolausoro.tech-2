@@ -1,15 +1,15 @@
-import { Suspense } from "react";
-import { getProjects } from "@components/admin-route-components/actions/projects";
-import { ProjectsComponent } from "./projects";
-import Loader from "@components/Loader";
+import { Suspense } from 'react'
+import { getProjects } from '@components/admin-route-components/actions/projects'
+import { ProjectsComponent } from './projects'
+import Loader from '@components/Loader'
 
 export default async function ProjectsPage() {
-  const projects = await getProjects();
+  const projects = await getProjects()
   return (
-    <section className="container flex-grow w-full h-screen p-2 sm:p-6 space-y-4  mx-auto">
+    <section className="container mx-auto h-screen w-full flex-grow space-y-4 p-2 sm:p-6">
       <Suspense
         fallback={
-          <div className="flex items-center justify-center h-full">
+          <div className="flex h-full items-center justify-center">
             <Loader classes="w-8 h-8" />
           </div>
         }
@@ -17,5 +17,5 @@ export default async function ProjectsPage() {
         <ProjectsComponent projects={projects} />
       </Suspense>
     </section>
-  );
+  )
 }

@@ -1,14 +1,11 @@
-import type { CollectionConfig } from "payload";
-import {
-  authenticated,
-  authenticatedAndAdmin,
-} from "@src/access/authenticated";
+import type { CollectionConfig } from 'payload'
+import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
 
 const Issues: CollectionConfig = {
-  slug: "issues",
+  slug: 'issues',
   admin: {
-    useAsTitle: "title",
-    defaultColumns: ["title", "status", "createdAt"],
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'status', 'createdAt'],
   },
   access: {
     read: authenticated,
@@ -18,33 +15,33 @@ const Issues: CollectionConfig = {
   },
   fields: [
     {
-      name: "title",
-      type: "text",
+      name: 'title',
+      type: 'text',
       required: true,
     },
     {
-      name: "description",
-      type: "textarea",
+      name: 'description',
+      type: 'textarea',
       required: true,
     },
     {
-      name: "status",
-      type: "select",
+      name: 'status',
+      type: 'select',
       options: [
-        { label: "Open", value: "OPEN" },
-        { label: "In Progress", value: "IN_PROGRESS" },
-        { label: "Closed", value: "CLOSED" },
+        { label: 'Open', value: 'OPEN' },
+        { label: 'In Progress', value: 'IN_PROGRESS' },
+        { label: 'Closed', value: 'CLOSED' },
       ],
-      defaultValue: "OPEN",
+      defaultValue: 'OPEN',
     },
     {
-      name: "user",
-      type: "relationship",
-      relationTo: "users",
+      name: 'user',
+      type: 'relationship',
+      relationTo: 'users',
       required: true,
     },
   ],
   timestamps: true,
-};
+}
 
-export default Issues;
+export default Issues

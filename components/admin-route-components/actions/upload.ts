@@ -1,15 +1,12 @@
-"use server";
-import {
-  withServerActionInstrumentation,
-  captureException,
-} from "@sentry/nextjs";
-import prisma from "@lib/prismadb";
+'use server'
+import { withServerActionInstrumentation, captureException } from '@sentry/nextjs'
+import prisma from '@lib/prismadb'
 
-import { UnauthenticatedError } from "@src/entities/errors/auth";
-import { InputParseError } from "@src/entities/errors/common";
-import { auth } from "@clerk/nextjs/server";
-import type { UploadApiResponse } from "cloudinary";
-import axios, { AxiosError } from "axios";
+import { UnauthenticatedError } from '@src/entities/errors/auth'
+import { InputParseError } from '@src/entities/errors/common'
+import { auth } from '@clerk/nextjs/server'
+import type { UploadApiResponse } from 'cloudinary'
+import axios, { AxiosError } from 'axios'
 
 /**
  * Uploads a user image to the specified URL.
@@ -21,130 +18,126 @@ import axios, { AxiosError } from "axios";
  */
 export async function uploadUserImage(url: string, data: FormData) {
   return await withServerActionInstrumentation(
-    "uploadUserImage",
+    'uploadUserImage',
     { recordResponse: false },
     async () => {
-      const { userId } = await auth();
+      const { userId } = await auth()
 
       if (!userId) {
-        throw new Error("You must be signed in to add an item to your cart");
+        throw new Error('You must be signed in to add an item to your cart')
       }
 
       const user = await prisma.user.findUnique({
         where: { clerkId: userId },
-      });
+      })
 
       if (!user?.isAdmin) {
-        throw new Error("You are not authorized to perform this operation");
+        throw new Error('You are not authorized to perform this operation')
       }
 
       try {
-        let progress = 0;
+        let progress = 0
         const result = await axios.post(url, data, {
           //...other options like headers here
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
           onUploadProgress: (upload) => {
             //Set the progress value to show the progress bar
-            const uploadloadProgress = Math.round(
-              (100 * upload.loaded) / (upload.total as number)
-            );
-            progress = uploadloadProgress;
+            const uploadloadProgress = Math.round((100 * upload.loaded) / (upload.total as number))
+            progress = uploadloadProgress
           },
-        });
+        })
 
-        return { progress, data: result.data as UploadApiResponse };
+        return { progress, data: result.data as UploadApiResponse }
       } catch (axiosError: any) {
         if (axiosError instanceof InputParseError) {
-          return { error: axiosError.message };
+          return { error: axiosError.message }
         }
         if (axiosError instanceof UnauthenticatedError) {
-          return { error: "Must be logged in to create a todo" };
+          return { error: 'Must be logged in to create a todo' }
         }
-        captureException(axiosError);
+        captureException(axiosError)
         if (axiosError instanceof AxiosError) {
-          const err = axiosError;
+          const err = axiosError
           return {
             error: {
               status: err.response?.status,
               data: err.response?.data || err.message,
             },
-          };
+          }
         }
         return {
           error: {
             status: 500,
-            data: "Something went wrong uploading image",
+            data: 'Something went wrong uploading image',
           },
-        };
+        }
       }
-    }
-  );
+    },
+  )
 }
 
 export async function uploadPDFCv(url: string, data: FormData) {
   return await withServerActionInstrumentation(
-    "uploadPDFCv",
+    'uploadPDFCv',
     { recordResponse: false },
     async () => {
-      const { userId } = await auth();
+      const { userId } = await auth()
 
       if (!userId) {
-        throw new Error("You must be signed in to add an item to your cart");
+        throw new Error('You must be signed in to add an item to your cart')
       }
 
       const user = await prisma.user.findUnique({
         where: { clerkId: userId },
-      });
+      })
 
       if (!user?.isAdmin) {
-        throw new Error("You are not authorized to perform this operation");
+        throw new Error('You are not authorized to perform this operation')
       }
 
       try {
-        let progress = 0;
+        let progress = 0
         const result = await axios.post(url, data, {
           //...other options like headers here
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
           onUploadProgress: (upload) => {
             //Set the progress value to show the progress bar
-            const uploadloadProgress = Math.round(
-              (100 * upload.loaded) / (upload.total as number)
-            );
+            const uploadloadProgress = Math.round((100 * upload.loaded) / (upload.total as number))
             if (uploadloadProgress < 100) {
-              progress = uploadloadProgress;
+              progress = uploadloadProgress
             }
           },
-        });
+        })
 
-        return { data: result.data as UploadApiResponse, progress };
+        return { data: result.data as UploadApiResponse, progress }
       } catch (axiosError: any) {
         if (axiosError instanceof InputParseError) {
-          return { error: axiosError.message };
+          return { error: axiosError.message }
         }
         if (axiosError instanceof UnauthenticatedError) {
-          return { error: "Must be logged in to create a todo" };
+          return { error: 'Must be logged in to create a todo' }
         }
-        captureException(axiosError);
+        captureException(axiosError)
         if (axiosError instanceof AxiosError) {
-          const err = axiosError;
+          const err = axiosError
           return {
             error: {
               status: err.response?.status,
               data: err.response?.data || err.message,
             },
-          };
+          }
         }
         return {
           error: {
             status: 500,
-            data: "Something went wrong uploading image",
+            data: 'Something went wrong uploading image',
           },
-        };
+        }
       }
-    }
-  );
+    },
+  )
 }

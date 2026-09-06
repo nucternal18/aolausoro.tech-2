@@ -1,15 +1,12 @@
-import { startSpan } from "@sentry/nextjs";
-import { getInjection } from "@src/di/container";
+import { startSpan } from '@sentry/nextjs'
+import { getInjection } from '@src/di/container'
 
-import type { ResponseProps } from "types/global";
+import type { ResponseProps } from 'types/global'
 
 export function deleteIssueUseCase(id: string): Promise<ResponseProps> {
-  return startSpan(
-    { name: "deleteIssue UseCase", op: "function" },
-    async (span) => {
-      const issuesRepository = getInjection("IIssuesRepository");
+  return startSpan({ name: 'deleteIssue UseCase', op: 'function' }, async (span) => {
+    const issuesRepository = getInjection('IIssuesRepository')
 
-      return await issuesRepository.deleteIssue(id);
-    },
-  );
+    return await issuesRepository.deleteIssue(id)
+  })
 }

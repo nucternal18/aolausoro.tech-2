@@ -1,11 +1,11 @@
-import type { CollectionConfig } from "payload";
-import { authenticated, authenticatedAndAdmin } from "@src/access/authenticated";
+import type { CollectionConfig } from 'payload'
+import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
 
 const Jobs: CollectionConfig<'jobs'> = {
-  slug: "jobs",
+  slug: 'jobs',
   admin: {
-    useAsTitle: "position",
-    defaultColumns: ["position", "company", "status", "createdAt"],
+    useAsTitle: 'position',
+    defaultColumns: ['position', 'company', 'status', 'createdAt'],
   },
   access: {
     read: authenticated,
@@ -15,49 +15,49 @@ const Jobs: CollectionConfig<'jobs'> = {
   },
   fields: [
     {
-      name: "position",
-      type: "text",
+      name: 'position',
+      type: 'text',
       required: true,
     },
     {
-      name: "company",
-      type: "text",
+      name: 'company',
+      type: 'text',
       required: true,
     },
     {
-      name: "jobLocation",
-      type: "text",
+      name: 'jobLocation',
+      type: 'text',
       required: true,
     },
     {
-      name: "jobType",
-      type: "select",
+      name: 'jobType',
+      type: 'select',
       options: [
-        { label: "Full-time", value: "full-time" },
-        { label: "Part-time", value: "part-time" },
-        { label: "Contract", value: "contract" },
-        { label: "Remote", value: "remote" },
+        { label: 'Full-time', value: 'full-time' },
+        { label: 'Part-time', value: 'part-time' },
+        { label: 'Contract', value: 'contract' },
+        { label: 'Remote', value: 'remote' },
       ],
       required: true,
     },
     {
-      name: "status",
-      type: "select",
+      name: 'status',
+      type: 'select',
       options: [
-        { label: "Pending", value: "pending" },
-        { label: "Interview", value: "interview" },
-        { label: "Declined", value: "declined" },
+        { label: 'Pending', value: 'pending' },
+        { label: 'Interview', value: 'interview' },
+        { label: 'Declined', value: 'declined' },
       ],
-      defaultValue: "pending",
+      defaultValue: 'pending',
     },
     {
-      name: "user",
-      type: "relationship",
-      relationTo: "users",
+      name: 'user',
+      type: 'relationship',
+      relationTo: 'users',
       required: true,
     },
   ],
   timestamps: true,
-};
+}
 
-export default Jobs;
+export default Jobs

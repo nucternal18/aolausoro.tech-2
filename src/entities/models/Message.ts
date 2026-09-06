@@ -1,5 +1,5 @@
-import type { Prettify } from "./helpers";
-import * as z from "zod";
+import type { Prettify } from './helpers'
+import * as z from 'zod'
 
 export const messageSchema = z.object({
   id: z.string(),
@@ -10,12 +10,10 @@ export const messageSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   token: z.string().optional(),
-});
+})
 
-export const partialMessageSchema = messageSchema.partial();
+export const partialMessageSchema = messageSchema.partial()
 
-export type MessageProps = Prettify<z.infer<typeof messageSchema>>;
+export type MessageProps = Prettify<z.infer<typeof messageSchema>>
 
-export type PartialMessageProps = Prettify<
-  z.infer<typeof partialMessageSchema>
->;
+export type PartialMessageProps = Prettify<z.infer<typeof partialMessageSchema>>

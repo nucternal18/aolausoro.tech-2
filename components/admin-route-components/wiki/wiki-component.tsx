@@ -1,22 +1,19 @@
-"use client";
+'use client'
 
-import { Typography } from "@components/Typography";
-import { UploadImageModal } from "./upload-image-modal";
-import { Progress } from "@components/ui/progress";
+import { Typography } from '@components/Typography'
+import { UploadImageModal } from './upload-image-modal'
+import { Progress } from '@components/ui/progress'
 
-import useWikiController from "./use-wiki-controller";
-import WikiCard from "@components/wiki-card";
-import type { PartialWikiProps } from "@src/entities/models/Wiki";
+import useWikiController from './use-wiki-controller'
+import WikiCard from '@components/wiki-card'
+import type { PartialWikiProps } from '@src/entities/models/Wiki'
 
 export function WikiComponent({ wikis }: { wikis: PartialWikiProps[] }) {
-  const { progress } = useWikiController();
+  const { progress } = useWikiController()
   return (
     <section className="space-y-8">
-      <section className="flex justify-between items-center">
-        <Typography
-          variant="h2"
-          className="text-sm text-primary md:text-base lg:text-2xl"
-        >
+      <section className="flex items-center justify-between">
+        <Typography variant="h2" className="text-primary text-sm md:text-base lg:text-2xl">
           Wiki Page
         </Typography>
         <Progress value={progress} className="w-[50%] md:w-[60%]" />
@@ -40,5 +37,5 @@ export function WikiComponent({ wikis }: { wikis: PartialWikiProps[] }) {
         )}
       </section>
     </section>
-  );
+  )
 }

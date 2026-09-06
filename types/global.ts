@@ -1,4 +1,4 @@
 export type ResponseProps = {
-  success: boolean;
-  message: string;
-};
+  success: boolean
+  message: string
+}

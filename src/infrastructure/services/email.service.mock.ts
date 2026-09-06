@@ -1,11 +1,11 @@
-import type { IEmailService } from "@src/application/services/email.service.interface";
-import type { PartialMessageProps } from "@src/entities/models/Message";
-import type { Resend } from "resend";
-import type { ResponseProps } from "types/global";
+import type { IEmailService } from '@src/application/services/email.service.interface'
+import type { PartialMessageProps } from '@src/entities/models/Message'
+import type { Resend } from 'resend'
+import type { ResponseProps } from 'types/global'
 
 // @injectable()
 export class MockEmailService implements IEmailService {
-  private _emailService: Resend;
+  private _emailService: Resend
 
   constructor() {
     this._emailService = {
@@ -16,22 +16,22 @@ export class MockEmailService implements IEmailService {
           subject,
           html,
         }: {
-          from: string;
-          to: string | string[];
-          subject: string;
-          html: string;
+          from: string
+          to: string | string[]
+          subject: string
+          html: string
         }) => {
           console.log(
             `Mock email sent from ${from} to ${to} with subject "${subject}" and body "${html}"`,
-          );
+          )
           const data = {
             success: true,
-            message: "Mock email sent successfully",
-          };
-          return { data, error: null };
+            message: 'Mock email sent successfully',
+          }
+          return { data, error: null }
         },
       },
-    } as unknown as Resend; // Mock Resend instance
+    } as unknown as Resend // Mock Resend instance
   }
 
   async sendEmail(message: PartialMessageProps): Promise<ResponseProps> {
@@ -45,18 +45,18 @@ export class MockEmailService implements IEmailService {
                         </ul>
                         <h3>Message</h3>
                         <p>${message}</p>
-                    `;
+                    `
 
-    console.log(`Mock email sent from: ${output} `);
+    console.log(`Mock email sent from: ${output} `)
 
     // Simulate sending an email
     const { data, error } = await this._emailService.emails.send({
-      from: "email@mail.aolausoro.tech",
-      to: ["adewoyin@aolausoro.tech"],
+      from: 'email@mail.aolausoro.tech',
+      to: ['adewoyin@aolausoro.tech'],
       subject: message.subject as string,
       html: output,
-    });
-    console.log(data);
-    return { success: true, message: "Mock email sent successfully" };
+    })
+    console.log(data)
+    return { success: true, message: 'Mock email sent successfully' }
   }
 }

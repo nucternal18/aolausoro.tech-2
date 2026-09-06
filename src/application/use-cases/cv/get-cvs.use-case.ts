@@ -1,12 +1,12 @@
-import { startSpan } from "@sentry/nextjs";
-import { getInjection } from "@src/di/container";
+import { startSpan } from '@sentry/nextjs'
+import { getInjection } from '@src/di/container'
 
-import type { PartialCvProps } from "@src/entities/models/cv";
+import type { PartialCvProps } from '@src/entities/models/cv'
 
 export function getCvsUseCase(): Promise<PartialCvProps[]> {
-  return startSpan({ name: "getCvs UseCase", op: "function" }, async (span) => {
-    const cvRepository = getInjection("ICVRepository");
+  return startSpan({ name: 'getCvs UseCase', op: 'function' }, async (span) => {
+    const cvRepository = getInjection('ICVRepository')
 
-    return (await cvRepository.getCvs()) as PartialCvProps[];
-  });
+    return (await cvRepository.getCvs()) as PartialCvProps[]
+  })
 }

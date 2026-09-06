@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useAuth } from "@clerk/nextjs";
-import { getUser } from "@components/admin-route-components/actions/user";
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { useAuth } from '@clerk/nextjs'
+import { getUser } from '@components/admin-route-components/actions/user'
 
 export function useUser() {
-  const { sessionId } = useAuth();
+  const { sessionId } = useAuth()
 
   return useQuery({
-    queryKey: ["user"],
+    queryKey: ['user'],
     queryFn: async () => {
-      return await getUser();
+      return await getUser()
     },
     enabled: !!sessionId,
-  });
+  })
 }

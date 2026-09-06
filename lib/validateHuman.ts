@@ -1,12 +1,12 @@
 export default async function validateHuman(token: string): Promise<boolean> {
-  const secret = process.env.RECAPTCHA_SITE_KEY;
+  const secret = process.env.RECAPTCHA_SITE_KEY
   const response = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,
     {
-      method: "POST",
-    }
-  );
-  const data = await response.json();
+      method: 'POST',
+    },
+  )
+  const data = await response.json()
 
-  return data.success;
+  return data.success
 }

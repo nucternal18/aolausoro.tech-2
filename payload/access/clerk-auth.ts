@@ -1,47 +1,42 @@
-import type { PayloadRequest } from "payload";
-import { auth } from "@clerk/nextjs/server";
-import { captureException } from "@sentry/nextjs";
-import { getPayload } from "payload";
-import config from "../../payload.config";
+import type { PayloadRequest } from 'payload'
+import { auth } from '@clerk/nextjs/server'
+import { captureException } from '@sentry/nextjs'
+import { getPayload } from 'payload'
+import config from '../../payload.config'
 
-export async function authenticateWithClerk(
-  req: PayloadRequest
-): Promise<{ user: any }> {
+export async function authenticateWithClerk(req: PayloadRequest): Promise<{ user: any }> {
   try {
-    const { userId } = await auth();
+    const { userId } = await auth()
 
     if (!userId) {
-      return { user: null };
+      return { user: null }
     }
 
     // Get payload instance
-    const payload = await getPayload({ config });
+    const payload = await getPayload({ config })
 
     // Find or create user in database
     const userResult = await payload.find({
-      collection: "users",
+      collection: 'users',
       where: {
         clerkId: {
           equals: userId,
         },
       },
-    });
+    })
 
-    let user = userResult.docs[0];
+    let user = userResult.docs[0]
 
     if (!user) {
       // Create user if doesn't exist
-      const clerkUser = await fetch(
-        `https://api.clerk.com/v1/users/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.CLERK_SECRET_KEY}`,
-          },
-        }
-      ).then((res) => res.json());
+      const clerkUser = await fetch(`https://api.clerk.com/v1/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${process.env.CLERK_SECRET_KEY}`,
+        },
+      }).then((res) => res.json())
 
       user = await payload.create({
-        collection: "users",
+        collection: 'users',
         draft: false,
         data: {
           clerkId: userId,
@@ -51,7 +46,7 @@ export async function authenticateWithClerk(
           image: clerkUser.imageUrl,
           isAdmin: false,
         },
-      });
+      })
     }
 
     // Return user in Payload format
@@ -62,12 +57,12 @@ export async function authenticateWithClerk(
         name: user.name,
         isAdmin: user.isAdmin,
         clerkId: user.clerkId,
-        collection: "users",
+        collection: 'users',
       },
-    };
+    }
   } catch (error) {
-    console.error("Clerk authentication error:", error);
-    captureException(error);
-    return { user: null };
+    console.error('Clerk authentication error:', error)
+    captureException(error)
+    return { user: null }
   }
 }

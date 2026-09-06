@@ -1,13 +1,13 @@
-import { startSpan } from "@sentry/nextjs";
-import { UnauthenticatedError } from "@src/entities/errors/auth";
-import { type PartialMessageProps } from "@src/entities/models/Message";
-import { getMessagesUseCase } from "@src/application/use-cases/messages/get-messages.use-case";
-import { getInjection } from "@src/di/container";
+import { startSpan } from '@sentry/nextjs'
+import { UnauthenticatedError } from '@src/entities/errors/auth'
+import { type PartialMessageProps } from '@src/entities/models/Message'
+import { getMessagesUseCase } from '@src/application/use-cases/messages/get-messages.use-case'
+import { getInjection } from '@src/di/container'
 
 function presenter(messages: PartialMessageProps[]) {
-  return startSpan({ name: "getMessages Presenter", op: "serialize" }, () => {
-    return messages;
-  });
+  return startSpan({ name: 'getMessages Presenter', op: 'serialize' }, () => {
+    return messages
+  })
 }
 
 export async function getMessagesController(
@@ -15,23 +15,23 @@ export async function getMessagesController(
 ): Promise<ReturnType<typeof presenter>> {
   return await startSpan(
     {
-      name: "getMessages Controller",
+      name: 'getMessages Controller',
     },
     async () => {
       if (!sessionId) {
-        throw new UnauthenticatedError("Must be logged in to get messages");
+        throw new UnauthenticatedError('Must be logged in to get messages')
       }
 
-      const authenticationService = getInjection("IAuthService");
-      const user = await authenticationService.checkIfUserExists(sessionId);
+      const authenticationService = getInjection('IAuthService')
+      const user = await authenticationService.checkIfUserExists(sessionId)
 
       if (!user!.isAdmin) {
-        throw new UnauthenticatedError("Must be an admin to get messages");
+        throw new UnauthenticatedError('Must be an admin to get messages')
       }
 
-      const messages = await getMessagesUseCase();
+      const messages = await getMessagesUseCase()
 
-      return presenter(messages);
+      return presenter(messages)
     },
-  );
+  )
 }

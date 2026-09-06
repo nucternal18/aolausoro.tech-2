@@ -1,15 +1,15 @@
-import { issueSchema } from "./Issue";
-import { jobSchema } from "./Job";
-import { projectSchema } from "./Project";
-import type { Prettify } from "./helpers";
-import * as z from "zod";
+import { issueSchema } from './Issue'
+import { jobSchema } from './Job'
+import { projectSchema } from './Project'
+import type { Prettify } from './helpers'
+import * as z from 'zod'
 
 export const userSchema = z.object({
   id: z.string(),
   name: z.string().min(2).max(50),
   displayName: z.string().min(2).max(50),
   email: z.email({
-    message: "Invalid email address.",
+    message: 'Invalid email address.',
   }),
   image: z.url(),
   isAdmin: z.boolean(),
@@ -21,16 +21,16 @@ export const userSchema = z.object({
   issues: z.lazy(() => z.array(issueSchema)),
   createdAt: z.date(),
   updatedAt: z.date(),
-});
+})
 
 export const loginSchema = z.object({
   email: z.email({
-    message: "Invalid email address.",
+    message: 'Invalid email address.',
   }),
-});
+})
 
-export const partialUserSchema = userSchema.partial();
+export const partialUserSchema = userSchema.partial()
 
-export type UserProps = Prettify<z.infer<typeof userSchema>>;
+export type UserProps = Prettify<z.infer<typeof userSchema>>
 
-export type PartialUserProps = Prettify<z.infer<typeof partialUserSchema>>;
+export type PartialUserProps = Prettify<z.infer<typeof partialUserSchema>>

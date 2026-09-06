@@ -105,7 +105,7 @@ payload/
 **File**: `next.config.js`
 
 ```javascript
-const { webpack } = require("next/dist/compiled/webpack/webpack");
+const { webpack } = require('next/dist/compiled/webpack/webpack')
 
 module.exports = {
   // ... existing config
@@ -114,21 +114,21 @@ module.exports = {
     if (!isServer) {
       config.resolve.fallback = {
         fs: false,
-      };
+      }
     }
 
     // Payload CMS webpack configuration
     if (isServer) {
-      config.externals = config.externals || [];
+      config.externals = config.externals || []
       config.externals.push({
-        sharp: "commonjs sharp",
-        "onnxruntime-node": "commonjs onnxruntime-node",
-      });
+        sharp: 'commonjs sharp',
+        'onnxruntime-node': 'commonjs onnxruntime-node',
+      })
     }
 
-    return config;
+    return config
   },
-};
+}
 ```
 
 ---

@@ -1,31 +1,31 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client'
 
 interface ErrorResponse {
-  status: number;
-  message: string;
+  status: number
+  message: string
 }
 
 export class HumanValidationFailedError extends Error {
   constructor(message: string, options?: ErrorOptions) {
-    super(message, options);
+    super(message, options)
   }
 }
 
 export class DatabaseOperationError extends Error {
   constructor(message: string, options?: ErrorOptions) {
-    super(message, options);
+    super(message, options)
   }
 }
 
 export class NotFoundError extends Error {
   constructor(message: string, options?: ErrorOptions) {
-    super(message, options);
+    super(message, options)
   }
 }
 
 export class InputParseError extends Error {
   constructor(message: string, options?: ErrorOptions) {
-    super(message, options);
+    super(message, options)
   }
 }
 
@@ -37,20 +37,20 @@ export class PrismaErrorHandler {
    */
   public static handle(error: unknown): ErrorResponse {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      return this.handleKnownRequestError(error);
+      return this.handleKnownRequestError(error)
     } else if (error instanceof Prisma.PrismaClientUnknownRequestError) {
-      return { status: 500, message: "An unknown error occurred" };
+      return { status: 500, message: 'An unknown error occurred' }
     } else if (error instanceof Prisma.PrismaClientRustPanicError) {
-      return { status: 500, message: "An internal server error occurred" };
+      return { status: 500, message: 'An internal server error occurred' }
     } else if (error instanceof Prisma.PrismaClientInitializationError) {
       return {
         status: 500,
-        message: "Failed to initialize the database connection",
-      };
+        message: 'Failed to initialize the database connection',
+      }
     } else if (error instanceof Prisma.PrismaClientValidationError) {
-      return { status: 400, message: "Validation error" };
+      return { status: 400, message: 'Validation error' }
     } else {
-      return { status: 500, message: "An unexpected error occurred" };
+      return { status: 500, message: 'An unexpected error occurred' }
     }
   }
 
@@ -63,15 +63,15 @@ export class PrismaErrorHandler {
     error: Prisma.PrismaClientKnownRequestError,
   ): ErrorResponse {
     switch (error.code) {
-      case "P2002":
+      case 'P2002':
         // Unique constraint failed
         return {
           status: 409,
-          message: "A user with this email already exists",
-        };
+          message: 'A user with this email already exists',
+        }
       // Add more cases to handle other known errors as needed
       default:
-        return { status: 400, message: error.message };
+        return { status: 400, message: error.message }
     }
   }
 }

@@ -1,14 +1,14 @@
-import { startSpan } from "@sentry/nextjs";
-import { UnauthenticatedError } from "@src/entities/errors/auth";
+import { startSpan } from '@sentry/nextjs'
+import { UnauthenticatedError } from '@src/entities/errors/auth'
 
-import { type PartialIssueProps } from "@src/entities/models/Issue";
-import { getIssueByIdUseCase } from "@src/application/use-cases/issues/get-issue-by-id.use-case";
-import { getInjection } from "@src/di/container";
+import { type PartialIssueProps } from '@src/entities/models/Issue'
+import { getIssueByIdUseCase } from '@src/application/use-cases/issues/get-issue-by-id.use-case'
+import { getInjection } from '@src/di/container'
 
 function presenter(issue: PartialIssueProps) {
-  return startSpan({ name: "getIssueById Presenter", op: "serialize" }, () => {
-    return issue;
-  });
+  return startSpan({ name: 'getIssueById Presenter', op: 'serialize' }, () => {
+    return issue
+  })
 }
 
 export async function getIssueByIdController(
@@ -17,23 +17,23 @@ export async function getIssueByIdController(
 ): Promise<ReturnType<typeof presenter>> {
   return await startSpan(
     {
-      name: "getIssueById Controller",
+      name: 'getIssueById Controller',
     },
     async () => {
       if (!sessionId) {
-        throw new UnauthenticatedError("Must be logged in to get issue by id");
+        throw new UnauthenticatedError('Must be logged in to get issue by id')
       }
 
-      const authenticationService = getInjection("IAuthService");
-      const user = await authenticationService.checkIfUserExists(sessionId);
+      const authenticationService = getInjection('IAuthService')
+      const user = await authenticationService.checkIfUserExists(sessionId)
 
       if (!user!.isAdmin) {
-        throw new UnauthenticatedError("Must be an admin to get issue by id");
+        throw new UnauthenticatedError('Must be an admin to get issue by id')
       }
 
-      const issue = await getIssueByIdUseCase(id);
+      const issue = await getIssueByIdUseCase(id)
 
-      return presenter(issue);
+      return presenter(issue)
     },
-  );
+  )
 }

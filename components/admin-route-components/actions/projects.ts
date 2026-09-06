@@ -1,145 +1,140 @@
-"use server";
-import type { PartialProjectProps } from "@src/entities/models/Project";
-import {
-  withServerActionInstrumentation,
-  captureException,
-} from "@sentry/nextjs";
-import { revalidatePath } from "next/cache";
+'use server'
+import type { PartialProjectProps } from '@src/entities/models/Project'
+import { withServerActionInstrumentation, captureException } from '@sentry/nextjs'
+import { revalidatePath } from 'next/cache'
 
-import { UnauthenticatedError } from "@src/entities/errors/auth";
-import { InputParseError } from "@src/entities/errors/common";
+import { UnauthenticatedError } from '@src/entities/errors/auth'
+import { InputParseError } from '@src/entities/errors/common'
 import {
   getProjectsController,
   getProjectByIdController,
   createProjectController,
   updateProjectController,
   deleteProjectController,
-} from "@src/interface-adapters/controllers/projects";
-import { auth } from "@clerk/nextjs/server";
+} from '@src/interface-adapters/controllers/projects'
+import { auth } from '@clerk/nextjs/server'
 
 export async function getProjects(): Promise<PartialProjectProps[]> {
   return await withServerActionInstrumentation(
-    "getProjects",
+    'getProjects',
     { recordResponse: false },
     async () => {
       try {
-        return await getProjectsController();
+        return await getProjectsController()
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          throw err;
+          throw err
         }
-        captureException(err);
-        throw err;
+        captureException(err)
+        throw err
       }
-    }
-  );
+    },
+  )
 }
 
 export async function getProjectById(id: string): Promise<PartialProjectProps> {
   return await withServerActionInstrumentation(
-    "getProjectById",
+    'getProjectById',
     { recordResponse: false },
     async () => {
-      const { userId } = await auth();
+      const { userId } = await auth()
 
       try {
-        return await getProjectByIdController(id, userId as string);
+        return await getProjectByIdController(id, userId as string)
       } catch (err) {
         if (err instanceof UnauthenticatedError) {
-          throw err;
+          throw err
         }
-        captureException(err);
-        throw err;
+        captureException(err)
+        throw err
       }
-    }
-  );
+    },
+  )
 }
 
 export async function createProject(
-  input: FormData
+  input: FormData,
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
-    "createProject",
+    'createProject',
     { recordResponse: true },
     async () => {
-      const { userId } = await auth();
+      const { userId } = await auth()
 
       try {
-        const data = Object.fromEntries(input.entries());
-        const response = await createProjectController(data, userId as string);
+        const data = Object.fromEntries(input.entries())
+        const response = await createProjectController(data, userId as string)
         if (response.success) {
-          revalidatePath("/");
+          revalidatePath('/')
         }
-        return response;
+        return response
       } catch (err) {
         if (err instanceof InputParseError) {
-          throw err;
+          throw err
         }
         if (err instanceof UnauthenticatedError) {
-          throw err;
+          throw err
         }
-        captureException(err);
-        throw err;
+        captureException(err)
+        throw err
       }
-    }
-  );
+    },
+  )
 }
 
 export async function updateProject(
-  input: FormData
+  input: FormData,
 ): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
-    "updateProject",
+    'updateProject',
     { recordResponse: true },
     async () => {
-      const { userId } = await auth();
+      const { userId } = await auth()
 
       try {
-        const data = Object.fromEntries(input.entries());
-        const response = await updateProjectController(data, userId as string);
+        const data = Object.fromEntries(input.entries())
+        const response = await updateProjectController(data, userId as string)
         if (response.success) {
-          revalidatePath("/");
+          revalidatePath('/')
         }
-        return response;
+        return response
       } catch (err) {
         if (err instanceof InputParseError) {
-          throw err;
+          throw err
         }
         if (err instanceof UnauthenticatedError) {
-          throw err;
+          throw err
         }
-        captureException(err);
-        throw err;
+        captureException(err)
+        throw err
       }
-    }
-  );
+    },
+  )
 }
 
-export async function deleteProject(
-  id: string
-): Promise<{ success: boolean; message: string }> {
+export async function deleteProject(id: string): Promise<{ success: boolean; message: string }> {
   return await withServerActionInstrumentation(
-    "deleteProject",
+    'deleteProject',
     { recordResponse: true },
     async () => {
-      const { userId } = await auth();
+      const { userId } = await auth()
 
       try {
-        const response = await deleteProjectController(id, userId as string);
+        const response = await deleteProjectController(id, userId as string)
         if (response.success) {
-          revalidatePath("/");
+          revalidatePath('/')
         }
-        return response;
+        return response
       } catch (err) {
         if (err instanceof InputParseError) {
-          throw err;
+          throw err
         }
         if (err instanceof UnauthenticatedError) {
-          throw err;
+          throw err
         }
-        captureException(err);
-        throw err;
+        captureException(err)
+        throw err
       }
-    }
-  );
+    },
+  )
 }

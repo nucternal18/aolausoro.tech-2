@@ -1,4 +1,4 @@
-import * as zod from "zod";
+import * as zod from 'zod'
 
 export const envSchema = zod.object({
   CLOUDINARY_NAME: zod.string(),
@@ -11,8 +11,8 @@ export const envSchema = zod.object({
   __NEXT_PRIVATE_PREBUNDLED_REACT: zod.string(),
   REPO_TOKEN: zod.string(),
   NEXT_PUBLIC_API_URL: zod.string(),
-});
+})
 
-export type Env = zod.infer<typeof envSchema>;
+export type Env = zod.infer<typeof envSchema>
 
-export const env = envSchema.parse(process.env);
+export const env = envSchema.parse(process.env)
