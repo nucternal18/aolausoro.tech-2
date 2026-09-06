@@ -22,7 +22,7 @@
     "generate": "prisma generate",
     "prepare": "husky",
     "lint-staged": "lint-staged",
-    "postbuild": "next-sitemap --config ./next-sitemap.config.js"
+    "postbuild": "next-sitemap --config next-sitemap.config.cjs"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.5.0",
@@ -124,7 +124,6 @@
     "nookies": "^2.5.2",
     "patch-package": "^8.0.1",
     "payload-totp": "3.0.1",
-    "postcss-flexbugs-fixes": "^5.0.2",
     "react": "19.2.6",
     "react-day-picker": "^9.11.1",
     "react-dom": "19.2.6",
@@ -159,7 +158,6 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^7.0.2",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/postcss": "^4.1.16",
     "@tailwindcss/typography": "^0.5.10",
@@ -191,8 +189,6 @@
     "msw": "^2.11.6",
     "payload": "3.86.0",
     "postcss": "^8.5.6",
-    "postcss-preset-env": "^10.4.0",
-    "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "prisma": "^6.19.0",

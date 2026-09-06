@@ -18,6 +18,8 @@
 # next.js
 /.next/
 /out/
+*.tsbuildinfo
+generated-schema.graphql
 
 # production
 /build
@@ -38,6 +40,7 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.*.local
 
 # vercel
 .vercel

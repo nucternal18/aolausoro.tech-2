@@ -2,10 +2,19 @@
 
 import { withPayload } from '@payloadcms/next/withPayload'
 
+import { redirects } from './redirects.ts'
+
 const nextConfig = {
+  output: 'standalone',
   experimental: {
     mdxRs: true,
   },
+  // `reactCompiler` moved out of `experimental` to a top-level key in Next 16.2
+  reactCompiler: false,
+  turbopack: {
+    root: process.cwd(),
+  },
+  redirects,
   serverExternalPackages: ['@prisma/client', 'bcryptjs'],
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -45,15 +54,18 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'img.clerk.com',
       },
+      ...(process.env.DO_SPACES_CDN_ENDPOINT
+        ? [
+            {
+              protocol: new URL(process.env.DO_SPACES_CDN_ENDPOINT).protocol.replace(':', ''),
+              hostname: new URL(process.env.DO_SPACES_CDN_ENDPOINT).hostname,
+            },
+          ]
+        : []),
     ],
     formats: ['image/webp'],
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  // output: "standalone",
-  // Your Next.js config here
-  experimental: {
-    reactCompiler: false,
-  },
 }
 
 import createMDX from '@next/mdx'
