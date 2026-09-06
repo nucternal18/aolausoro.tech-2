@@ -2,7 +2,7 @@ import { startSpan } from "@sentry/nextjs";
 import { UnauthenticatedError } from "@src/entities/errors/auth";
 import type { ResponseProps } from "types/global";
 import { deleteJobUseCase } from "@src/application/use-cases/jobs/delete-job.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(job: ResponseProps) {
   return startSpan({ name: "deleteJob Presenter", op: "serialize" }, () => {

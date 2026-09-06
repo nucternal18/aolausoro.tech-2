@@ -1,5 +1,5 @@
 import { startSpan } from "@sentry/nextjs";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 import type { PartialMessageProps } from "@src/entities/models/Message";
 import type { ResponseProps } from "types/global";

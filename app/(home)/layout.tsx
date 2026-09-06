@@ -1,12 +1,11 @@
 import localFont from "next/font/local";
-import { Providers } from "@app/global-redux-store/providers";
+import { Providers } from "@components/admin-route-components/global-redux-store/providers";
 import "../globals.css";
 import "highlight.js/styles/github-dark.css";
 
 import { cn } from "../../lib/utils";
 
 import LayoutWrapper from "./layout-wrapper";
-
 
 const bebasNeue = localFont({
   src: "../../fonts/BebasNeue-Regular.ttf",

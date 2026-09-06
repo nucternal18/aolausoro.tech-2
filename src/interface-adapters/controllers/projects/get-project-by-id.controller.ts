@@ -2,7 +2,7 @@ import { startSpan } from "@sentry/nextjs";
 import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { getProjectByIdUseCase } from "@src/application/use-cases/projects/get-projects-by-id.use-case";
 import { type PartialProjectProps } from "@src/entities/models/Project";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(project: PartialProjectProps) {
   return startSpan(

@@ -3,7 +3,7 @@ import { UnauthenticatedError } from "@src/entities/errors/auth";
 
 import type { StatsProps } from "@src/entities/models/Job";
 import { getStatsUseCase } from "@src/application/use-cases/jobs/get-stats.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(stats: StatsProps) {
   return startSpan({ name: "getStats Presenter", op: "serialize" }, () => {

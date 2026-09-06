@@ -7,7 +7,7 @@ import {
   type PartialIssueProps,
 } from "@src/entities/models/Issue";
 import { createIssueUseCase } from "@src/application/use-cases/issues/create-issue.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(issue: ResponseProps) {
   return startSpan({ name: "createIssue Presenter", op: "serialize" }, () => {

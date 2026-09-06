@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "baseUrl": ".",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES2022"
-    ],
+    "lib": ["dom", "dom.iterable", "ES2022"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -28,42 +24,26 @@
       }
     ],
     "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ],
-      "@lib/*": [
-        "lib/*"
-      ],
-      "@context/*": [
-        "context/*"
-      ],
-      "@models/*": [
-        "models/*"
-      ],
-      "@config/*": [
-        "config/*"
-      ],
-      "@app/*": [
-        "app/*"
-      ],
-      "@types/*": [
-        "types/*"
-      ],
-      "@public/*": [
-        "public/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@src/*": [
-        "src/*"
-      ],
-      "@di/*": [
-        "di/*"
-      ]
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@lib/*": ["lib/*"],
+      "@context/*": ["context/*"],
+      "@models/*": ["models/*"],
+      "@config/*": ["config/*"],
+      "@app/*": ["app/*"],
+      "@types/*": ["types/*"],
+      "@public/*": ["public/*"],
+      "@utils/*": ["utils/*"],
+      "@src/*": ["src/*"],
+      "@di/*": ["di/*"],
+      "@blocks/*": ["blocks/*"],
+      "@fields/*": ["fields/*"],
+      "@heroes/*": ["heroes/*"],
+      "@search/*": ["search/*"],
+      "@payload-types/*": ["types/payload-types"],
+      "@payload": ["payload/*"],
+      "@payload-config": ["./payload.config.ts"],
+      "@payload/importMaps": ["./app/(protected)/admin/importMap.js"]
     },
     "strictNullChecks": true
   },
@@ -71,7 +51,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "next.config.js",
+    "next.config.mjs",
     ".eslintrc.js",
     "jest.config.js",
     "cypress/integration/aolausoro-tech/home.spec.js",
@@ -83,11 +63,6 @@
     "di/modules",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ],
-  "typeRoots": [
-    "node_modules/@types",
-    "./types/**.d.ts"
-  ]
+  "exclude": ["node_modules"],
+  "typeRoots": ["node_modules/@types", "./types/**.d.ts"]
 }

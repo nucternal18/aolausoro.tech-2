@@ -8,7 +8,7 @@ import {
   issueSchema,
   type PartialIssueProps,
 } from "@src/entities/models/Issue";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(cv: ResponseProps) {
   return startSpan({ name: "updateIssue Presenter", op: "serialize" }, () => {

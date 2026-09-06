@@ -1,15 +1,8 @@
 import { startSpan } from "@sentry/nextjs";
 import { UnauthenticatedError } from "@src/entities/errors/auth";
-import { InputParseError } from "@src/entities/errors/common";
-
-import { updateIssueUseCase } from "@src/application/use-cases/issues/update-issue.use-case";
 import type { ResponseProps } from "types/global";
-import {
-  issueSchema,
-  type PartialIssueProps,
-} from "@src/entities/models/Issue";
 import { deleteIssueUseCase } from "@src/application/use-cases/issues/delete-issue.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(issue: ResponseProps) {
   return startSpan({ name: "deleteIssue Presenter", op: "serialize" }, () => {

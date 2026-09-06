@@ -8,7 +8,7 @@ import {
   projectSchema,
 } from "@src/entities/models/Project";
 import { updateProjectUseCase } from "@src/application/use-cases/projects/update-projects.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(project: ResponseProps) {
   return startSpan({ name: "updateProject Presenter", op: "serialize" }, () => {

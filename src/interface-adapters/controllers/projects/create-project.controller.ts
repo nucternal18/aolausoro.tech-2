@@ -8,7 +8,7 @@ import {
   projectSchema,
 } from "@src/entities/models/Project";
 import { createProjectUseCase } from "@src/application/use-cases/projects/create-project.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(project: ResponseProps) {
   return startSpan({ name: "createProject Presenter", op: "serialize" }, () => {

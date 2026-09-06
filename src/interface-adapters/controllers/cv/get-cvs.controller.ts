@@ -1,8 +1,6 @@
 import { z } from "zod";
 import { startSpan } from "@sentry/nextjs";
-import { cvSchema, type PartialCvProps } from "@src/entities/models/cv";
-import { UnauthenticatedError } from "@src/entities/errors/auth";
-import { InputParseError } from "@src/entities/errors/common";
+import { type PartialCvProps } from "@src/entities/models/cv";
 
 import { getCvsUseCase } from "@src/application/use-cases/cv/get-cvs.use-case";
 

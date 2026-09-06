@@ -1,5 +1,5 @@
 import { startSpan } from "@sentry/nextjs";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 import type { PartialJobProps } from "@src/entities/models/Job";
 import type { ResponseProps } from "types/global";

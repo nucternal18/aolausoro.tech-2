@@ -16,10 +16,18 @@
     "titleBar.inactiveForeground": "#e7e7e799",
     "commandCenter.border": "#e7e7e799",
     "sash.hoverBorder": "#26aba0",
-    "statusBarItem.remoteBackground": "#1d8179",
-    "statusBarItem.remoteForeground": "#e7e7e7"
+    "statusBarItem.remoteBackground": "#e197e8",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "activityBarTop.activeBackground": "#26aba0",
+    "activityBarTop.background": "#26aba0",
+    "activityBarTop.foreground": "#15202b",
+    "activityBarTop.inactiveForeground": "#15202b99",
+    "commandCenter.foreground": "#e7e7e7",
+    "statusBar.debuggingBackground": "#1d8179",
+    "statusBar.debuggingForeground": "#e7e7e7"
   },
   "peacock.color": "#1d8179",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "prisma.pinToPrisma6": true
 }

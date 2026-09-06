@@ -5,7 +5,7 @@ import type { ResponseProps } from "types/global";
 import { InputParseError } from "@src/entities/errors/common";
 import { wikiSchema, type PartialWikiProps } from "@src/entities/models/Wiki";
 import { createWikiUseCase } from "@src/application/use-cases/wiki/create-wiki.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(wiki: ResponseProps) {
   return startSpan({ name: "createWiki Presenter", op: "serialize" }, () => {

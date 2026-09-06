@@ -2,7 +2,7 @@ import { startSpan } from "@sentry/nextjs";
 import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { type PartialMessageProps } from "@src/entities/models/Message";
 import { getMessagesUseCase } from "@src/application/use-cases/messages/get-messages.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(messages: PartialMessageProps[]) {
   return startSpan({ name: "getMessages Presenter", op: "serialize" }, () => {

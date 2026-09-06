@@ -3,7 +3,7 @@ import { UnauthenticatedError } from "@src/entities/errors/auth";
 
 import { type PartialIssueProps } from "@src/entities/models/Issue";
 import { getIssuesUseCase } from "@src/application/use-cases/issues/get-issues.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(issues: PartialIssueProps[]) {
   return startSpan({ name: "getIssues Presenter", op: "serialize" }, () => {

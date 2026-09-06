@@ -2,7 +2,7 @@ import { startSpan } from "@sentry/nextjs";
 import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { type PartialJobProps } from "@src/entities/models/Job";
 import { getJobByIdUseCase } from "@src/application/use-cases/jobs/get-job-by-id.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(job: PartialJobProps) {
   return startSpan({ name: "updateJob Presenter", op: "serialize" }, () => {

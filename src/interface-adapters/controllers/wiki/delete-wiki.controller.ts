@@ -3,7 +3,7 @@ import { UnauthenticatedError } from "@src/entities/errors/auth";
 
 import type { ResponseProps } from "types/global";
 import { deleteWikiUseCase } from "@src/application/use-cases/wiki/delete-wiki.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(wiki: ResponseProps) {
   return startSpan({ name: "deleteWiki Presenter", op: "serialize" }, () => {

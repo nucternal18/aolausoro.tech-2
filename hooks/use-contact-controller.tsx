@@ -10,7 +10,10 @@ import { useToast } from "@components/ui/use-toast";
 
 // zod schemas
 
-import { createMessage, sendMail } from "@app/actions/messages";
+import {
+  createMessage,
+  sendMail,
+} from "@components/admin-route-components/actions/messages";
 import {
   partialMessageSchema,
   type PartialMessageProps,
@@ -67,7 +70,7 @@ export default function useContactController() {
         });
       }
     },
-    [],
+    []
   );
 
   return {

@@ -11,7 +11,7 @@ import {
   InputParseError,
 } from "@src/entities/errors/common";
 import { createMessageUseCase } from "@src/application/use-cases/messages/create-message.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 import validateHuman from "@lib/validateHuman";
 
 function presenter(message: ResponseProps) {

@@ -42,11 +42,13 @@ jobs:
       # ENV SETUP
       - name: Create .env file
         run: |
+          touch .env
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} > .env
           cat .env
 
       - name: Create .env.local file
         run: |
+          touch .env.local
           echo "CLOUDINARY_NAME=$CLOUDINARY_NAME" >> .env.local
           echo "CLOUDINARY_API_KEY=$CLOUDINARY_API_KEY" >> .env.local
           echo "CLOUDINARY_API_SECRET=$CLOUDINARY_API_SECRET" >> .env.local
@@ -82,6 +84,7 @@ jobs:
 
       - name: Create .env.sentry-build-plugin file
         run: |
+          touch .env.sentry-build-plugin
           echo "SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" > .env.sentry-build-plugin
           cat .env.sentry-build-plugin
         env:

@@ -3,7 +3,7 @@ import { UnauthenticatedError } from "@src/entities/errors/auth";
 
 import type { ResponseProps } from "types/global";
 import { deleteProjectUseCase } from "@src/application/use-cases/projects/delete-projects.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(project: ResponseProps) {
   return startSpan({ name: "deleteProject Presenter", op: "serialize" }, () => {

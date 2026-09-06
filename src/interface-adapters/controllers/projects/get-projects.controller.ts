@@ -1,5 +1,4 @@
 import { startSpan } from "@sentry/nextjs";
-import { UnauthenticatedError } from "@src/entities/errors/auth";
 import { type PartialProjectProps } from "@src/entities/models/Project";
 import { getProjectsUseCase } from "@src/application/use-cases/projects/get-projects.use-case";
 

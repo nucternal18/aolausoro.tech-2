@@ -5,7 +5,7 @@ import type { ResponseProps } from "types/global";
 import { jobSchema, type PartialJobProps } from "@src/entities/models/Job";
 import { updateJobUseCase } from "@src/application/use-cases/jobs/update-job.use-case";
 import { InputParseError } from "@src/entities/errors/common";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(job: ResponseProps) {
   return startSpan({ name: "updateJob Presenter", op: "serialize" }, () => {

@@ -8,13 +8,13 @@ export const userSchema = z.object({
   id: z.string(),
   name: z.string().min(2).max(50),
   displayName: z.string().min(2).max(50),
-  email: z.string().email({
+  email: z.email({
     message: "Invalid email address.",
   }),
-  image: z.string().url(),
+  image: z.url(),
   isAdmin: z.boolean(),
   clerkId: z.string(),
-  cvUrl: z.string().url().optional(),
+  cvUrl: z.url().optional(),
   emailVerified: z.date().optional(),
   projects: z.lazy(() => z.array(projectSchema)),
   jobs: z.lazy(() => z.array(jobSchema)),
@@ -24,7 +24,7 @@ export const userSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.string().email({
+  email: z.email({
     message: "Invalid email address.",
   }),
 });

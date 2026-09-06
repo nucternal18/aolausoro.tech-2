@@ -3,7 +3,7 @@ import { UnauthenticatedError } from "@src/entities/errors/auth";
 
 import type { JobsProps } from "@src/entities/models/Job";
 import { getJobsUseCase } from "@src/application/use-cases/jobs/get-jobs.use-case";
-import { getInjection } from "@di/container";
+import { getInjection } from "@src/di/container";
 
 function presenter(jobs: JobsProps) {
   return startSpan({ name: "getJobs Presenter", op: "serialize" }, () => {
