@@ -8,7 +8,6 @@ allowBuilds:
   '@sentry/cli': true
   '@clerk/shared': true
   msw: true
-  cypress: true
 
 overrides:
   rimraf: ^5.0.0
