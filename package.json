@@ -209,12 +209,6 @@
     "whatwg-fetch": "^3.6.20"
   },
   "pnpm": {
-    "overrides": {
-      "rimraf": "^5.0.0",
-      "glob": "^10.3.12",
-      "rollup-plugin-terser": "npm:@rollup/plugin-terser@^0.4.4",
-      "source-map": "^0.7.4"
-    },
     "onlyBuiltDependencies": [
       "@clerk/shared",
       "@prisma/client",
