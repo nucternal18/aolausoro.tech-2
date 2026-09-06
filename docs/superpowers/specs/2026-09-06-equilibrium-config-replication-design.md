@@ -416,17 +416,19 @@ Run after each logical commit, all must pass:
 | `@types/node` 24 → 22 downgrade breaks something. | Keep 24 unless it conflicts; `equilibrium` parity isn't worth a regression here. |
 | Test migration: existing jest tests silently dropped. | Inventory `__tests__` in implementation; move-and-skip with TODOs rather than delete. |
 
-## Open questions for review
+## Decisions (resolved in review, 2026-09-06)
 
-1. **Domains** — confirm `portfolio.aolausoro.tech` (production) and
-   `staging.aolausoro.tech` (staging) for the Nginx configs and deployment plan.
-   Current `package.json` `homepage` is `https://portfolio.aolausoro.tech`.
-2. **`payload-totp`** — adopt TOTP-enforced admin auth like `equilibrium`, or
-   keep it out for now?
-3. **Sentry** — keep it through Phase 2 (planned) and decide its fate in Phase 3,
-   or is dropping it already decided?
-4. **`@types/node`** — align down to 22 for `equilibrium` parity, or keep 24?
-5. **GHCR image path** — `ghcr.io/nucternal18/aolausoro.tech-2` — confirm the
-   org/name (repo is under `nucternal18`).
-6. **Test porting** — acceptable to move existing jest tests to `tests/int` as
-   `describe.skip` with TODOs rather than fully port them in this pass?
+1. **Domains** — production `portfolio.aolausoro.tech`, staging
+   `staging.aolausoro.tech`.
+2. **`payload-totp`** — **adopt.** Add `payload-totp@3.0.1`, wire into
+   `plugins/index.ts` with `disableAccessWrapper: true` + `forceSetup: true`,
+   `issuer: 'aolausoro.tech'`, `collection: 'users'` — must stay last in the
+   plugins array (wraps everything above it).
+3. **Sentry** — keep wired through Phase 2. Its removal is evaluated in Phase 3,
+   not pre-decided.
+4. **`@types/node`** — **keep `^24`.** `equilibrium` parity is not worth a
+   potential regression; the `engines` floor is unaffected.
+5. **GHCR image path** — `ghcr.io/nucternal18/aolausoro.tech-2` (git remote is
+   `github.com/nucternal18/aolausoro.tech-2.git`).
+6. **Test porting** — move existing jest tests into `tests/int` as
+   `describe.skip` with TODO comments. Not fully ported this pass.
