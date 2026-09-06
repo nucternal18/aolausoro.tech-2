@@ -26,8 +26,8 @@ clean, separate diff.
 2. Swap the test stack from **jest + cypress** to **vitest + playwright**, as
    in `equilibrium`.
 3. Replicate the **deploy model**: Docker image → GHCR → self-hosted runner on
-   a DigitalOcean droplet + Nginx, with `ci.yml` / `deploy-staging.yml` /
-   `deploy-production.yml` and a `deploy/` directory.
+   a DigitalOcean droplet + Nginx, with `ci.yml` / `deploy-production.yml` and a
+   `deploy/` directory. Production only — no staging environment.
 4. Establish the **AI-agent + docs folder structure**: `.claude/`, `.agents/`,
    `docs/`, `AGENT.md`, `CLAUDE.md`, `CONTEXT.md`, `skills-lock.json`.
 5. Install the Payload agent skills (`payload`, `cms-migration`).
@@ -142,13 +142,16 @@ swap.
 | File | Action |
 |---|---|
 | `Dockerfile` | **Replace** with `equilibrium`'s multi-stage standalone build: `node:22-alpine` base, `deps` / `builder` / `runner` stages, non-root `nextjs` user, `COPY .next/standalone`. Add build args this repo needs: `NEXT_PUBLIC_SERVER_URL`, `DATABASE_URL`, `PAYLOAD_SECRET`, plus (until Phase 3) `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, Cloudinary public vars, `SENTRY_AUTH_TOKEN`. Drop `npx prisma generate` once Prisma is gone (Phase 3); keep for now. |
-| `docker-compose.yml` | **Replace** with a local dev stack (`equilibrium` doesn't have a root one — it has `deploy/docker-compose.{staging,production}.yml`). Provide app + `mongo:latest` service for local Payload dev. |
-| `deploy/docker-compose.staging.yml` | **Create** from `equilibrium`. Image `ghcr.io/nucternal18/aolausoro.tech-2:staging`, container `aolausoro-staging`, bind `127.0.0.1:3001:3000`, healthcheck against `/api/health`. |
-| `deploy/docker-compose.production.yml` | **Create**. `127.0.0.1:3000:3000`, container `aolausoro-production`. |
-| `deploy/nginx/staging.conf` | **Create** from `equilibrium`. `server_name staging.aolausoro.tech` (confirm subdomain in review), proxy to `127.0.0.1:3001`, Cloudflare Origin CA cert paths, `X-Forwarded-Proto`/`X-Forwarded-Host` set. |
-| `deploy/nginx/production.conf` | **Create**. `server_name portfolio.aolausoro.tech` (current `homepage` in package.json), proxy to `127.0.0.1:3000`. |
-| `deploy/scripts/setup-droplet.sh` | **Copy + adapt** `equilibrium`'s (rename Equilibrium→aolausoro, `/opt/aolausoro`, runner labels `staging`/`production`, domains). It's already adapted from `nucternal18/ttt-vps-scripts` — same author. |
+| `docker-compose.yml` | **Replace** with a local dev stack (`equilibrium` doesn't have a root one — it has env-specific files under `deploy/`). Provide app + `mongo:latest` service for local Payload dev. |
+| `deploy/docker-compose.production.yml` | **Create** from `equilibrium`'s production compose. Image `ghcr.io/nucternal18/aolausoro.tech-2:production`, container `aolausoro-production`, bind `127.0.0.1:3000:3000`, `env_file: .env`, healthcheck against `/api/health`. |
+| `deploy/nginx/production.conf` | **Create** from `equilibrium`'s. `server_name portfolio.aolausoro.tech` (matches `package.json` `homepage`), proxy to `127.0.0.1:3000`, Cloudflare Origin CA cert paths, `X-Forwarded-Proto` / `X-Forwarded-Host` set. |
+| `deploy/scripts/setup-droplet.sh` | **Copy + simplify** `equilibrium`'s. Drop the staging/production environment prompt — production only. Rename Equilibrium→aolausoro, `/opt/aolausoro`, runner label `production`, domain `portfolio.aolausoro.tech`. Already derived from `nucternal18/ttt-vps-scripts` — same author. |
 | `.dockerignore` | **Review/expand** to match `equilibrium`'s exclusions. |
+
+**Production only — no staging environment.** `equilibrium` carries a
+staging + production split; this project deploys straight to production
+(`portfolio.aolausoro.tech`) off `main`. No `deploy-staging.yml`, no
+`deploy/*staging*` files, no `staging` branch.
 
 ### 2.8 GitHub Actions
 
@@ -156,9 +159,8 @@ swap.
 |---|---|
 | `.github/workflows/node.js.yml` | **Delete.** |
 | `.github/workflows/ci.yml` | **Create** from `equilibrium`: runs on push + PR. Steps: pnpm setup, install `--frozen-lockfile`, `pnpm run lint`, `pnpm exec tsc --noEmit`, `pnpm run test:int` against a throwaway `mongo` service container, `pnpm run build` (with build-only env: `DATABASE_URL` → service, `PAYLOAD_SECRET` → dummy). Keep this repo's `HUSKY: 0`. Runner: `ubuntu-latest` (drop `self-hosted` for CI). |
-| `.github/workflows/deploy-staging.yml` | **Create** from `equilibrium`: push to `staging` → build+push image to GHCR (plain docker CLI, throwaway Mongo for build-time Payload init) → deploy job on self-hosted runner labeled `staging` (`docker compose pull && up -d`, health-check gate). |
-| `.github/workflows/deploy-production.yml` | **Create** from `equilibrium`: push to `main` → same shape, runner labeled `production`, `environment: production`. |
-| branch note | This introduces a `staging` branch to the workflow. Document in `CLAUDE.md` / `docs/deployment-plan.md`. |
+| `.github/workflows/deploy-production.yml` | **Create** from `equilibrium`'s: push to `main` (+ `workflow_dispatch`) → `build` job on `ubuntu-latest` builds/pushes `ghcr.io/nucternal18/aolausoro.tech-2:production` (plain docker CLI, throwaway Mongo for build-time Payload init) → `deploy` job (`needs: build`) on a self-hosted runner labeled `production` (`docker compose pull && up -d`, post-deploy health-check gate), `environment: production`. |
+| `.github/workflows/deploy-staging.yml` | **Not created** — no staging environment. |
 
 ### 2.9 Dependencies — additions & alignment only (no removals in Phase 2)
 
@@ -169,20 +171,18 @@ swap.
   plugin-redirects, plugin-search, plugin-seo, richtext-lexical, ui).
 - `next`: `16.0.10` → `16.2.6`; `eslint-config-next`: `16.2.6`.
 - `react` / `react-dom`: `^19.2.0` → `19.2.6`.
-- `@types/react` `19.2.14`, `@types/react-dom` `19.2.3`, `@types/node` `22.19.9`
-  (this repo is on `@types/node@^24` — align down to 22 to match `engines` /
-  `equilibrium`, or keep 24; decide in review).
-- `typescript`: align to `5.7.3` (this repo `^5.9.3` — keep newer unless it
-  breaks; TS is backward-compatible enough).
+- `@types/react` `19.2.14`, `@types/react-dom` `19.2.3`. **Keep `@types/node@^24`**
+  (decision 4 — no downgrade for parity's sake).
+- `typescript`: keep this repo's `^5.9.3` (newer than `equilibrium`'s `5.7.3`;
+  backward-compatible).
 
 **Add (present in `equilibrium`, needed here):**
 
 - deps: `@payloadcms/storage-s3@3.86.0` (this repo's `plugins/index.ts` will need
   S3 storage for the Phase-3 Cloudinary→Spaces move; add now so the plugin file
   can be written), `@payloadcms/plugin-form-builder` (have), `payload-totp@3.0.1`
-  (if adopting TOTP admin auth — **optional, confirm in review**), `cross-env`,
-  `geist` (optional — only if adopting equilibrium's font setup; this repo has
-  its own `fonts/`), `graphql` (have).
+  (decision 2 — adopt, wire into `plugins/index.ts` last, `issuer: 'aolausoro.tech'`),
+  `cross-env`, `graphql` (have). `geist` — skip; this repo has its own `fonts/`.
 - devDeps: `@playwright/test@1.58.2`, `vitest@^4`, `@vitejs/plugin-react@4.5.2`,
   `vite-tsconfig-paths@6.0.5`, `jsdom@^28`, `tsx@4.22.4`, `@tailwindcss/postcss`
   (have), `@tailwindcss/typography` (have), `tw-animate-css` (have).
@@ -308,7 +308,7 @@ Adapt `equilibrium`'s. Sections: one-line stack description (Payload CMS +
 Next.js App Router, MongoDB, `pnpm`), pointer to `CLAUDE.md` + `docs/`, **Handoff
 Protocol** (identical mechanism, path `.claude/hand-off/handoff-aolausoro-<YYYY-MM-DD>.md`),
 **Commands** (the §2.12 script list with one-liner explanations), **Deployment**
-(pointer to `docs/deployment-plan.md`; note `staging` branch), **Conventions**
+(pointer to `docs/deployment-plan.md`; production deploys off `main`), **Conventions**
 (env vars in `.env.example`, `.env.local` gitignored, secrets only on target
 host). Write per the `writing-for-agents` skill.
 
@@ -338,10 +338,11 @@ list. Keep minimal — `/domain-modeling` grows it.
 ### 3.8 `docs/deployment-plan.md`
 
 Adapt `equilibrium`'s. Same architecture (Cloudflare → DO firewall → droplet →
-Nginx → app container → MongoDB Atlas), same key decisions table, this repo's
-domains (`portfolio.aolausoro.tech` prod, `staging.aolausoro.tech` staging —
-confirm). Implementation-status table starts mostly ⬜. Note the migration from
-the current `pm2` + `pnpm build` deploy to the Docker/GHCR model.
+Nginx → app container → MongoDB Atlas), same key-decisions table, **production
+only** — single domain `portfolio.aolausoro.tech`, no staging environment or
+cluster. Implementation-status table starts mostly ⬜. Document the migration
+from the current `pm2` + `pnpm build` deploy to the Docker image / GHCR /
+self-hosted-runner model.
 
 ### 3.9 `.claude/skills/health-check/SKILL.md`
 
@@ -412,14 +413,16 @@ Run after each logical commit, all must pass:
 | Prettier reformat creates a 500-file diff that buries real changes. | Isolated commit, nothing else in it. Done right after the config file lands. |
 | Flat ESLint config surfaces hundreds of warnings. | All rules `warn`, CI non-blocking. Separate triage task, not this spec. |
 | `equilibrium`'s skills pinned to an old `payloadcms/skills` revision. | Copy from `equilibrium` for parity (option 1, §3.3); note the revision; upgrade later. |
-| Deploy workflows reference infra (droplet, GHCR, runner) that doesn't exist yet. | `docs/deployment-plan.md` status table marks it all ⬜. Workflows are inert until a `staging` branch is pushed / runner registered. |
+| `deploy-production.yml` references infra (droplet, GHCR, self-hosted runner) that doesn't exist yet, and triggers on push to `main`. | `docs/deployment-plan.md` status table marks it all ⬜. The `build` job runs on every push but the `deploy` job no-ops with no runner labeled `production` registered. Land the workflow disabled (`if: false` on jobs, or `workflow_dispatch`-only) until infra is provisioned — decide in the plan. |
 | `@types/node` 24 → 22 downgrade breaks something. | Keep 24 unless it conflicts; `equilibrium` parity isn't worth a regression here. |
 | Test migration: existing jest tests silently dropped. | Inventory `__tests__` in implementation; move-and-skip with TODOs rather than delete. |
 
 ## Decisions (resolved in review, 2026-09-06)
 
-1. **Domains** — production `portfolio.aolausoro.tech`, staging
-   `staging.aolausoro.tech`.
+1. **Domains** — **production only**, `portfolio.aolausoro.tech`. No staging
+   environment: no `deploy-staging.yml`, no `deploy/*staging*` files, no staging
+   Nginx config, no `staging` branch. `setup-droplet.sh` drops its environment
+   prompt.
 2. **`payload-totp`** — **adopt.** Add `payload-totp@3.0.1`, wire into
    `plugins/index.ts` with `disableAccessWrapper: true` + `forceSetup: true`,
    `issuer: 'aolausoro.tech'`, `collection: 'users'` — must stay last in the
