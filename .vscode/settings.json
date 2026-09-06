@@ -1,33 +1,41 @@
 {
-  "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#26aba0",
-    "activityBar.activeBorder": "#f8e5f9",
-    "activityBar.background": "#26aba0",
-    "activityBar.foreground": "#15202b",
-    "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#f8e5f9",
-    "activityBarBadge.foreground": "#15202b",
-    "statusBar.background": "#1d8179",
-    "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#26aba0",
-    "titleBar.activeBackground": "#1d8179",
-    "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#1d817999",
-    "titleBar.inactiveForeground": "#e7e7e799",
-    "commandCenter.border": "#e7e7e799",
-    "sash.hoverBorder": "#26aba0",
-    "statusBarItem.remoteBackground": "#e197e8",
-    "statusBarItem.remoteForeground": "#e7e7e7",
-    "activityBarTop.activeBackground": "#26aba0",
-    "activityBarTop.background": "#26aba0",
-    "activityBarTop.foreground": "#15202b",
-    "activityBarTop.inactiveForeground": "#15202b99",
-    "commandCenter.foreground": "#e7e7e7",
-    "statusBar.debuggingBackground": "#1d8179",
-    "statusBar.debuggingForeground": "#e7e7e7"
+  "npm.packageManager": "pnpm",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
   },
-  "peacock.color": "#1d8179",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "prisma.pinToPrisma6": true
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "editor.formatOnSaveMode": "file",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "[javascript][typescript][typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  }
 }

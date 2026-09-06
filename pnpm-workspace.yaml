@@ -1,0 +1,11 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  '@prisma/client': true
+  '@prisma/engines': true
+  prisma: true
+  '@sentry/cli': true
+  '@clerk/shared': true
+  msw: true
+  cypress: true
