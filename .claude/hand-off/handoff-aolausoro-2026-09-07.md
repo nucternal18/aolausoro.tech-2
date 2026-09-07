@@ -61,7 +61,7 @@ app and `pnpm run build` fails on legacy code. That is the Phase 3 boundary.
 - **No dependency removals this phase** — the entire Clerk / Prisma / Redux / inversify / Sentry / Cloudinary prune is Phase 3.
 - **Kept pnpm 11 + `engines.pnpm: "^9 || ^10 || ^11"`** — matches equilibrium exactly; the plan is replication.
 - **Moved `pnpm.overrides` into `pnpm-workspace.yaml`** — pnpm 11 reads resolution config there once the workspace file exists, not from `package.json#pnpm`. Deleted the now-redundant `package.json#pnpm` key.
-- **Accepted a build gate that stays red** — baseline `248757c` was mid-migration and never built; each task's gate is "no *new* failure mode / no more errors than the pre-task baseline", plus `tsc ≤ 156`.
+- **Accepted a build gate that stays red** — baseline `248757c` was mid-migration and never built; each task's gate is "no _new_ failure mode / no more errors than the pre-task baseline", plus `tsc ≤ 156`.
 - **`payload.config.ts` doesn't load** (`Posts` → unregistered `categories` collection) — Phase 3 scope, not Phase 2. `tests/int/api.int.spec.ts` is `describe.skip` with a TODO; the `/api/health` tests mock `getPayload` and `@payload-config` to test the handler's try/catch → status mapping in isolation.
 - **CI `Lint` / `Type-check` / `Build` / `Generate Prisma client` are `continue-on-error`** with `# TODO(phase-3)` — drop when the migration lands a green baseline.
 - **`deploy-production.yml` is `workflow_dispatch`-only** — push-to-`main` commented out until the droplet, a `production`-labelled self-hosted runner, and the GH Actions secrets exist.
