@@ -1,30 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# aolausoro.tech
 
-## Getting Started
+Personal portfolio and content site for Adewoyin Oladipupo-Usoro. Payload CMS
+(admin at `/admin`) + Next.js App Router frontend, MongoDB, deployed as a
+standalone Docker image.
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
+cp .env.example .env         # fill in DATABASE_URL + PAYLOAD_SECRET at minimum
+docker compose up -d mongo   # or point DATABASE_URL at MongoDB Atlas
+pnpm install
+pnpm dev                     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create the first admin user from the on-screen prompt at `/admin`.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Commands
 
-## Learn More
+See `AGENT.md` § Commands for the full list. Common ones: `pnpm dev`,
+`pnpm run build`, `pnpm run lint`, `pnpm exec tsc --noEmit`,
+`pnpm run test:int`, `pnpm run test:e2e`.
 
-To learn more about Next.js, take a look at the following resources:
+## Working in this repo
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `AGENT.md` / `CLAUDE.md` — orientation for AI agents and contributors
+- `CONTEXT.md` — domain glossary
+- `docs/deployment-plan.md` — how production is deployed
+- `docs/payload-cms-integration.md` — the Payload migration notes
+- `docs/superpowers/` — specs and implementation plans
+- `docs/agents/` — how agents consume the issue tracker and domain docs
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Status
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Mid-migration from a Clerk + Prisma + Redux + inversify stack onto Payload CMS,
+and **not finished**: Clerk, Prisma, Redux, inversify, Sentry, and Cloudinary
+are all still installed and imported. `pnpm run lint`, `pnpm exec tsc --noEmit`,
+and `pnpm run build` currently fail on pre-existing legacy-code errors — that is
+Phase 3 work (see `AGENT.md`). Production only — no staging environment.
