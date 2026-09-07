@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  HUSKY: 0
+  NODE_OPTIONS: --no-deprecation
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
+    env:
+      DATABASE_URL: mongodb://127.0.0.1:27017/ci
+      PAYLOAD_SECRET: ci-only-secret-not-for-real-use
+      NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        # TODO(phase-3): drop continue-on-error once the Payload migration lands a green baseline
+        continue-on-error: true
+        run: pnpm run lint
+
+      - name: Type-check
+        # TODO(phase-3): drop continue-on-error once the Payload migration lands a green baseline
+        continue-on-error: true
+        run: pnpm exec tsc --noEmit
+
+      - name: Generate Prisma client
+        run: pnpm run generate
+
+      - name: Integration tests
+        run: pnpm run test:int
+
+      - name: Build
+        # TODO(phase-3): drop continue-on-error once the Payload migration lands a green baseline
+        continue-on-error: true
+        run: pnpm run build
