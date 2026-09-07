@@ -3,7 +3,7 @@ services:
   mongo:
     image: mongo:latest
     ports:
-      - '27017:27017'
+      - '127.0.0.1:27017:27017'
     command: ['--storageEngine=wiredTiger']
     volumes:
       - mongo-data:/data/db
@@ -13,7 +13,7 @@ services:
     depends_on:
       - mongo
     ports:
-      - '3000:3000'
+      - '127.0.0.1:3000:3000'
     env_file:
       - .env
     environment:

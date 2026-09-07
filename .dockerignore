@@ -11,6 +11,8 @@ playwright-report
 .vscode
 .claude
 .agents
+.superpowers
+.git
 docs
 *.md
 !README.md
