@@ -55,7 +55,6 @@
     ".next/types/**/*.ts",
     "tailwind.config.js",
     "postcss.config.js",
-    "next-sitemap.config.js",
     "next-sitemap.config.cjs",
     "redirects.ts",
     "types/**/*.d.ts",

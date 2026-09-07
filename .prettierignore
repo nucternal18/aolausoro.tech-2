@@ -19,4 +19,6 @@ pnpm-lock.yaml
 tsconfig.json
 tsconfig.tsbuildinfo
 public/
-cypress/
+.agents/
+.claude/skills/
+.superpowers/

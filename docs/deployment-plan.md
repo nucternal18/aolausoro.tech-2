@@ -93,6 +93,11 @@ listed in `deploy-production.yml` exist. Until then, deploys are manual
   `app/(protected)/api/[...slug]/route.ts`. The first successful production
   build must confirm Next resolves `/api/health` without a "parallel routes"
   error; if it does not, relocate the route under `app/(home)/api/health/`.
+- **(e) `Dockerfile` omits `prisma generate`.** The production `Dockerfile`
+  builder stage deliberately does not run `prisma generate` (the current
+  `prisma.config.ts` is broken and Prisma is being removed in Phase 3). The
+  image build will not succeed until the Phase-3 Prisma removal + Clerk
+  async-Server-Action fixes land.
 
 ## Migrating from the old deploy
 

@@ -59,7 +59,9 @@ These match `package.json` scripts as of Phase 2:
 - `pnpm run test:e2e` — Playwright e2e tests (spins up its own dev server)
 - `pnpm test` — runs `test:int` then `test:e2e`
 - `pnpm run generate` — `prisma generate` (legacy; removed in Phase 3)
-- `pnpm exec payload generate:types` — regenerate `payload-types.ts` (Payload CLI, no wrapper script)
+- `pnpm run generate:types` — regenerate `payload-types.ts` (Payload CLI)
+- `pnpm run generate:importmap` — regenerate the admin `importMap.js` (Payload CLI)
+- `pnpm run payload <cmd>` — run an arbitrary Payload CLI command
 
 ## Deployment
 

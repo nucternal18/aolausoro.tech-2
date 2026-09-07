@@ -273,7 +273,7 @@ ok
 # ============================================================
 
 step "6/9" "Configuring ufw firewall"
-# Mirrors the DO Cloud Firewall documented in docs/production-deployment-plan.md
+# Mirrors the DO Cloud Firewall documented in docs/deployment-plan.md
 # (22/80/443 only) — UFW is a second layer on the droplet itself.
 
 ufw default deny incoming >> "$LOG_FILE" 2>&1 || die "ufw deny incoming failed"
@@ -419,7 +419,7 @@ IP=$(ip route get 1.1.1.1 2>/dev/null | awk '{print $7; exit}')
 [ -z "$IP" ] && IP=$(hostname -I | awk '{print $1}')
 [ -z "$IP" ] && IP="YOUR_SERVER_IP"
 
-DOC="docs/production-deployment-plan.md"
+DOC="docs/deployment-plan.md"
 
 echo "Remaining manual steps (see $DOC):"
 echo "  1. Point DNS for $DOMAIN at this droplet via Cloudflare (proxied)."

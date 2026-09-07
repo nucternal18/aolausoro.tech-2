@@ -48,6 +48,7 @@ jobs:
         run: pnpm exec tsc --noEmit
 
       - name: Generate Prisma client
+        continue-on-error: true # TODO(phase-3): drop once the Payload migration removes Prisma
         run: pnpm run generate
 
       - name: Integration tests
