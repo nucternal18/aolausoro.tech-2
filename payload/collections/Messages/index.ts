@@ -34,6 +34,12 @@ const Messages: CollectionConfig<'messages'> = {
       type: 'textarea',
       required: true,
     },
+    {
+      name: 'read',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { position: 'sidebar' },
+    },
   ],
   timestamps: true,
 }

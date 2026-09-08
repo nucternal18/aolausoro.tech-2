@@ -1,24 +1,27 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from 'payload'
+import { anyone } from '@src/access/anyone'
 import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
 
 const Projects: CollectionConfig<'projects'> = {
   slug: 'projects',
   admin: {
-    useAsTitle: 'projectName',
-    defaultColumns: ['projectName', 'published', 'createdAt'],
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'published', 'updatedAt'],
   },
   access: {
-    read: () => true, // Public read access
+    read: anyone,
     create: authenticated,
     update: authenticated,
     delete: authenticatedAndAdmin,
   },
   fields: [
     {
-      name: 'projectName',
+      name: 'title',
       type: 'text',
       required: true,
     },
+    slugField(),
     {
       name: 'description',
       type: 'textarea',

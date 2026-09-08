@@ -369,7 +369,12 @@ export interface User {
  */
 export interface Project {
   id: string;
-  projectName: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   description: string;
   address?: string | null;
   url?: string | null;
@@ -410,6 +415,7 @@ export interface Message {
   email: string;
   subject: string;
   message: string;
+  read?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -982,7 +988,9 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "projects_select".
  */
 export interface ProjectsSelect<T extends boolean = true> {
-  projectName?: T;
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
   description?: T;
   address?: T;
   url?: T;
@@ -1021,6 +1029,7 @@ export interface MessagesSelect<T extends boolean = true> {
   email?: T;
   subject?: T;
   message?: T;
+  read?: T;
   updatedAt?: T;
   createdAt?: T;
 }

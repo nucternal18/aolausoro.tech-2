@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
+import { defaultLexical } from '@fields/defaultLexical'
 
 const Wiki: CollectionConfig<'wiki'> = {
   slug: 'wiki',
@@ -9,7 +9,7 @@ const Wiki: CollectionConfig<'wiki'> = {
     defaultColumns: ['title', 'isImage', 'createdAt'],
   },
   access: {
-    read: () => true,
+    read: authenticated,
     create: authenticated,
     update: authenticated,
     delete: authenticatedAndAdmin,
@@ -23,7 +23,7 @@ const Wiki: CollectionConfig<'wiki'> = {
     {
       name: 'description',
       type: 'richText',
-      editor: lexicalEditor({}),
+      editor: defaultLexical,
       required: true,
     },
     {

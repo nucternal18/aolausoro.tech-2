@@ -18,7 +18,7 @@ describe('Users auth', () => {
   it('logs in with correct credentials', async () => {
     const res = await payload.login({ collection: 'users', data: { email, password } })
     expect(res.token).toBeTruthy()
-    expect(res.user.email).toBe(email)
+    expect(res.user?.email).toBe(email)
   })
 
   it('rejects a wrong password', async () => {
