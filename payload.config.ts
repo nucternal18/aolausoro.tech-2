@@ -31,6 +31,7 @@ export default buildConfig({
       titleSuffix: '- Admin',
     },
     components: {
+      beforeDashboard: ['/components/admin/BeforeDashboard#BeforeDashboard'],
       graphics: {
         Logo: '/public/android-chrome-512x512.png', // Uncomment and create logo.png when available
       },
