@@ -342,6 +342,8 @@ export interface User {
   name: string;
   image?: string | null;
   isAdmin?: boolean | null;
+  totpSecret?: string | null;
+  hasTotp?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1074,6 +1076,8 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   image?: T;
   isAdmin?: T;
+  totpSecret?: T;
+  hasTotp?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

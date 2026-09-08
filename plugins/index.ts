@@ -3,6 +3,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { payloadTotp } from 'payload-totp'
 import type { Plugin } from 'payload'
 import { revalidateRedirects } from '@hooks/revalidateRedirects'
 import type { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -90,5 +91,14 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  // Must stay last — it wraps every collection/global already registered.
+  // disableAccessWrapper keeps public `anyone`-read content (Projects, Posts,
+  // Categories, Media) reachable without a session.
+  payloadTotp({
+    collection: 'users',
+    forceSetup: process.env.NODE_ENV !== 'test' && process.env.TOTP_FORCE_SETUP !== 'false',
+    disableAccessWrapper: true,
+    totp: { issuer: 'aolausoro.tech' },
   }),
 ]
