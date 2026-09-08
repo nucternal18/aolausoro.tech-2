@@ -6,7 +6,6 @@ import { links, social } from '../../data'
 
 // components
 import Nav from './nav-components'
-import LoginButton from '@components/login-button'
 import { ModeToggle } from '@components/mode-toggle'
 import {
   Sheet,
@@ -59,7 +58,6 @@ export function Navbar({ textColor = 'text-primary' }: NavProps) {
               </Nav.Item>
             )
           })}
-          <LoginButton />
         </Nav.NavLinks>
       </Nav.Container>
     </Nav>
@@ -129,8 +127,6 @@ export function MobileNavbar({ height }: { height: number }) {
                 )
               })}
             </div>
-
-            <LoginButton />
           </ScrollArea>
         </SheetContent>
       </Sheet>
