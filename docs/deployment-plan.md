@@ -20,7 +20,7 @@ Implementation status).
 |---|---|---|
 | Reverse proxy | Nginx | Pairs with Cloudflare Full (strict); org convention |
 | TLS | Cloudflare Origin CA certificate | Issued once, ~15-year validity, no renewal cron |
-| Database | MongoDB Atlas | Replica set out of the box, which Payload's transactional writes expect |
+| Database | MongoDB Atlas — db name `portfolio` | Replica set out of the box, which Payload's transactional writes expect. `portfolio` is a fresh Payload database; the pre-migration Prisma data stays in its own db name in the same cluster (P3.1b migration source) |
 | Media | DigitalOcean Spaces via `@payloadcms/storage-s3` (Phase 3) | Host disk holds no uploads; survives redeploys. Cloudinary is still the live media backend until Phase 3 |
 | Deploy trust boundary | Self-hosted runner registration (no SSH keys) | Runner on the droplet pulls + restarts; nothing else has shell access |
 

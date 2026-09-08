@@ -1,23 +1,12 @@
-import type { CollectionConfig, PayloadRequest } from 'payload'
-import { authenticateWithClerk } from '../../access/clerk-auth'
+import type { CollectionConfig } from 'payload'
 import { authenticatedAndAdmin } from '@src/access/authenticated'
 
 const Users: CollectionConfig<'users'> = {
   slug: 'users',
   auth: {
-    strategies: [
-      {
-        name: 'clerk',
-        authenticate: async ({ headers }: { headers: any }) => {
-          // Create a mock request object
-          const req = {
-            headers: headers || {},
-          } as PayloadRequest
-
-          return await authenticateWithClerk(req)
-        },
-      },
-    ],
+    tokenExpiration: 60 * 60 * 8, // 8h admin session
+    maxLoginAttempts: 5,
+    lockTime: 1000 * 60 * 10, // 10m
   },
   admin: {
     useAsTitle: 'name',
@@ -28,6 +17,7 @@ const Users: CollectionConfig<'users'> = {
       if (user?.isAdmin) return true
       return { id: { equals: user?.id } }
     },
+    create: authenticatedAndAdmin,
     update: ({ req: { user } }) => {
       if (user?.isAdmin) return true
       return { id: { equals: user?.id } }
@@ -41,12 +31,6 @@ const Users: CollectionConfig<'users'> = {
       required: true,
     },
     {
-      name: 'email',
-      type: 'email',
-      required: true,
-      unique: true,
-    },
-    {
       name: 'image',
       type: 'text',
     },
@@ -55,22 +39,6 @@ const Users: CollectionConfig<'users'> = {
       type: 'checkbox',
       defaultValue: false,
     },
-    {
-      name: 'clerkId',
-      type: 'text',
-      unique: true,
-      index: true,
-    },
-    {
-      name: 'emailVerified',
-      type: 'date',
-    },
-    // {
-    //   name: "cvUrl",
-    //   type: "relationship",
-    //   relationTo: "cvs",
-    //   hasMany: false,
-    // },
   ],
   timestamps: true,
 }

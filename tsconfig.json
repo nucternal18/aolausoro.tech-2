@@ -40,7 +40,7 @@
       "@fields/*": ["fields/*"],
       "@heroes/*": ["heroes/*"],
       "@search/*": ["search/*"],
-      "@payload-types/*": ["types/payload-types"],
+      "@payload-types/*": ["./payload-types"],
       "@payload": ["payload/*"],
       "@payload-config": ["./payload.config.ts"],
       "@payload/importMaps": ["./app/(protected)/admin/importMap.js"]

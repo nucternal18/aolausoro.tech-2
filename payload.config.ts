@@ -5,6 +5,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 // Collections
+import { Categories } from './payload/collections/Categories'
+import { CVs } from './payload/collections/CVs'
 import Projects from './payload/collections/Projects'
 import Jobs from './payload/collections/Jobs'
 import Messages from './payload/collections/Messages'
@@ -61,7 +63,7 @@ export default buildConfig({
     },
   },
   editor: defaultLexical,
-  collections: [Posts, Projects, Jobs, Messages, Wiki, Issues, Users, Media],
+  collections: [Categories, Posts, Projects, Jobs, Messages, Wiki, Issues, CVs, Users, Media],
   secret: process.env.PAYLOAD_SECRET || '',
   plugins: [
     ...plugins,
