@@ -43,7 +43,10 @@
       "@payload-types/*": ["./payload-types"],
       "@payload": ["payload/*"],
       "@payload-config": ["./payload.config.ts"],
-      "@payload/importMaps": ["./app/(protected)/admin/importMap.js"]
+      "@payload/importMaps": ["./app/(protected)/admin/importMap.js"],
+      "@/utilities/ui": ["./lib/utils"],
+      "@/utilities/*": ["./utils/*"],
+      "@/*": ["./*"]
     },
     "strictNullChecks": true
   },
