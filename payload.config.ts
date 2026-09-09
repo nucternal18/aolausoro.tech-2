@@ -1,5 +1,6 @@
 import sharp from 'sharp'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { buildConfig } from 'payload'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -72,6 +73,11 @@ export default buildConfig({
   ],
   db: mongooseAdapter({
     url: process.env.DATABASE_URL!,
+  }),
+  email: resendAdapter({
+    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'noreply@aolausoro.tech',
+    defaultFromName: process.env.EMAIL_FROM_NAME || 'aolausoro.tech',
+    apiKey: process.env.RESEND_API_KEY || '',
   }),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
+import { sendContactEmail } from './hooks/sendContactEmail'
 
 const Messages: CollectionConfig<'messages'> = {
   slug: 'messages',
@@ -41,6 +42,9 @@ const Messages: CollectionConfig<'messages'> = {
       admin: { position: 'sidebar' },
     },
   ],
+  hooks: {
+    afterChange: [sendContactEmail],
+  },
   timestamps: true,
 }
 
