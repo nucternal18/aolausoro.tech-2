@@ -1,13 +1,9 @@
 import Image from 'next/image'
 
 import { Typography } from './Typography'
-import type { PartialWikiProps } from '@src/entities/models/Wiki'
+import type { Wiki } from '@/payload-types'
 
-export default function WikiCard({
-  wiki: { title, description, imageUrl },
-}: {
-  wiki: PartialWikiProps
-}) {
+export default function WikiCard({ wiki: { title, description, imageUrl } }: { wiki: Wiki }) {
   return (
     <div className="group relative break-inside-avoid overflow-hidden rounded-lg shadow-lg shadow-neutral-700 transition-all duration-300 ease-in-out hover:shadow-2xl">
       <Image

@@ -4,21 +4,21 @@ import { techSkillsData } from 'config/data'
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
-import type { PartialProjectProps } from '@src/entities/models/Project'
+import type { Project } from '@/payload-types'
 import { ExternalLink, Github } from 'lucide-react'
 
 function PortfolioCard({
   project,
   setSelectedProject,
 }: {
-  project: PartialProjectProps
-  setSelectedProject: React.Dispatch<React.SetStateAction<PartialProjectProps | null>>
+  project: Project
+  setSelectedProject: React.Dispatch<React.SetStateAction<Project | null>>
 }) {
   // map through the techSkilsData array and return the image url that matches the project?.techStack array.
   // if the project?.techStack array includes the tech.name.toLowerCase() then return the tech.iconUrl
   // ensure both the project?.techStack and tech.name.toLowerCase() are in lowercase
   const tecStackImgUrl = techSkillsData.map((tech) => {
-    if (project?.techStack?.includes(tech.name)) {
+    if (project?.techStack?.some((t) => t.technology?.toLowerCase() === tech.name.toLowerCase())) {
       return tech.iconUrl
     }
   })
@@ -32,7 +32,7 @@ function PortfolioCard({
         <div className="bg-card relative h-64 overflow-hidden">
           <Image
             src={project.url as string}
-            alt={project.projectName as string}
+            alt={project.title as string}
             sizes="100vw"
             style={{
               width: '100%',
@@ -45,7 +45,7 @@ function PortfolioCard({
         </div>
       </CardHeader>
       <CardContent className="bg-card grid-rows-[auto_1fr_auto] space-y-2 p-6">
-        <h3 className="text-foreground mb-2 text-xl font-bold">{project.projectName}</h3>
+        <h3 className="text-foreground mb-2 text-xl font-bold">{project.title}</h3>
         <p className="text-muted-foreground mb-4 text-sm leading-relaxed">{project.description}</p>
 
         <div className="mb-4 flex flex-wrap gap-2">
@@ -54,7 +54,7 @@ function PortfolioCard({
               key={idx}
               className="text-primary bg-primary/10 rounded-full px-3 py-1 text-xs font-semibold"
             >
-              {techStack}
+              {techStack.technology}
             </span>
           ))}
         </div>

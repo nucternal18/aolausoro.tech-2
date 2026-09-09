@@ -1,11 +1,9 @@
-import type { PartialProjectProps } from '@src/entities/models/Project'
+import type { Project } from '@/payload-types'
 
-export const GithubRepoCard = ({ project }: { project: PartialProjectProps }) => {
+export const GithubRepoCard = ({ project }: { project: Project }) => {
   return (
     <div className="flex flex-col justify-center">
-      <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
-        {project.projectName}
-      </h1>
+      <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">{project.title}</h1>
       <p className="my-4 text-base font-normal text-gray-500">{project.description}</p>
       <a
         href={project.github as string}

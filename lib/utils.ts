@@ -1,4 +1,4 @@
-import type { PartialCvProps } from '@src/entities/models/cv'
+import type { Cv } from '@/payload-types'
 import { type ClassValue, clsx } from 'clsx'
 import React from 'react'
 
@@ -66,11 +66,10 @@ export function composeEventHandlers<E>(
  * @param data - An array of CV objects.
  * @returns The URL of the latest CV.
  */
-export const getLatestCV = (data: PartialCvProps[]) => {
+export const getLatestCV = (data: Cv[]): string | null | undefined => {
+  if (!data || data.length === 0) return null
   const latestCV = data.reduce((prev, current) =>
-    new Date(prev.createdAt as unknown as string) > new Date(current.createdAt as unknown as string)
-      ? prev
-      : current,
+    new Date(prev.createdAt) > new Date(current.createdAt) ? prev : current,
   )
-  return latestCV.cvUrl
+  return latestCV.url
 }

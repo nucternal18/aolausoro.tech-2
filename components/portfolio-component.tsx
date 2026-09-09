@@ -6,12 +6,12 @@ import Loader from './Loader'
 // components
 import PortfolioCard from '@components/portfolio-card'
 import { Button } from '@components/ui/button'
-import type { PartialProjectProps } from '@src/entities/models/Project'
+import type { Project } from '@/payload-types'
 import ProjectModal from './project-modal'
 import { Typography } from './Typography'
 
-export function PortfolioComponent({ projects }: { projects: PartialProjectProps[] }) {
-  const [selectedProject, setSelectedProject] = useState<PartialProjectProps | null>(null)
+export function PortfolioComponent({ projects }: { projects: Project[] }) {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const publishedProjects = projects?.filter((doc) => doc.published)
   return (
     <>
@@ -37,7 +37,7 @@ export function PortfolioComponent({ projects }: { projects: PartialProjectProps
       </section>
       {selectedProject && (
         <ProjectModal
-          title={selectedProject.projectName as string}
+          title={selectedProject.title as string}
           description={selectedProject.description as string}
           longDescription={selectedProject.description as string}
           tags={selectedProject.techStack as string[]}
