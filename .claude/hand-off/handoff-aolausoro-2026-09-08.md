@@ -6,12 +6,12 @@
 
 Decomposition (see the design spec for the full rationale):
 
-| #         | Sub-project                                                                                                                                                                  | Status                                                                                                    |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| **P3.1a** | Payload backend + admin + full Clerk→Payload auth cutover                                                                                                                    | **implemented this session** (commits `b8e64f3..33c0f71`) — DB-dependent verification pending (see below) |
-| **P3.1b** | Finish the layout-builder frontend (`blocks/`, `heros/`, `RenderBlocks`, `RichText`, live-preview) + migrate existing data (old Atlas db → new `portfolio` db, same cluster) | spec/plan not written                                                                                     |
-| **P3.2**  | Delete the old stack: `components/admin-route-components/`, `src/`, `prisma/`; drop `@clerk/nextjs` + `svix` + ~10 more dead deps; get `tsc`/`build` green                   | spec/plan not written                                                                                     |
-| **P3.3**  | Cloudinary → DO Spaces (`s3Storage` + SSRF fix); re-verify Sentry (kept); drop CI `continue-on-error`, enable deploy, provision infra                                        | spec/plan not written                                                                                     |
+| #         | Sub-project                                                                                                                                                                  | Status                                                                                                                                           |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **P3.1a** | Payload backend + admin + full Clerk→Payload auth cutover                                                                                                                    | **implemented + verified** (commits `b8e64f3..7b2da0e`) — `test:int` 12/12 green against Atlas; only `/admin` UI render + TOTP UX need a browser |
+| **P3.1b** | Finish the layout-builder frontend (`blocks/`, `heros/`, `RenderBlocks`, `RichText`, live-preview) + migrate existing data (old Atlas db → new `portfolio` db, same cluster) | spec/plan not written                                                                                                                            |
+| **P3.2**  | Delete the old stack: `components/admin-route-components/`, `src/`, `prisma/`; drop `@clerk/nextjs` + `svix` + ~10 more dead deps; get `tsc`/`build` green                   | spec/plan not written                                                                                                                            |
+| **P3.3**  | Cloudinary → DO Spaces (`s3Storage` + SSRF fix); re-verify Sentry (kept); drop CI `continue-on-error`, enable deploy, provision infra                                        | spec/plan not written                                                                                                                            |
 
 Spec: `docs/superpowers/specs/2026-09-08-p3.1a-payload-backend-auth-design.md`
 Plan: `docs/superpowers/plans/2026-09-08-p3.1a-payload-backend-auth.md`
@@ -35,15 +35,44 @@ Plan: `docs/superpowers/plans/2026-09-08-p3.1a-payload-backend-auth.md`
 - `git grep '@clerk'` — only `components/admin-route-components/**` + `app/(protected)/api/upload/**` (P3.2's).
 - `pnpm run build` — still red, **no regression**: it now fails on the pre-existing Prisma-6 `@prisma/client/runtime/query_compiler_bg.mongodb.*` wasm resolution error (via `src/interface-adapters/**` → `admin-route-components/actions/projects.ts` → `app/(home)/page.tsx`) — all P3.2 code. The Clerk "async Server Actions" error that was the _first_ blocker in Phase 2 is gone (Clerk code deleted); the Prisma wasm error was always the next one. `tsc --noEmit`: **148**.
 
-## NOT verified — needs a machine with Atlas reachable (this environment has no DNS for the SRV record)
+## Verified against Atlas (via the MongoDB MCP + a direct non-SRV connection string)
 
-Run these against Atlas with `.env` pointing at `.../portfolio` (a **fresh, empty** db) and `TOTP_FORCE_SETUP=false` for the e2e:
+`pnpm run test:int` — **12/12 green, 4 files, zero skips**: Payload init, `categories`
+resolves, native login + wrong-password + 5-attempt lockout, the full access matrix
+(anon can create a Message, anon denied reading messages/jobs/issues/wiki/cvs, anon
+allowed projects/categories/media, no public signup). `users` schema confirmed in Atlas:
+`salt`/`hash`/`loginAttempts`/`lockUntil`/`sessions`, **no `clerkId`/`emailVerified`**.
 
-1. `pnpm run test:int` — should be **all green, zero skips**: `api.int.spec.ts` (Payload init + users/categories query), `auth.int.spec.ts` (login / wrong-pw / lockout), `access.int.spec.ts` (the access matrix), `health.int.spec.ts`. If `auth`/`access` fail, the access rules or the totp `disableAccessWrapper` need a look.
-2. Manual `/admin`: fresh `portfolio` db → visit `/admin` → create the first user → forced TOTP setup → log in → the 4 stat cards render above the dashboard → CRUD one doc in each collection.
-3. `pnpm run test:e2e` (needs `pnpm exec playwright install chromium` + `NODE_ENV=test`/`TOTP_FORCE_SETUP=false` + a served app — so effectively after P3.2 makes the build green).
+Fixes made while verifying (commit `7b2da0e`): vitest env `jsdom`→`node` (jose JWT
+signing needs a same-realm `Uint8Array`); int specs now isolate to a `<db>_test`
+database via `vitest.setup.ts`; `access.int.spec.ts` asserts `rejects` (Payload 3.86
+throws `Forbidden`, doesn't return empty).
 
-`.env` `DATABASE_URL` is currently your Atlas URL with db name `portfolio` (I changed it from `aolausoro` this session — the old Prisma data stays untouched in `aolausoro`).
+### Still needs a browser (can't run headless here)
+
+- Manual `/admin`: create the first user → **forced TOTP setup flow** → login → the 4
+  `.before-dashboard` stat cards render → CRUD one doc per collection. (The queries
+  behind the stat panel are proven by the int env; only the UI render + TOTP UX are unverified.)
+- `pnpm run test:e2e` — needs `pnpm exec playwright install chromium`,
+  `TOTP_FORCE_SETUP=false`, and a served app → effectively after P3.2 makes the build green.
+
+### Cleanup the user needs to do
+
+- The **first** (pre-fix) `test:int` run wrote 6 dummy users (`admin+…` / `lock+…`) to
+  the real `portfolio` db before the `_test` isolation landed. `/admin` will show the
+  login page, not create-first-user, until they're gone. Drop them:
+  ```
+  mongosh "<your srv uri>/portfolio" --eval 'db.users.deleteMany({email:/^(admin|lock)\+[0-9]+@aolausoro\.tech$/})'
+  ```
+  or drop the whole `portfolio` db (Payload recreates it) — it holds only test data so far.
+  There is also a `portfolio_test` db (throwaway — the int suite's target); leave or drop it.
+
+### Connection string note
+
+This sandbox's Node can't do `mongodb+srv://` SRV lookups, so `.env` `DATABASE_URL` is
+currently the **direct/non-SRV** form (`mongodb://…-shard-00-0{0,1,2}…:27017/…?replicaSet=atlas-10hfwu-shard-0&…`).
+**On your machine, put the normal `mongodb+srv://…/portfolio` form back** — it's simpler and
+survives Atlas shard reconfiguration. The old Prisma data is untouched in the `aolausoro` db name.
 
 ## Known issues / open — carried into P3.1b / P3.2 / P3.3
 
