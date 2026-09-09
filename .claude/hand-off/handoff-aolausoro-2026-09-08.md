@@ -6,12 +6,12 @@
 
 Decomposition (see the design spec for the full rationale):
 
-| # | Sub-project | Status |
-|---|---|---|
-| **P3.1a** | Payload backend + admin + full Clerk→Payload auth cutover | **implemented this session** (commits `b8e64f3..33c0f71`) — DB-dependent verification pending (see below) |
-| **P3.1b** | Finish the layout-builder frontend (`blocks/`, `heros/`, `RenderBlocks`, `RichText`, live-preview) + migrate existing data (old Atlas db → new `portfolio` db, same cluster) | spec/plan not written |
-| **P3.2** | Delete the old stack: `components/admin-route-components/`, `src/`, `prisma/`; drop `@clerk/nextjs` + `svix` + ~10 more dead deps; get `tsc`/`build` green | spec/plan not written |
-| **P3.3** | Cloudinary → DO Spaces (`s3Storage` + SSRF fix); re-verify Sentry (kept); drop CI `continue-on-error`, enable deploy, provision infra | spec/plan not written |
+| #         | Sub-project                                                                                                                                                                  | Status                                                                                                    |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **P3.1a** | Payload backend + admin + full Clerk→Payload auth cutover                                                                                                                    | **implemented this session** (commits `b8e64f3..33c0f71`) — DB-dependent verification pending (see below) |
+| **P3.1b** | Finish the layout-builder frontend (`blocks/`, `heros/`, `RenderBlocks`, `RichText`, live-preview) + migrate existing data (old Atlas db → new `portfolio` db, same cluster) | spec/plan not written                                                                                     |
+| **P3.2**  | Delete the old stack: `components/admin-route-components/`, `src/`, `prisma/`; drop `@clerk/nextjs` + `svix` + ~10 more dead deps; get `tsc`/`build` green                   | spec/plan not written                                                                                     |
+| **P3.3**  | Cloudinary → DO Spaces (`s3Storage` + SSRF fix); re-verify Sentry (kept); drop CI `continue-on-error`, enable deploy, provision infra                                        | spec/plan not written                                                                                     |
 
 Spec: `docs/superpowers/specs/2026-09-08-p3.1a-payload-backend-auth-design.md`
 Plan: `docs/superpowers/plans/2026-09-08-p3.1a-payload-backend-auth.md`
@@ -29,11 +29,11 @@ Plan: `docs/superpowers/plans/2026-09-08-p3.1a-payload-backend-auth.md`
 
 - `pnpm run generate:types` — **exits 0**, config loads. `payload-types.ts` current with `Category`, `Cv`, `categories` on `Post`.
 - `pnpm run generate:importmap` — exits 0; `importMap.js` current (BeforeDashboard + payload-totp components).
-- `pnpm exec tsc --noEmit` — **152** (down from the 154 Phase-2 baseline).
+- `pnpm exec tsc --noEmit` — **148** (down from the 154 Phase-2 baseline).
 - `pnpm run lint` — runs; 252 problems (44 err / 208 warn), down from 265.
 - `pnpm exec prettier --check .` — clean.
 - `git grep '@clerk'` — only `components/admin-route-components/**` + `app/(protected)/api/upload/**` (P3.2's).
-- `pnpm run build` — <FILL IN: same P3.2 failure mode / new failure — see /tmp/p31a-build.log>
+- `pnpm run build` — still red, **no regression**: it now fails on the pre-existing Prisma-6 `@prisma/client/runtime/query_compiler_bg.mongodb.*` wasm resolution error (via `src/interface-adapters/**` → `admin-route-components/actions/projects.ts` → `app/(home)/page.tsx`) — all P3.2 code. The Clerk "async Server Actions" error that was the _first_ blocker in Phase 2 is gone (Clerk code deleted); the Prisma wasm error was always the next one. `tsc --noEmit`: **148**.
 
 ## NOT verified — needs a machine with Atlas reachable (this environment has no DNS for the SRV record)
 
