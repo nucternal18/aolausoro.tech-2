@@ -73,3 +73,7 @@ next.config.wizardcopy.js
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# any .env variant (backups, sandbox overrides)
+.env*
+!.env.example

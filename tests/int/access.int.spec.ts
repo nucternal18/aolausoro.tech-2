@@ -19,14 +19,16 @@ describe('collection access', () => {
   })
 
   it('denies anonymous read of Messages', async () => {
-    const res = await payload.find({ collection: 'messages', overrideAccess: false })
-    expect(res.docs.length).toBe(0)
+    await expect(payload.find({ collection: 'messages', overrideAccess: false })).rejects.toThrow(
+      /Forbidden|not allowed/i,
+    )
   })
 
   it('denies anonymous read of the private collections', async () => {
     for (const collection of ['jobs', 'issues', 'wiki', 'cvs'] as const) {
-      const res = await payload.find({ collection, overrideAccess: false })
-      expect(res.docs.length).toBe(0)
+      await expect(payload.find({ collection, overrideAccess: false })).rejects.toThrow(
+        /Forbidden|not allowed/i,
+      )
     }
   })
 

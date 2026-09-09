@@ -5,7 +5,10 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
-    environment: 'jsdom',
+    // Integration specs exercise Payload server-side (DB, auth, JWT signing).
+    // jsdom's cross-realm TextEncoder breaks jose's `instanceof Uint8Array` check
+    // during login token signing — these must run in the node environment.
+    environment: 'node',
     setupFiles: ['./vitest.setup.ts'],
     include: ['tests/int/**/*.int.spec.ts'],
   },
