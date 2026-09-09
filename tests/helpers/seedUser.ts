@@ -7,14 +7,19 @@ export interface SeededAdmin {
 }
 
 /**
- * Idempotent: ensures a known admin user exists. Call from an e2e test's
- * beforeAll / global setup. Requires a reachable database and, for the login
- * to succeed without a TOTP prompt, `NODE_ENV=test` or `TOTP_FORCE_SETUP=false`.
+ * Idempotent test-only helper: ensures a known admin user exists so e2e specs
+ * can log in. Refuses to run outside `NODE_ENV=test` so it can never plant a
+ * known-credentials admin in a real database. The password comes from
+ * `E2E_ADMIN_PASSWORD`; the fallback is only reachable under the test guard.
  */
 export async function seedAdmin(
-  email = 'e2e-admin@aolausoro.tech',
-  password = 'e2e-password-12345',
+  email = process.env.E2E_ADMIN_EMAIL ?? 'e2e-admin@aolausoro.tech',
+  password = process.env.E2E_ADMIN_PASSWORD ?? 'e2e-only-password-change-in-ci',
 ): Promise<SeededAdmin> {
+  if (process.env.NODE_ENV !== 'test') {
+    throw new Error('seedAdmin() is a test-only helper and refuses to run outside NODE_ENV=test')
+  }
+
   const payload = await getPayload({ config })
   const existing = await payload.find({
     collection: 'users',
