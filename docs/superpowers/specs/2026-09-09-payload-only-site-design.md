@@ -248,10 +248,10 @@ Update `pnpm-workspace.yaml` `allowBuilds` — drop `@clerk/shared`, `@prisma/cl
 | `pnpm run build` still fails after §4 for a non-obvious reason (Turbopack, a Payload SSR quirk). | §6 is its own phase with room to debug; the per-phase gate is "no *new* failure", so regressions are caught early. |
 | Scope: this is a large project the user declined to decompose further. | Phased tasks in the plan; each phase is independently committable and reviewable. Data migration explicitly deferred to P3.2b. |
 
-## Open questions for review
+## Decisions (resolved in review, 2026-09-09)
 
-1. **`src/access/` relocation** — move to `access/` at repo root (drop the `@src` alias entirely, cleaner) or leave in `src/access/` (less churn, keeps a lonely `src/` dir)?
-2. **Search page** (`/search`) — build it in §2, or defer (the `search` collection + plugin stay, just no public UI)?
-3. **`data.tsx`** — it holds nav-link data (`links`, social icons). Keep as a plain config module, or fold into a Payload global / `config/data.ts`?
-4. **Charts / `@tremor/react` / `three` / `framer-motion`** — are the portfolio's 3D/animation bits still wanted, or is this a good moment to drop `three` (~600KB) and `framer-motion` too? (Affects §5's keep-list.)
-5. **Contact email** — Payload `afterChange` hook vs. keep it in the server action. (Spec leans hook.)
+1. **`src/access/` → `access/` at repo root.** Drop the `@src/*` and `@di/*` tsconfig aliases entirely; add `@access/*` → `./access/*`. Update the ~10 collection import lines (`@src/access/*` → `@access/*`) in one commit at the start of §4.
+2. **Build the `/search` page** in §2 (`search/Component.tsx` + `app/(home)/search/page.tsx` querying the `search` collection).
+3. **`data.tsx` stays a plain config module** — no Payload global.
+4. **Heavy UI deps: audit, keep what's used.** In §5, grep each of `three`, `framer-motion`, `@tremor/react`, plus `@radix-ui/*`, and drop only the ones with zero importers after §2–§4. (Earlier grep: `three` and `framer-motion` both showed 0 uses — likely dropped, but confirm post-deletion.)
+5. **Contact email = a `Messages` `afterChange` hook** guarded on `operation === 'create'`, calling Resend. One place; also fires for admin-entered messages. Not a server action.
