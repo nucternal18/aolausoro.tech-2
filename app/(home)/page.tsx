@@ -3,6 +3,12 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import HomeComponent from '@/components/home'
 
+// The homepage renders live CMS content (projects, CV, latest posts) pulled
+// through Payload's local API, so it is rendered per-request rather than
+// prerendered at build time. This also keeps `next build` free of any
+// database dependency.
+export const dynamic = 'force-dynamic'
+
 export default async function Page() {
   const payload = await getPayload({ config })
 
@@ -13,6 +19,7 @@ export default async function Page() {
       limit: 50,
       sort: '-createdAt',
       depth: 1,
+      overrideAccess: false,
     }),
     payload.find({
       collection: 'cvs',
@@ -23,10 +30,10 @@ export default async function Page() {
     }),
     payload.find({
       collection: 'posts',
-      where: { _status: { equals: 'published' } },
       limit: 3,
       sort: '-publishedAt',
       depth: 1,
+      overrideAccess: false,
     }),
   ])
 
