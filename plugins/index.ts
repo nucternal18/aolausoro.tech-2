@@ -3,6 +3,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { payloadTotp } from 'payload-totp'
 import type { Plugin } from 'payload'
 import { revalidateRedirects } from '@hooks/revalidateRedirects'
@@ -24,7 +25,30 @@ const generateURL: GenerateURL<Post> = ({ doc }) => {
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
+const spacesCdnURL =
+  (prefix: string) =>
+  ({ filename }: { filename: string }) =>
+    `${process.env.DO_SPACES_CDN_ENDPOINT}/${prefix}/${filename}`
+
 export const plugins: Plugin[] = [
+  s3Storage({
+    acl: 'public-read',
+    bucket: process.env.DO_SPACES_BUCKET || '',
+    collections: {
+      media: { prefix: 'media', generateFileURL: spacesCdnURL('media') },
+      cvs: { prefix: 'cvs', generateFileURL: spacesCdnURL('cvs') },
+    },
+    config: {
+      credentials: {
+        accessKeyId: process.env.DO_SPACES_KEY || '',
+        secretAccessKey: process.env.DO_SPACES_SECRET || '',
+      },
+      endpoint: process.env.DO_SPACES_ENDPOINT,
+      region: process.env.DO_SPACES_REGION || 'lon1',
+      // DO Spaces uses virtual-hosted-style addressing (bucket.region.digitaloceanspaces.com).
+      forcePathStyle: false,
+    },
+  }),
   redirectsPlugin({
     collections: ['posts'],
     overrides: {
