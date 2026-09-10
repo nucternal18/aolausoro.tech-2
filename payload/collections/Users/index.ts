@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { authenticatedAndAdmin } from '@src/access/authenticated'
+import { authenticatedAndAdmin } from '@access/authenticated'
 
 const Users: CollectionConfig<'users'> = {
   slug: 'users',

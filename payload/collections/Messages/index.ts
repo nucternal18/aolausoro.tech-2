@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
+import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
 import { sendContactEmail } from './hooks/sendContactEmail'
 
 const Messages: CollectionConfig<'messages'> = {

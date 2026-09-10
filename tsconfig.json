@@ -34,6 +34,7 @@
       "@types/*": ["types/*"],
       "@public/*": ["public/*"],
       "@utils/*": ["utils/*"],
+      "@access/*": ["access/*"],
       "@src/*": ["src/*"],
       "@di/*": ["di/*"],
       "@blocks/*": ["blocks/*"],

@@ -9,8 +9,8 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { authenticated } from '@src/access/authenticated'
-import { authenticatedOrPublished } from '@src/access/authenticatedOrPublished'
+import { authenticated } from '@access/authenticated'
+import { authenticatedOrPublished } from '@access/authenticatedOrPublished'
 import { Banner } from '@blocks/Banner/config'
 import { Code } from '@blocks/Code/config'
 import { MediaBlock } from '@blocks/MediaBlock/config'

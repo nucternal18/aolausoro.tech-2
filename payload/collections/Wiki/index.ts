@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { authenticated, authenticatedAndAdmin } from '@src/access/authenticated'
+import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
 import { defaultLexical } from '@fields/defaultLexical'
 
 const Wiki: CollectionConfig<'wiki'> = {
