@@ -36,19 +36,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'res.cloudinary.com',
-      },
-      {
-        protocol: 'https',
         hostname: 'source.unsplash.com',
       },
       {
         protocol: 'https',
         hostname: 'cdn.jsdelivr.net',
-      },
-      {
-        protocol: 'https',
-        hostname: 'img.clerk.com',
       },
       ...(process.env.DO_SPACES_CDN_ENDPOINT
         ? [

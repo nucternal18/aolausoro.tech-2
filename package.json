@@ -73,7 +73,6 @@
     "@sentry/nextjs": "^10.23.0",
     "@types/three": "^0.168.0",
     "class-variance-authority": "^0.7.1",
-    "cloudinary": "^2.8.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "cross-env": "^7.0.3",

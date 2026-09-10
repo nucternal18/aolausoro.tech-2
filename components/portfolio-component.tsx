@@ -41,7 +41,11 @@ export function PortfolioComponent({ projects }: { projects: Project[] }) {
           description={selectedProject.description as string}
           longDescription={selectedProject.description as string}
           tags={selectedProject.techStack as string[]}
-          image={selectedProject.url as string}
+          image={
+            typeof selectedProject.screenshot === 'object'
+              ? (selectedProject.screenshot?.url ?? '')
+              : ''
+          }
           appImages={[]}
           liveUrl={selectedProject.address as string}
           githubUrl={selectedProject.github as string}

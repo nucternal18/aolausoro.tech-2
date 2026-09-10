@@ -395,13 +395,9 @@ export interface Project {
    */
   generateSlug?: boolean | null;
   slug: string;
-  /**
-   * Project screenshot. Populated by the P3.3a asset migration.
-   */
-  screenshot?: (string | null) | Media;
+  screenshot: string | Media;
   description: string;
   address?: string | null;
-  url?: string | null;
   github?: string | null;
   techStack?:
     | {
@@ -477,13 +473,6 @@ export interface Wiki {
     };
     [k: string]: unknown;
   };
-  /**
-   * Legacy image URL. Removed after the P3.3a asset migration.
-   */
-  imageUrl?: string | null;
-  /**
-   * Replaces imageUrl; populated by the P3.3a asset migration.
-   */
   image?: (string | null) | Media;
   isImage?: boolean | null;
   user: string | User;
@@ -514,10 +503,6 @@ export interface Issue {
 export interface Cv {
   id: string;
   label: string;
-  /**
-   * Legacy PDF URL. Removed after the P3.3a asset migration.
-   */
-  cvUrl?: string | null;
   user: string | User;
   /**
    * Migration provenance — original _id from the pre-Payload database.
@@ -1050,7 +1035,6 @@ export interface ProjectsSelect<T extends boolean = true> {
   screenshot?: T;
   description?: T;
   address?: T;
-  url?: T;
   github?: T;
   techStack?:
     | T
@@ -1100,7 +1084,6 @@ export interface MessagesSelect<T extends boolean = true> {
 export interface WikiSelect<T extends boolean = true> {
   title?: T;
   description?: T;
-  imageUrl?: T;
   image?: T;
   isImage?: T;
   user?: T;
@@ -1126,7 +1109,6 @@ export interface IssuesSelect<T extends boolean = true> {
  */
 export interface CvsSelect<T extends boolean = true> {
   label?: T;
-  cvUrl?: T;
   user?: T;
   legacyId?: T;
   prefix?: T;

@@ -4,7 +4,7 @@ import { techSkillsData } from 'config/data'
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
-import type { Project } from '@/payload-types'
+import type { Media, Project } from '@/payload-types'
 import { ExternalLink, Github } from 'lucide-react'
 
 function PortfolioCard({
@@ -23,6 +23,9 @@ function PortfolioCard({
     }
   })
 
+  const screenshotUrl =
+    typeof project.screenshot === 'object' ? (project.screenshot as Media).url : undefined
+
   return (
     <Card
       className="group border-border hover:border-primary relative grid cursor-pointer grid-rows-[auto_1fr_auto] overflow-hidden rounded-lg border p-0 transition-colors duration-300"
@@ -30,18 +33,20 @@ function PortfolioCard({
     >
       <CardHeader className="p-0">
         <div className="bg-card relative h-64 overflow-hidden">
-          <Image
-            src={project.url as string}
-            alt={project.title as string}
-            sizes="100vw"
-            style={{
-              width: '100%',
-              height: 'auto',
-            }}
-            width={300}
-            height={300}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
+          {screenshotUrl && (
+            <Image
+              src={screenshotUrl}
+              alt={project.title as string}
+              sizes="100vw"
+              style={{
+                width: '100%',
+                height: 'auto',
+              }}
+              width={300}
+              height={300}
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          )}
         </div>
       </CardHeader>
       <CardContent className="bg-card grid-rows-[auto_1fr_auto] space-y-2 p-6">

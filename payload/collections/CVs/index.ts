@@ -17,11 +17,6 @@ export const CVs: CollectionConfig<'cvs'> = {
   },
   fields: [
     { name: 'label', type: 'text', required: true },
-    {
-      name: 'cvUrl',
-      type: 'text',
-      admin: { description: 'Legacy PDF URL. Removed after the P3.3a asset migration.' },
-    },
     { name: 'user', type: 'relationship', relationTo: 'users', required: true },
     legacyIdField,
   ],

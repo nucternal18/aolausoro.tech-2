@@ -1,11 +1,4 @@
 import type { JSXElementConstructor } from 'react'
-import type { Env } from '@lib/env'
-
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends Env {}
-  }
-}
 
 export type Meta = {
   id?: string

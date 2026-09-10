@@ -27,7 +27,7 @@ const Projects: CollectionConfig<'projects'> = {
       name: 'screenshot',
       type: 'upload',
       relationTo: 'media',
-      admin: { description: 'Project screenshot. Populated by the P3.3a asset migration.' },
+      required: true,
     },
     {
       name: 'description',
@@ -36,10 +36,6 @@ const Projects: CollectionConfig<'projects'> = {
     },
     {
       name: 'address',
-      type: 'text',
-    },
-    {
-      name: 'url',
       type: 'text',
     },
     {

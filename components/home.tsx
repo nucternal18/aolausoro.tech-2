@@ -21,7 +21,7 @@ export default function HomeComponent({
   posts: Post[]
   projects: Project[]
 }) {
-  const cvUrl = cv?.cvUrl ?? undefined
+  const cvUrl = cv?.url ?? undefined
 
   return (
     <main className="bg-background relative min-h-screen">
