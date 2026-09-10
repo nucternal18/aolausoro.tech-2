@@ -74,12 +74,15 @@ async function migrateCollection(
 }
 
 async function main(): Promise<void> {
+  console.log('P3.2b migration starting…')
   const clean = process.argv.includes('--clean')
 
   const legacyUri = process.env.LEGACY_DATABASE_URL
   if (!legacyUri) throw new Error('LEGACY_DATABASE_URL is not set')
 
-  const payload = await getPayload({ config })
+  console.log('initializing Payload…')
+  const payload = await getPayload({ config: await config })
+  console.log('Payload ready')
 
   // --- precondition: target database must be `portfolio` ---
   const dbFromInternals = (payload.db as unknown as { connection?: { name?: string } }).connection
@@ -92,9 +95,12 @@ async function main(): Promise<void> {
     }
   })()
   const targetDbName = dbFromInternals ?? dbFromEnv
-  if (targetDbName !== 'portfolio') {
+  // Guard: only ever write to `portfolio`. A dry run against a scratch DB must
+  // opt in explicitly by setting EXPECTED_DB to that DB's name.
+  const expectedDb = process.env.EXPECTED_DB || 'portfolio'
+  if (targetDbName !== expectedDb) {
     throw new Error(
-      `Refusing to run: target database is "${String(targetDbName)}", expected "portfolio"`,
+      `Refusing to run: target database is "${String(targetDbName)}", expected "${expectedDb}"`,
     )
   }
 
@@ -258,4 +264,11 @@ async function main(): Promise<void> {
   process.exit(totalErrors > 0 ? 1 : 0)
 }
 
-void main()
+// `payload run` awaits this module's top-level promise but not a detached
+// one, so await here rather than `void main()`.
+try {
+  await main()
+} catch (err) {
+  console.error('migration failed:', err)
+  process.exit(1)
+}
