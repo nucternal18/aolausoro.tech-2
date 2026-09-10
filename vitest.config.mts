@@ -11,5 +11,11 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./vitest.setup.ts'],
     include: ['tests/int/**/*.int.spec.ts'],
+    // These specs hit a remote Atlas cluster; the default 5s is tight under
+    // parallel connection contention. Run spec files serially to keep the
+    // shared connection pool sane.
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
+    fileParallelism: false,
   },
 })

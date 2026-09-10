@@ -6,9 +6,6 @@ import { redirects } from './redirects.ts'
 
 const nextConfig = {
   output: 'standalone',
-  experimental: {
-    mdxRs: true,
-  },
   // `reactCompiler` moved out of `experimental` to a top-level key in Next 16.2
   reactCompiler: false,
   turbopack: {
@@ -65,11 +62,8 @@ const nextConfig = {
     ],
     formats: ['image/webp'],
   },
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
 }
-
-import createMDX from '@next/mdx'
-const withMDX = createMDX()
 
 // Injected content via Sentry wizard below
 import { withSentryConfig } from '@sentry/nextjs'
@@ -77,7 +71,7 @@ import { withSentryConfig } from '@sentry/nextjs'
 // PWA temporarily disabled due to compatibility issues with Next.js 16
 // The next-pwa package has a known issue with pify.bind() error
 // TODO: Re-enable when next-pwa is updated or replaced with a compatible alternative
-let config = withPayload(withMDX(nextConfig))
+let config = withPayload(nextConfig)
 
 // Uncomment the following code when next-pwa compatibility is fixed:
 // if (process.env.NODE_ENV !== "development") {
