@@ -21,15 +21,29 @@ const CLOUDINARY_HOST = 'res.cloudinary.com'
 type Counts = { read: number; migrated: number; skipped: number; errors: number }
 const tally = (): Counts => ({ read: 0, migrated: 0, skipped: 0, errors: 0 })
 
+/** Reduce a URL-path segment to a safe, slash-free basename for an upload. */
+function safeBasename(raw: string, fallback: string): string {
+  const decoded = (() => {
+    try {
+      return decodeURIComponent(raw)
+    } catch {
+      return raw
+    }
+  })()
+  const base = decoded.replace(/\\/g, '/').split('/').pop() ?? ''
+  const cleaned = base.replace(/[^A-Za-z0-9._-]/g, '_').replace(/^\.+/, '')
+  return cleaned || fallback
+}
+
 async function fetchAsset(url: string): Promise<{ data: Buffer; name: string; mimetype: string }> {
   const parsed = new URL(url)
-  if (parsed.host !== CLOUDINARY_HOST) {
+  if (parsed.protocol !== 'https:' || parsed.host !== CLOUDINARY_HOST) {
     throw new Error(`refusing to fetch non-Cloudinary URL: ${url}`)
   }
-  const res = await fetch(url)
+  const res = await fetch(url, { redirect: 'error' })
   if (!res.ok) throw new Error(`fetch ${url} -> ${res.status}`)
   const data = Buffer.from(await res.arrayBuffer())
-  const name = decodeURIComponent(parsed.pathname.split('/').pop() || 'asset')
+  const name = safeBasename(parsed.pathname.split('/').pop() || '', 'asset')
   const mimetype = res.headers.get('content-type')?.split(';')[0]?.trim() || guessMimeType(name)
   return { data, name, mimetype }
 }
