@@ -1,6 +1,8 @@
 **/payload-types.ts
 types/payload-types.ts
 payload-types.ts
+next-env.d.ts
+app/(protected)/admin/importMap.js
 generated-schema.graphql
 prisma/generated/
 .tmp

@@ -62,6 +62,7 @@ fail2ban, UFW, unattended-upgrades, and key-only SSH come from
 | `.github/workflows/ci.yml` | ✅ — Type-check / Integration tests / Build are blocking; Lint is `continue-on-error` (follow-up f); `Generate Prisma client` step removed |
 | `.github/workflows/deploy-production.yml` | ✅ authored, ⚠️ `workflow_dispatch` only; push-to-`main` commented out; `build` job missing `packages: write` (follow-up c) |
 | CI green baseline (tsc + build + test:int pass, blocking) | ✅ |
+| P3.2b — legacy content migrated `aolausoro` → `portfolio` | ✅ 2/7/6/12/2/5 (users/projects/jobs/wiki/cvs/messages); binaries still Cloudinary URLs (P3.3) |
 | DigitalOcean droplet provisioned | ⬜ |
 | MongoDB Atlas cluster | ⬜ |
 | Cloudflare Origin CA cert + DNS for `portfolio.aolausoro.tech` | ⬜ |

@@ -1,34 +1,32 @@
 # Handoff — current state
 
-Latest session handoff: `.claude/hand-off/handoff-aolausoro-2026-09-10.md`
+Latest session handoff: `.claude/hand-off/handoff-aolausoro-2026-09-10-p3-2b.md`
 
 ## Standing context
 
-- **Phase 2 (project-config replication) is complete and pushed.** Branch
-  `feature/refactor-portfolio` on `origin`. Not yet merged to `main`. Plan/spec
-  under `docs/superpowers/{plans,specs}/2026-09-06-equilibrium-config-replication*`.
-- **P3.1a (Payload backend + admin + full Clerk→Payload auth cutover)** is
-  implemented and verified — `test:int` 12/12 green against Atlas. Commits
-  `b8e64f3..92a89c7`.
-- **P3.2 ("Payload-only site — kill the old stack") is complete.** Commits
-  `7dc0289..HEAD`. The old `src/`/`prisma/`/`admin-route-components/` stack is
-  deleted, the public site runs on Payload's local API, the Payload blog
-  frontend + `/search` are built, ~65 dead deps pruned.
-- **Build/typecheck/tests are green and blocking in CI.** `tsc --noEmit` 0,
-  `pnpm run build` produces `.next/standalone`, `test:int` 15/15, prettier
-  clean. `pnpm run lint` has 19 pre-existing (non-P3.2) errors and stays
-  `continue-on-error` — see follow-up f in `docs/deployment-plan.md`.
-- **Homepage is `force-dynamic`** — it reads live CMS data; build stays
-  DB-independent. See the dated handoff for why (`.env.local` points at the
-  un-migrated Prisma db during build).
-- **Next: P3.2b** (data migration `aolausoro` db → `portfolio` db,
-  Prisma-shaped → Payload-shaped) and **P3.3** (Cloudinary→DO Spaces + SSRF
-  fix, Sentry decision, provision deploy infra, enable
-  `deploy-production.yml`). Neither has a spec/plan yet.
-- `.env` `DATABASE_URL` db name is `portfolio`; old Prisma data untouched in
-  the `aolausoro` db name (P3.2b migration source). 6 dummy test users need
-  cleaning out of `portfolio` (command in the dated handoff).
-- Deploy infra (droplet, Atlas, Cloudflare, runner, secrets) still
-  unprovisioned; `deploy-production.yml` is `workflow_dispatch`-only.
-  `docs/deployment-plan.md` tracks it (follow-ups a–f).
-- SDD execution ledgers live under `.superpowers/sdd/` — gitignored, local only.
+- **Phase 2 (project-config replication)** — complete, pushed. Not merged to
+  `main`. Plan/spec under
+  `docs/superpowers/{plans,specs}/2026-09-06-equilibrium-config-replication*`.
+- **P3.1a (Payload backend + admin + Clerk→Payload auth cutover)** — done,
+  verified (`test:int` green against Atlas). Commits `b8e64f3..92a89c7`.
+- **P3.2 (Payload-only site — kill the old stack)** — done. Old
+  `src/`/`prisma/`/`admin-route-components/` deleted, public site on Payload's
+  local API, blog frontend + `/search` built, ~65 dead deps pruned. Commits
+  `7dc0289..783cde1`.
+- **P3.2b (legacy data migration)** — **done**. `aolausoro` db content reshaped
+  into `portfolio` (2 users / 7 projects / 6 jobs / 12 wiki / 2 cvs / 5
+  messages), admin logins seeded, junk users cleaned. Binaries still Cloudinary
+  text URLs. Commits `44c3866..HEAD`. See the dated handoff for temp passwords
+  and loose ends.
+- **Green + blocking in CI:** `tsc` 0, `next build` (standalone), `test:int`
+  19/19. `pnpm run lint` still has ~19 pre-existing errors, non-blocking
+  (deployment-plan follow-up f).
+- **Homepage is `force-dynamic`** — reads live CMS data; build stays
+  DB-independent.
+- `.env` + `.env.local` `DATABASE_URL` now both point at `portfolio`;
+  `LEGACY_DATABASE_URL` (the `aolausoro` string) is the migration source.
+- **Next: P3.3** — Cloudinary → DO Spaces (the URLs now stored as text),
+  restore `upload` fields for wiki/CVs, drop `legacyId` fields, delete the
+  `aolausoro` db, Sentry keep/drop, provision deploy infra + enable
+  `deploy-production.yml`. `docs/deployment-plan.md` follow-ups a–f.
+- SDD/execution ledgers under `.superpowers/sdd/` — gitignored, local only.
