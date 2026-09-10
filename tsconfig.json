@@ -59,7 +59,6 @@
     "next-sitemap.config.cjs",
     "redirects.ts",
     "types/**/*.d.ts",
-    "di/modules",
     ".next/dev/types/**/*.ts",
     "tests/**/*.ts"
   ],
