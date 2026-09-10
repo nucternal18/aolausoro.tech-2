@@ -5,6 +5,7 @@ import {
   lexicalParagraph,
   randomTempPassword,
 } from '../../payload/scripts/lib/transforms'
+import { guessMimeType } from '../../payload/scripts/lib/mime'
 
 describe('P3.2b transforms', () => {
   it('slugify: lowercases, hyphenates, trims', () => {
@@ -37,5 +38,16 @@ describe('P3.2b transforms', () => {
     const b = randomTempPassword()
     expect(a).toMatch(/^[A-Za-z0-9_-]{20,}$/)
     expect(a).not.toBe(b)
+  })
+})
+
+describe('P3.3a mime', () => {
+  it('maps common extensions', () => {
+    expect(guessMimeType('a.webp')).toBe('image/webp')
+    expect(guessMimeType('Screenshot 20.PNG')).toBe('image/png')
+    expect(guessMimeType('cv.pdf')).toBe('application/pdf')
+    expect(guessMimeType('x.jpg')).toBe('image/jpeg')
+    expect(guessMimeType('x.jpeg')).toBe('image/jpeg')
+    expect(guessMimeType('noext')).toBe('application/octet-stream')
   })
 })
