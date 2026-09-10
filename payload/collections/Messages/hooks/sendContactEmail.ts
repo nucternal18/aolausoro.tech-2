@@ -5,7 +5,13 @@ import type { CollectionAfterChangeHook } from 'payload'
  * Only fires on create; a failed send is logged, not thrown, so it never
  * blocks the submission.
  */
-export const sendContactEmail: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
+export const sendContactEmail: CollectionAfterChangeHook = async ({
+  context,
+  doc,
+  operation,
+  req,
+}) => {
+  if (context?.skipContactEmail) return doc
   if (operation !== 'create') return doc
 
   const to = process.env.CONTACT_NOTIFY_ADDRESS || process.env.EMAIL_FROM_ADDRESS

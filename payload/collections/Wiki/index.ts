@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
 import { defaultLexical } from '@fields/defaultLexical'
+import { legacyIdField } from '@fields/legacyId'
 
 const Wiki: CollectionConfig<'wiki'> = {
   slug: 'wiki',
@@ -28,8 +29,8 @@ const Wiki: CollectionConfig<'wiki'> = {
     },
     {
       name: 'imageUrl',
-      type: 'upload',
-      relationTo: 'media',
+      type: 'text',
+      admin: { description: 'Image URL (Cloudinary today; migrates to Spaces in P3.3).' },
     },
     {
       name: 'isImage',
@@ -42,6 +43,7 @@ const Wiki: CollectionConfig<'wiki'> = {
       relationTo: 'users',
       required: true,
     },
+    legacyIdField,
   ],
   timestamps: true,
 }

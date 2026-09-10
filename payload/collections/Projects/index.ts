@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 import { anyone } from '@access/anyone'
 import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
+import { legacyIdField } from '@fields/legacyId'
 
 const Projects: CollectionConfig<'projects'> = {
   slug: 'projects',
@@ -60,6 +61,7 @@ const Projects: CollectionConfig<'projects'> = {
       relationTo: 'users',
       required: true,
     },
+    legacyIdField,
   ],
   timestamps: true,
 }

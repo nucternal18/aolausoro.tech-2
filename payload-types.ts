@@ -357,6 +357,10 @@ export interface User {
   name: string;
   image?: string | null;
   isAdmin?: boolean | null;
+  /**
+   * Migration provenance — original _id from the pre-Payload database.
+   */
+  legacyId?: string | null;
   totpSecret?: string | null;
   hasTotp?: boolean | null;
   updatedAt: string;
@@ -402,6 +406,10 @@ export interface Project {
     | null;
   published?: boolean | null;
   user: string | User;
+  /**
+   * Migration provenance — original _id from the pre-Payload database.
+   */
+  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -417,6 +425,10 @@ export interface Job {
   jobType: 'full-time' | 'part-time' | 'contract' | 'remote';
   status?: ('pending' | 'interview' | 'declined') | null;
   user: string | User;
+  /**
+   * Migration provenance — original _id from the pre-Payload database.
+   */
+  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -431,6 +443,10 @@ export interface Message {
   subject: string;
   message: string;
   read?: boolean | null;
+  /**
+   * Migration provenance — original _id from the pre-Payload database.
+   */
+  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -456,9 +472,16 @@ export interface Wiki {
     };
     [k: string]: unknown;
   };
-  imageUrl?: (string | null) | Media;
+  /**
+   * Image URL (Cloudinary today; migrates to Spaces in P3.3).
+   */
+  imageUrl?: string | null;
   isImage?: boolean | null;
   user: string | User;
+  /**
+   * Migration provenance — original _id from the pre-Payload database.
+   */
+  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -482,18 +505,17 @@ export interface Issue {
 export interface Cv {
   id: string;
   label: string;
+  /**
+   * PDF URL (Cloudinary today; migrates to Spaces in P3.3).
+   */
+  cvUrl: string;
   user: string | User;
+  /**
+   * Migration provenance — original _id from the pre-Payload database.
+   */
+  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1018,6 +1040,7 @@ export interface ProjectsSelect<T extends boolean = true> {
       };
   published?: T;
   user?: T;
+  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1032,6 +1055,7 @@ export interface JobsSelect<T extends boolean = true> {
   jobType?: T;
   status?: T;
   user?: T;
+  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1045,6 +1069,7 @@ export interface MessagesSelect<T extends boolean = true> {
   subject?: T;
   message?: T;
   read?: T;
+  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1058,6 +1083,7 @@ export interface WikiSelect<T extends boolean = true> {
   imageUrl?: T;
   isImage?: T;
   user?: T;
+  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1079,18 +1105,11 @@ export interface IssuesSelect<T extends boolean = true> {
  */
 export interface CvsSelect<T extends boolean = true> {
   label?: T;
+  cvUrl?: T;
   user?: T;
+  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1100,6 +1119,7 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   image?: T;
   isAdmin?: T;
+  legacyId?: T;
   totpSecret?: T;
   hasTotp?: T;
   updatedAt?: T;

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
+import { legacyIdField } from '@fields/legacyId'
 
 export const CVs: CollectionConfig<'cvs'> = {
   slug: 'cvs',
@@ -10,13 +11,16 @@ export const CVs: CollectionConfig<'cvs'> = {
     update: authenticated,
   },
   admin: { useAsTitle: 'label', defaultColumns: ['label', 'user', 'updatedAt'] },
-  upload: {
-    mimeTypes: ['application/pdf'],
-    staticDir: 'public/cvs',
-  },
   fields: [
     { name: 'label', type: 'text', required: true },
+    {
+      name: 'cvUrl',
+      type: 'text',
+      required: true,
+      admin: { description: 'PDF URL (Cloudinary today; migrates to Spaces in P3.3).' },
+    },
     { name: 'user', type: 'relationship', relationTo: 'users', required: true },
+    legacyIdField,
   ],
   timestamps: true,
 }

@@ -71,5 +71,5 @@ export const getLatestCV = (data: Cv[]): string | null | undefined => {
   const latestCV = data.reduce((prev, current) =>
     new Date(prev.createdAt) > new Date(current.createdAt) ? prev : current,
   )
-  return latestCV.url
+  return latestCV.cvUrl
 }

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
+import { legacyIdField } from '@fields/legacyId'
 
 const Jobs: CollectionConfig<'jobs'> = {
   slug: 'jobs',
@@ -56,6 +57,7 @@ const Jobs: CollectionConfig<'jobs'> = {
       relationTo: 'users',
       required: true,
     },
+    legacyIdField,
   ],
   timestamps: true,
 }
