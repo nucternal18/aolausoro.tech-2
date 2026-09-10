@@ -2,12 +2,8 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
-  '@prisma/client': true
-  '@prisma/engines': true
-  prisma: true
   '@sentry/cli': true
-  '@clerk/shared': true
-  msw: true
+  msw: false
 
 overrides:
   rimraf: ^5.0.0
