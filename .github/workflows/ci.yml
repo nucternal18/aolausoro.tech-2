@@ -38,23 +38,17 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        # TODO(phase-3): drop continue-on-error once the Payload migration lands a green baseline
+        # Non-blocking: ~19 pre-existing eslint errors remain across template-derived
+        # and legacy UI files (react-compiler correctness, display-name, require()).
+        # Tracked separately from the Payload migration — see the phase-3 handoff.
         continue-on-error: true
         run: pnpm run lint
 
       - name: Type-check
-        # TODO(phase-3): drop continue-on-error once the Payload migration lands a green baseline
-        continue-on-error: true
         run: pnpm exec tsc --noEmit
-
-      - name: Generate Prisma client
-        continue-on-error: true # TODO(phase-3): drop once the Payload migration removes Prisma
-        run: pnpm run generate
 
       - name: Integration tests
         run: pnpm run test:int
 
       - name: Build
-        # TODO(phase-3): drop continue-on-error once the Payload migration lands a green baseline
-        continue-on-error: true
         run: pnpm run build

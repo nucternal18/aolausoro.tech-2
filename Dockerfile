@@ -38,10 +38,6 @@ ARG SENTRY_AUTH_TOKEN
 ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
 ENV NEXT_TELEMETRY_DISABLED=1
-# NOTE(phase-3): the app still imports @prisma/client, but `prisma generate` is
-# intentionally NOT run here — Prisma is being removed in Phase 3 and the current
-# prisma.config.ts is broken. The build is known to fail on legacy Clerk/Prisma
-# code until that migration lands. See docs/deployment-plan.md.
 RUN corepack enable pnpm && pnpm run build
 
 FROM base AS runner

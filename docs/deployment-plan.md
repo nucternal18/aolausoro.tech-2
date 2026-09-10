@@ -1,8 +1,10 @@
 # Deployment Plan — aolausoro.tech
 
 **Scope:** Production only — `portfolio.aolausoro.tech`. No staging environment.
-**Status:** Pipeline landed and inert; infrastructure provisioning pending; CI
-gates soft until the Payload migration lands a green baseline.
+**Status:** Pipeline landed and inert; infrastructure provisioning pending.
+The Payload migration has landed a green baseline — `tsc`, `next build`
+(standalone) and `test:int` all pass and are blocking in CI. `pnpm run lint`
+remains non-blocking against ~19 pre-existing eslint errors (see follow-up f).
 
 ## Overview
 
@@ -57,9 +59,9 @@ fail2ban, UFW, unattended-upgrades, and key-only SSH come from
 | `deploy/docker-compose.production.yml` | ✅ |
 | `deploy/nginx/production.conf` | ✅ |
 | `deploy/scripts/setup-droplet.sh` | ✅ (see Security notes) |
-| `.github/workflows/ci.yml` | ✅ — Lint / Type-check / Build steps are `continue-on-error` until Phase 3 |
+| `.github/workflows/ci.yml` | ✅ — Type-check / Integration tests / Build are blocking; Lint is `continue-on-error` (follow-up f); `Generate Prisma client` step removed |
 | `.github/workflows/deploy-production.yml` | ✅ authored, ⚠️ `workflow_dispatch` only; push-to-`main` commented out; `build` job missing `packages: write` (follow-up c) |
-| CI green baseline (lint + tsc + build all pass) | ⬜ Phase 3 |
+| CI green baseline (tsc + build + test:int pass, blocking) | ✅ |
 | DigitalOcean droplet provisioned | ⬜ |
 | MongoDB Atlas cluster | ⬜ |
 | Cloudflare Origin CA cert + DNS for `portfolio.aolausoro.tech` | ⬜ |
@@ -88,16 +90,19 @@ listed in `deploy-production.yml` exist. Until then, deploys are manual
   `permissions: { contents: read, packages: write }` block before the GHCR push
   will work under GitHub's restricted default `GITHUB_TOKEN` permissions. Add it
   when the workflow goes live.
-- **(d) `/api/health` route coexistence.** `app/api/health/route.ts` (static
-  `/api/health`) sits alongside the Payload catch-all
-  `app/(protected)/api/[...slug]/route.ts`. The first successful production
-  build must confirm Next resolves `/api/health` without a "parallel routes"
-  error; if it does not, relocate the route under `app/(home)/api/health/`.
-- **(e) `Dockerfile` omits `prisma generate`.** The production `Dockerfile`
-  builder stage deliberately does not run `prisma generate` (the current
-  `prisma.config.ts` is broken and Prisma is being removed in Phase 3). The
-  image build will not succeed until the Phase-3 Prisma removal + Clerk
-  async-Server-Action fixes land.
+- **(d) `/api/health` route coexistence — resolved.** `next build` resolves
+  `/api/health` (route table: `ƒ /api/health`) alongside the Payload catch-all
+  with no parallel-routes error.
+- **(e) `Dockerfile` build — resolved.** Prisma, Clerk and the old
+  `src/`/`admin-route-components/` stack have been removed; `pnpm run build`
+  succeeds and produces `.next/standalone`. The builder stage passes a
+  disposable `DATABASE_URL`/`PAYLOAD_SECRET` because `/posts` still
+  prerenders via `generateStaticParams`; the homepage is `force-dynamic`.
+- **(f) `pnpm run lint` non-blocking.** ~19 pre-existing eslint errors remain
+  across template-derived and legacy UI files (`react-hooks` rules-of-hooks
+  and react-compiler correctness, `react/display-name`, `require()` in
+  `tailwind.config.js`). None are P3.2 regressions. Fix them, then drop
+  `continue-on-error` from the `Lint` step in `ci.yml`.
 
 ## Migrating from the old deploy
 
