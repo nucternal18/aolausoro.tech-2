@@ -35,8 +35,6 @@
       "@public/*": ["public/*"],
       "@utils/*": ["utils/*"],
       "@access/*": ["access/*"],
-      "@src/*": ["src/*"],
-      "@di/*": ["di/*"],
       "@blocks/*": ["blocks/*"],
       "@fields/*": ["fields/*"],
       "@heroes/*": ["heroes/*"],
@@ -44,7 +42,6 @@
       "@payload-types/*": ["./payload-types"],
       "@payload": ["payload/*"],
       "@payload-config": ["./payload.config.ts"],
-      "@payload/importMaps": ["./app/(protected)/admin/importMap.js"],
       "@/utilities/ui": ["./lib/utils"],
       "@/utilities/*": ["./utils/*"],
       "@/*": ["./*"]
