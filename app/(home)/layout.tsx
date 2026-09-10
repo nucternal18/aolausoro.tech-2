@@ -1,5 +1,5 @@
 import localFont from 'next/font/local'
-import { Providers } from '@components/admin-route-components/global-redux-store/providers'
+import { Providers } from '@components/providers'
 import '../globals.css'
 import 'highlight.js/styles/github-dark.css'
 
