@@ -30,7 +30,13 @@ const Wiki: CollectionConfig<'wiki'> = {
     {
       name: 'imageUrl',
       type: 'text',
-      admin: { description: 'Image URL (Cloudinary today; migrates to Spaces in P3.3).' },
+      admin: { description: 'Legacy image URL. Removed after the P3.3a asset migration.' },
+    },
+    {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      admin: { description: 'Replaces imageUrl; populated by the P3.3a asset migration.' },
     },
     {
       name: 'isImage',

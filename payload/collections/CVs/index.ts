@@ -11,13 +11,16 @@ export const CVs: CollectionConfig<'cvs'> = {
     update: authenticated,
   },
   admin: { useAsTitle: 'label', defaultColumns: ['label', 'user', 'updatedAt'] },
+  upload: {
+    mimeTypes: ['application/pdf'],
+    staticDir: 'public/cvs',
+  },
   fields: [
     { name: 'label', type: 'text', required: true },
     {
       name: 'cvUrl',
       type: 'text',
-      required: true,
-      admin: { description: 'PDF URL (Cloudinary today; migrates to Spaces in P3.3).' },
+      admin: { description: 'Legacy PDF URL. Removed after the P3.3a asset migration.' },
     },
     { name: 'user', type: 'relationship', relationTo: 'users', required: true },
     legacyIdField,

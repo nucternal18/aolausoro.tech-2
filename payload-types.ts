@@ -395,6 +395,10 @@ export interface Project {
    */
   generateSlug?: boolean | null;
   slug: string;
+  /**
+   * Project screenshot. Populated by the P3.3a asset migration.
+   */
+  screenshot?: (string | null) | Media;
   description: string;
   address?: string | null;
   url?: string | null;
@@ -474,9 +478,13 @@ export interface Wiki {
     [k: string]: unknown;
   };
   /**
-   * Image URL (Cloudinary today; migrates to Spaces in P3.3).
+   * Legacy image URL. Removed after the P3.3a asset migration.
    */
   imageUrl?: string | null;
+  /**
+   * Replaces imageUrl; populated by the P3.3a asset migration.
+   */
+  image?: (string | null) | Media;
   isImage?: boolean | null;
   user: string | User;
   /**
@@ -507,9 +515,9 @@ export interface Cv {
   id: string;
   label: string;
   /**
-   * PDF URL (Cloudinary today; migrates to Spaces in P3.3).
+   * Legacy PDF URL. Removed after the P3.3a asset migration.
    */
-  cvUrl: string;
+  cvUrl?: string | null;
   user: string | User;
   /**
    * Migration provenance — original _id from the pre-Payload database.
@@ -1039,6 +1047,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
+  screenshot?: T;
   description?: T;
   address?: T;
   url?: T;
@@ -1092,6 +1101,7 @@ export interface WikiSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   imageUrl?: T;
+  image?: T;
   isImage?: T;
   user?: T;
   legacyId?: T;

@@ -24,6 +24,12 @@ const Projects: CollectionConfig<'projects'> = {
     },
     slugField(),
     {
+      name: 'screenshot',
+      type: 'upload',
+      relationTo: 'media',
+      admin: { description: 'Project screenshot. Populated by the P3.3a asset migration.' },
+    },
+    {
       name: 'description',
       type: 'textarea',
       required: true,
