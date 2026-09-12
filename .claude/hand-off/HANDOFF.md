@@ -32,12 +32,16 @@ project since Phase 2.
   pre-existing errors, non-blocking (deployment-plan follow-up f).
 - Push-to-`main` deploy trigger is **enabled and proven** — the merge push
   itself triggered and completed a successful `Deploy Production` run.
+- `ci.yml`'s first two runs on `main` hit `startup_failure` (zero jobs) —
+  root cause: the repo's Actions policy allows only GitHub-owned actions
+  (`allowed_actions: selected`, `verified_allowed: false`), and `ci.yml` used
+  `pnpm/action-setup@v4`, which isn't GitHub-owned. Fixed by activating pnpm
+  via `corepack enable` instead (bundled with Node, no marketplace action
+  needed). Both `CI` and `Deploy Production` are now confirmed green on
+  `main` from the same push.
 
 ## Loose ends (none blocking, all optional cleanup)
 
-- Confirm `ci.yml`'s first real `main` run went green (its very first
-  invocation raced a `startup_failure` with zero jobs — likely a
-  just-registered-workflow blip; check `gh run list --branch main`).
 - Delete the `aolausoro` database (owner-run `mongosh ... dropDatabase()` —
   inert now, no rush) and the `portfolio_migration_dryrun` scratch DB.
 - ~19 pre-existing lint errors (follow-up f) — unrelated to this migration.
