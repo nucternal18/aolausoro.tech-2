@@ -108,7 +108,14 @@ export const plugins: Plugin[] = [
     },
   }),
   searchPlugin({
-    collections: ['posts'],
+    collections: ['posts', 'projects'],
+    skipSync: ({ collectionSlug, doc }) => {
+      // Projects has no _status/draft concept (unlike Posts) — it uses a
+      // plain `published` checkbox instead. Without this guard, unpublished
+      // projects would still be indexed and show up in site search.
+      if (collectionSlug === 'projects') return doc?.published !== true
+      return false
+    },
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       fields: ({ defaultFields }) => {

@@ -761,10 +761,15 @@ export interface Search {
   id: string;
   title?: string | null;
   priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: string | Post;
-  };
+  doc:
+    | {
+        relationTo: 'posts';
+        value: string | Post;
+      }
+    | {
+        relationTo: 'projects';
+        value: string | Project;
+      };
   slug?: string | null;
   meta?: {
     title?: string | null;
