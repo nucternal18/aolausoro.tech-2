@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic'
 export default async function Page() {
   const payload = await getPayload({ config })
 
-  const [projects, cvs, posts] = await Promise.all([
+  const [projects, cvs, posts, siteSettings] = await Promise.all([
     payload.find({
       collection: 'projects',
       where: { published: { equals: true } },
@@ -35,7 +35,16 @@ export default async function Page() {
       depth: 1,
       overrideAccess: false,
     }),
+    payload.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: false }),
   ])
 
-  return <HomeComponent projects={projects.docs} cv={cvs.docs[0] ?? null} posts={posts.docs} />
+  return (
+    <HomeComponent
+      projects={projects.docs}
+      projectsTotalDocs={projects.totalDocs}
+      cv={cvs.docs[0] ?? null}
+      posts={posts.docs}
+      siteSettings={siteSettings}
+    />
+  )
 }

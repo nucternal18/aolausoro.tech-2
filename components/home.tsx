@@ -10,16 +10,20 @@ import { Skills } from './skills'
 import CTA from './cta'
 
 // types
-import type { Cv, Post, Project } from '@/payload-types'
+import type { Cv, Post, Project, SiteSetting } from '@/payload-types'
 
 export default function HomeComponent({
   cv,
   posts: _posts,
   projects,
+  projectsTotalDocs: _projectsTotalDocs,
+  siteSettings,
 }: {
   cv: Cv | null
   posts: Post[]
   projects: Project[]
+  projectsTotalDocs: number
+  siteSettings: SiteSetting
 }) {
   const cvUrl = cv?.url ?? undefined
 
@@ -27,7 +31,7 @@ export default function HomeComponent({
     <main className="bg-background relative min-h-screen">
       <MatrixRainAnimation />
       <div className="relative z-10 space-y-20">
-        <Navbar />
+        <Navbar nav={siteSettings.nav} email={siteSettings.contact.email} />
         <Hero cvDoc={cvUrl as string} />
         <PortfolioComponent projects={projects} />
         <Skills />

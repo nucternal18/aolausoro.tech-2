@@ -1,135 +1,99 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { Search as SearchIcon, Menu } from 'lucide-react'
 
-import { links, social } from '../../data'
-
-// components
-import Nav from './nav-components'
+import { NavDesktopLink, NavMobileLink, NavShell } from './nav-components'
 import { ModeToggle } from '@components/mode-toggle'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
+  SheetTrigger,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
+  SheetClose,
 } from '@components/ui/sheet'
-import { ScrollArea } from '@components/ui/scroll-area'
+import type { SiteSetting } from '@/payload-types'
 
-type NavProps = {
-  textColor?: string
-}
-
-export function Navbar({ textColor = 'text-primary' }: NavProps) {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const toggle = () => {
-    setIsOpen(!isOpen)
-  }
+export function Navbar({ nav, email }: { nav: SiteSetting['nav']; email: string }) {
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <Nav bgColor=" drop-shadow-sm">
-      <Nav.Toggler toggle={toggle} isOpen={isOpen} color={textColor} />
-      {/* Main navigation */}
-      <Nav.Container textColor={`${textColor} `}>
-        <Nav.Brand href="/">
-          <img src={'/android-chrome-512x512.png'} alt="logo" className="h-8 w-8" />
-        </Nav.Brand>
-        <Nav.NavLinks right>
-          {links.map((link) => {
-            const { id, url, text } = link
-            return (
-              <Nav.Item key={id}>
-                <Nav.Link href={url}>{text}</Nav.Link>
-              </Nav.Item>
-            )
-          })}
-        </Nav.NavLinks>
-        <Nav.NavLinks right>
-          <Nav.Item>
-            <ModeToggle />
-          </Nav.Item>
-          {social.map((link) => {
-            const { id, url, icon } = link
-            return (
-              <Nav.Item key={id}>
-                <Nav.Link href={url}>{icon}</Nav.Link>
-              </Nav.Item>
-            )
-          })}
-        </Nav.NavLinks>
-      </Nav.Container>
-    </Nav>
-  )
-}
+    <NavShell>
+      <div className="flex items-stretch">
+        <Link
+          href="/"
+          className="flex flex-none items-center gap-[10px] border-r border-[color:var(--rule)] px-[18px]"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- site icon, matches other Logo usages in this repo */}
+          <img src="/android-chrome-512x512.png" alt="" className="h-[26px] w-[26px]" />
+          <span className="font-display text-xl tracking-[0.04em] text-ink">
+            AOLAUSORO<span className="text-accent-text">.TECH</span>
+          </span>
+        </Link>
 
-export function MobileNavbar({ height }: { height: number }) {
-  const SHEET_HEIGHT = height - 200
-  const SCROLL_AREA_HEIGHT = height - 400
+        <ul className="hidden flex-1 list-none items-stretch md:flex">
+          {nav.links.map((link, i) => (
+            <li key={link.href} className="flex">
+              <NavDesktopLink href={link.href} label={link.label} index={i + 1} />
+            </li>
+          ))}
+        </ul>
 
-  return (
-    <header>
-      <Sheet>
-        <SheetTrigger className="navbar-burger text-primary flex items-center p-4">
-          <svg
-            className="text-primary block h-6 w-6 fill-current"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Mobile menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-          </svg>
-          <span hidden>Mobile Menu</span>
-        </SheetTrigger>
+        <Link
+          href="/search"
+          aria-label="Search"
+          className="hidden w-[52px] items-center justify-center border-l border-[color:var(--rule)] text-ink md:flex"
+        >
+          <SearchIcon className="h-[17px] w-[17px]" />
+        </Link>
 
-        <SheetContent side={'bottom'} className={`shadow h-[${SHEET_HEIGHT}] shadow-neutral-400`}>
-          <SheetHeader>
-            <SheetTitle>
-              <div className="flex w-full justify-between">
-                <div className="text-primary flex items-center">
-                  <SheetClose asChild>
-                    <Link
-                      href="/"
-                      className="whitespace-no-wrap flex items-center text-left text-xs font-bold uppercase md:pb-2"
-                    >
-                      <img src={'/android-chrome-512x512.png'} alt="logo" className="h-8 w-8" />
-                      <span className="ml-1">aolausoro.tech</span>
-                    </Link>
-                  </SheetClose>
-                </div>
-              </div>
-            </SheetTitle>
-          </SheetHeader>
-          <ScrollArea className={`text-primary py-12`} style={{ height: SCROLL_AREA_HEIGHT }}>
-            {links.map((link) => {
-              const { id, url, text } = link
-              return (
-                <Nav.Item key={id}>
-                  <SheetClose asChild>
-                    <Link
-                      href={url}
-                      className="z-50 mb-1 flex cursor-pointer list-none px-2 font-mono text-lg font-medium sm:block md:mb-0 md:ml-0 md:px-1 md:py-1"
-                    >
-                      {text}
-                    </Link>
-                  </SheetClose>
-                </Nav.Item>
-              )
-            })}
-            <div className={`absolute bottom-0 mb-2 flex items-center justify-center`}>
-              {social.map((link) => {
-                const { id, url, icon } = link
-                return (
-                  <Nav.Item key={id}>
-                    <Nav.Link href={url}>{icon}</Nav.Link>
-                  </Nav.Item>
-                )
-              })}
-            </div>
-          </ScrollArea>
-        </SheetContent>
-      </Sheet>
-    </header>
+        <div className="hidden w-[52px] items-center justify-center border-l border-[color:var(--rule)] md:flex">
+          <ModeToggle />
+        </div>
+
+        <a
+          href={`mailto:${email}`}
+          className="bg-accent-hot text-on-accent border-edge hidden items-center border-l-2 px-5 font-mono text-[11px] tracking-[0.12em] md:flex"
+        >
+          {nav.ctaLabel}
+        </a>
+
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetTrigger asChild>
+            <button
+              aria-label="Menu"
+              className="bg-accent-hot text-on-accent border-edge flex min-h-[48px] w-[52px] flex-none items-center justify-center border-l-2 md:hidden"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="right" className="border-edge bg-paper w-full max-w-sm border-l-2 p-0">
+            <SheetHeader className="border-edge border-b-2 p-4">
+              <SheetTitle className="font-display text-xl text-ink">Menu</SheetTitle>
+            </SheetHeader>
+            <nav className="flex flex-col">
+              {nav.links.map((link) => (
+                <SheetClose asChild key={link.href}>
+                  <NavMobileLink
+                    href={link.href}
+                    label={link.label}
+                    onNavigate={() => setMobileOpen(false)}
+                  />
+                </SheetClose>
+              ))}
+              <SheetClose asChild>
+                <a
+                  href={`mailto:${email}`}
+                  className="bg-accent-hot text-on-accent flex min-h-[48px] items-center px-4 font-mono text-sm tracking-[0.1em]"
+                >
+                  {nav.ctaLabel}
+                </a>
+              </SheetClose>
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </NavShell>
   )
 }
