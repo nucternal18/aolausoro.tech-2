@@ -119,8 +119,12 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -1491,6 +1495,201 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: string;
+  hero: {
+    eyebrow: string;
+    stackLine: string;
+    /**
+     * The last word is rendered with the outlined-text treatment.
+     */
+    name: string;
+    lead: string;
+    terminalLines: {
+      prompt: string;
+      output: string;
+      id?: string | null;
+    }[];
+    primaryCtaLabel: string;
+    secondaryCtaLabel: string;
+    statLocation: string;
+    statStatus: string;
+  };
+  ticker: {
+    message: string;
+    id?: string | null;
+  }[];
+  nav: {
+    links: {
+      label: string;
+      href: string;
+      id?: string | null;
+    }[];
+    ctaLabel: string;
+  };
+  contact: {
+    email: string;
+    location: string;
+    responsePromise: string;
+    socialLinks: {
+      platform: 'github' | 'linkedin' | 'stackoverflow' | 'other';
+      url: string;
+      label: string;
+      id?: string | null;
+    }[];
+  };
+  cta: {
+    eyebrow: string;
+    heading: string;
+    body: string;
+  };
+  footer: {
+    bio: string;
+    buttonLabel: string;
+    colophon: string;
+  };
+  sectionHeadings: {
+    work: {
+      eyebrow: string;
+      heading: string;
+      description: string;
+    };
+    stack: {
+      eyebrow: string;
+      heading: string;
+      description: string;
+    };
+    writing: {
+      eyebrow: string;
+      heading: string;
+    };
+    search: {
+      heading: string;
+    };
+    contactPage: {
+      eyebrow: string;
+      heading: string;
+      body: string;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        stackLine?: T;
+        name?: T;
+        lead?: T;
+        terminalLines?:
+          | T
+          | {
+              prompt?: T;
+              output?: T;
+              id?: T;
+            };
+        primaryCtaLabel?: T;
+        secondaryCtaLabel?: T;
+        statLocation?: T;
+        statStatus?: T;
+      };
+  ticker?:
+    | T
+    | {
+        message?: T;
+        id?: T;
+      };
+  nav?:
+    | T
+    | {
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+      };
+  contact?:
+    | T
+    | {
+        email?: T;
+        location?: T;
+        responsePromise?: T;
+        socialLinks?:
+          | T
+          | {
+              platform?: T;
+              url?: T;
+              label?: T;
+              id?: T;
+            };
+      };
+  cta?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+      };
+  footer?:
+    | T
+    | {
+        bio?: T;
+        buttonLabel?: T;
+        colophon?: T;
+      };
+  sectionHeadings?:
+    | T
+    | {
+        work?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+            };
+        stack?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+            };
+        writing?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+            };
+        search?:
+          | T
+          | {
+              heading?: T;
+            };
+        contactPage?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              body?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

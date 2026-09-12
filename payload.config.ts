@@ -16,6 +16,7 @@ import Issues from './payload/collections/Issues'
 import Users from './payload/collections/Users'
 import { Media } from './payload/collections/Media'
 import { Posts } from './payload/collections/Posts'
+import { SiteSettings } from './payload/globals/SiteSettings'
 import { plugins } from './plugins'
 import { defaultLexical } from '@fields/defaultLexical'
 import { getServerSideURL } from '@utils/getURL'
@@ -66,6 +67,7 @@ export default buildConfig({
   },
   editor: defaultLexical,
   collections: [Categories, Posts, Projects, Jobs, Messages, Wiki, Issues, CVs, Users, Media],
+  globals: [SiteSettings],
   secret: process.env.PAYLOAD_SECRET || '',
   plugins: [
     ...plugins,
