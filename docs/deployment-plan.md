@@ -4,9 +4,8 @@
 **Status:** **Live.** `portfolio.aolausoro.tech` serves the Dockerized Payload
 site; the pm2-hosted pre-migration app is decommissioned. Push-to-`main` now
 builds and deploys automatically — verified working end-to-end (2026-09-12).
-`tsc`, `next build` (standalone) and `test:int` all pass and are blocking in
-CI. `pnpm run lint` remains non-blocking against ~19 pre-existing eslint
-errors (see follow-up f).
+`tsc`, `next build` (standalone), `test:int`, and `pnpm run lint` all pass and
+are blocking in CI (see follow-up f).
 
 **Correction to earlier drafts of this doc:** the production host is **not**
 a DigitalOcean droplet — it's a VM (`portfolio-webserver-vm-1`, Ubuntu
@@ -72,7 +71,7 @@ fail2ban, UFW, unattended-upgrades, and key-only SSH come from
 | `deploy/docker-compose.production.yml` | ✅ |
 | `deploy/nginx/production.conf` | ✅ |
 | `deploy/scripts/setup-droplet.sh` | ✅ (see Security notes) |
-| `.github/workflows/ci.yml` | ✅ — Type-check / Integration tests / Build are blocking; Lint is `continue-on-error` (follow-up f); `Generate Prisma client` step removed |
+| `.github/workflows/ci.yml` | ✅ — Lint / Type-check / Integration tests / Build all blocking (follow-up f resolved); `Generate Prisma client` step removed |
 | `.github/workflows/deploy-production.yml` | ✅ live — push-to-`main` **and** `workflow_dispatch` both enabled; `build` job already had `packages: write` (follow-up c stale, removed) |
 | CI green baseline (tsc + build + test:int pass, blocking) | ✅ |
 | P3.2b — legacy content migrated `aolausoro` → `portfolio` | ✅ 2/7/6/12/2/5 (users/projects/jobs/wiki/cvs/messages) |
@@ -106,11 +105,24 @@ fail2ban, UFW, unattended-upgrades, and key-only SSH come from
   succeeds and produces `.next/standalone`. The builder stage passes a
   disposable `DATABASE_URL`/`PAYLOAD_SECRET` because `/posts` still
   prerenders via `generateStaticParams`; the homepage is `force-dynamic`.
-- **(f) `pnpm run lint` non-blocking.** ~19 pre-existing eslint errors remain
-  across template-derived and legacy UI files (`react-hooks` rules-of-hooks
-  and react-compiler correctness, `react/display-name`, `require()` in
-  `tailwind.config.js`). None are P3.2 regressions. Fix them, then drop
-  `continue-on-error` from the `Lint` step in `ci.yml`.
+- **(f) `pnpm run lint` — resolved.** The 20 pre-existing eslint errors
+  (`react-hooks` rules-of-hooks/purity/set-state-in-effect, `react/display-name`,
+  `require()` in `tailwind.config.js`) are fixed:
+  `components/navigation/nav-components.tsx`'s `Nav.X` compound-component
+  properties are now named function declarations (fixes `display-name` +
+  lets `Nav.SideNav`'s hooks be recognized); `components/ui/sidebar.tsx`'s
+  random skeleton width moved from `useMemo` to a lazy `useState` initializer
+  (the React-sanctioned place for a one-time impure call);
+  `providers/Theme/index.tsx`'s redundant effect removed (the theme is
+  already resolved pre-hydration by `providers/Theme/InitTheme`, so
+  `useState`'s initializer reading `data-theme` off the DOM is sufficient —
+  no second `setState` needed); `components/Card/index.tsx`'s two ref props
+  keep a targeted `eslint-disable-next-line react-hooks/refs` (the rule can't
+  trace a ref through a custom hook's return object; React Compiler itself is
+  off — `next.config.mjs` `reactCompiler: false` — so this is lint-only, not
+  a runtime risk); `tailwind.config.js` plugins moved from `require()` to
+  `import`. `continue-on-error` dropped from the `Lint` step in `ci.yml` —
+  it's now blocking like the other three checks.
 - **(g) `DATABASE_URL` must use the direct multi-host form, not
   `mongodb+srv://`.** Discovered during the P3.3c cutover: the production
   container couldn't resolve the Atlas SRV DNS record

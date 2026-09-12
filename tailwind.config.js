@@ -1,7 +1,9 @@
 import fontFamily from 'tailwindcss/defaultTheme'
+import tailwindcssAnimate from 'tailwindcss-animate'
+import typography from '@tailwindcss/typography'
 
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
   darkMode: ['class'],
   // Content paths are now defined in CSS using @source directive
   // Keeping this for backward compatibility with plugins
@@ -78,5 +80,7 @@ export default {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  plugins: [tailwindcssAnimate, typography],
 }
+
+export default config

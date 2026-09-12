@@ -42,10 +42,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        # Non-blocking: ~19 pre-existing eslint errors remain across template-derived
-        # and legacy UI files (react-compiler correctness, display-name, require()).
-        # Tracked separately from the Payload migration — see the phase-3 handoff.
-        continue-on-error: true
         run: pnpm run lint
 
       - name: Type-check

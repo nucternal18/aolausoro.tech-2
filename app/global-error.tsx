@@ -27,7 +27,7 @@ export default function GlobalError({
         <Image src={'/android-chrome-512x512.png'} alt="My Logo" width={200} height={200} />
         <h1 className="my-5 text-6xl">500</h1>
         <h2 className="mb-3 text-3xl">Internal Server Error</h2>
-        <p className="text-muted-foreground">Something went wrong. It's been reported.</p>
+        <p className="text-muted-foreground">Something went wrong. It&apos;s been reported.</p>
         <div className="flex items-center justify-center gap-4">
           <div className="flex justify-center">
             <Button type="button" asChild>

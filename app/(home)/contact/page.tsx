@@ -22,7 +22,7 @@ function ContactPage() {
             <CardHeader>
               <CardTitle>Get in touch</CardTitle>
               <CardDescription>
-                Fill in the details and I'll get back to you as soon as I can.
+                Fill in the details and I&apos;ll get back to you as soon as I can.
               </CardDescription>
             </CardHeader>
             <CardContent>
