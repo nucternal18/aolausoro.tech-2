@@ -85,7 +85,10 @@ reproducing it with CMS fields.
 
 ### New global: `site-settings` (singleton)
 
-Access: `read: () => true` (public site needs it for SSR), `update: authenticated` (matches every other collection in this repo, e.g. `payload/collections/Projects/index.ts`).
+Access: `read: anyone` (`@access/anyone`), `update: authenticated`,
+`create`/`delete` not applicable to a global — matches the pattern already
+used by `payload/collections/Projects/index.ts` (`read: anyone, create:
+authenticated, update: authenticated, delete: authenticatedAndAdmin`).
 
 ```
 hero: group
@@ -175,7 +178,8 @@ items   array of {
 Sort order is the collection's natural document order; Payload's admin list
 view supports drag-reorder out of the box for collections without a custom
 `defaultSort`, so no explicit `order` field is needed. Access mirrors
-`Projects`: `read: () => true`, `create/update/delete: authenticated`.
+`Projects` exactly: `read: anyone, create: authenticated, update:
+authenticated, delete: authenticatedAndAdmin`.
 
 File: `payload/collections/StackGroups/index.ts`. Seed data: the four rows
 and their tags come from the current hard-coded array in `components/
@@ -406,11 +410,15 @@ re-derive them):
 
 - No new automated visual-regression tooling is introduced (none exists in
   this repo today; out of scope to add here).
-- Existing `pnpm run test:int` (Payload integration tests) gets new/updated
-  cases for: `site-settings` global read access, `stack-groups` collection
-  CRUD, and the two new `Projects` fields — mirroring the existing test
-  patterns in `payload/collections/*/tests` or equivalent (confirmed at
-  implementation time).
+- Existing `pnpm run test:int` (vitest, `tests/int/**/*.int.spec.ts`,
+  confirmed path from `vitest.config.mts`) gets a new
+  `tests/int/site-settings.int.spec.ts` (global read/update access,
+  mirroring the access-control assertions in `tests/int/access.int.spec.ts`)
+  and a new `tests/int/stack-groups.int.spec.ts` (collection CRUD,
+  mirroring `tests/int/blog.int.spec.ts`'s collection-test shape). The two
+  new `Projects` fields get coverage added to whichever existing spec
+  already exercises the `Projects` collection (confirm at implementation
+  time — `tests/int/api.int.spec.ts` is the likely home based on its name).
 - `pnpm run lint`, `pnpm exec tsc --noEmit`, `pnpm run build` must all pass
   before merge (this branch is not exempt from the CI gates the way the
   legacy-code migration currently is — this is new code, not pre-existing
