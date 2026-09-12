@@ -40,7 +40,7 @@ export default function HomeComponent({
           projectsTotalDocs={projectsTotalDocs}
         />
         <div className="space-y-20">
-          <PortfolioComponent projects={projects} />
+          <PortfolioComponent projects={projects} heading={siteSettings.sectionHeadings.work} />
           <Skills />
           <CTA />
         </div>
