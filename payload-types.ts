@@ -407,6 +407,33 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Powers the "THE BUILD" write-up in the project modal.
+   */
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Powers the 4-thumbnail gallery in the project modal. Falls back to the single screenshot above if empty.
+   */
+  appImages?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
   published?: boolean | null;
   user: string | User;
   updatedAt: string;
@@ -1044,6 +1071,13 @@ export interface ProjectsSelect<T extends boolean = true> {
     | T
     | {
         technology?: T;
+        id?: T;
+      };
+  longDescription?: T;
+  appImages?:
+    | T
+    | {
+        image?: T;
         id?: T;
       };
   published?: T;

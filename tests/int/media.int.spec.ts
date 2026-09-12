@@ -36,4 +36,17 @@ describe('P3.3a media schema', () => {
   it('media is an upload collection', () => {
     expect(payload.collections.media.config.upload).toBeTruthy()
   })
+
+  it('projects has longDescription (richText) and appImages (array of upload)', () => {
+    const fields = payload.collections.projects.config.fields
+    const longDescription = fields.find((f) => 'name' in f && f.name === 'longDescription')
+    expect(longDescription).toMatchObject({ type: 'richText' })
+
+    const appImages = fields.find((f) => 'name' in f && f.name === 'appImages')
+    expect(appImages).toMatchObject({ type: 'array' })
+    if (appImages && 'fields' in appImages) {
+      const image = appImages.fields.find((f) => 'name' in f && f.name === 'image')
+      expect(image).toMatchObject({ type: 'upload', relationTo: 'media', required: true })
+    }
+  })
 })
