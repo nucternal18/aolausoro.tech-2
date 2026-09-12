@@ -41,7 +41,7 @@ export default async function Page() {
   return (
     <HomeComponent
       projects={projects.docs}
-      projectsTotalDocs={projects.totalDocs}
+      projectsTotalDocs={projects.totalDocs }
       cv={cvs.docs[0] ?? null}
       posts={posts.docs}
       siteSettings={siteSettings}

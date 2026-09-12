@@ -182,7 +182,7 @@ export const SiteSettings: GlobalConfig = {
           name: 'colophon',
           type: 'text',
           required: true,
-          defaultValue: 'NEXT.JS 16 · PAYLOAD CMS · DOCKER ON DIGITALOCEAN',
+          defaultValue: 'NEXT.JS 16 · PAYLOAD CMS · DOCKER ON SELF-HOSTED',
         },
       ],
     },
