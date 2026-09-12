@@ -27,7 +27,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      # Repo Actions policy allows only GitHub-owned actions, so pnpm is
+      # activated via corepack (bundled with Node) rather than
+      # pnpm/action-setup. corepack picks up the `packageManager` pin in
+      # package.json automatically.
+      - run: corepack enable
 
       - uses: actions/setup-node@v4
         with:
