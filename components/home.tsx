@@ -44,7 +44,7 @@ export default function HomeComponent({
         <div className="space-y-20">
           <PortfolioComponent projects={projects} heading={siteSettings.sectionHeadings.work} />
           <Skills heading={siteSettings.sectionHeadings.stack} groups={stackGroups} />
-          <CTA />
+          <CTA cta={siteSettings.cta} email={siteSettings.contact.email} cvUrl={cvUrl} />
         </div>
         <Footer siteSettings={siteSettings} />
       </div>
