@@ -34,7 +34,7 @@ export default buildConfig({
     components: {
       beforeDashboard: ['/components/admin/BeforeDashboard#BeforeDashboard'],
       graphics: {
-        Logo: '/public/android-chrome-512x512.png', // Uncomment and create logo.png when available
+        Logo: '/components/Logo/Logo#Logo',
       },
     },
     importMap: {

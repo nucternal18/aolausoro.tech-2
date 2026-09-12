@@ -10,20 +10,22 @@ interface Props {
 export const Logo = (props: Props) => {
   const { loading: loadingFromProps, priority: priorityFromProps, className } = props
 
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
+  const loading = loadingFromProps || 'eager'
+  const priority = priorityFromProps || 'high'
 
   return (
-    /* eslint-disable @next/next/no-img-element */
+    /* eslint-disable-next-line @next/next/no-img-element -- Payload's admin
+       graphics.Logo slot renders this outside Next's app tree; next/image
+       isn't guaranteed available there. */
     <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
+      alt="aolausoro.tech"
+      width={32}
+      height={32}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('h-[34px] w-full max-w-[9.375rem]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
+      className={clsx('h-8 w-8', className)}
+      src="/android-chrome-512x512.png"
     />
   )
 }
