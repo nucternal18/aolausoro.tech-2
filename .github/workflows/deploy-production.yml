@@ -1,0 +1,125 @@
+name: Deploy Production
+
+# Builds on a GitHub-hosted runner; the deploy job runs on a self-hosted runner
+# labeled "production", registered on the droplet by deploy/scripts/setup-droplet.sh
+# — no SSH keys, the runner registration is the trust boundary.
+on:
+  # TODO(phase-3): re-enable push-to-main once the droplet, the self-hosted runner
+  # (label: production), and the GH Actions secrets are provisioned — see docs/deployment-plan.md
+  # push:
+  #   branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+env:
+  IMAGE: ghcr.io/nucternal18/aolausoro.tech-2
+
+jobs:
+  build:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    environment: Production
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Set up Docker Buildx
+        run: docker buildx create --use --driver-opt network=host
+
+      - name: Start throwaway Mongo for build-time Payload init
+        run: docker run -d --name build-mongo --network host mongo:latest
+
+      - name: Wait for Mongo
+        run: |
+          for i in $(seq 1 15); do
+            if docker exec build-mongo mongosh --eval 'db.runCommand("ping")' --quiet; then exit 0; fi
+            sleep 2
+          done
+          echo "Mongo did not become ready" && exit 1
+
+      - name: Build and push
+        run: |
+          docker buildx build \
+            --push \
+            --network=host \
+            --tag "${{ env.IMAGE }}:production" \
+            --tag "${{ env.IMAGE }}:production-${{ github.sha }}" \
+            --build-arg "NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}" \
+            --build-arg "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" \
+            --build-arg "NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}" \
+            --build-arg "DO_SPACES_CDN_ENDPOINT=${{ secrets.DO_SPACES_CDN_ENDPOINT }}" \
+            --build-arg "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" \
+            --build-arg "DATABASE_URL=mongodb://127.0.0.1:27017/build" \
+            --build-arg "PAYLOAD_SECRET=build-only-secret-not-for-real-use" \
+            --cache-from "type=registry,ref=${{ env.IMAGE }}:buildcache" \
+            --cache-to "type=registry,ref=${{ env.IMAGE }}:buildcache,mode=max" \
+            .
+
+      - name: Stop throwaway Mongo
+        if: always()
+        run: docker rm -f build-mongo
+
+  deploy:
+    name: Deploy to droplet
+    needs: build
+    runs-on: [self-hosted, production]
+    environment: Production
+    env:
+      DEPLOY_PATH: /opt/aolausoro
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync deploy files
+        run: |
+          mkdir -p "$DEPLOY_PATH"
+          cp deploy/docker-compose.production.yml "$DEPLOY_PATH/docker-compose.yml"
+
+      - name: Write runtime .env from secrets
+        working-directory: ${{ env.DEPLOY_PATH }}
+        run: |
+          cat > .env <<'ENVEOF'
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}
+          PAYLOAD_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+          NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+          RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+          DO_SPACES_REGION=${{ secrets.DO_SPACES_REGION }}
+          DO_SPACES_ENDPOINT=${{ secrets.DO_SPACES_ENDPOINT }}
+          DO_SPACES_CDN_ENDPOINT=${{ secrets.DO_SPACES_CDN_ENDPOINT }}
+          DO_SPACES_BUCKET=${{ secrets.DO_SPACES_BUCKET }}
+          DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
+          DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
+          SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+          NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+          NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+          RECAPTCHA_SITE_KEY=${{ secrets.RECAPTCHA_SITE_KEY }}
+          ENVEOF
+
+      - name: Pull and restart
+        working-directory: ${{ env.DEPLOY_PATH }}
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker compose pull
+          docker compose up -d --remove-orphans
+
+      - name: Health check
+        working-directory: ${{ env.DEPLOY_PATH }}
+        run: |
+          for i in $(seq 1 24); do
+            status=$(docker inspect --format='{{.State.Health.Status}}' "$(docker compose ps -q app)" 2>/dev/null || echo "starting")
+            if [ "$status" = "healthy" ]; then echo "healthy"; exit 0; fi
+            echo "waiting: $status ($i/24)"; sleep 5
+          done
+          echo "app did not become healthy"; docker compose logs --tail=50; exit 1
+
+      - name: Prune dangling images
+        if: always()
+        run: docker image prune -f
