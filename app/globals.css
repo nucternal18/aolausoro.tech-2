@@ -1,82 +1,189 @@
+/* ============================================================================
+   app/globals.css — brutalist token set
+   ============================================================================ */
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
+/* ----------------------------------------------------------------------------
+   1. GROUND — light
+   ---------------------------------------------------------------------------- */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --paper: #fbfaf6;
+  --ink: #0b1220;
+  --ink-2: #3b4454; /* 9.3:1 on paper — body-safe */
+  --ink-3: #6b7280; /* 4.7:1 on paper — AA at 16px, do not go smaller */
+
+  --accent-hot: #00dcb3;
+  --accent-text: #006b5b;
+  --on-accent: #00261f; /* 9.9:1 on --accent-hot */
+
+  --rule: rgb(11 18 32 / 0.14);
+  --edge: #0b1220;
+
+  --tag-type: #cff7eb;
+  --tag-framework: #ddf5fb;
+  --tag-runtime: #fff3d6;
+  --tag-data: #e3f8ee;
+  --tag-platform: #eae7dd;
+  --tag-ink: #0b1220;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--accent-hot);
+  --primary-foreground: var(--on-accent);
+  --secondary: #eae7dd;
+  --secondary-foreground: var(--ink);
+  --muted: #eae7dd;
+  --muted-foreground: var(--ink-2);
+  --accent: #eae7dd;
+  --accent-foreground: var(--ink);
+  --destructive: #b91c1c; /* 6.4:1 on paper */
+  --destructive-foreground: var(--paper);
+  --border: var(--edge);
+  --input: var(--edge);
+  --ring: var(--accent-hot);
+
+  --radius: 0px;
+
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--accent-hot);
+  --sidebar-primary-foreground: var(--on-accent);
+  --sidebar-accent: #eae7dd;
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--edge);
+  --sidebar-ring: var(--accent-hot);
 }
 
+/* ----------------------------------------------------------------------------
+   2. GROUND — dark
+   ---------------------------------------------------------------------------- */
 .dark {
-  --background: oklch(0.08 0 0);
-  --foreground: oklch(0.95 0.01 240);
-  --card: oklch(0.12 0.01 240);
-  --card-foreground: oklch(0.95 0.01 240);
-  --popover: oklch(0.12 0.01 240);
-  --popover-foreground: oklch(0.95 0.01 240);
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 5.9% 10%;
-  --secondary: oklch(0.25 0.02 240);
-  --secondary-foreground: oklch(0.95 0.01 240);
-  --muted: oklch(0.2 0.01 240);
-  --muted-foreground: oklch(0.55 0.01 240);
-  --accent: oklch(0.7 0.2 120);
-  --accent-foreground: oklch(0.08 0 0);
-  --destructive: oklch(0.63 0.25 30);
-  --destructive-foreground: oklch(0.95 0.01 240);
-  --border: oklch(0.2 0.01 240);
-  --input: oklch(0.2 0.01 240);
-  --ring: oklch(0.7 0.2 120);
-  --chart-1: oklch(0.7 0.2 120);
-  --chart-2: oklch(0.6 0.15 200);
-  --chart-3: oklch(0.75 0.18 60);
-  --chart-4: oklch(0.65 0.2 280);
-  --chart-5: oklch(0.58 0.2 30);
-  --sidebar: oklch(0.12 0.01 240);
-  --sidebar-foreground: oklch(0.95 0.01 240);
-  --sidebar-primary: oklch(0.7 0.2 120);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.2 0.01 240);
-  --sidebar-accent-foreground: oklch(0.95 0.01 240);
-  --sidebar-border: oklch(0.2 0.01 240);
-  --sidebar-ring: oklch(0.7 0.2 120);
+  --paper: #0a0e14;
+  --ink: #efece3;
+  --ink-2: #c9c3b2; /* 11:1 on void */
+  --ink-3: #8a8676; /* 5.3:1 on void */
+
+  --accent-hot: #00dcb3;
+  --accent-text: #00dcb3; /* 10.4:1 on void — usable as text here */
+  --on-accent: #00261f;
+
+  --rule: rgb(239 236 227 / 0.16);
+  --edge: #efece3;
+
+  --tag-type: transparent;
+  --tag-framework: transparent;
+  --tag-runtime: transparent;
+  --tag-data: transparent;
+  --tag-platform: transparent;
+  --tag-ink: #efece3;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: #141922;
+  --popover-foreground: var(--ink);
+  --primary: var(--accent-hot);
+  --primary-foreground: var(--on-accent);
+  --secondary: #1c222d;
+  --secondary-foreground: var(--ink);
+  --muted: #1c222d;
+  --muted-foreground: var(--ink-2);
+  --accent: #1c222d;
+  --accent-foreground: var(--ink);
+  --destructive: #f87171; /* 7.0:1 on void — #B91C1C is only 2.6:1 here */
+  --destructive-foreground: #0a0e14;
+  --border: var(--edge);
+  --input: var(--edge);
+  --ring: var(--accent-hot);
+
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--accent-hot);
+  --sidebar-primary-foreground: var(--on-accent);
+  --sidebar-accent: #1c222d;
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--edge);
+  --sidebar-ring: var(--accent-hot);
 }
 
+/* ----------------------------------------------------------------------------
+   3. THEME
+   ---------------------------------------------------------------------------- */
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-display: var(--font-bebas), 'Bebas Neue', ui-sans-serif, sans-serif;
+  --font-sans: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-geist: 'Geist', var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-display-xl: 9.875rem;
+  --text-display-xl--line-height: 0.82;
+  --text-display-xl--letter-spacing: 0.004em;
+  --text-display-l: 6rem;
+  --text-display-l--line-height: 0.86;
+  --text-display-m: 3.75rem;
+  --text-display-m--line-height: 0.9;
+  --text-display-s: 2.5rem;
+  --text-display-s--line-height: 0.95;
+  --text-display-xs: 2rem;
+  --text-display-xs--line-height: 0.95;
+
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.14em;
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1.5;
+
+  --text-lead: 1.0625rem;
+  --text-lead--line-height: 1.6;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.7;
+  --text-prose: 1rem;
+  --text-prose--line-height: 1.75;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-full: 0px;
+
+  --shadow-hard: 4px 4px 0 0 var(--edge);
+  --shadow-hard-lift: 7px 7px 0 0 var(--edge);
+  --shadow-hard-press: 1px 1px 0 0 var(--edge);
+  --shadow-hard-accent: 10px 10px 0 0 var(--accent-hot);
+  --shadow-2xs: 4px 4px 0 0 var(--edge);
+  --shadow-xs: 4px 4px 0 0 var(--edge);
+  --shadow-sm: 4px 4px 0 0 var(--edge);
+  --shadow-md: 4px 4px 0 0 var(--edge);
+  --shadow-lg: 7px 7px 0 0 var(--edge);
+  --shadow-xl: 7px 7px 0 0 var(--edge);
+  --shadow-2xl: 10px 10px 0 0 var(--edge);
+
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-accent-hot: var(--accent-hot);
+  --color-accent-text: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+  --color-rule: var(--rule);
+  --color-edge: var(--edge);
+  --color-tag-type: var(--tag-type);
+  --color-tag-framework: var(--tag-framework);
+  --color-tag-runtime: var(--tag-runtime);
+  --color-tag-data: var(--tag-data);
+  --color-tag-platform: var(--tag-platform);
+  --color-tag-ink: var(--tag-ink);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -96,15 +203,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -113,63 +211,164 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --ease-mech: linear;
+  --animate-tick: tick 28s linear infinite;
+  --animate-caret: caret 1.1s steps(1) infinite;
 }
 
+/* ----------------------------------------------------------------------------
+   4. BASE
+   ---------------------------------------------------------------------------- */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--accent-hot);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent-hot);
+    color: var(--on-accent);
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+    letter-spacing: 0.004em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .prose a,
+  a[data-inline] {
+    color: var(--accent-text);
+    border-bottom: 2px solid var(--accent-hot);
+  }
+
+  input,
+  textarea,
+  select {
+    @apply border-edge border-2 bg-transparent;
   }
 }
 
-/* Add matrix animation background */
-@keyframes matrixFall {
-  0% {
-    transform: translateY(-100%);
+/* ----------------------------------------------------------------------------
+   5. UTILITIES
+   ---------------------------------------------------------------------------- */
+@utility hard-lift {
+  box-shadow: var(--shadow-hard);
+  transition:
+    transform 130ms linear,
+    box-shadow 130ms linear;
+
+  &:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-hard-lift);
+  }
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: var(--shadow-hard-press);
+  }
+}
+
+@utility grid-rules {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--rule) 0 1px,
+    transparent 1px calc(100% / 12)
+  );
+}
+
+@utility rule-y {
+  border-bottom: 1px solid var(--rule);
+}
+
+@utility chip {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  padding: 0.4375rem 0.5625rem;
+  border: 1px solid var(--tag-ink);
+  color: var(--tag-ink);
+  text-transform: uppercase;
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ink);
+}
+
+/* ----------------------------------------------------------------------------
+   6. MOTION
+   Four moving things on the whole site, all transform/opacity. No JS loop,
+   no scroll observer, no canvas.
+   ---------------------------------------------------------------------------- */
+@keyframes tick {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
     opacity: 1;
   }
+  50%,
   100% {
-    transform: translateY(100vh);
     opacity: 0;
   }
 }
 
-@keyframes matrixGlow {
-  0%,
-  100% {
-    text-shadow: 0 0 5px rgba(112, 204, 115, 0.3);
+.ticker {
+  animation: var(--animate-tick);
+}
+.ticker:hover,
+.ticker:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker,
+  [class*='animate-'] {
+    animation: none !important;
   }
-  50% {
-    text-shadow: 0 0 15px rgba(112, 204, 115, 0.8);
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
   }
 }
 
-.matrix-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(8, 12, 20, 0.85), rgba(8, 12, 20, 0.95));
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.matrix-char {
-  position: absolute;
-  font-family: 'Geist Mono', monospace;
-  font-size: 14px;
-  color: rgba(112, 204, 115, 0.6);
-  animation: matrixFall linear infinite;
-  letter-spacing: 2px;
-  animation-name: matrixFall, matrixGlow;
-  animation-timing-function: linear, ease-in-out;
-  animation-iteration-count: infinite;
-}
-
+/* ----------------------------------------------------------------------------
+   7. KEEP — still referenced by the blog archive
+   ---------------------------------------------------------------------------- */
 .masonry {
   column-gap: 1.5em;
   column-count: 1;
