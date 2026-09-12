@@ -70,6 +70,7 @@ fail2ban, UFW, unattended-upgrades, and key-only SSH come from
 | GitHub Actions self-hosted runner (label `production`) | ⬜ |
 | GitHub Actions secrets populated | ⬜ |
 | Media moved off Cloudinary to DO Spaces | ✅ (P3.3a) |
+| Sentry modernized for SDK 10 / Next 16 (`onRequestError`, `instrumentation-client.ts`, env-driven DSN/sample rate) | ✅ (P3.3b) — `NEXT_PUBLIC_SENTRY_DSN` still needs a GH Actions secret + build-arg in `deploy-production.yml` (P3.3c) |
 
 The push-to-`main` deploy trigger is re-enabled only once **all** of: the
 droplet, the self-hosted runner labeled `production`, and the GH Actions secrets
