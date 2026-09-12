@@ -77,6 +77,7 @@ export interface Config {
     cvs: Cv;
     users: User;
     media: Media;
+    'stack-groups': StackGroup;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -104,6 +105,7 @@ export interface Config {
     cvs: CvsSelect<false> | CvsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'stack-groups': StackGroupsSelect<false> | StackGroupsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -503,6 +505,24 @@ export interface Cv {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stack-groups".
+ */
+export interface StackGroup {
+  id: string;
+  label: string;
+  items: {
+    name: string;
+    /**
+     * Checked = solid/filled chip (daily use). Unchecked = outlined chip (working knowledge).
+     */
+    filled?: boolean | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -892,6 +912,10 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
+        relationTo: 'stack-groups';
+        value: string | StackGroup;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: string | Redirect;
       } | null)
@@ -1220,6 +1244,22 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stack-groups_select".
+ */
+export interface StackGroupsSelect<T extends boolean = true> {
+  label?: T;
+  items?:
+    | T
+    | {
+        name?: T;
+        filled?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

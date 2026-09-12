@@ -24,6 +24,66 @@ async function main() {
     data: {}, // defaultValue on each field fills the document on first write
   })
   console.log('site-settings persisted.')
+
+  const stackGroupSeeds = [
+    {
+      label: 'Frontend',
+      items: [
+        { name: 'React', filled: true },
+        { name: 'Next.js', filled: true },
+        { name: 'TypeScript', filled: true },
+        { name: 'Tailwind', filled: false },
+        { name: 'Motion', filled: false },
+        { name: 'React Native', filled: false },
+        { name: 'Expo', filled: false },
+      ],
+    },
+    {
+      label: 'Backend',
+      items: [
+        { name: 'Node.js', filled: true },
+        { name: 'MongoDB', filled: true },
+        { name: 'NestJS', filled: false },
+        { name: 'Express', filled: false },
+        { name: 'PostgreSQL', filled: false },
+        { name: 'GraphQL', filled: false },
+      ],
+    },
+    {
+      label: 'Platform',
+      items: [
+        { name: 'Docker', filled: true },
+        { name: 'GitHub Actions', filled: true },
+        { name: 'Digital Ocean', filled: false },
+        { name: 'Nginx', filled: false },
+        { name: 'AWS', filled: false },
+        { name: 'Vercel', filled: false },
+      ],
+    },
+    {
+      label: 'Craft',
+      items: [
+        { name: 'Accessibility', filled: false },
+        { name: 'Web Performance', filled: false },
+        { name: 'Figma', filled: false },
+        { name: 'Testing', filled: false },
+      ],
+    },
+  ]
+
+  const existingGroups = await payload.find({
+    collection: 'stack-groups',
+    overrideAccess: true,
+    limit: 1,
+  })
+  if (existingGroups.totalDocs === 0) {
+    for (const group of stackGroupSeeds) {
+      await payload.create({ collection: 'stack-groups', overrideAccess: true, data: group })
+    }
+    console.log('stack-groups seeded.')
+  } else {
+    console.log('stack-groups already has documents — skipping.')
+  }
 }
 
 await main().catch((err) => {

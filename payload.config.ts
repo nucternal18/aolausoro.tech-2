@@ -15,6 +15,7 @@ import Wiki from './payload/collections/Wiki'
 import Issues from './payload/collections/Issues'
 import Users from './payload/collections/Users'
 import { Media } from './payload/collections/Media'
+import StackGroups from './payload/collections/StackGroups'
 import { Posts } from './payload/collections/Posts'
 import { SiteSettings } from './payload/globals/SiteSettings'
 import { plugins } from './plugins'
@@ -66,7 +67,19 @@ export default buildConfig({
     },
   },
   editor: defaultLexical,
-  collections: [Categories, Posts, Projects, Jobs, Messages, Wiki, Issues, CVs, Users, Media],
+  collections: [
+    Categories,
+    Posts,
+    Projects,
+    Jobs,
+    Messages,
+    Wiki,
+    Issues,
+    CVs,
+    Users,
+    Media,
+    StackGroups,
+  ],
   globals: [SiteSettings],
   secret: process.env.PAYLOAD_SECRET || '',
   plugins: [
