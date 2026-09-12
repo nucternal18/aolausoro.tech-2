@@ -9,7 +9,7 @@ import { Skills } from './skills'
 import CTA from './cta'
 
 // types
-import type { Cv, Post, Project, SiteSetting } from '@/payload-types'
+import type { Cv, Post, Project, SiteSetting, StackGroup } from '@/payload-types'
 
 export default function HomeComponent({
   cv,
@@ -17,12 +17,14 @@ export default function HomeComponent({
   projects,
   projectsTotalDocs,
   siteSettings,
+  stackGroups,
 }: {
   cv: Cv | null
   posts: Post[]
   projects: Project[]
   projectsTotalDocs: number
   siteSettings: SiteSetting
+  stackGroups: StackGroup[]
 }) {
   const cvUrl = cv?.url ?? undefined
 
@@ -41,7 +43,7 @@ export default function HomeComponent({
         />
         <div className="space-y-20">
           <PortfolioComponent projects={projects} heading={siteSettings.sectionHeadings.work} />
-          <Skills />
+          <Skills heading={siteSettings.sectionHeadings.stack} groups={stackGroups} />
           <CTA />
         </div>
         <Footer siteSettings={siteSettings} />
