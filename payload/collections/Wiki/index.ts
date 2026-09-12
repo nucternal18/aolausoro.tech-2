@@ -1,7 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
 import { defaultLexical } from '@fields/defaultLexical'
-import { legacyIdField } from '@fields/legacyId'
 
 const Wiki: CollectionConfig<'wiki'> = {
   slug: 'wiki',
@@ -43,7 +42,6 @@ const Wiki: CollectionConfig<'wiki'> = {
       relationTo: 'users',
       required: true,
     },
-    legacyIdField,
   ],
   timestamps: true,
 }

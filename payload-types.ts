@@ -358,10 +358,6 @@ export interface User {
   name: string;
   image?: string | null;
   isAdmin?: boolean | null;
-  /**
-   * Migration provenance — original _id from the pre-Payload database.
-   */
-  legacyId?: string | null;
   totpSecret?: string | null;
   hasTotp?: boolean | null;
   updatedAt: string;
@@ -407,10 +403,6 @@ export interface Project {
     | null;
   published?: boolean | null;
   user: string | User;
-  /**
-   * Migration provenance — original _id from the pre-Payload database.
-   */
-  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -426,10 +418,6 @@ export interface Job {
   jobType: 'full-time' | 'part-time' | 'contract' | 'remote';
   status?: ('pending' | 'interview' | 'declined') | null;
   user: string | User;
-  /**
-   * Migration provenance — original _id from the pre-Payload database.
-   */
-  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -444,10 +432,6 @@ export interface Message {
   subject: string;
   message: string;
   read?: boolean | null;
-  /**
-   * Migration provenance — original _id from the pre-Payload database.
-   */
-  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -476,10 +460,6 @@ export interface Wiki {
   image?: (string | null) | Media;
   isImage?: boolean | null;
   user: string | User;
-  /**
-   * Migration provenance — original _id from the pre-Payload database.
-   */
-  legacyId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -504,10 +484,6 @@ export interface Cv {
   id: string;
   label: string;
   user: string | User;
-  /**
-   * Migration provenance — original _id from the pre-Payload database.
-   */
-  legacyId?: string | null;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -1044,7 +1020,6 @@ export interface ProjectsSelect<T extends boolean = true> {
       };
   published?: T;
   user?: T;
-  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1059,7 +1034,6 @@ export interface JobsSelect<T extends boolean = true> {
   jobType?: T;
   status?: T;
   user?: T;
-  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1073,7 +1047,6 @@ export interface MessagesSelect<T extends boolean = true> {
   subject?: T;
   message?: T;
   read?: T;
-  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1087,7 +1060,6 @@ export interface WikiSelect<T extends boolean = true> {
   image?: T;
   isImage?: T;
   user?: T;
-  legacyId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1110,7 +1082,6 @@ export interface IssuesSelect<T extends boolean = true> {
 export interface CvsSelect<T extends boolean = true> {
   label?: T;
   user?: T;
-  legacyId?: T;
   prefix?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1132,7 +1103,6 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   image?: T;
   isAdmin?: T;
-  legacyId?: T;
   totpSecret?: T;
   hasTotp?: T;
   updatedAt?: T;

@@ -1,6 +1,5 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
-import { legacyIdField } from '@fields/legacyId'
 import { sendContactEmail } from './hooks/sendContactEmail'
 
 const Messages: CollectionConfig<'messages'> = {
@@ -42,7 +41,6 @@ const Messages: CollectionConfig<'messages'> = {
       defaultValue: false,
       admin: { position: 'sidebar' },
     },
-    legacyIdField,
   ],
   hooks: {
     afterChange: [sendContactEmail],

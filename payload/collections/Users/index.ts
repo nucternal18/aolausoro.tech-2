@@ -1,6 +1,5 @@
 import type { CollectionConfig } from 'payload'
 import { authenticatedAndAdmin } from '@access/authenticated'
-import { legacyIdField } from '@fields/legacyId'
 
 const Users: CollectionConfig<'users'> = {
   slug: 'users',
@@ -40,7 +39,6 @@ const Users: CollectionConfig<'users'> = {
       type: 'checkbox',
       defaultValue: false,
     },
-    legacyIdField,
   ],
   timestamps: true,
 }

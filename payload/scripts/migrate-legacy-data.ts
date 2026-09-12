@@ -152,13 +152,16 @@ async function main(): Promise<void> {
         const pw = randomTempPassword()
         const created = await payload.create({
           collection: 'users',
+          // legacyId was dropped from the Users schema in P3.3c — this script
+          // is frozen historical record of the one-off P3.2b migration and is
+          // never run again, so the field is cast past rather than removed.
           data: {
             name: String(su.name ?? su.email),
             email: String(su.email),
             isAdmin: true,
             legacyId,
             password: pw,
-          },
+          } as never,
           overrideAccess: true,
         })
         userMap.set(legacyId, created.id)

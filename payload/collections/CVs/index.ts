@@ -1,6 +1,5 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated, authenticatedAndAdmin } from '@access/authenticated'
-import { legacyIdField } from '@fields/legacyId'
 
 export const CVs: CollectionConfig<'cvs'> = {
   slug: 'cvs',
@@ -18,7 +17,6 @@ export const CVs: CollectionConfig<'cvs'> = {
   fields: [
     { name: 'label', type: 'text', required: true },
     { name: 'user', type: 'relationship', relationTo: 'users', required: true },
-    legacyIdField,
   ],
   timestamps: true,
 }
