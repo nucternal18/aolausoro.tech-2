@@ -7,8 +7,13 @@ import Image from 'next/image'
 import { Button } from '@components/ui/button'
 import Link from 'next/link'
 
-export default function GlobalError({ error, reset }: { error: string; reset: () => void }) {
-  const serializedError = JSON.stringify(error)
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string }
+  reset: () => void
+}) {
   const router = useRouter()
 
   useEffect(() => {
@@ -21,8 +26,8 @@ export default function GlobalError({ error, reset }: { error: string; reset: ()
       <div className="flex flex-col items-center">
         <Image src={'/android-chrome-512x512.png'} alt="My Logo" width={200} height={200} />
         <h1 className="my-5 text-6xl">500</h1>
-        <h2 className="mb-3 text-3xl">internal Server Error!</h2>
-        <p className="text-red-500">{serializedError}</p>
+        <h2 className="mb-3 text-3xl">Internal Server Error</h2>
+        <p className="text-muted-foreground">Something went wrong. It's been reported.</p>
         <div className="flex items-center justify-center gap-4">
           <div className="flex justify-center">
             <Button type="button" asChild>

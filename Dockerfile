@@ -37,6 +37,11 @@ ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
 ARG SENTRY_AUTH_TOKEN
 ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
+# Baked into the client bundle at build time (not secret — Sentry DSNs are
+# public by design). P3.3c wires this as a GH Actions secret/build-arg.
+ARG NEXT_PUBLIC_SENTRY_DSN
+ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
+
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN corepack enable pnpm && pnpm run build
 
