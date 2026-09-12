@@ -36,7 +36,7 @@ export default function HomeComponent({
         <PortfolioComponent projects={projects} />
         <Skills />
         <CTA />
-        <Footer />
+        <Footer siteSettings={siteSettings} />
       </div>
     </main>
   )
