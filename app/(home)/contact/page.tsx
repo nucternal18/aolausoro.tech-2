@@ -1,9 +1,9 @@
-import { MdEmail } from "react-icons/md";
-import Link from "next/link";
+import { MdEmail } from 'react-icons/md'
+import Link from 'next/link'
 
 // components
-import ContactForm from "../../../components/contact-form";
-import { social } from "../../../data";
+import ContactForm from '../../../components/contact-form'
+import { social } from '../../../data'
 import {
   Card,
   CardContent,
@@ -11,12 +11,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@components/ui/card";
+} from '@components/ui/card'
 
 function ContactPage() {
   return (
-    <section className="flex items-center justify-center h-screen flex-grow mx-auto sm:max-w-screen-md">
-      <Card className="relative z-10 p-2 mx-auto my-10 rounded-md shadow-2xl md:p-8">
+    <section className="mx-auto flex h-screen flex-grow items-center justify-center sm:max-w-screen-md">
+      <Card className="relative z-10 mx-auto my-10 rounded-md p-2 shadow-2xl md:p-8">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           <Card className="grid">
             <CardHeader>
@@ -26,15 +26,15 @@ function ContactPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="inline-flex flex-col my-10 icons-container">
+              <div className="icons-container my-10 inline-flex flex-col">
                 {/* <div className='flex flex-row items-center p-4 space-x-6 '>
                   <p className='text-sm font-light '>+91 9987384723</p>
                 </div> */}
-                <div className="flex flex-row items-center p-4 space-x-6">
+                <div className="flex flex-row items-center space-x-6 p-4">
                   <MdEmail className="text-blue-400" />
                   <a
                     href="mailto:adewoyin@aolausoro.tech"
-                    className="font-light text-md dark:text-gray-300 "
+                    className="text-md font-light dark:text-gray-300"
                   >
                     adewoyin@aolausoro.tech
                   </a>
@@ -42,14 +42,14 @@ function ContactPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <div className="flex flex-row items-center p-4 space-x-6">
+              <div className="flex flex-row items-center space-x-6 p-4">
                 {social.map((link) => {
-                  const { id, url, icon, color } = link;
+                  const { id, url, icon, color } = link
                   return (
                     <div key={id} className={`${color} text-xl`}>
                       <Link href={url}>{icon}</Link>
                     </div>
-                  );
+                  )
                 })}
               </div>
             </CardFooter>
@@ -60,7 +60,7 @@ function ContactPage() {
         </div>
       </Card>
     </section>
-  );
+  )
 }
 
-export default ContactPage;
+export default ContactPage

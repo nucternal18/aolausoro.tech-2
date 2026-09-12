@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -75,8 +75,8 @@
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -152,11 +152,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(8, 12, 20, 0.85),
-    rgba(8, 12, 20, 0.95)
-  );
+  background: linear-gradient(to bottom, rgba(8, 12, 20, 0.85), rgba(8, 12, 20, 0.95));
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
@@ -164,7 +160,7 @@
 
 .matrix-char {
   position: absolute;
-  font-family: "Geist Mono", monospace;
+  font-family: 'Geist Mono', monospace;
   font-size: 14px;
   color: rgba(112, 204, 115, 0.6);
   animation: matrixFall linear infinite;
@@ -189,4 +185,3 @@
 .break-inside {
   break-inside: avoid;
 }
-

@@ -1,70 +1,23 @@
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-.yarn
-.yarnrc.yml
-.eslintcache
-package-lock.json
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-#local env files
-# .env
-# .env.local
-# .env.development.local
-# .env.test.local
-# .env.production.local
-
-# vercel
-.vercel
-
-aolausoro-tech-firebase-adminsdk-d44mh-4bd1025f28.json
-
-# Sentry
-.sentryclirc
-
-# PWA files
-**/public/sw.js
-**/public/workbox-*.js
-**/public/worker-*.js
-**/public/sw.js.map
-**/public/workbox-*.js.map
-**/public/worker-*.js.map
-
-# Sentry
-.sentryclirc
-
-# Sentry
-next.config.original.js
-
-# Sentry
-next.config.wizardcopy.js
-
-Dockerfile
-.dockerignore
 node_modules
-npm-debug.log
-README.md
 .next
-!.next/static
-!.next/standalone
 .git
-.gitignore
+.github
+.husky
+coverage
+cypress
+tests
+test-results
+playwright-report
+.vscode
+.claude
+.agents
+.superpowers
+.git
+docs
+*.md
+!README.md
+.env
+.env.*
+Dockerfile
+docker-compose.yml
+deploy

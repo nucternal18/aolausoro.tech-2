@@ -1,21 +1,10 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import {
-  Bot,
-  Bug,
-  Calendar1,
-  Command,
-  Home,
-  Images,
-  Mail,
-  UserCircle,
-} from "lucide-react";
-
+import * as React from 'react'
+import { Bot, Bug, Calendar1, Command, Home, Images, Mail, UserCircle } from 'lucide-react'
 
 // Components
-import { NavMain } from "@components/navigation/nav-main";
-import { NavUser } from "@components/navigation/nav-user";
+import { NavMain } from '@components/navigation/nav-main'
 import {
   Sidebar,
   SidebarContent,
@@ -25,51 +14,50 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "components/ui/sidebar";
-import Image from "next/image";
-
+} from 'components/ui/sidebar'
+import Image from 'next/image'
 
 // This is sample data.
 const data = {
   user: {
-    name: "",
-    email: "",
-    avatar: "",
+    name: '',
+    email: '',
+    avatar: '',
   },
   navMain: [
     {
-      title: "Dashboard",
-      url: "/admin",
+      title: 'Dashboard',
+      url: '/admin',
       icon: Home,
     },
     {
-      title: "Jobs",
-      url: "/admin/jobs",
+      title: 'Jobs',
+      url: '/admin/jobs',
       icon: Calendar1,
     },
     {
-      title: "Projects",
-      url: "/admin/projects",
+      title: 'Projects',
+      url: '/admin/projects',
       icon: UserCircle,
     },
     {
-      url: "/admin/messages",
-      title: "Messages",
+      url: '/admin/messages',
+      title: 'Messages',
       icon: Mail,
     },
     {
-      title: "Issues",
-      url: "/admin/issues",
+      title: 'Issues',
+      url: '/admin/issues',
       icon: Bug,
     },
     {
-      title: "Scrap Book",
-      url: "/admin/wiki",
+      title: 'Scrap Book',
+      url: '/admin/wiki',
       icon: Images,
     },
   ],
   projects: [],
-};
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -79,20 +67,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="flex relative justify-center items-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground aspect-square size-8">
+                <div className="bg-sidebar-primary text-sidebar-primary-foreground relative flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Image
-                    src={"/android-chrome-192x192.png"}
+                    src={'/android-chrome-192x192.png'}
                     alt="logo"
                     fill
                     sizes="(min-width: 808px) 50vw, 100vw"
                     style={{
-                      objectFit: "cover", // cover, contain, none
+                      objectFit: 'cover', // cover, contain, none
                     }}
                   />
                 </div>
-                <div className="grid flex-1 text-sm leading-tight text-left">
-                  <span className="font-medium truncate">Aolausoro.tech</span>
-                  <span className="text-xs truncate">Portfolio</span>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">Aolausoro.tech</span>
+                  <span className="truncate text-xs">Portfolio</span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -102,10 +90,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
-      </SidebarFooter>
+      <SidebarFooter />
       <SidebarRail />
     </Sidebar>
-  );
+  )
 }

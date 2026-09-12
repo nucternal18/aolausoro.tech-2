@@ -4,10 +4,8 @@ name: Deploy Production
 # labeled "production", registered on the droplet by deploy/scripts/setup-droplet.sh
 # — no SSH keys, the runner registration is the trust boundary.
 on:
-  # TODO(phase-3): re-enable push-to-main once the droplet, the self-hosted runner
-  # (label: production), and the GH Actions secrets are provisioned — see docs/deployment-plan.md
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
   workflow_dispatch:
 
 concurrency:

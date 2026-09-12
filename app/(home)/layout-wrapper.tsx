@@ -1,15 +1,11 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Navbar, MobileNavbar } from "@components/navigation/Navbar";
-import { useWindowSize } from "@hooks/useWindowSize";
+import React from 'react'
+import { Navbar, MobileNavbar } from '@components/navigation/Navbar'
+import { useWindowSize } from '@hooks/useWindowSize'
 
-export default function LayoutWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { windowSize } = useWindowSize();
+export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
+  const { windowSize } = useWindowSize()
   return (
     <main>
       <div className="block md:hidden">
@@ -17,5 +13,5 @@ export default function LayoutWrapper({
       </div>
       <main>{children}</main>
     </main>
-  );
+  )
 }

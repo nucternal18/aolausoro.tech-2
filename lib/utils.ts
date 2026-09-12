@@ -1,20 +1,20 @@
-import type { PartialCvProps } from "@src/entities/models/cv";
-import { type ClassValue, clsx } from "clsx";
-import React from "react";
+import type { Cv } from '@/payload-types'
+import { type ClassValue, clsx } from 'clsx'
+import React from 'react'
 
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 export function formatDate(input: string | number): string {
-  const date = new Date(input);
-  return date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const date = new Date(input)
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
 }
 
 // export const fixedForwardRef = <T, P = {}>(
@@ -26,21 +26,19 @@ export function formatDate(input: string | number): string {
 export function formatBytes(
   bytes: number,
   opts: {
-    decimals?: number;
-    sizeType?: "accurate" | "normal";
+    decimals?: number
+    sizeType?: 'accurate' | 'normal'
   } = {},
 ) {
-  const { decimals = 0, sizeType = "normal" } = opts;
+  const { decimals = 0, sizeType = 'normal' } = opts
 
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-  const accurateSizes = ["Bytes", "KiB", "MiB", "GiB", "TiB"];
-  if (bytes === 0) return "0 Byte";
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  const accurateSizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB']
+  if (bytes === 0) return '0 Byte'
+  const i = Math.floor(Math.log(bytes) / Math.log(1024))
   return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
-    sizeType === "accurate"
-      ? (accurateSizes[i] ?? "Bytest")
-      : (sizes[i] ?? "Bytes")
-  }`;
+    sizeType === 'accurate' ? (accurateSizes[i] ?? 'Bytest') : (sizes[i] ?? 'Bytes')
+  }`
 }
 
 /**
@@ -54,15 +52,12 @@ export function composeEventHandlers<E>(
   { checkForDefaultPrevented = true } = {},
 ) {
   return function handleEvent(event: E) {
-    originalEventHandler?.(event);
+    originalEventHandler?.(event)
 
-    if (
-      checkForDefaultPrevented === false ||
-      !(event as unknown as Event).defaultPrevented
-    ) {
-      return ourEventHandler?.(event);
+    if (checkForDefaultPrevented === false || !(event as unknown as Event).defaultPrevented) {
+      return ourEventHandler?.(event)
     }
-  };
+  }
 }
 
 /**
@@ -71,12 +66,10 @@ export function composeEventHandlers<E>(
  * @param data - An array of CV objects.
  * @returns The URL of the latest CV.
  */
-export const getLatestCV = (data: PartialCvProps[]) => {
+export const getLatestCV = (data: Cv[]): string | null | undefined => {
+  if (!data || data.length === 0) return null
   const latestCV = data.reduce((prev, current) =>
-    new Date(prev.createdAt as unknown as string) >
-    new Date(current.createdAt as unknown as string)
-      ? prev
-      : current,
-  );
-  return latestCV.cvUrl;
-};
+    new Date(prev.createdAt) > new Date(current.createdAt) ? prev : current,
+  )
+  return latestCV.url
+}

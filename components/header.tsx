@@ -1,32 +1,24 @@
-"use client";
-import Title from "@components/title";
-import React from "react";
+'use client'
+import Title from '@components/title'
+import React from 'react'
 
 type Props = {
-  title: string;
-  subtitle?: string;
-  bcg?: string;
-  order: number;
-  subOrder?: number;
-  iconRight?: React.ReactElement;
-  iconLeft?: React.ReactElement;
-};
+  title: string
+  subtitle?: string
+  bcg?: string
+  order: number
+  subOrder?: number
+  iconRight?: React.ReactElement
+  iconLeft?: React.ReactElement
+}
 
-function Header({
-  title,
-  order,
-  subOrder,
-  subtitle,
-  iconRight,
-  iconLeft,
-  bcg,
-}: Props) {
+function Header({ title, order, subOrder, subtitle, iconRight, iconLeft, bcg }: Props) {
   return (
     <div className="w-full">
       <div className="flex items-center gap-1">
         {iconLeft ? (
           <div className={`flex items-center rounded-md shadow-lg`}>
-            <div className="bg-violet-500 text-xl rounded-md">{iconLeft}</div>
+            <div className="rounded-md bg-violet-500 text-xl">{iconLeft}</div>
           </div>
         ) : null}
         <Title order={order} className="text-gray-800 dark:text-gray-100">
@@ -34,7 +26,7 @@ function Header({
         </Title>
         {iconRight ? (
           <div className={`flex items-center rounded-md shadow-lg`}>
-            <div className="bg-violet-500 text-xl rounded-md">{iconRight}</div>
+            <div className="rounded-md bg-violet-500 text-xl">{iconRight}</div>
           </div>
         ) : null}
       </div>
@@ -42,7 +34,7 @@ function Header({
         {subtitle}
       </Title>
     </div>
-  );
+  )
 }
 
-export default Header;
+export default Header

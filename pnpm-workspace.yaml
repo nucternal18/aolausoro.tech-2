@@ -1,0 +1,12 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  '@sentry/cli': true
+  msw: false
+
+overrides:
+  rimraf: ^5.0.0
+  glob: ^10.3.12
+  rollup-plugin-terser: npm:@rollup/plugin-terser@^0.4.4
+  source-map: ^0.7.4

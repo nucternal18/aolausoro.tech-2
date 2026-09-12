@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "baseUrl": ".",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES2022"
-    ],
+    "lib": ["dom", "dom.iterable", "ES2022"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -28,42 +24,27 @@
       }
     ],
     "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ],
-      "@lib/*": [
-        "lib/*"
-      ],
-      "@context/*": [
-        "context/*"
-      ],
-      "@models/*": [
-        "models/*"
-      ],
-      "@config/*": [
-        "config/*"
-      ],
-      "@app/*": [
-        "app/*"
-      ],
-      "@types/*": [
-        "types/*"
-      ],
-      "@public/*": [
-        "public/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@src/*": [
-        "src/*"
-      ],
-      "@di/*": [
-        "di/*"
-      ]
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@lib/*": ["lib/*"],
+      "@context/*": ["context/*"],
+      "@models/*": ["models/*"],
+      "@config/*": ["config/*"],
+      "@app/*": ["app/*"],
+      "@types/*": ["types/*"],
+      "@public/*": ["public/*"],
+      "@utils/*": ["utils/*"],
+      "@access/*": ["access/*"],
+      "@blocks/*": ["blocks/*"],
+      "@fields/*": ["fields/*"],
+      "@heroes/*": ["heroes/*"],
+      "@search/*": ["search/*"],
+      "@payload-types/*": ["./payload-types"],
+      "@payload": ["payload/*"],
+      "@payload-config": ["./payload.config.ts"],
+      "@/utilities/ui": ["./lib/utils"],
+      "@/utilities/*": ["./utils/*"],
+      "@/*": ["./*"]
     },
     "strictNullChecks": true
   },
@@ -71,23 +52,16 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "next.config.js",
-    ".eslintrc.js",
-    "jest.config.js",
-    "cypress/integration/aolausoro-tech/home.spec.js",
+    "next.config.mjs",
     ".next/types/**/*.ts",
     "tailwind.config.js",
     "postcss.config.js",
-    "next-sitemap.config.js",
+    "next-sitemap.config.cjs",
+    "redirects.ts",
     "types/**/*.d.ts",
-    "di/modules",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "tests/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ],
-  "typeRoots": [
-    "node_modules/@types",
-    "./types/**.d.ts"
-  ]
+  "exclude": ["node_modules"],
+  "typeRoots": ["node_modules/@types", "./types/**.d.ts"]
 }

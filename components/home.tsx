@@ -1,46 +1,39 @@
-"use client";
-
-// utils
-import { getLatestCV } from "@lib/utils";
+'use client'
 
 // components
-import { Typography } from "@components/Typography";
-import { MatrixRainAnimation } from "@components/animations";
-import { Navbar } from "./navigation/Navbar";
-import { Hero } from "./hero";
-import { Footer } from "./Footer";
-import {PortfolioComponent} from "./portfolio-component";
-import { Skills } from "./skills";
+import { MatrixRainAnimation } from '@components/animations'
+import { Navbar } from './navigation/Navbar'
+import { Hero } from './hero'
+import { Footer } from './Footer'
+import { PortfolioComponent } from './portfolio-component'
+import { Skills } from './skills'
+import CTA from './cta'
 
 // types
-import type {  Meta } from "types/index";
-import type { PartialCvProps } from "@src/entities/models/cv";
-import type { PartialProjectProps } from "@src/entities/models/Project";
-import CTA from "./cta";
-
+import type { Cv, Post, Project } from '@/payload-types'
 
 export default function HomeComponent({
-  data,
-  posts,
+  cv,
+  posts: _posts,
   projects,
 }: {
-  data: PartialCvProps[];
-    posts: Meta[];
-  projects: PartialProjectProps[];
+  cv: Cv | null
+  posts: Post[]
+  projects: Project[]
 }) {
-  const cvDoc = getLatestCV(data);
+  const cvUrl = cv?.url ?? undefined
 
   return (
-    <main className="relative min-h-screen bg-background">
+    <main className="bg-background relative min-h-screen">
       <MatrixRainAnimation />
       <div className="relative z-10 space-y-20">
         <Navbar />
-        <Hero cvDoc={cvDoc as string} />
+        <Hero cvDoc={cvUrl as string} />
         <PortfolioComponent projects={projects} />
         <Skills />
         <CTA />
         <Footer />
       </div>
     </main>
-  );
+  )
 }

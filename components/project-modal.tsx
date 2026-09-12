@@ -1,18 +1,18 @@
-"use client";
+'use client'
 
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState } from 'react'
 
 interface ProjectModalProps {
-  title: string;
-  description: string;
-  longDescription?: string;
-  tags: string[];
-  image: string;
-  appImages?: string[];
-  liveUrl?: string;
-  githubUrl?: string;
-  onClose: () => void;
+  title: string
+  description: string
+  longDescription?: string
+  tags: string[]
+  image: string
+  appImages?: string[]
+  liveUrl?: string
+  githubUrl?: string
+  onClose: () => void
 }
 
 export default function ProjectModal({
@@ -26,49 +26,45 @@ export default function ProjectModal({
   githubUrl,
   onClose,
 }: ProjectModalProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const handlePrevImage = () => {
-    setCurrentImageIndex((prev) =>
-      prev === 0 ? appImages.length - 1 : prev - 1
-    );
-  };
+    setCurrentImageIndex((prev) => (prev === 0 ? appImages.length - 1 : prev - 1))
+  }
 
   const handleNextImage = () => {
-    setCurrentImageIndex((prev) =>
-      prev === appImages.length - 1 ? 0 : prev + 1
-    );
-  };
+    setCurrentImageIndex((prev) => (prev === appImages.length - 1 ? 0 : prev + 1))
+  }
 
   return (
-    <div className="flex fixed inset-0 z-50 justify-center items-center p-4 backdrop-blur-sm bg-black/70 h-dvh">
-      <div className="bg-card rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex h-dvh items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+      <div className="bg-card max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-lg">
         {/* Header */}
-        <div className="flex sticky top-0 justify-between items-center p-6 border-b bg-card border-border">
-          <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+        <div className="bg-card border-border sticky top-0 flex items-center justify-between border-b p-6">
+          <h2 className="text-foreground text-2xl font-bold">{title}</h2>
           <button
             onClick={onClose}
-            className="transition-colors text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground transition-colors"
           >
-            <X className="w-6 h-6" />
+            <X className="h-6 w-6" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="space-y-6 p-6">
           {/* Main Image */}
-          <div className="overflow-hidden h-64 rounded-lg bg-background">
+          <div className="bg-background h-64 overflow-hidden rounded-lg">
             <img
-              src={image || "/placeholder.svg"}
+              src={image || '/placeholder.svg'}
               alt={title}
-              className="object-cover w-full h-full"
+              className="h-full w-full object-cover"
             />
           </div>
 
           {/* Description */}
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-foreground">About</h3>
-            <p className="leading-relaxed text-muted-foreground">
+            <h3 className="text-foreground text-lg font-semibold">About</h3>
+            <p className="text-muted-foreground leading-relaxed">
               {longDescription || description}
             </p>
           </div>
@@ -76,16 +72,14 @@ export default function ProjectModal({
           {/* App Images Gallery - Only shown if appImages exist */}
           {appImages.length > 0 && (
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-foreground">
-                App Showcase
-              </h3>
+              <h3 className="text-foreground text-lg font-semibold">App Showcase</h3>
               <div className="relative">
                 {/* Main Image Viewer */}
-                <div className="flex overflow-hidden relative justify-center items-center h-96 rounded-lg bg-background">
+                <div className="bg-background relative flex h-96 items-center justify-center overflow-hidden rounded-lg">
                   <img
-                    src={appImages[currentImageIndex] || "/placeholder.svg"}
+                    src={appImages[currentImageIndex] || '/placeholder.svg'}
                     alt={`${title} screenshot ${currentImageIndex + 1}`}
-                    className="object-contain w-full h-full"
+                    className="h-full w-full object-contain"
                   />
 
                   {/* Navigation Buttons */}
@@ -93,43 +87,43 @@ export default function ProjectModal({
                     <>
                       <button
                         onClick={handlePrevImage}
-                        className="absolute left-3 top-1/2 p-2 text-white rounded-full transition-colors -translate-y-1/2 bg-black/50 hover:bg-black/70"
+                        className="absolute top-1/2 left-3 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
                       >
-                        <ChevronLeft className="w-6 h-6" />
+                        <ChevronLeft className="h-6 w-6" />
                       </button>
                       <button
                         onClick={handleNextImage}
-                        className="absolute right-3 top-1/2 p-2 text-white rounded-full transition-colors -translate-y-1/2 bg-black/50 hover:bg-black/70"
+                        className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
                       >
-                        <ChevronRight className="w-6 h-6" />
+                        <ChevronRight className="h-6 w-6" />
                       </button>
                     </>
                   )}
                 </div>
 
                 {/* Thumbnail Strip */}
-                <div className="flex overflow-x-auto gap-2 pb-2 mt-4">
+                <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
                   {appImages.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setCurrentImageIndex(idx)}
-                      className={`flex-shrink-0 w-16 h-24 rounded-md overflow-hidden border-2 transition-colors ${
+                      className={`h-24 w-16 flex-shrink-0 overflow-hidden rounded-md border-2 transition-colors ${
                         idx === currentImageIndex
-                          ? "border-primary"
-                          : "border-border hover:border-primary/50"
+                          ? 'border-primary'
+                          : 'border-border hover:border-primary/50'
                       }`}
                     >
                       <img
-                        src={img || "/placeholder.svg"}
+                        src={img || '/placeholder.svg'}
                         alt={`Thumbnail ${idx + 1}`}
-                        className="object-cover w-full h-full"
+                        className="h-full w-full object-cover"
                       />
                     </button>
                   ))}
                 </div>
 
                 {/* Image Counter */}
-                <div className="mt-3 text-sm text-center text-muted-foreground">
+                <div className="text-muted-foreground mt-3 text-center text-sm">
                   {currentImageIndex + 1} / {appImages.length}
                 </div>
               </div>
@@ -141,7 +135,7 @@ export default function ProjectModal({
             {tags.map((tag, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1 text-xs font-semibold rounded-full text-primary bg-primary/10"
+                className="text-primary bg-primary/10 rounded-full px-3 py-1 text-xs font-semibold"
               >
                 {tag}
               </span>
@@ -149,13 +143,13 @@ export default function ProjectModal({
           </div>
 
           {/* Links */}
-          <div className="flex gap-4 pt-4 border-t border-border">
+          <div className="border-border flex gap-4 border-t pt-4">
             {liveUrl && (
               <a
                 href={liveUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-2 font-semibold text-black rounded-lg transition-colors bg-primary hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 font-semibold text-black transition-colors"
               >
                 Visit Live Site
               </a>
@@ -165,7 +159,7 @@ export default function ProjectModal({
                 href={githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-2 font-semibold rounded-lg border transition-colors border-border text-foreground hover:bg-border"
+                className="border-border text-foreground hover:bg-border rounded-lg border px-4 py-2 font-semibold transition-colors"
               >
                 View Code
               </a>
@@ -174,5 +168,5 @@ export default function ProjectModal({
         </div>
       </div>
     </div>
-  );
+  )
 }

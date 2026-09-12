@@ -1,89 +1,61 @@
-# Use the official Node.js 14 image as the base
-FROM node:22.19.0-alpine3.22 AS base
+# Multi-stage standalone build. Requires `output: 'standalone'` in next.config.mjs.
+# Adapted from the Next.js with-docker example and the equilibrium project.
+FROM node:22.19.0-alpine AS base
 
-# Install dependencies only when needed
 FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
-# Set the working directory inside the container
 WORKDIR /app
+# pnpm-workspace.yaml carries the allowBuilds approvals — without it here,
+# `pnpm i --frozen-lockfile` hard-fails with ERR_PNPM_IGNORED_BUILDS.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+RUN corepack enable pnpm && pnpm i --frozen-lockfile
 
-# Copy package.json and package-lock.json to the container
-# Install dependencies based on the preferred package manager
-COPY package.json ./
-RUN npm install --frozen-lockfile
-
-# Rebuild the source code only when needed
 FROM base AS builder
-
-# add environment variables to client code
-# ARG NEXT_PUBLIC_CLOUDINARY_NAME
-# ARG NEXT_PUBLIC_CLOUDINARY_PRESET
-# ARG NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-# ARG NEXT_PUBLIC_API_URL
-# ARG NEXT_PUBLIC_CLERK_SIGN_IN_URL
-
-# ENV NEXT_PUBLIC_CLOUDINARY_NAME=$NEXT_PUBLIC_CLOUDINARY_NAME
-# ENV NEXT_PUBLIC_CLOUDINARY_PRESET=$NEXT_PUBLIC_CLOUDINARY_PRESET
-# ENV NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-# ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-# ENV NEXT_PUBLIC_CLERK_SIGN_IN_URL=$NEXT_PUBLIC_CLERK_SIGN_IN_URL
-
-
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# Copy the .env file to the container
-COPY ./.env /app/.env
-COPY ./.env.local /app/.env.local
 
-ARG NODE_ENV=production
-ARG NEXT_TELEMETRY_DISABLED=1
-# RUN NODE_ENV=${NODE_ENV} yarn build
-# Uncomment the following line in case you want to disable telemetry during runtime.
-ENV NEXT_TELEMETRY_DISABLED=$NEXT_TELEMETRY_DISABLED
-ENV NODE_ENV=$NODE_ENV
+# NEXT_PUBLIC_* vars are inlined into the build output — must be set before
+# `next build`, not just at container runtime.
+ARG NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
+ARG NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+ENV NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+ARG DO_SPACES_CDN_ENDPOINT
+ENV DO_SPACES_CDN_ENDPOINT=$DO_SPACES_CDN_ENDPOINT
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED=1
+# Payload initializes against a real, reachable (disposable) DB during
+# `next build` for generateStaticParams. These must NOT be real secrets.
+ARG DATABASE_URL
+ARG PAYLOAD_SECRET
+ENV DATABASE_URL=$DATABASE_URL
+ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
 
-# Build the application
-RUN npx prisma generate && npm run build
+# Sentry source-map upload during build (optional; no-ops without the token).
+ARG SENTRY_AUTH_TOKEN
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
-# Production image, copy all the files and run next
+# Baked into the client bundle at build time (not secret — Sentry DSNs are
+# public by design). P3.3c wires this as a GH Actions secret/build-arg.
+ARG NEXT_PUBLIC_SENTRY_DSN
+ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
+
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN corepack enable pnpm && pnpm run build
+
 FROM base AS runner
 WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-# You only need to copy next.config.js if you are NOT using the default configuration. 
-# Copy all necessary files used by nex.config as well otherwise the build will fail.
-COPY --from=builder /app/next.config.js ./next.config.js
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/app ./app
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
+RUN mkdir .next && chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-
 USER nextjs
-
 EXPOSE 3000
-
 ENV PORT=3000
-
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
-ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+CMD HOSTNAME="0.0.0.0" node server.js

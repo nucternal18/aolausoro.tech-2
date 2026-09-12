@@ -1,43 +1,37 @@
-"use client";
+'use client'
 
-import * as Sentry from "@sentry/nextjs";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import Image from "next/image";
-import { Button } from "@components/ui/button";
-import Link from "next/link";
+import * as Sentry from '@sentry/nextjs'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import Image from 'next/image'
+import { Button } from '@components/ui/button'
+import Link from 'next/link'
 
 export default function GlobalError({
   error,
   reset,
 }: {
-  error: string;
-  reset: () => void;
+  error: Error & { digest?: string }
+  reset: () => void
 }) {
-  const serializedError = JSON.stringify(error);
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
-    console.error(error);
-    Sentry.captureException(error);
-  }, [error]);
+    console.error(error)
+    Sentry.captureException(error)
+  }, [error])
 
   return (
-    <section className="flex flex-col justify-center items-center h-screen">
+    <section className="flex h-screen flex-col items-center justify-center">
       <div className="flex flex-col items-center">
-        <Image
-          src={"/android-chrome-512x512.png"}
-          alt="My Logo"
-          width={200}
-          height={200}
-        />
+        <Image src={'/android-chrome-512x512.png'} alt="My Logo" width={200} height={200} />
         <h1 className="my-5 text-6xl">500</h1>
-        <h2 className="mb-3 text-3xl">internal Server Error!</h2>
-        <p className="text-red-500">{serializedError}</p>
-        <div className="flex gap-4 justify-center items-center">
+        <h2 className="mb-3 text-3xl">Internal Server Error</h2>
+        <p className="text-muted-foreground">Something went wrong. It's been reported.</p>
+        <div className="flex items-center justify-center gap-4">
           <div className="flex justify-center">
             <Button type="button" asChild>
-              <Link href={"/"}>Home</Link>
+              <Link href={'/'}>Home</Link>
             </Button>
           </div>
           <div className="flex justify-center">
@@ -53,5 +47,5 @@ export default function GlobalError({
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,78 +1,57 @@
-"use client";
+'use client'
 
-import { useCallback, useRef } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useCallback, useRef } from 'react'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import ReCAPTCHA from 'react-google-recaptcha'
 
-// components
-import { useToast } from "@components/ui/use-toast";
+import { useToast } from '@components/ui/use-toast'
 
-// zod schemas
+export const contactSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('A valid email is required'),
+  subject: z.string().min(1, 'Subject is required'),
+  message: z.string().min(1, 'Message is required'),
+})
 
-import { createMessage, sendMail } from "@app/actions/messages";
-import {
-  partialMessageSchema,
-  type PartialMessageProps,
-} from "@src/entities/models/Message";
+export type ContactFormValues = z.infer<typeof contactSchema>
 
 export default function useContactController() {
-  const { toast } = useToast();
+  const { toast } = useToast()
 
-  const form = useForm<PartialMessageProps>({
-    resolver: zodResolver(partialMessageSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    },
-  });
+  const form = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: { name: '', email: '', subject: '', message: '' },
+  })
 
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
 
-  const handleSubmit: SubmitHandler<PartialMessageProps> = useCallback(
+  const handleSubmit: SubmitHandler<ContactFormValues> = useCallback(
     async (data) => {
-      const token = await recaptchaRef.current?.executeAsync();
-      recaptchaRef.current?.reset();
-
-      const newMessage: PartialMessageProps & { token: string } = {
-        name: data.name,
-        email: data.email,
-        subject: data.subject,
-        message: data.message,
-        token: token as string,
-      };
-      const formData = new FormData();
-      formData.append("name", newMessage.name as string);
-      formData.append("email", newMessage.email as string);
-      formData.append("subject", newMessage.subject as string);
-      formData.append("message", newMessage.message as string);
-      formData.append("token", newMessage.token);
       try {
-        const sendMailResponse = await sendMail(formData);
-        if (sendMailResponse.success) {
-          await createMessage(formData);
-          toast({
-            title: "Success",
-            description: "Message sent successfully",
-          });
-          form.reset();
-        }
+        await recaptchaRef.current?.executeAsync()
+        recaptchaRef.current?.reset()
+
+        const res = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        })
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`)
+
+        toast({ title: 'Success', description: 'Message sent successfully' })
+        form.reset()
       } catch (error) {
-        console.error(error);
+        console.error(error)
         toast({
-          title: "Error",
-          description: "Unable to send message. Please try again.",
-        });
+          title: 'Error',
+          description: 'Unable to send message. Please try again.',
+        })
       }
     },
-    [],
-  );
+    [form, toast],
+  )
 
-  return {
-    form,
-    handleSubmit,
-    recaptchaRef,
-  };
+  return { form, handleSubmit, recaptchaRef }
 }
