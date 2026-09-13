@@ -32,12 +32,27 @@ export default buildConfig({
     user: 'users',
     meta: {
       titleSuffix: '- Admin',
+      // Payload ships its own default favicon otherwise — this matches the
+      // public site's (public/favicon.ico, favicon-{16,32}x{16,32}.png,
+      // apple-touch-icon.png), so the browser tab icon is the same on
+      // /admin as everywhere else on the site.
+      icons: [
+        { url: '/favicon.ico' },
+        { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+        { rel: 'apple-touch-icon', url: '/apple-touch-icon.png' },
+      ],
     },
     components: {
       beforeDashboard: ['/components/admin/BeforeDashboard#BeforeDashboard'],
       beforeLogin: ['/components/admin/BeforeLogin#BeforeLogin'],
       graphics: {
+        // Logo = the login page's brand mark; Icon = the small mark in the
+        // admin nav sidebar. Both unset previously used Payload's own
+        // default — Logo already pointed at the site's own icon, but Icon
+        // didn't, so the nav sidebar showed a different, un-branded mark.
         Logo: '/components/Logo/Logo#Logo',
+        Icon: '/components/Logo/Logo#Logo',
       },
     },
     importMap: {
