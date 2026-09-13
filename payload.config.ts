@@ -35,6 +35,7 @@ export default buildConfig({
     },
     components: {
       beforeDashboard: ['/components/admin/BeforeDashboard#BeforeDashboard'],
+      beforeLogin: ['/components/admin/BeforeLogin#BeforeLogin'],
       graphics: {
         Logo: '/components/Logo/Logo#Logo',
       },
