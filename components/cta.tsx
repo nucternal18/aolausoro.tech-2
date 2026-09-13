@@ -1,12 +1,16 @@
 import type { SiteSetting } from '@/payload-types'
 
 /**
- * The one full-bleed accent surface on the site. Every border/text/bg here
- * uses fixed literal colors in the source design (not a light/dark pair) —
- * it always shows dark-navy text and borders on teal, regardless of the
- * site-wide theme toggle. --accent-hot and --on-accent already happen to
- * be constant across .dark, but --ink/--paper/--edge are NOT, so those
- * needed the static-* tokens instead.
+ * The one full-bleed accent surface on the site. The teal background and
+ * dark-navy heading/body/borders are fixed regardless of the site-wide
+ * light/dark toggle (--accent-hot is already constant across .dark, and
+ * --ink's dark-mode value — light cream — would fail contrast against
+ * teal, so text/border use the static-* tokens instead of --ink/--edge).
+ *
+ * The EMAIL ME row is the one exception: it gets its own solid dark-navy
+ * fill (distinguishing it from its two plain siblings) only in dark mode,
+ * via the dark: variant — in light mode it sits flush with the teal like
+ * OR USE THE FORM / DOWNLOAD.
  */
 export default function CTA({
   cta,
@@ -34,9 +38,9 @@ export default function CTA({
         <div className="flex flex-col">
           <a
             href={`mailto:${email}`}
-            className="bg-static-navy text-static-paper border-static-navy hover:bg-[--on-accent] flex flex-1 flex-col justify-center gap-2 border-b-2 px-6.5 py-7"
+            className="text-on-accent dark:bg-static-navy dark:text-static-paper border-static-navy hover:bg-static-navy hover:text-accent-hot dark:hover:bg-[--on-accent] flex flex-1 flex-col justify-center gap-2 border-b-2 px-6.5 py-7"
           >
-            <span className="text-accent-hot font-mono text-[11px] tracking-[0.14em]">
+            <span className="dark:text-accent-hot font-mono text-[11px] tracking-[0.14em]">
               EMAIL ME
             </span>
             <span className="font-mono text-[15px]">{email}</span>
