@@ -33,12 +33,13 @@ const DEVICON_LOGOS = [
 ]
 
 /**
- * This section is a deliberate rhythm-break: it always renders with the
- * design's fixed dark palette (bg-static-void / text-static-cream-*),
- * regardless of the site-wide light/dark toggle — same as CTA and Footer.
- * Using the theme-reactive ink/paper/rule tokens here was the bug that made
- * this section (and the grid-line dividers within it) invert with the
- * toggle instead of staying constant.
+ * Fully theme-reactive, same as every other section (Hero, Cards): bg-paper
+ * gives a light surface in light mode and a dark one in dark mode, text-ink
+ * the matching foreground. Earlier versions of this component used bg-ink
+ * (backwards — that's the foreground token, not a surface token) and then
+ * a fixed "always dark" token set — both wrong per explicit correction:
+ * this section should look light in light mode and dark in dark mode, not
+ * stay one fixed appearance regardless of the toggle.
  */
 export function Skills({
   heading,
@@ -48,57 +49,60 @@ export function Skills({
   groups: StackGroup[]
 }) {
   return (
-    <section id="stack" className="border-static-edge-dark bg-static-void px-6 py-11 md:px-9">
-      <div className="border-static-edge-dark mb-0 flex flex-wrap items-end justify-between gap-5 border-b-2 pb-4.5">
+    <section id="stack" className="border-edge bg-paper px-6 py-11 md:px-9">
+      <div className="border-edge mb-0 flex flex-wrap items-end justify-between gap-5 border-b-2 pb-4.5">
         <div>
           <p className="label-mono text-accent-hot mb-1.5">{heading.eyebrow}</p>
-          <h2 className="font-display text-static-cream text-[40px] leading-[0.9] md:text-[60px]">
+          <h2 className="font-display text-ink text-[40px] leading-[0.9] md:text-[60px]">
             {heading.heading}
           </h2>
         </div>
-        <p className="text-static-cream-2 max-w-[300px] text-[13px] leading-[1.6]">
-          {heading.description}
-        </p>
+        <p className="text-ink-2 max-w-[300px] text-[13px] leading-[1.6]">{heading.description}</p>
       </div>
 
-      {groups.map((group, i) => (
-        <div
-          key={group.id}
-          className="grid grid-cols-1 border-b border-[color:var(--static-rule-dark)] md:grid-cols-[180px_1fr]"
-        >
-          <div className="border-[color:var(--static-rule-dark)] py-5 md:border-r">
-            <p className="font-mono text-[11px] tracking-[0.12em] text-static-cream-3">
-              {String(i + 1).padStart(2, '0')}
-            </p>
-            <p className="font-display text-static-cream text-[28px] leading-none">
-              {group.label}
-            </p>
+      {groups.map((group, i) => {
+        const isLast = i === groups.length - 1
+        return (
+          <div
+            key={group.id}
+            className={
+              isLast
+                ? 'border-edge grid grid-cols-1 border-b-2 md:grid-cols-[180px_1fr]'
+                : 'grid grid-cols-1 border-b border-[color:var(--rule)] md:grid-cols-[180px_1fr]'
+            }
+          >
+            <div className="border-[color:var(--rule)] py-5 md:border-r">
+              <p className="font-mono text-[11px] tracking-[0.12em] text-ink-3">
+                {String(i + 1).padStart(2, '0')}
+              </p>
+              <p className="font-display text-ink text-[28px] leading-none">{group.label}</p>
+            </div>
+            <div className="flex flex-wrap content-center gap-2 py-5 md:pl-6">
+              {group.items.map((item, idx) => (
+                <span
+                  key={idx}
+                  className={
+                    item.filled
+                      ? 'bg-accent-hot text-on-accent px-2.5 py-2 font-mono text-[11px] font-semibold tracking-[0.06em]'
+                      : 'text-ink-2 border-ink-2 border px-2.5 py-2 font-mono text-[11px] tracking-[0.06em]'
+                  }
+                >
+                  {item.name.toUpperCase()}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-wrap content-center gap-2 py-5 md:pl-6">
-            {group.items.map((item, idx) => (
-              <span
-                key={idx}
-                className={
-                  item.filled
-                    ? 'bg-accent-hot text-on-accent px-2.5 py-2 font-mono text-[11px] font-semibold tracking-[0.06em]'
-                    : 'text-static-cream-2 border-static-cream-2 border px-2.5 py-2 font-mono text-[11px] tracking-[0.06em]'
-                }
-              >
-                {item.name.toUpperCase()}
-              </span>
-            ))}
-          </div>
-        </div>
-      ))}
+        )
+      })}
 
-      <div className="mt-6.5 flex items-center overflow-hidden border border-[color:var(--static-rule-dark)]">
+      <div className="mt-6.5 flex items-center overflow-hidden border border-[color:var(--rule)]">
         {DEVICON_LOGOS.map((logo) => (
           // eslint-disable-next-line @next/next/no-img-element -- decorative third-party SVG icon strip, not a Next-optimizable local asset
           <img
             key={logo.name}
             src={logo.url}
             alt={logo.name}
-            className="h-16 border-r border-[color:var(--static-rule-dark)] px-6 py-4 opacity-80 grayscale brightness-[1.7] last:border-r-0"
+            className="h-16 border-r border-[color:var(--rule)] px-6 py-4 opacity-80 grayscale brightness-[1.7] last:border-r-0"
           />
         ))}
       </div>
