@@ -40,6 +40,12 @@ export function Footer({ siteSettings }: { siteSettings: SiteSetting }) {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/admin"
+              className="hover:text-accent-hot font-mono text-[13px] text-paper"
+            >
+              ADMIN
+            </Link>
           </div>
         </nav>
 
