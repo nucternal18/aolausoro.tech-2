@@ -1,0 +1,92 @@
+import 'dotenv/config'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+
+/**
+ * One-off: persists the site-settings global to the DB.
+ *
+ * `payload.findGlobal` already merges each field's `defaultValue` into an
+ * unsaved global at read time, so the front end renders correctly even
+ * before this script ever runs — this script exists only to force an
+ * actual write, so the document shows as saved in /admin and an editor
+ * isn't surprised to find nothing persisted yet. A global has exactly one
+ * document, so this is safe to run any number of times: an explicit
+ * `updateGlobal` with a field already holding a value leaves it untouched.
+ *
+ *   pnpm payload run payload/scripts/seed-redesign-content.ts
+ */
+async function main() {
+  const payload = await getPayload({ config })
+
+  await payload.updateGlobal({
+    slug: 'site-settings',
+    overrideAccess: true,
+    data: {}, // defaultValue on each field fills the document on first write
+  })
+  console.log('site-settings persisted.')
+
+  const stackGroupSeeds = [
+    {
+      label: 'Frontend',
+      items: [
+        { name: 'React', filled: true },
+        { name: 'Next.js', filled: true },
+        { name: 'TypeScript', filled: true },
+        { name: 'Tailwind', filled: false },
+        { name: 'Motion', filled: false },
+        { name: 'React Native', filled: false },
+        { name: 'Expo', filled: false },
+      ],
+    },
+    {
+      label: 'Backend',
+      items: [
+        { name: 'Node.js', filled: true },
+        { name: 'MongoDB', filled: true },
+        { name: 'NestJS', filled: false },
+        { name: 'Express', filled: false },
+        { name: 'PostgreSQL', filled: false },
+        { name: 'GraphQL', filled: false },
+      ],
+    },
+    {
+      label: 'Platform',
+      items: [
+        { name: 'Docker', filled: true },
+        { name: 'GitHub Actions', filled: true },
+        { name: 'Digital Ocean', filled: false },
+        { name: 'Nginx', filled: false },
+        { name: 'AWS', filled: false },
+        { name: 'Vercel', filled: false },
+      ],
+    },
+    {
+      label: 'Craft',
+      items: [
+        { name: 'Accessibility', filled: false },
+        { name: 'Web Performance', filled: false },
+        { name: 'Figma', filled: false },
+        { name: 'Testing', filled: false },
+      ],
+    },
+  ]
+
+  const existingGroups = await payload.find({
+    collection: 'stack-groups',
+    overrideAccess: true,
+    limit: 1,
+  })
+  if (existingGroups.totalDocs === 0) {
+    for (const group of stackGroupSeeds) {
+      await payload.create({ collection: 'stack-groups', overrideAccess: true, data: group })
+    }
+    console.log('stack-groups seeded.')
+  } else {
+    console.log('stack-groups already has documents — skipping.')
+  }
+}
+
+await main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})

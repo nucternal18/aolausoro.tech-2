@@ -14,26 +14,33 @@ export const revalidate = 600
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
 
-  const posts = await payload.find({
-    collection: 'posts',
-    depth: 1,
-    limit: 12,
-    overrideAccess: false,
-    select: {
-      title: true,
-      slug: true,
-      categories: true,
-      meta: true,
-    },
-  })
+  const [posts, siteSettings] = await Promise.all([
+    payload.find({
+      collection: 'posts',
+      depth: 1,
+      limit: 12,
+      overrideAccess: false,
+      select: {
+        title: true,
+        slug: true,
+        categories: true,
+        meta: true,
+        publishedAt: true,
+      },
+    }),
+    payload.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: false }),
+  ])
+
+  const { writing } = siteSettings.sectionHeadings
 
   return (
     <div className="pt-24 pb-24">
       <PageClient />
       <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
-        </div>
+        <p className="label-mono text-ink-2 mb-1.5">{writing.eyebrow}</p>
+        <h1 className="font-display text-ink text-[40px] leading-[0.9] md:text-[60px]">
+          {writing.heading}
+        </h1>
       </div>
 
       <div className="container mb-8">
@@ -58,6 +65,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    title: `Writing | aolausoro.tech`,
   }
 }

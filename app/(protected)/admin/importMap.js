@@ -25,6 +25,7 @@ import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from 
 import { FolderTypeField as FolderTypeField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { Logo as Logo_9bcae99938dc292be0063ce32055e14c } from '../../../components/Logo/Logo'
 import { BeforeDashboard as BeforeDashboard_2b3503963038762274f348ed33ad1812 } from '../../../components/admin/BeforeDashboard'
+import { BeforeLogin as BeforeLogin_527cb6ea03a8cd52ace999dddf7d43a7 } from '../../../components/admin/BeforeLogin'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { TOTPProvider as TOTPProvider_4eaf6cb33cfb75be01716613e3c9a512 } from 'payload-totp/rsc'
 import { TOTPSetup as TOTPSetup_4eaf6cb33cfb75be01716613e3c9a512 } from 'payload-totp/rsc'
@@ -60,6 +61,7 @@ export const importMap = {
   "@payloadcms/next/client#FolderTypeField": FolderTypeField_2b8867833a34864a02ddf429b0728a40,
   "/components/Logo/Logo#Logo": Logo_9bcae99938dc292be0063ce32055e14c,
   "/components/admin/BeforeDashboard#BeforeDashboard": BeforeDashboard_2b3503963038762274f348ed33ad1812,
+  "/components/admin/BeforeLogin#BeforeLogin": BeforeLogin_527cb6ea03a8cd52ace999dddf7d43a7,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "payload-totp/rsc#TOTPProvider": TOTPProvider_4eaf6cb33cfb75be01716613e3c9a512,
   "payload-totp/rsc#TOTPSetup": TOTPSetup_4eaf6cb33cfb75be01716613e3c9a512,

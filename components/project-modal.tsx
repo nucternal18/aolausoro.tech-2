@@ -1,172 +1,137 @@
 'use client'
 
-import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
-
-interface ProjectModalProps {
-  title: string
-  description: string
-  longDescription?: string
-  tags: string[]
-  image: string
-  appImages?: string[]
-  liveUrl?: string
-  githubUrl?: string
-  onClose: () => void
-}
+import { X } from 'lucide-react'
+import { Dialog, DialogPortal, DialogOverlay, DialogContent, DialogTitle } from '@components/ui/dialog'
+import type { Media, Project } from '@/payload-types'
+import RichText from '@/components/RichText'
 
 export default function ProjectModal({
-  title,
-  description,
-  longDescription,
-  tags,
-  image,
-  appImages = [],
-  liveUrl,
-  githubUrl,
+  project,
   onClose,
-}: ProjectModalProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+}: {
+  project: Project
+  onClose: () => void
+}) {
+  const [activeImage, setActiveImage] = useState(0)
 
-  const handlePrevImage = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? appImages.length - 1 : prev - 1))
-  }
+  const gallery = (project.appImages ?? [])
+    .map((entry) => (typeof entry.image === 'object' ? (entry.image as Media) : null))
+    .filter((m): m is Media => m !== null)
 
-  const handleNextImage = () => {
-    setCurrentImageIndex((prev) => (prev === appImages.length - 1 ? 0 : prev + 1))
-  }
+  const fallbackShot = typeof project.screenshot === 'object' ? (project.screenshot as Media) : null
+  const images = gallery.length > 0 ? gallery : fallbackShot ? [fallbackShot] : []
+  const activeShot = images[activeImage]
 
   return (
-    <div className="fixed inset-0 z-50 flex h-dvh items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="bg-card max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-lg">
-        {/* Header */}
-        <div className="bg-card border-border sticky top-0 flex items-center justify-between border-b p-6">
-          <h2 className="text-foreground text-2xl font-bold">{title}</h2>
-          <button
-            onClick={onClose}
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <X className="h-6 w-6" />
-          </button>
-        </div>
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogPortal>
+        <DialogOverlay className="bg-ink/86" />
+        <DialogContent className="border-edge shadow-hard-accent grid w-full max-w-[940px] translate-x-[-50%] translate-y-[-50%] gap-0 border-2 bg-paper p-0 md:grid-cols-[1.5fr_1fr]">
+          <DialogTitle className="sr-only">{project.title}</DialogTitle>
 
-        {/* Content */}
-        <div className="space-y-6 p-6">
-          {/* Main Image */}
-          <div className="bg-background h-64 overflow-hidden rounded-lg">
-            <img
-              src={image || '/placeholder.svg'}
-              alt={title}
-              className="h-full w-full object-cover"
-            />
+          <div className="border-edge col-span-full flex items-stretch border-b-2">
+            <div className="flex-1 px-5 py-4">
+              <p className="font-mono text-[11px] tracking-[0.12em] text-ink-3">
+                PROJECT · {new Date(project.createdAt).getFullYear()}
+              </p>
+              <h2 className="font-display text-ink text-[40px] leading-[0.95]">{project.title}</h2>
+            </div>
+            <button
+              onClick={onClose}
+              aria-label="Close"
+              className="border-edge hover:bg-ink hover:text-accent-hot flex w-[62px] flex-none items-center justify-center border-l-2 text-ink"
+            >
+              <X className="h-[22px] w-[22px]" />
+            </button>
           </div>
 
-          {/* Description */}
-          <div className="space-y-3">
-            <h3 className="text-foreground text-lg font-semibold">About</h3>
-            <p className="text-muted-foreground leading-relaxed">
-              {longDescription || description}
-            </p>
+          <div className="border-[color:var(--rule)] md:border-r">
+            {activeShot?.url && (
+              <div className="h-[340px] bg-[--tag-platform]">
+                {/* eslint-disable-next-line @next/next/no-img-element -- variable aspect gallery image inside a fixed-height frame */}
+                <img src={activeShot.url} alt="" className="h-full w-full object-cover" />
+              </div>
+            )}
+            {images.length > 1 && (
+              <div className="flex border-b border-[color:var(--rule)]">
+                {images.map((img, i) => (
+                  <button
+                    key={img.id}
+                    onClick={() => setActiveImage(i)}
+                    className={`h-[72px] flex-1 border-r border-[color:var(--rule)] bg-[--tag-platform] font-mono text-[10px] text-ink-2 last:border-r-0 ${
+                      i === activeImage ? 'outline-accent-hot -outline-offset-3 outline outline-3' : ''
+                    }`}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="p-5">
+              <p className="label-mono mb-2.5 text-ink">THE BUILD</p>
+              {project.longDescription ? (
+                <RichText
+                  data={project.longDescription}
+                  enableGutter={false}
+                  className="text-[15px] leading-[1.7] text-ink"
+                />
+              ) : (
+                <p className="text-[15px] leading-[1.7] text-ink-2">{project.description}</p>
+              )}
+            </div>
           </div>
 
-          {/* App Images Gallery - Only shown if appImages exist */}
-          {appImages.length > 0 && (
-            <div className="space-y-3">
-              <h3 className="text-foreground text-lg font-semibold">App Showcase</h3>
-              <div className="relative">
-                {/* Main Image Viewer */}
-                <div className="bg-background relative flex h-96 items-center justify-center overflow-hidden rounded-lg">
-                  <img
-                    src={appImages[currentImageIndex] || '/placeholder.svg'}
-                    alt={`${title} screenshot ${currentImageIndex + 1}`}
-                    className="h-full w-full object-contain"
-                  />
-
-                  {/* Navigation Buttons */}
-                  {appImages.length > 1 && (
-                    <>
-                      <button
-                        onClick={handlePrevImage}
-                        className="absolute top-1/2 left-3 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                      >
-                        <ChevronLeft className="h-6 w-6" />
-                      </button>
-                      <button
-                        onClick={handleNextImage}
-                        className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                      >
-                        <ChevronRight className="h-6 w-6" />
-                      </button>
-                    </>
-                  )}
-                </div>
-
-                {/* Thumbnail Strip */}
-                <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
-                  {appImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentImageIndex(idx)}
-                      className={`h-24 w-16 flex-shrink-0 overflow-hidden rounded-md border-2 transition-colors ${
-                        idx === currentImageIndex
-                          ? 'border-primary'
-                          : 'border-border hover:border-primary/50'
-                      }`}
-                    >
-                      <img
-                        src={img || '/placeholder.svg'}
-                        alt={`Thumbnail ${idx + 1}`}
-                        className="h-full w-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-
-                {/* Image Counter */}
-                <div className="text-muted-foreground mt-3 text-center text-sm">
-                  {currentImageIndex + 1} / {appImages.length}
-                </div>
+          <div className="flex flex-col">
+            <dl className="border-b border-[color:var(--rule)]">
+              <div className="flex justify-between gap-2.5 border-b border-[color:var(--rule)] px-4.5 py-3">
+                <dt className="font-mono text-[11px] tracking-[0.1em] text-ink-3">YEAR</dt>
+                <dd className="font-mono text-xs text-ink">
+                  {new Date(project.createdAt).getFullYear()}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-2.5 px-4.5 py-3">
+                <dt className="font-mono text-[11px] tracking-[0.1em] text-ink-3">STATUS</dt>
+                <dd className="font-mono text-xs text-accent-text">
+                  {project.published ? 'IN PRODUCTION' : 'IN PROGRESS'}
+                </dd>
+              </div>
+            </dl>
+            <div className="border-b border-[color:var(--rule)] p-4.5">
+              <p className="label-mono mb-2.5 text-ink">STACK</p>
+              <div className="flex flex-wrap gap-2">
+                {project.techStack?.map((tech, idx) => (
+                  <span key={idx} className="chip bg-tag-framework">
+                    {tech.technology}
+                  </span>
+                ))}
               </div>
             </div>
-          )}
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className="text-primary bg-primary/10 rounded-full px-3 py-1 text-xs font-semibold"
-              >
-                {tag}
-              </span>
-            ))}
+            <div className="mt-auto flex flex-col">
+              {project.address && (
+                <a
+                  href={project.address}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-accent-hot text-on-accent border-edge flex items-center justify-between border-t-2 p-4.5 font-mono text-xs tracking-[0.1em]"
+                >
+                  VISIT LIVE SITE
+                </a>
+              )}
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:bg-ink hover:text-accent-hot border-edge flex items-center justify-between border-t-2 p-4.5 font-mono text-xs tracking-[0.1em] text-ink"
+                >
+                  READ THE SOURCE
+                </a>
+              )}
+            </div>
           </div>
-
-          {/* Links */}
-          <div className="border-border flex gap-4 border-t pt-4">
-            {liveUrl && (
-              <a
-                href={liveUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 font-semibold text-black transition-colors"
-              >
-                Visit Live Site
-              </a>
-            )}
-            {githubUrl && (
-              <a
-                href={githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="border-border text-foreground hover:bg-border rounded-lg border px-4 py-2 font-semibold transition-colors"
-              >
-                View Code
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
   )
 }

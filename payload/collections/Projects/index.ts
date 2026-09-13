@@ -52,6 +52,29 @@ const Projects: CollectionConfig<'projects'> = {
       ],
     },
     {
+      name: 'longDescription',
+      type: 'richText',
+      admin: {
+        description: 'Powers the "THE BUILD" write-up in the project modal.',
+      },
+    },
+    {
+      name: 'appImages',
+      type: 'array',
+      admin: {
+        description:
+          'Powers the 4-thumbnail gallery in the project modal. Falls back to the single screenshot above if empty.',
+      },
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'published',
       type: 'checkbox',
       defaultValue: false,

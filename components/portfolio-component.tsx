@@ -1,56 +1,57 @@
-import React, { useState } from 'react'
-import { FaGithub, FaChevronRight } from 'react-icons/fa'
-import Link from 'next/link'
-import Loader from './Loader'
+'use client'
+import { useState } from 'react'
 
-// components
 import PortfolioCard from '@components/portfolio-card'
-import { Button } from '@components/ui/button'
-import type { Project } from '@/payload-types'
+import type { Project, SiteSetting } from '@/payload-types'
 import ProjectModal from './project-modal'
-import { Typography } from './Typography'
 
-export function PortfolioComponent({ projects }: { projects: Project[] }) {
+export function PortfolioComponent({
+  projects,
+  heading,
+}: {
+  projects: Project[]
+  heading: SiteSetting['sectionHeadings']['work']
+}) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const publishedProjects = projects?.filter((doc) => doc.published)
+  const [lead, ...rest] = publishedProjects
+  const sideProjects = rest.slice(0, 2)
+
   return (
     <>
-      <section id="projects" className="mx-auto max-w-5xl px-4 py-20 md:px-0">
-        <div className="mb-12 space-y-4">
-          <Typography className="text-sm font-semibold tracking-wider text-white/80 uppercase">
-            Featured Work
-          </Typography>
-          <Typography variant="h2" className="text-4xl font-bold text-white/90 md:text-5xl">
-            Selected Projects
-          </Typography>
+      <section id="work" className="border-edge bg-paper border-t-2 px-6 py-11 md:px-9">
+        <div className="border-edge mb-7 flex flex-wrap items-end justify-between gap-5 border-b-2 pb-4.5">
+          <div>
+            <p className="label-mono text-ink-2 mb-1.5">{heading.eyebrow}</p>
+            <h2 className="font-display text-ink text-[40px] leading-[0.9] md:text-[60px]">
+              {heading.heading}
+            </h2>
+          </div>
+          <p className="text-ink-2 max-w-[300px] text-[13px] leading-[1.6]">
+            {heading.description}
+          </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2">
-          {publishedProjects.map((project, i) => (
-            <PortfolioCard
-              key={project.id}
-              project={project}
-              setSelectedProject={setSelectedProject}
-            />
-          ))}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
+          {lead && (
+            <div className="md:col-span-7">
+              <PortfolioCard project={lead} index={1} lead onSelect={setSelectedProject} />
+            </div>
+          )}
+          <div className="flex flex-col gap-6 md:col-span-5">
+            {sideProjects.map((project, i) => (
+              <PortfolioCard
+                key={project.id}
+                project={project}
+                index={i + 2}
+                onSelect={setSelectedProject}
+              />
+            ))}
+          </div>
         </div>
       </section>
       {selectedProject && (
-        <ProjectModal
-          title={selectedProject.title as string}
-          description={selectedProject.description as string}
-          longDescription={selectedProject.description as string}
-          tags={selectedProject.techStack as string[]}
-          image={
-            typeof selectedProject.screenshot === 'object'
-              ? (selectedProject.screenshot?.url ?? '')
-              : ''
-          }
-          appImages={[]}
-          liveUrl={selectedProject.address as string}
-          githubUrl={selectedProject.github as string}
-          onClose={() => setSelectedProject(null)}
-        />
+        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       )}
     </>
   )

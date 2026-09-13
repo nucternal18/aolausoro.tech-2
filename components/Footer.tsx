@@ -1,68 +1,89 @@
 import Link from 'next/link'
-import { links, social } from '../data'
+import type { SiteSetting } from '@/payload-types'
+import { Github, Linkedin } from 'lucide-react'
+import { FaStackOverflow } from 'react-icons/fa'
 
-export function Footer() {
+const SOCIAL_ICONS = {
+  github: Github,
+  linkedin: Linkedin,
+  stackoverflow: FaStackOverflow,
+  other: Github,
+} as const
+
+/**
+ * Fully theme-reactive, same as the rest of the site — see the comment on
+ * Skills for why (bg-paper/text-ink instead of the fixed static-* tokens
+ * used in an earlier, corrected version).
+ */
+export function Footer({ siteSettings }: { siteSettings: SiteSetting }) {
+  const { footer, nav, contact } = siteSettings
+  const year = new Date().getFullYear()
+
   return (
-    <footer className="border-border bg-card/60 z-50 min-w-screen border-t py-12">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-8 grid gap-8 md:grid-cols-3">
-          <div>
-            <div className="mb-4 flex items-center gap-2 rounded-md">
-              <img src={'/android-chrome-512x512.png'} alt="logo" className="h-8 w-8" />
-              <h3 className="text-foreground font-bold">John A. Oladipupo-Usoro</h3>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Full-Stack Developer crafting digital experiences
-            </p>
-          </div>
+    <footer className="border-edge bg-paper border-t-2">
+      <div className="grid grid-cols-1 border-b border-[color:var(--rule)] md:grid-cols-4">
+        <div className="border-[color:var(--rule)] px-7 py-8 md:col-span-2 md:border-r">
+          <p className="label-mono text-accent-hot mb-2.5">AOLAUSORO.TECH</p>
+          <p className="text-ink max-w-[420px] text-[15px] leading-[1.6]">{footer.bio}</p>
+          <a
+            href={`mailto:${contact.email}`}
+            className="bg-accent-hot text-on-accent border-edge mt-4 inline-flex items-center gap-[9px] border-2 px-[17px] py-[13px] font-mono text-xs tracking-[0.1em]"
+          >
+            {footer.buttonLabel}
+          </a>
+        </div>
 
-          <div>
-            <h4 className="text-foreground mb-4 font-semibold">Quick Links</h4>
-            <div className="space-y-2 text-sm">
+        <nav className="border-[color:var(--rule)] px-6 py-8 md:border-r">
+          <p className="label-mono mb-3.5 text-ink-3">PAGES</p>
+          <div className="flex flex-col gap-[9px]">
+            {nav.links.map((link) => (
               <Link
-                href="#projects"
-                className="text-muted-foreground hover:text-primary block transition-colors"
+                key={link.href}
+                href={link.href}
+                className="hover:text-accent-hot text-ink font-mono text-[13px]"
               >
-                Projects
+                {link.label}
               </Link>
-              <Link
-                href="#skills"
-                className="text-muted-foreground hover:text-primary block transition-colors"
-              >
-                Skills
-              </Link>
-              <a
-                href="mailto:hello@example.com"
-                className="text-muted-foreground hover:text-primary block transition-colors"
-              >
-                Contact
-              </a>
-            </div>
+            ))}
+            <Link href="/admin" className="hover:text-accent-hot text-ink font-mono text-[13px]">
+              ADMIN
+            </Link>
           </div>
+        </nav>
 
-          <div>
-            <h4 className="text-foreground mb-4 font-semibold">Connect</h4>
-            <div className="flex gap-4">
-              {social.map((item) => (
+        <div className="px-6 py-8">
+          <p className="label-mono mb-3.5 text-ink-3">ELSEWHERE</p>
+          <div className="flex flex-col gap-[9px]">
+            {contact.socialLinks.map((social) => {
+              const Icon = SOCIAL_ICONS[social.platform]
+              return (
                 <a
-                  key={item.id}
-                  href={item.url}
+                  key={social.url}
+                  href={social.url}
                   target="_blank"
-                  className="text-muted-foreground hover:text-primary transition-colors"
                   rel="noreferrer"
+                  className="hover:text-accent-hot text-ink flex min-h-[44px] items-center gap-[9px] font-mono text-[13px]"
                 >
-                  {item.icon}
+                  <Icon className="h-3.5 w-3.5" />
+                  {social.label}
                 </a>
-              ))}
-            </div>
+              )
+            })}
           </div>
         </div>
+      </div>
 
-        <div className="mb-0 w-full p-6 text-current dark:text-yellow-500">
-          <div className="z-50 container mx-auto my-4 text-center">
-            <p className="z-50">© {new Date().getFullYear()} Portfolio. aolausoro.tech</p>
-          </div>
-        </div>
+      <div className="overflow-hidden border-b border-[color:var(--rule)] px-7">
+        <p className="text-outline font-display py-2 text-[132px] leading-none tracking-[0.01em] whitespace-nowrap">
+          AOLAUSORO.TECH
+        </p>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 px-7 py-3.5">
+        <p className="text-ink-3 font-mono text-[11px] tracking-[0.08em]">
+          © {year} ADEWOYIN OLADIPUPO-USORO
+        </p>
+        <p className="text-ink-3 font-mono text-[11px] tracking-[0.08em]">{footer.colophon}</p>
       </div>
     </footer>
   )

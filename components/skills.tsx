@@ -1,53 +1,109 @@
-const skillCategories = [
+import type { SiteSetting, StackGroup } from '@/payload-types'
+
+const DEVICON_LOGOS = [
   {
-    category: 'Frontend',
-    skills: [
-      'React',
-      'Next.js',
-      'TypeScript',
-      'Tailwind CSS',
-      'Framer Motion',
-      'Expo',
-      'React Native',
-    ],
+    name: 'TypeScript',
+    url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
   },
   {
-    category: 'Backend',
-    skills: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'REST APIs', 'NestJS'],
+    name: 'Node.js',
+    url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
   },
   {
-    category: 'Tools & Platform',
-    skills: ['Git', 'Docker', 'Vercel', 'AWS', 'CI/CD', 'GitHub Actions', 'Digital Ocean'],
+    name: 'Docker',
+    url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
   },
   {
-    category: 'Design',
-    skills: ['UI/UX Design', 'Figma', 'Responsive Design', 'Accessibility', 'Web Performance'],
+    name: 'MongoDB',
+    url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg',
   },
+  {
+    name: 'PostgreSQL',
+    url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg',
+  },
+  {
+    name: 'GraphQL',
+    url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain-wordmark.svg',
+  },
+  {
+    name: 'Redis',
+    url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original-wordmark.svg',
+  },
+  { name: 'Figma', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg' },
 ]
 
-export function Skills() {
+/**
+ * Fully theme-reactive, same as every other section (Hero, Cards): bg-paper
+ * gives a light surface in light mode and a dark one in dark mode, text-ink
+ * the matching foreground. Earlier versions of this component used bg-ink
+ * (backwards — that's the foreground token, not a surface token) and then
+ * a fixed "always dark" token set — both wrong per explicit correction:
+ * this section should look light in light mode and dark in dark mode, not
+ * stay one fixed appearance regardless of the toggle.
+ */
+export function Skills({
+  heading,
+  groups,
+}: {
+  heading: SiteSetting['sectionHeadings']['stack']
+  groups: StackGroup[]
+}) {
   return (
-    <section
-      id="skills"
-      className="bg-card border-border mx-4 max-w-5xl rounded-lg border-y px-4 py-20 md:mx-auto md:px-12"
-    >
-      <div className="mb-12 space-y-4">
-        <p className="text-primary text-sm font-semibold tracking-wider uppercase">Expertise</p>
-        <h2 className="text-foreground text-4xl font-bold md:text-5xl">Skills & Technologies</h2>
+    <section id="stack" className="border-edge bg-paper px-6 py-11 md:px-9">
+      <div className="border-edge mb-0 flex flex-wrap items-end justify-between gap-5 border-b-2 pb-4.5">
+        <div>
+          <p className="label-mono text-accent-hot mb-1.5">{heading.eyebrow}</p>
+          <h2 className="font-display text-ink text-[40px] leading-[0.9] md:text-[60px]">
+            {heading.heading}
+          </h2>
+        </div>
+        <p className="text-ink-2 max-w-[300px] text-[13px] leading-[1.6]">{heading.description}</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {skillCategories.map((cat, i) => (
-          <div key={i} className="space-y-4">
-            <h3 className="text-foreground text-lg font-bold">{cat.category}</h3>
-            <ul className="list-inside list-disc space-y-2">
-              {cat.skills.map((skill, idx) => (
-                <li key={idx} className="flex items-center gap-3">
-                  <span className="text-muted-foreground">{skill}</span>
-                </li>
+      {groups.map((group, i) => {
+        const isLast = i === groups.length - 1
+        return (
+          <div
+            key={group.id}
+            className={
+              isLast
+                ? 'border-edge grid grid-cols-1 border-b-2 md:grid-cols-[180px_1fr]'
+                : 'grid grid-cols-1 border-b border-[color:var(--rule)] md:grid-cols-[180px_1fr]'
+            }
+          >
+            <div className="border-[color:var(--rule)] py-5 md:border-r">
+              <p className="font-mono text-[11px] tracking-[0.12em] text-ink-3">
+                {String(i + 1).padStart(2, '0')}
+              </p>
+              <p className="font-display text-ink text-[28px] leading-none">{group.label}</p>
+            </div>
+            <div className="flex flex-wrap content-center gap-2 py-5 md:pl-6">
+              {group.items.map((item, idx) => (
+                <span
+                  key={idx}
+                  className={
+                    item.filled
+                      ? 'bg-accent-hot text-on-accent px-2.5 py-2 font-mono text-[11px] font-semibold tracking-[0.06em]'
+                      : 'text-ink-2 border-ink-2 border px-2.5 py-2 font-mono text-[11px] tracking-[0.06em]'
+                  }
+                >
+                  {item.name.toUpperCase()}
+                </span>
               ))}
-            </ul>
+            </div>
           </div>
+        )
+      })}
+
+      <div className="mt-6.5 flex items-center overflow-hidden border border-[color:var(--rule)]">
+        {DEVICON_LOGOS.map((logo) => (
+          // eslint-disable-next-line @next/next/no-img-element -- decorative third-party SVG icon strip, not a Next-optimizable local asset
+          <img
+            key={logo.name}
+            src={logo.url}
+            alt={logo.name}
+            className="h-16 border-r border-[color:var(--rule)] px-6 py-4 opacity-80 grayscale brightness-[1.7] last:border-r-0"
+          />
         ))}
       </div>
     </section>

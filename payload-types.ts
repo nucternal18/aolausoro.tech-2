@@ -77,6 +77,7 @@ export interface Config {
     cvs: Cv;
     users: User;
     media: Media;
+    'stack-groups': StackGroup;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -104,6 +105,7 @@ export interface Config {
     cvs: CvsSelect<false> | CvsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'stack-groups': StackGroupsSelect<false> | StackGroupsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -119,8 +121,12 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -401,6 +407,33 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Powers the "THE BUILD" write-up in the project modal.
+   */
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Powers the 4-thumbnail gallery in the project modal. Falls back to the single screenshot above if empty.
+   */
+  appImages?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
   published?: boolean | null;
   user: string | User;
   updatedAt: string;
@@ -496,6 +529,24 @@ export interface Cv {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stack-groups".
+ */
+export interface StackGroup {
+  id: string;
+  label: string;
+  items: {
+    name: string;
+    /**
+     * Checked = solid/filled chip (daily use). Unchecked = outlined chip (working knowledge).
+     */
+    filled?: boolean | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -710,10 +761,15 @@ export interface Search {
   id: string;
   title?: string | null;
   priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: string | Post;
-  };
+  doc:
+    | {
+        relationTo: 'posts';
+        value: string | Post;
+      }
+    | {
+        relationTo: 'projects';
+        value: string | Project;
+      };
   slug?: string | null;
   meta?: {
     title?: string | null;
@@ -888,6 +944,10 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
+        relationTo: 'stack-groups';
+        value: string | StackGroup;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: string | Redirect;
       } | null)
@@ -1016,6 +1076,13 @@ export interface ProjectsSelect<T extends boolean = true> {
     | T
     | {
         technology?: T;
+        id?: T;
+      };
+  longDescription?: T;
+  appImages?:
+    | T
+    | {
+        image?: T;
         id?: T;
       };
   published?: T;
@@ -1216,6 +1283,22 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stack-groups_select".
+ */
+export interface StackGroupsSelect<T extends boolean = true> {
+  label?: T;
+  items?:
+    | T
+    | {
+        name?: T;
+        filled?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1491,6 +1574,201 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: string;
+  hero: {
+    eyebrow: string;
+    stackLine: string;
+    /**
+     * The last word is rendered with the outlined-text treatment.
+     */
+    name: string;
+    lead: string;
+    terminalLines: {
+      prompt: string;
+      output: string;
+      id?: string | null;
+    }[];
+    primaryCtaLabel: string;
+    secondaryCtaLabel: string;
+    statLocation: string;
+    statStatus: string;
+  };
+  ticker: {
+    message: string;
+    id?: string | null;
+  }[];
+  nav: {
+    links: {
+      label: string;
+      href: string;
+      id?: string | null;
+    }[];
+    ctaLabel: string;
+  };
+  contact: {
+    email: string;
+    location: string;
+    responsePromise: string;
+    socialLinks: {
+      platform: 'github' | 'linkedin' | 'stackoverflow' | 'other';
+      url: string;
+      label: string;
+      id?: string | null;
+    }[];
+  };
+  cta: {
+    eyebrow: string;
+    heading: string;
+    body: string;
+  };
+  footer: {
+    bio: string;
+    buttonLabel: string;
+    colophon: string;
+  };
+  sectionHeadings: {
+    work: {
+      eyebrow: string;
+      heading: string;
+      description: string;
+    };
+    stack: {
+      eyebrow: string;
+      heading: string;
+      description: string;
+    };
+    writing: {
+      eyebrow: string;
+      heading: string;
+    };
+    search: {
+      heading: string;
+    };
+    contactPage: {
+      eyebrow: string;
+      heading: string;
+      body: string;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        stackLine?: T;
+        name?: T;
+        lead?: T;
+        terminalLines?:
+          | T
+          | {
+              prompt?: T;
+              output?: T;
+              id?: T;
+            };
+        primaryCtaLabel?: T;
+        secondaryCtaLabel?: T;
+        statLocation?: T;
+        statStatus?: T;
+      };
+  ticker?:
+    | T
+    | {
+        message?: T;
+        id?: T;
+      };
+  nav?:
+    | T
+    | {
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+      };
+  contact?:
+    | T
+    | {
+        email?: T;
+        location?: T;
+        responsePromise?: T;
+        socialLinks?:
+          | T
+          | {
+              platform?: T;
+              url?: T;
+              label?: T;
+              id?: T;
+            };
+      };
+  cta?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+      };
+  footer?:
+    | T
+    | {
+        bio?: T;
+        buttonLabel?: T;
+        colophon?: T;
+      };
+  sectionHeadings?:
+    | T
+    | {
+        work?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+            };
+        stack?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+            };
+        writing?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+            };
+        search?:
+          | T
+          | {
+              heading?: T;
+            };
+        contactPage?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              body?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -14,3 +14,133 @@
 
 /* Support Payload’s dark mode toggle by adding a custom variant */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* ============================================================================
+   Login page — brutalist redesign match
+   Scoped to .template-minimal, Payload's shared template for /admin/login,
+   /admin/forgot, /admin/create-first-user and /admin/logout — everything
+   else in /admin is untouched. Class names (.template-minimal,
+   .template-minimal__wrap, .login, .login__brand, .login__form) come from
+   @payloadcms/next's own compiled output — they're stable, public BEM
+   selectors, not CSS-module hashes.
+
+   The override strategy is token-first: redefine the --theme-* / --style-*
+   custom properties Payload's own components already read from (elevation
+   ramp, accent color, border radius), scoped to .template-minimal, so every
+   descendant (inputs, buttons, links) picks up the new palette without
+   fighting each component's own internal --bg-color/--color chain. A few
+   direct rules on top add the hard-edge border/shadow this site's redesign
+   uses everywhere.
+   ============================================================================ */
+
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('/fonts/BebasNeue-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+.template-minimal {
+  --login-paper: #fbfaf6;
+  --login-ink: #0b1220;
+  --login-ink-2: #3b4454;
+  --login-edge: #0b1220;
+  --login-accent: #00dcb3;
+  --login-on-accent: #00261f;
+
+  /* Redirect Payload's own tokens at the palette this page uses. */
+  --theme-elevation-0: var(--login-paper);
+  --theme-elevation-50: #eae7dd;
+  --theme-elevation-100: #eae7dd;
+  --theme-elevation-150: var(--login-edge);
+  --theme-elevation-800: var(--login-edge);
+  --theme-bg: var(--login-paper);
+  --theme-text: var(--login-ink);
+  --theme-input-bg: var(--login-paper);
+  --theme-success-500: var(--login-accent);
+  --theme-success-400: var(--login-accent);
+  --style-radius-s: 0px;
+  --style-radius-m: 0px;
+  --style-radius-l: 0px;
+
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--login-paper);
+}
+
+html[data-theme='dark'] .template-minimal {
+  --login-paper: #0a0e14;
+  --login-ink: #efece3;
+  --login-ink-2: #c9c3b2;
+  --login-edge: #efece3;
+  --theme-elevation-0: var(--login-paper);
+  --theme-elevation-50: #1c222d;
+  --theme-elevation-100: #1c222d;
+  --theme-bg: var(--login-paper);
+  --theme-text: var(--login-ink);
+  --theme-input-bg: var(--login-paper);
+}
+
+.template-minimal__wrap {
+  background: var(--login-paper);
+  border: 2px solid var(--login-edge);
+  box-shadow: 6px 6px 0 0 var(--login-edge);
+  padding: 40px 36px;
+}
+
+.back-to-site {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--login-ink-2);
+}
+
+.back-to-site:hover {
+  color: var(--login-accent);
+}
+
+.login__brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.login__brand svg,
+.login__brand img {
+  height: 40px;
+  width: 40px;
+}
+
+.template-minimal h1,
+.template-minimal h2 {
+  font-family: 'Bebas Neue', ui-sans-serif, sans-serif;
+  letter-spacing: 0.004em;
+}
+
+.template-minimal .btn--style-primary {
+  --bg-color: var(--login-accent);
+  --color: var(--login-on-accent);
+  --hover-bg: var(--login-accent);
+  --hover-color: var(--login-on-accent);
+  border: 2px solid var(--login-edge);
+  box-shadow: 4px 4px 0 0 var(--login-edge);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition:
+    transform 130ms linear,
+    box-shadow 130ms linear;
+}
+
+.template-minimal .btn--style-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--login-edge);
+}
