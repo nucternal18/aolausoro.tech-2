@@ -1,9 +1,8 @@
-import { getPayload } from 'payload'
-import config from '@payload-config'
 import { Github, Linkedin } from 'lucide-react'
 import { FaStackOverflow } from 'react-icons/fa'
 
 import ContactForm from '@components/contact-form'
+import { getSiteSettings } from '@utils/getSiteSettings'
 
 const SOCIAL_ICONS = {
   github: Github,
@@ -13,12 +12,7 @@ const SOCIAL_ICONS = {
 } as const
 
 export default async function ContactPage() {
-  const payload = await getPayload({ config })
-  const { contact, sectionHeadings } = await payload.findGlobal({
-    slug: 'site-settings',
-    depth: 0,
-    overrideAccess: false,
-  })
+  const { contact, sectionHeadings } = await getSiteSettings()
   const { contactPage } = sectionHeadings
 
   return (

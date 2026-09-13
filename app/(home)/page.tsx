@@ -2,6 +2,7 @@ import React from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import HomeComponent from '@/components/home'
+import { getSiteSettings } from '@utils/getSiteSettings'
 
 // The homepage renders live CMS content (projects, CV, latest posts) pulled
 // through Payload's local API, so it is rendered per-request rather than
@@ -12,6 +13,10 @@ export const dynamic = 'force-dynamic'
 export default async function Page() {
   const payload = await getPayload({ config })
 
+  // site-settings goes through getSiteSettings(), not a direct findGlobal
+  // here — the root layout fetches the same global for the nav, and without
+  // React's cache() dedup the two concurrent calls raced on the underlying
+  // MongoDB session (Sentry JAVASCRIPT-NEXTJS-36 / -3A).
   const [projects, cvs, posts, siteSettings, stackGroups] = await Promise.all([
     payload.find({
       collection: 'projects',
@@ -35,7 +40,7 @@ export default async function Page() {
       depth: 1,
       overrideAccess: false,
     }),
-    payload.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: false }),
+    getSiteSettings(),
     payload.find({
       collection: 'stack-groups',
       sort: 'createdAt',

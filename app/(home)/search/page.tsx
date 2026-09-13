@@ -5,6 +5,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import { Search } from '@/search/Component'
 import PageClient from './page.client'
+import { getSiteSettings } from '@utils/getSiteSettings'
 
 type Args = {
   searchParams: Promise<{
@@ -58,7 +59,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
           }
         : {}),
     }),
-    payload.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: false }),
+    getSiteSettings(),
   ])
 
   return (

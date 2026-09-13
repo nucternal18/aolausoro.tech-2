@@ -8,6 +8,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
+import { getSiteSettings } from '@utils/getSiteSettings'
 
 export const revalidate = 600
 
@@ -33,7 +34,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       page: sanitizedPageNumber,
       overrideAccess: false,
     }),
-    payload.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: false }),
+    getSiteSettings(),
   ])
 
   const { writing } = siteSettings.sectionHeadings
