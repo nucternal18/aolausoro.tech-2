@@ -1,7 +1,6 @@
 'use client'
 
 // components
-import { Navbar } from './navigation/Navbar'
 import { Hero } from './hero'
 import { Footer } from './Footer'
 import { PortfolioComponent } from './portfolio-component'
@@ -31,7 +30,6 @@ export default function HomeComponent({
   return (
     <main className="bg-background relative min-h-screen">
       <div className="relative z-10">
-        <Navbar nav={siteSettings.nav} email={siteSettings.contact.email} />
         <Hero
           cvDoc={cvUrl as string}
           hero={siteSettings.hero}
