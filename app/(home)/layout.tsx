@@ -1,13 +1,12 @@
 import localFont from 'next/font/local'
 import { Inter } from 'next/font/google'
-import { getPayload } from 'payload'
-import config from '@payload-config'
 import { Providers } from '@components/providers'
 import { Navbar } from '@components/navigation/Navbar'
 import '../globals.css'
 import 'highlight.js/styles/github-dark.css'
 
 import { cn } from '../../lib/utils'
+import { getSiteSettings } from '@utils/getSiteSettings'
 
 import LayoutWrapper from './layout-wrapper'
 
@@ -24,12 +23,7 @@ const inter = Inter({
 })
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const payload = await getPayload({ config })
-  const siteSettings = await payload.findGlobal({
-    slug: 'site-settings',
-    depth: 0,
-    overrideAccess: false,
-  })
+  const siteSettings = await getSiteSettings()
 
   return (
     <html lang="en" suppressHydrationWarning>
